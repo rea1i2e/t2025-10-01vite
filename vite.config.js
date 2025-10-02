@@ -6,6 +6,15 @@ import path, { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { globSync } from "glob";
 import viteImagemin from "@vheemstra/vite-plugin-imagemin";
+import imageminMozjpeg from "imagemin-mozjpeg";
+import imageminPngquant from "imagemin-pngquant";
+import imageminGifsicle from "imagemin-gifsicle";
+import imageminSvgo from "imagemin-svgo";
+import imageminWebp from "imagemin-webp";
+// imagemin-gif2webp は CJS なので default import の互換に依存せず、名前空間受け取りにします
+import gif2webpCjs from 'imagemin-gif2webp';
+const imageminGif2webp = gif2webpCjs;
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -16,21 +25,16 @@ export default defineConfig({
   root: "src",
   base: "./",
   server: {
-    host: true,   // ← 同一LANのスマホから見られる
+    host: true,
     open: true
   },
   build: {
-    outDir: path.resolve(__dirname, "dist"), // vite-plugin-imageminでは、root: path.resolve(__dirname)が必要
+    outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
     rollupOptions: {
-      // input: {
-      //   index: "index.html",
-      // },
       input: Object.fromEntries(
         htmlFiles.map((file) => [
-          // エイリアス名（拡張子なし・root 相対）
           file.replace(/^src\//, "").replace(/\.html$/, ""),
-          // 値は絶対パス
           resolve(__dirname, file),
         ])
       ),
@@ -48,32 +52,32 @@ export default defineConfig({
     }
   },
   plugins: [
-    // HTML内の EJS を展開（データはここで一元管理）
     ViteEjsPlugin({
       siteName: "静的サイト用ejsテンプレ",
       siteUrl: "https://example.com"
     }),
-    // .ejs 変更のライブリロード
     liveReload(["src/**/*.ejs"]),
-    // Sass の @use / @forward でグロブを使える（Vite6）
     sassGlobImports(),
-    // 画像圧縮（ビルド後に after-build で <picture> 化）
+    // 画像圧縮とWebP変換
     viteImagemin({
-      root: path.resolve(__dirname),
+      root: path.resolve(__dirname), // 絶対パスを維持（相対パスNG）
       onlyAssets: true,
       include: /\.(png|jpe?g|gif|svg)$/i,
       plugins: {
-        jpg: (await import("imagemin-mozjpeg")).default({ quality: 75, progressive: true }),
-        png: (await import("imagemin-pngquant")).default({ quality: [0.65, 0.8], speed: 3 }),
-        gif: (await import("imagemin-gifsicle")).default({ optimizationLevel: 2 }),
-        svg: (await import("imagemin-svgo")).default()
+        // 静的インポートに変更
+        jpg: imageminMozjpeg({ quality: 75, progressive: true }),
+        png: imageminPngquant({ quality: [0.65, 0.8], speed: 3 }),
+        gif: imageminGifsicle({ optimizationLevel: 2 }),
+        svg: imageminSvgo()
       },
       makeWebp: {
         plugins: {
-          jpg: (await import("imagemin-webp")).default({ quality: 75 }),
-          png: (await import("imagemin-webp")).default({ quality: 75 })
+          // 静的インポートに変更
+          jpg: imageminWebp({ quality: 75 }),
+          png: imageminWebp({ quality: 75 }),
+          gif: imageminGif2webp({ quality: 75 }),
         },
-        formatFilePath: (file) => file.replace(/\.(jpe?g|png)$/i, ".webp"),
+        formatFilePath: (file) => file.replace(/\.(jpe?g|png|gif)$/i, ".webp"),
         skipIfLargerThan: "optimized"
       }
     })
