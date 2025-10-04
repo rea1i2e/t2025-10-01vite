@@ -33,5 +33,9 @@
     "vite-plugin-ejs": "^1.7.0",
     "vite-plugin-live-reload": "^3.0.5",
     "vite-plugin-sass-glob-import": "^5.0.0"
+  },
+  "dependencies": {
+    "@splidejs/splide": "^4.1.4",
+    "@splidejs/splide-extension-auto-scroll": "^0.5.3"
   }
 }
