@@ -61,11 +61,12 @@ vite.config.js
 3. ビルドは `npm run build`、出力は `dist/`
 
 ## EJS の使い方
-- `vite-plugin-ejs` により、HTML でも EJS テンプレが利用できます。
+- `vite-plugin-ejs` により、HTML でも EJS テンプレが利用できます。（未検証）
 - 既定変数（`vite.config.js` 内）:
   - `siteName`: サイト名
   - `siteUrl`: サイトURL
 - `src/index.html` などから `ejs/layouts/layout.ejs` をレイアウトとして読み込み、`ejs/components` をインクルードして組み立てる想定です。
+- main/_top.ejs でトップページのmainを作成します
 
 ## Sass/スタイル
 - `vite-plugin-sass-glob-import` により、Sass のグロブインポートが可能です。
@@ -76,8 +77,7 @@ vite.config.js
 - 圧縮対象: PNG/JPEG/GIF/SVG
 - 生成:
   - WebP: JPEG/PNG/GIF から生成
-  - AVIF: after-build 時に既存ファイルがあれば `<source>` を挿入（生成自体はプラグイン外管理）
-- 出力パス:
+- 出力パス:（現状、images以下のディレクトリ構成はフラットになります）
   - 画像: `assets/images/[name]-[hash][ext]`
   - CSS: `assets/css/[name]-[hash].css`
   - JS: `assets/js/[name]-[hash].js`
@@ -85,7 +85,7 @@ vite.config.js
 ## after-build（HTML 後処理）の挙動
 - 対象: `dist/**/*.html`
 - 処理内容:
-  - `<img>` に `width`/`height` を自動付与（実寸を `sharp` で取得）
+  - `<img>` に `width`/`height` を自動付与
   - WebP/AVIF が `dist` に存在する場合、`<picture>` 化して `<source>` を自動挿入
   - 既存 `<picture>` がある場合は崩さず、不足する `<source>` のみ追加
   - `<source>` それぞれにも参照ファイルの実寸を付与
