@@ -61,7 +61,6 @@ vite.config.js
 3. ビルドは `npm run build`、出力は `dist/`
 
 ## EJS の使い方
-- `vite-plugin-ejs` により、HTML でも EJS テンプレが利用できます。（未検証）
 - 既定変数（`vite.config.js` 内）:
   - `siteName`: サイト名
   - `siteUrl`: サイトURL
