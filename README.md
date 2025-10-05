@@ -1,11 +1,9 @@
 # t2025-10-01vite
 
-Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP/AVIF 生成、HTML の <img> を <picture> 最適化、width/height 自動付与を行います。
+Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP/AVIF 生成、HTML の <img> を <picture> 最適化、width/height 自動付与を行います。（AVIF生成は準備中）
 
 ## 必要要件
-- Node.js: 18 以上推奨
-- npm: 9 以上推奨
-- macOS/Linux/WSL（`sharp` を利用）
+準備中
 
 ## セットアップ
 ```bash
@@ -19,23 +17,20 @@ npm run dev
 ```
 
 - 本番ビルド: `dist/` に出力 + ビルド後最適化（after-build）
+※ ビルドに時webP生成、picture, sourceタグ挿入、width/height自動付与
 ```bash
 npm run build
 ```
 
-- 本番ビルドのみ（after-build なし）
-```bash
-npm run build:only
-```
-
 - ビルド確認（簡易サーバー）
+※ビルド後のファイルをブラウザで確認
 ```bash
 npm run preview
 # もしくは
 npm run build:preview
 ```
 
-- 生成物クリーン
+- 不要なファイル削除
 ```bash
 npm run clean        # dist と一時生成を削除
 npm run clean:all    # + node_modules と lock も削除
