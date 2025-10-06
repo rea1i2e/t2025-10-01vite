@@ -64,9 +64,15 @@ vite.config.js
 - 既定変数（`vite.config.js` 内）:
   - `siteName`: サイト名
   - `siteUrl`: サイトURL
-- `src/index.html` などから `ejs/layouts/layout.ejs` をレイアウトとして読み込み、`ejs/components` をインクルードして組み立てる想定です。
-- main/_top.ejs でトップページのmainを作成します
-
+- htmlファイル
+  - `src/index.html` などから `ejs/layouts/layout.ejs` をレイアウトとして読み込み、`ejs/components` をインクルードして組み立てる想定です。
+  - title: 'ページタイトルを指定'
+  - content: '_top.ejs' などで<main>タグの中身を指定します
+  - src/about/index.html を作成すると、aboutページを作成可能です
+- src/ejs/layouts/layout.ejs
+  - html > head + body > header + main + footer のような構成を決めています
+- src/ejs/main/_*.ejs で各ページのmainタグの中身を作成します
+ - 例 main/_top.ejs でtopページのmainを作成します
 ## Sass/スタイル
 - `vite-plugin-sass-glob-import` により、Sass のグロブインポートが可能です。
 - `src/assets/sass/style.scss` をエントリに、`base/`, `components/`, `layouts/`, `utility/` へ分割。
