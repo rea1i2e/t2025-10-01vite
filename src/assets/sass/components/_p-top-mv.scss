@@ -1,0 +1,48 @@
+@use "../global" as *;
+
+.p-top-mv {
+  padding-top: var(--header-height);
+}
+
+.p-top-mv__slider {
+}
+
+.p-top-mv__slider-track {
+}
+
+.p-top-mv__slider-list {
+}
+
+.p-top-mv__slider-item {
+}
+
+.p-top-mv__slider-item img {
+  height: calc(100vh - var(--header-height));
+  object-fit: cover;
+  transition: 8s ease-out;
+}
+
+.p-top-mv__slider-item.is-active img {
+  transform: scale(1.10);
+}
+
+.p-top-mv__copy {
+}
+
+.p-top-mv__inner {
+}
+
+.l-inner {
+}
+
+.p-top-mv__main-copy {
+}
+
+.p-top-mv__sub-copy {
+}
+
+.p-__items {
+}
+
+.p-__item {
+}

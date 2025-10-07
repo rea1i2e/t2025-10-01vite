@@ -14,7 +14,8 @@ if (topMvSplide) {
     type: "fade",
     rewind: true,
     autoplay: true,
-    speed: 1000,
+    speed: 4000,
+    interval: 6000,
     pauseOnHover: false, // カーソルが乗ってもスクロールを停止させない
     perPage: 1,
     perMove: 1,
