@@ -1,3 +1,29 @@
-<footer class="l-footer">
-  <small>&copy; <%= new Date().getFullYear() %> <%= siteName %></small>
+<footer class="p-footer l-footer">
+  <div class="p-footer__inner l-inner">
+    <div class="p-footer__content">
+      <div class="p-footer__nav">
+        <h3 class="p-footer__nav-title">フッターナビ</h3>
+        <ul class="p-footer__nav-list">
+          <% pages.forEach((item) => { %>
+            <li class="p-footer__nav-item">
+              <a href="<%- item.url %>" class="p-footer__nav-link"><%- item.label %></a>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+      
+      <address class="p-footer__info">
+        <div class="p-footer__info-content">
+          <p class="p-footer__company-name"><%- siteName %></p>
+          <p class="p-footer__address">〒123-4567 東京都渋谷区○○1-2-3</p>
+          <p class="p-footer__tel">TEL: 03-1234-5678</p>
+          <p class="p-footer__email">Email: info@example.com</p>
+        </div>
+      </address>
+    </div>
+    
+    <div class="p-footer__bottom">
+      <small class="p-footer__copyright">&copy; <%= new Date().getFullYear() %> <%= siteName %> All Rights Reserved.</small>
+    </div>
+  </div>
 </footer>
