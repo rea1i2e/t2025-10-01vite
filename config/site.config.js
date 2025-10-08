@@ -17,6 +17,14 @@ export const siteConfig = {
       title: "会社概要",
       description: "会社概要ページの説明文です。会社の沿革や理念、事業内容などを記載してください。",
       keywords: "会社概要,企業情報,沿革,理念"
+    },
+    {
+      key: "privacy",
+      label: "プライバシーポリシー",
+      url: "/privacy/",
+      title: "プライバシーポリシー",
+      description: "プライバシーポリシーページです。個人情報の取り扱いについて説明しています。",
+      keywords: "プライバシーポリシー,個人情報保護,プライバシー"
     }
   ]
 };
