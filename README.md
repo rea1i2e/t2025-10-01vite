@@ -3,12 +3,66 @@
 Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP/AVIF 生成、HTML の <img> を <picture> 最適化、width/height 自動付与を行います。（AVIF生成は準備中）
 
 ## 必要要件
-準備中
 
-## セットアップ
-```bash
-npm install
-```
+### システム要件
+- **Node.js**: 18.x 以上（推奨: 20.x LTS）
+- **npm**: 9.x 以上
+- **メモリ**: 4GB以上（推奨: 8GB以上）
+
+### プラットフォーム別追加要件
+- **macOS**: Xcode Command Line Tools
+  ```bash
+  xcode-select --install
+  ```
+- **Windows**: Visual Studio Build Tools または Visual Studio Community
+- **Linux**: build-essential
+  ```bash
+  sudo apt-get install build-essential
+  ```
+
+### 環境確認方法
+セットアップ前に、必要なツールがインストールされているか確認してください。
+
+- **Node.js のバージョン確認**
+  ```bash
+  node --version
+  ```
+  18.x 以上であることを確認
+
+- **npm のバージョン確認**
+  ```bash
+  npm --version
+  ```
+  9.x 以上であることを確認
+
+- **プラットフォーム別確認**
+  - **macOS**: Xcode Command Line Tools
+    ```bash
+    xcode-select -p
+    ```
+    `/Library/Developer/CommandLineTools` が表示されればOK
+
+  - **Windows**: Visual Studio Build Tools（未検証）
+    - コントロールパネル > プログラムと機能 で確認
+
+  - **Linux**: build-essential
+    ```bash
+    dpkg -l | grep build-essential
+    ```
+    build-essential が表示されればOK
+
+### セットアップ手順
+1. Node.js 18.x以上をインストール
+2. リポジトリをクローン
+3. 依存関係をインストール
+   ```bash
+   npm install
+   ```
+4. 開発サーバーを起動
+   ```bash
+   npm run dev
+   ```
+
 
 ## スクリプト
 - 開発サーバー: EJS/HTML/Sass/JS を監視して自動反映
