@@ -56,7 +56,7 @@ export default defineConfig({
       siteName: "静的サイト用ejsテンプレ",
       siteUrl: "https://example.com"
     }),
-    liveReload(["src/**/*.ejs"]),
+    liveReload(["ejs/**/*.ejs"]),
     sassGlobImports(),
     // 画像圧縮とWebP変換
     viteImagemin({
