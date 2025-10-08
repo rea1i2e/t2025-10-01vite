@@ -1,0 +1,13 @@
+<header class="p-header l-header">
+  <div class="p-header__inner">
+    <nav class="p-header__nav">
+      <ul class="p-header__nav-items">
+        <% pages.forEach((item) => { %>
+          <li class="p-header__nav-item">
+            <a href="<%- item.url %>" class="p-header__nav-item-link"><%- item.label %></a>
+          </li>
+        <% }); %>
+      </ul>
+    </nav>
+  </div>
+</header>

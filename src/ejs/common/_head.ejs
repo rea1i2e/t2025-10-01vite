@@ -2,6 +2,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title><%= (typeof title !== 'undefined' ? title + ' | ' : '') + siteName %></title>
+  <% if (typeof description !== 'undefined') { %>
+  <meta name="description" content="<%= description %>">
+  <% } %>
+  <% if (typeof keywords !== 'undefined') { %>
+  <meta name="keywords" content="<%= keywords %>">
+  <% } %>
   <link rel="icon" href="/vite.svg">
   <link rel="stylesheet" href="/assets/sass/style.scss">
 </head>

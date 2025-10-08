@@ -13,6 +13,7 @@ import imageminSvgo from "imagemin-svgo";
 import imageminWebp from "imagemin-webp";
 // imagemin-gif2webp は CJS なので default import の互換に依存せず、名前空間受け取りにします
 import gif2webpCjs from 'imagemin-gif2webp';
+import { siteConfig } from "./config/site.config.js";
 const imageminGif2webp = gif2webpCjs;
 
 
@@ -53,8 +54,15 @@ export default defineConfig({
   },
   plugins: [
     ViteEjsPlugin({
-      siteName: "静的サイト用ejsテンプレ",
-      siteUrl: "https://example.com"
+      ...siteConfig,
+      getPageData: (pageKey) => {
+        const page = siteConfig.pages.find(p => p.key === pageKey);
+        return {
+          title: page ? page.title : undefined,
+          description: page ? page.description : undefined,
+          keywords: page ? page.keywords : undefined
+        };
+      }
     }),
     liveReload(["ejs/**/*.ejs"]),
     sassGlobImports(),

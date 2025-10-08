@@ -1,1 +1,7 @@
-<%- include('./ejs/layouts/layout.ejs', { title: 'トップ', content: '_top.ejs' }) %>
+<% const pageData = getPageData('top'); %>
+<%- include('./ejs/layouts/layout.ejs', { 
+  title: pageData.title,
+  description: pageData.description,
+  keywords: pageData.keywords,
+  content: '_top.ejs'  // main部分のファイル名指定
+}) %>
