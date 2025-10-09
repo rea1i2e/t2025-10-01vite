@@ -123,8 +123,7 @@ vite.config.js
   - `siteUrl`: サイトURL
   - `titleSeparator`: タイトル区切り文字（デフォルト: " | "）
   - `headerExcludePages`: ヘッダーメニューから除外するページのキー配列
-  - `pages`: ページ情報の配列
-    - `key`: ページの識別子
+  - `pages`: ページ情報のオブジェクト（キー: ページ識別子、値: ページ情報）
     - `label`: メニュー表示名
     - `url`: ページURL
     - `title`: ページタイトル（省略時はサイト名のみ）
@@ -194,7 +193,7 @@ export const siteConfig = {
   siteUrl: "https://example.com",
   titleSeparator: " | ", // タイトル区切り文字
   headerExcludePages: ['privacy'], // ヘッダーから除外するページ
-  pages: [/* ページ配列 */]
+  pages: {/* ページオブジェクト */} // 配列ではなくオブジェクト形式
 };
 ```
 
@@ -202,7 +201,6 @@ export const siteConfig = {
 各ページは以下のプロパティを持ちます：
 
 - **必須プロパティ**:
-  - `key`: ページの識別子（一意）
   - `label`: ヘッダーメニューの表示名
   - `url`: ページのURL
 
@@ -214,25 +212,68 @@ export const siteConfig = {
 
 ### 使用例
 ```javascript
-{
-  key: "about",
-  label: "会社概要",
-  url: "/about/",
-  title: "会社概要",
-  description: "会社の概要ページです。",
-  keywords: "会社概要,企業情報"
-},
-{
-  key: "twitter",
-  label: "Twitter",
-  url: "https://twitter.com/example",
-  targetBlank: true // 外部リンク（新しいタブで開く）
+pages: {
+  about: {
+    label: "会社概要",
+    url: "/about/",
+    title: "会社概要",
+    description: "会社の概要ページです。",
+    keywords: "会社概要,企業情報"
+  },
+  twitter: {
+    label: "Twitter",
+    url: "https://twitter.com/example",
+    targetBlank: true // 外部リンク（新しいタブで開く）
+  }
 }
+```
+
+### ページへのアクセス方法
+EJSファイル内では以下のようにページ情報にアクセスできます：
+
+```ejs
+<!-- 直接アクセス（推奨） -->
+<a href="<%- pages.privacy.url %>">プライバシーポリシー</a>
+
+<!-- ループ処理 -->
+<% Object.entries(pages).forEach(([key, item]) => { %>
+  <a href="<%- item.url %>"><%- item.label %></a>
+<% }); %>
 ```
 
 ### タイトル生成
 - ページに`title`が設定されている場合: `ページタイトル | サイト名`
 - ページに`title`が設定されていない場合: `サイト名`
 - 区切り文字は`titleSeparator`で変更可能
+
+## ページ情報へのアクセス方法
+
+### 直接アクセス（推奨）
+```ejs
+<!-- 特定のページのURLを取得 -->
+<a href="<%- pages.about.url %>">会社概要</a>
+
+<!-- 特定のページのラベルを取得 -->
+<h1><%- pages.about.label %></h1>
+```
+
+### ループ処理
+```ejs
+<!-- すべてのページをループ処理 -->
+<% Object.entries(pages).forEach(([key, item]) => { %>
+  <a href="<%- item.url %>" 
+     <%= item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
+    <%- item.label %>
+  </a>
+<% }); %>
+```
+
+### 条件分岐
+```ejs
+<!-- 特定のページが存在するかチェック -->
+<% if (pages.privacy) { %>
+  <a href="<%- pages.privacy.url %>">プライバシーポリシー</a>
+<% } %>
+```
 
 

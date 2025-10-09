@@ -56,7 +56,7 @@ export default defineConfig({
     ViteEjsPlugin({
       ...siteConfig,
       getPageData: (pageKey) => {
-        const page = siteConfig.pages.find(p => p.key === pageKey);
+        const page = siteConfig.pages[pageKey];
         return {
           title: page ? page.title : undefined,
           description: page ? page.description : undefined,
