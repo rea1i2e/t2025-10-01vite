@@ -1,12 +1,15 @@
 <header class="p-header l-header">
   <div class="p-header__inner">
-    
     <nav class="p-header__nav">
       <ul class="p-header__nav-items">
         <% pages.forEach((item) => { %>
           <% if (!headerExcludePages.includes(item.key)) { %>
             <li class="p-header__nav-item">
-              <a href="<%- item.url %>" class="p-header__nav-item-link"><%- item.label %></a>
+              <a href="<%- item.url %>" 
+                 class="p-header__nav-item-link" 
+                 <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
+                <%- item.label %>
+              </a>
             </li>
           <% } %>
         <% }); %>

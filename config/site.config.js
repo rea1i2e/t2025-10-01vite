@@ -8,7 +8,6 @@ export const siteConfig = {
       key: "top",
       label: "トップ",
       url: "/",
-      // title: "", トップページでサイト名のみにする場合、titleは定義しない
       description: "トップページの説明文です。サイトの概要や特徴を簡潔に記載してください。",
       keywords: "キーワード1,キーワード2,キーワード3"
     },
@@ -21,12 +20,23 @@ export const siteConfig = {
       keywords: "会社概要,企業情報,沿革,理念"
     },
     {
+      key: "x",
+      label: "X",
+      url: "https://x.com/yoshiaki_12",
+      targetBlank: true // 外部リンク（新しいタブで開く + セキュリティ対策自動適用）
+    },
+    {
       key: "privacy",
       label: "プライバシーポリシー",
       url: "/privacy/",
       title: "プライバシーポリシー",
       description: "プライバシーポリシーページです。個人情報の取り扱いについて説明しています。",
       keywords: "プライバシーポリシー,個人情報保護,プライバシー"
+    },
+    {
+      key: "contact",
+      label: "お問い合わせ",
+      url: "mailto:contact@example.com"
     }
   ]
 };

@@ -118,6 +118,19 @@ vite.config.js
 - 既定変数（`vite.config.js` 内）:
   - `siteName`: サイト名
   - `siteUrl`: サイトURL
+- **サイト設定（`config/site.config.js`）**:
+  - `siteName`: サイト名（タイトル生成に使用）
+  - `siteUrl`: サイトURL
+  - `titleSeparator`: タイトル区切り文字（デフォルト: " | "）
+  - `headerExcludePages`: ヘッダーメニューから除外するページのキー配列
+  - `pages`: ページ情報の配列
+    - `key`: ページの識別子
+    - `label`: メニュー表示名
+    - `url`: ページURL
+    - `title`: ページタイトル（省略時はサイト名のみ）
+    - `description`: メタディスクリプション
+    - `keywords`: メタキーワード
+    - `targetBlank`: 外部リンクで新しいタブで開く場合に`true`
 - htmlファイル
   - `src/index.html` などから `ejs/layouts/layout.ejs` をレイアウトとして読み込み、`ejs/components` をインクルードして組み立てる想定です。
   - title: 'ページタイトルを指定'
@@ -171,5 +184,55 @@ vite.config.js
 
 ## ライセンス
 プロジェクトに合わせて追記してください。
+
+## サイト設定（site.config.js）
+
+### 基本設定
+```javascript
+export const siteConfig = {
+  siteName: "サイト名",
+  siteUrl: "https://example.com",
+  titleSeparator: " | ", // タイトル区切り文字
+  headerExcludePages: ['privacy'], // ヘッダーから除外するページ
+  pages: [/* ページ配列 */]
+};
+```
+
+### ページ設定
+各ページは以下のプロパティを持ちます：
+
+- **必須プロパティ**:
+  - `key`: ページの識別子（一意）
+  - `label`: ヘッダーメニューの表示名
+  - `url`: ページのURL
+
+- **オプションプロパティ**:
+  - `title`: ページタイトル（省略時はサイト名のみ）
+  - `description`: メタディスクリプション
+  - `keywords`: メタキーワード
+  - `targetBlank`: `true`で新しいタブで開く（外部リンク用）
+
+### 使用例
+```javascript
+{
+  key: "about",
+  label: "会社概要",
+  url: "/about/",
+  title: "会社概要",
+  description: "会社の概要ページです。",
+  keywords: "会社概要,企業情報"
+},
+{
+  key: "twitter",
+  label: "Twitter",
+  url: "https://twitter.com/example",
+  targetBlank: true // 外部リンク（新しいタブで開く）
+}
+```
+
+### タイトル生成
+- ページに`title`が設定されている場合: `ページタイトル | サイト名`
+- ページに`title`が設定されていない場合: `サイト名`
+- 区切り文字は`titleSeparator`で変更可能
 
 
