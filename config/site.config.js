@@ -1,6 +1,7 @@
 export const siteConfig = {
   siteName: "静的サイト用ejsテンプレ",
   siteUrl: "https://example.com",
+  titleSeparator: " | ", // タイトル区切り文字を追加
   headerExcludePages: ['privacy'], // ヘッダーメニューから除外するページのキーを配列で指定
   pages: [
     {

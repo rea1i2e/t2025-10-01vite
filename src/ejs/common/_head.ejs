@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title><%= (typeof title !== 'undefined' ? title + ' | ' : '') + siteName %></title>
+  <title><%= (typeof title !== 'undefined' ? title + titleSeparator : '') + siteName %></title>
   <% if (typeof description !== 'undefined') { %>
   <meta name="description" content="<%= description %>">
   <% } %>
