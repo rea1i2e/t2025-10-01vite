@@ -4,19 +4,19 @@
   position: relative;
 }
 
-.p-top-mv__slider {
+.p-top-mv__slider.splide {
   height: 100%;
 }
 
-.p-top-mv__slider-track {
+.p-top-mv__slider-track.splide__track {
   height: 100%;
 }
 
-.p-top-mv__slider-list {
-  height: 100%;
+.p-top-mv__slider-list.splide__list {
+  // height: 100%; // splideに書いてある
 }
 
-.p-top-mv__slider-item {
+.p-top-mv__slider-item.splide__slide {
   height: 100%;
 }
 
@@ -44,10 +44,4 @@
 }
 
 .p-top-mv__sub-copy {
-}
-
-.p-__items {
-}
-
-.p-__item {
 }
