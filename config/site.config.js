@@ -3,6 +3,7 @@ export const siteConfig = {
   siteUrl: "https://example.com",
   titleSeparator: " | ",
   EJS_PATH: "./ejs/",
+  IMAGE_PATH: "/assets/images/",
   headerExcludePages: ['privacy'],
   pages: {
     top: {
