@@ -2,6 +2,7 @@ export const siteConfig = {
   siteName: "静的サイト用ejsテンプレ",
   siteUrl: "https://example.com",
   titleSeparator: " | ",
+  EJS_PATH: "./ejs/",
   headerExcludePages: ['privacy'],
   pages: {
     top: {
