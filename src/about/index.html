@@ -1,5 +1,6 @@
+<% const EJS_PATH = "./ejs/"; %>
 <% const pageData = getPageData('about'); %>
-<%- include('./ejs/layouts/layout.ejs', { 
+<%- include(EJS_PATH + 'layouts/layout.ejs', { 
   title: pageData.title,
   description: pageData.description,
   keywords: pageData.keywords,
