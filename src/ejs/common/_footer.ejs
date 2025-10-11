@@ -5,7 +5,7 @@
       <ul class="p-footer__nav-list">
         <% Object.entries(pages).forEach(([key, item]) => { %>
           <li class="p-footer__nav-item">
-            <a href="<%- item.url %>" 
+            <a href="<%- item.path %>" 
                class="p-footer__nav-link"
                <%= item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
               <%- item.label %>

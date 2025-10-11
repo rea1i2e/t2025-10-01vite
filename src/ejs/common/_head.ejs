@@ -1,13 +1,25 @@
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title><%= (typeof title !== 'undefined' ? title + titleSeparator : '') + siteName %></title>
-  <% if (typeof description !== 'undefined') { %>
-  <meta name="description" content="<%= description %>">
-  <% } %>
-  <% if (typeof keywords !== 'undefined') { %>
-  <meta name="keywords" content="<%= keywords %>">
-  <% } %>
-  <link rel="icon" href="/vite.svg">
-  <link rel="stylesheet" href="/assets/sass/style.scss">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="format-detection" content="telephone=no" />
+  <title><%- page['title'] %></title>
+  <meta name="description" content="<%- page['description'] %>" />
+  <meta property="og:site_name" content="<%- page['title'] %>" />
+  <meta property="og:url" content="<%- DOMAIN + page['path'] %>" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="<%- page['title'] %>" />
+  <meta property="og:description" content="<%- page['description'] %>" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta property="og:image" content="<%- DOMAIN %><%- OGP_IMAGE %>" />
+  <meta name="twitter:card" content="summary_large_image">
+  <%# <meta name="twitter:site" content=""> %>
+  <meta name="twitter:title" content="<%- page['title'] %>">
+  <meta name="twitter:description" content="<%- page['description'] %>">
+  <meta name="twitter:image:src" content="<%- DOMAIN %><%- OGP_IMAGE %>">
+  <link rel="shortcut icon" href="<%- FAVICON_ICO %>" type="image/vnd.microsoft.icon">
+  <link rel="apple-touch-icon" href="<%- APPLE_TOUCH_ICON %>">
+  <link rel="canonical" href="<%- DOMAIN + page['path'] %>">
+  <link rel="stylesheet" href="<%- ROOT_PATH %>assets/css/style.css?ver=<%- new Date().getTime() %>" />
+  <script defer src="<%- ROOT_PATH %>assets/js/bundle.js?var=<%- new Date().getTime() %>"></script>
+  <link rel="preload" href="<%- FONT_PATH %>" as="font" type="font/woff2" crossorigin>
 </head>

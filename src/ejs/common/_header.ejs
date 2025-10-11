@@ -5,7 +5,7 @@
         <% Object.entries(pages).forEach(([key, item]) => { %>
           <% if (!headerExcludePages.includes(key)) { %>
             <li class="p-header__nav-item">
-              <a href="<%- item.url %>" 
+              <a href="<%- item.path %>" 
                  class="p-header__nav-item-link" 
                  <%= item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
                 <%- item.label %>
