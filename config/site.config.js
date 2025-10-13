@@ -4,11 +4,11 @@ export const siteConfig = {
    */
 
   // パス設定
-  EJS_PATH: "./ejs/",
+  EJS_PATH: "./ejs/", // ルート相対パスで書くと、ズレる（システムルートの解釈）
   IMAGE_PATH: "/assets/images/",
   CSS_PATH: "/assets/sass/style.scss",
   JS_PATH: "/assets/js/main.js",
-  ROOT_PATH: "/",
+  // ROOT_PATH: "/",
   FONT_PATH: "/fonts/NotoSansJP-VF.woff2",
 
   // アイコン・画像設定
@@ -28,36 +28,41 @@ export const siteConfig = {
   pages: {
     top: {
       label: "トップ",
+      root: "./",
       path: "/",
       title: "静的サイト用ejsテンプレ",
       description:
-        "トップページの説明文です。サイトの概要や特徴を簡潔に記載してください。",
+      "トップページの説明文です。サイトの概要や特徴を簡潔に記載してください。",
       keywords: "キーワード1,キーワード2,キーワード3",
     },
     about: {
       label: "会社概要",
-      path: "/about/",
+      root: "../",
+      path: "about/",
       title: "会社概要",
       description:
-        "会社概要ページの説明文です。会社の沿革や理念、事業内容などを記載してください。",
+      "会社概要ページの説明文です。会社の沿革や理念、事業内容などを記載してください。",
       keywords: "会社概要,企業情報,沿革,理念",
     },
     x: {
       label: "X",
-      url: "https://x.com/yoshiaki_12",
+      root: "",
+      path: "https://x.com/yoshiaki_12",
       targetBlank: true,
     },
     privacy: {
       label: "プライバシーポリシー",
+      root: "../",
       path: "/privacy/",
       title: "プライバシーポリシー",
       description:
-        "プライバシーポリシーページです。個人情報の取り扱いについて説明しています。",
+      "プライバシーポリシーページです。個人情報の取り扱いについて説明しています。",
       keywords: "プライバシーポリシー,個人情報保護,プライバシー",
     },
     contact: {
       label: "お問い合わせ",
-      url: "mailto:contact@example.com",
+      root: "",
+      path: "mailto:contact@example.com",
     },
   },
 };

@@ -5,7 +5,7 @@
         <% Object.entries(pages).forEach(([key, item]) => { %>
           <% if (!headerExcludePages.includes(key)) { %>
             <li class="p-header__nav-item">
-              <a href="<%- item.path %>" 
+              <a href="<%- item.path.startsWith('http') ? item.path : item.path %>" 
                  class="p-header__nav-item-link" 
                  <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
                 <%- item.label %>
@@ -17,3 +17,5 @@
     </nav>
   </div>
 </header>
+<a href="/">ルート相対パス home</a>
+<a href="./">相対パス相対パス home</a>

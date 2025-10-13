@@ -24,7 +24,9 @@ const htmlFiles = globSync("src/**/*.html");
 
 export default defineConfig({
   root: "src",
-  base: "./",
+  // base: "./", // 一部を除くhref属性でルート相対パスが残るためNG
+  // base: "./recruit/", // 一部を除くhref属性で適用されないためNG
+  // base: "/recruit/", // 一部を除くhref属性で適用されないためNG
   server: {
     host: true,
     open: true

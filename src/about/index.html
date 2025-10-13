@@ -1,10 +1,12 @@
 <% const pageData = getPageData('about'); %>
 <%- include(EJS_PATH + 'layouts/layout.ejs', { 
+  // ROOT_PATH: pages.about.root,
   page: {
     title: pageData.title,
     description: pageData.description,
     keywords: pageData.keywords,
     path: pages.about.path
+    // root: pages.about.root,
   },
   content: '_about.ejs' // main部分のファイル名指定
 }) %>

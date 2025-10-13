@@ -2,7 +2,7 @@
 <html lang="ja">
 <%- include(EJS_PATH + 'common/_head.ejs', { page }) %>
 <body>
-  <%- include(EJS_PATH + 'common/_header.ejs') %>
+  <%- include(EJS_PATH + 'common/_header.ejs', { page }) %>
   <%- include(EJS_PATH + 'main/' + content) %>
   <%- include(EJS_PATH + 'common/_footer.ejs') %>
   <script type="module" src="<%- JS_PATH %>"></script>
