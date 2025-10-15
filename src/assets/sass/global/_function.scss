@@ -19,13 +19,22 @@
 	@return math.div($size, $width-sp) * 100vw;
 }
 
+// spデザインの状態を基準にcqi変換
+@function cqisp($size) {
+	@return math.div($size, $width-sp) * 100cqi;
+}
+
 // pcデザインの状態を基準にvw変換
 @function vwpc($size) {
 	@return math.div($size, $width-pc) * 100vw;
 }
 
+// pcデザインの状態を基準にcqi変換
+@function cqipc($size) {
+	@return math.div($size, $width-pc) * 100cqi;
+}
 
-//  pcデザインの状態を基準にvw変換（1920pxの状態異常には拡大しない）
+//  pcデザインの状態を基準にvw変換（pcデザインの状態異常には拡大しない）
 @function maxvwpc($size) {
   @if $size < 0 {
     // マイナスの値が入力された場合
@@ -33,6 +42,16 @@
   } @else {
     // マイナスの値が入力されなかった場合
     @return min((math.div($size, $width-pc) * 100vw), #{$size}px);
+  }
+}
+//  pcデザインの状態を基準にvw変換（pcデザインの幅の状態異常には拡大しない）
+@function maxcqipc($size) {
+  @if $size < 0 {
+    // マイナスの値が入力された場合
+    @return max((math.div($size, $width-pc) * 100cqi), #{$size}px);
+  } @else {
+    // マイナスの値が入力されなかった場合
+    @return min((math.div($size, $width-pc) * 100cqi), #{$size}px);
   }
 }
 
@@ -48,5 +67,8 @@
 
 // ピクパ時は、remに変換しない
 // @function rem($pixels) {
+//   @return #{$pixels}px;
+// }
+// @function maxrem($pixels) {
 //   @return #{$pixels}px;
 // }
