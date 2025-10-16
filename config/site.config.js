@@ -30,7 +30,7 @@ export const siteConfig = {
       label: "トップ",
       root: "./",
       path: "/",
-      title: "静的サイト用ejsテンプレ",
+      title: "",
       description:
       "トップページの説明文です。サイトの概要や特徴を簡潔に記載してください。",
       keywords: "キーワード1,キーワード2,キーワード3",

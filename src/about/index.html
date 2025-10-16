@@ -1,12 +1,14 @@
-<% const pageData = getPageData('about'); %>
+<% 
+  const key = 'about'; // site.config.js の pages オブジェクトのキー
+  const pageData = pages[key];
+%>
 <%- include(EJS_PATH + 'layouts/layout.ejs', { 
-  // ROOT_PATH: pages.about.root,
   page: {
-    title: pageData.title,
+    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
     description: pageData.description,
     keywords: pageData.keywords,
-    path: pages.about.path
-    // root: pages.about.root,
+    path: pageData.path,
+    root: pageData.root,
   },
-  content: '_about.ejs' // main部分のファイル名指定
+  content: '_' + key + '.ejs'
 }) %>

@@ -55,17 +55,7 @@ export default defineConfig({
     }
   },
   plugins: [
-    ViteEjsPlugin({
-      ...siteConfig,
-      getPageData: (pageKey) => {
-        const page = siteConfig.pages[pageKey];
-        return {
-          title: page ? page.title : undefined,
-          description: page ? page.description : undefined,
-          keywords: page ? page.keywords : undefined
-        };
-      }
-    }),
+    ViteEjsPlugin(siteConfig),
     liveReload(["ejs/**/*.ejs"]),
     sassGlobImports(),
     // 画像圧縮とWebP変換
