@@ -1,5 +1,10 @@
 <header class="p-header l-header">
   <div class="p-header__inner">
+    <div class="p-header__logo">
+      <a href="<%- page.root %>" class="p-header__logo-link">
+        <img src="/vite.svg" alt="vite" class="p-header__logo-image">
+      </a>
+    </div>
     <nav class="p-header__nav">
       <ul class="p-header__nav-items">
         <% Object.entries(pages).forEach(([key, item]) => { %>
