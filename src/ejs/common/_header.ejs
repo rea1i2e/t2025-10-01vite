@@ -8,15 +8,13 @@
     <nav class="p-header__nav">
       <ul class="p-header__nav-items">
         <% Object.entries(pages).forEach(([key, item]) => { %>
-          <% if (!headerExcludePages.includes(key)) { %>
-            <li class="p-header__nav-item">
-              <a href="<%- item.path.startsWith('http') ? item.path : item.path %>" 
-                 class="p-header__nav-item-link" 
-                 <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
-                <%- item.label %>
-              </a>
-            </li>
-          <% } %>
+        <% if (!headerExcludePages.includes(key)) { %>
+        <li class="p-header__nav-item">
+          <a href="<%- item.path.startsWith('http') || item.path.startsWith('mailto') ? item.path : page.root + item.path %>" class="p-header__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
+            <%- item.label %>
+          </a>
+        </li>
+        <% } %>
         <% }); %>
       </ul>
     </nav>
