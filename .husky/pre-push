@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "🔍 ビルド前のHTMLバリデーションを実行中..."
 npm run validate:html:src
 

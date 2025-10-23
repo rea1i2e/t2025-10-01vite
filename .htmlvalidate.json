@@ -3,7 +3,12 @@
   "rules": {
     "close-order": "error",
     "void-content": "error",
-    "attribute-empty-style": "off"
+    "attribute-empty-style": "off",
+    "void-style": "off",
+    "doctype-style": "off",
+    "element-required-content": "off",
+    "no-trailing-whitespace": "off",
+    "attr-quotes": "off"
   },
   "elements": ["html5"]
 }

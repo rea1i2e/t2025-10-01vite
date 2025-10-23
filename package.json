@@ -15,6 +15,7 @@
     "validate:html": "html-validate src/**/*.html dist/**/*.html",
     "validate:html:src": "html-validate src/**/*.html",
     "validate:html:dist": "html-validate dist/**/*.html",
+    "validate:build": "npm run build:only && npm run validate:html:dist",
     "prepare": "husky"
   },
   "devDependencies": {
