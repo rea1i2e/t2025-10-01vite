@@ -1,17 +1,20 @@
 <header class="p-header l-header">
   <div class="p-header__inner">
+    <div class="p-header__logo">
+      <a href="<%- page.root %>" class="p-header__logo-link">
+        <img src="/vite.svg" alt="vite" class="p-header__logo-image">
+      </a>
+    </div>
     <nav class="p-header__nav">
       <ul class="p-header__nav-items">
         <% Object.entries(pages).forEach(([key, item]) => { %>
-          <% if (!headerExcludePages.includes(key)) { %>
-            <li class="p-header__nav-item">
-              <a href="<%- item.path.startsWith('http') ? item.path : item.path %>" 
-                 class="p-header__nav-item-link" 
-                 <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
-                <%- item.label %>
-              </a>
-            </li>
-          <% } %>
+        <% if (!headerExcludePages.includes(key)) { %>
+        <li class="p-header__nav-item">
+          <a href="<%- item.path.startsWith('http') || item.path.startsWith('mailto') ? item.path : page.root + item.path %>" class="p-header__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
+            <%- item.label %>
+          </a>
+        </li>
+        <% } %>
         <% }); %>
       </ul>
     </nav>

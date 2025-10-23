@@ -2,7 +2,7 @@
   const key = 'top'; // site.config.js の pages オブジェクトのキー
   const pageData = pages[key];
 %>
-<%- include(EJS_PATH + 'layouts/layout.ejs', { 
+<%- include(ejsPath + 'layouts/layout.ejs', { 
   page: {
     title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
     description: pageData.description,

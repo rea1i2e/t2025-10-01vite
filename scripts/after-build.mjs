@@ -16,7 +16,7 @@ function listHtmlFiles(dir, out = []) {
     if (st.isDirectory()) listHtmlFiles(fp, out)
     else if (name.toLowerCase().endsWith('.html')) out.push(fp)
   }
-  console.log('[after-build] html files:', out.map(p => p.replace(process.cwd() + '/', '')))
+  // console.log('[after-build] html files:', out.map(p => p.replace(process.cwd() + '/', '')))
   return out
 }
 
@@ -78,9 +78,9 @@ function applySize(el, meta) {
     el.setAttribute('width', String(meta.width))
     el.setAttribute('height', String(meta.height))
     // Debug log: confirm width/height applied to <source>
-    if (el.tagName && el.tagName.toLowerCase() === 'source') {
-      console.log('    [debug] width/height set on <source>', el.getAttribute('type') || '', `${meta.width}x${meta.height}`)
-    }
+    // if (el.tagName && el.tagName.toLowerCase() === 'source') {
+    //   console.log('    [debug] width/height set on <source>', el.getAttribute('type') || '', `${meta.width}x${meta.height}`)
+    // }
   }
 }
 
@@ -94,7 +94,7 @@ for (const htmlPath of htmlFiles) {
   const doc = dom.window.document
 
   const imgs = [...doc.querySelectorAll('img[src]:not([data-no-picture])')]
-  console.log(`[after-build] scanning ${htmlPath.replace(process.cwd() + '/', '')} (imgs: ${imgs.length})`)
+  // console.log(`[after-build] scanning ${htmlPath.replace(process.cwd() + '/', '')} (imgs: ${imgs.length})`)
 
   for (const img of imgs) {
     const srcAttr = img.getAttribute('src') || ''
@@ -104,7 +104,7 @@ for (const htmlPath of htmlFiles) {
 
       const abs = toDistAbsFromHtml(htmlPath, srcAttr)
       if (!abs || !existsSync(abs)) {
-        console.log('  - skip (not found):', srcAttr)
+        // console.log('  - skip (not found):', srcAttr)
         continue
       }
 
@@ -114,7 +114,7 @@ for (const htmlPath of htmlFiles) {
         meta = await sharp(abs).metadata().catch(() => null)
         if (meta?.width && meta?.height) {
           applySize(img, meta)
-          console.log('  - size set:', srcAttr, `${meta.width}x${meta.height}`)
+          // console.log('  - size set:', srcAttr, `${meta.width}x${meta.height}`)
         }
       } else {
         meta = await sharp(abs).metadata().catch(() => null)
@@ -139,22 +139,26 @@ for (const htmlPath of htmlFiles) {
           // 既存の art-direction（media 指定）を崩さないよう、フォールバック <img> の直前に差し込む
           if (foundAvif) {
             const s = doc.createElement('source')
-            s.setAttribute('srcset', '/' + foundAvif.rel)
+            // 相対パスに変更（./プレフィックス付き）
+            const relPath = relative(dirname(htmlPath), resolve(DIST, foundAvif.rel)).replaceAll('\\', '/')
+            s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
             s.setAttribute('type', 'image/avif')
             // size from its own file (not from <img>)
-            const ownMetaAvif = await metaForSrcsetUrl('/' + foundAvif.rel, htmlPath)
+            const ownMetaAvif = await metaForSrcsetUrl(relPath, htmlPath)
             applySize(s, ownMetaAvif)
             pictureEl.insertBefore(s, img)
-            console.log('  - inject AVIF into existing <picture>:', foundAvif.rel)
+            // console.log('  - inject AVIF into existing <picture>:', foundAvif.rel)
           }
           if (foundWebp) {
             const s = doc.createElement('source')
-            s.setAttribute('srcset', '/' + foundWebp.rel)
+            // 相対パスに変更（./プレフィックス付き）
+            const relPath = relative(dirname(htmlPath), resolve(DIST, foundWebp.rel)).replaceAll('\\', '/')
+            s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
             s.setAttribute('type', 'image/webp')
-            const ownMetaWebp = await metaForSrcsetUrl('/' + foundWebp.rel, htmlPath)
+            const ownMetaWebp = await metaForSrcsetUrl(relPath, htmlPath)
             applySize(s, ownMetaWebp)
             pictureEl.insertBefore(s, img)
-            console.log('  - inject WEBP into existing <picture>:', foundWebp.rel)
+            // console.log('  - inject WEBP into existing <picture>:', foundWebp.rel)
           }
 
           // For each existing JPG/PNG <source> (often art-direction with media),
@@ -188,13 +192,15 @@ for (const htmlPath of htmlFiles) {
 
             // create and insert webp BEFORE the jpg source so browsers prefer it
             const s = doc.createElement('source')
-            s.setAttribute('srcset', '/' + found.rel)
+            // 相対パスに変更（./プレフィックス付き）
+            const relPath = relative(dirname(htmlPath), resolve(DIST, found.rel)).replaceAll('\\', '/')
+            s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
             s.setAttribute('type', 'image/webp')
             if (mediaAttr) s.setAttribute('media', mediaAttr)
-            const ownMeta = await metaForSrcsetUrl('/' + found.rel, htmlPath)
+            const ownMeta = await metaForSrcsetUrl(relPath, htmlPath)
             applySize(s, ownMeta)
             pictureEl.insertBefore(s, jpgSrc)
-            console.log('  - add WEBP for media source:', found.rel, mediaAttr ? `media=${mediaAttr}` : '')
+            // console.log('  - add WEBP for media source:', found.rel, mediaAttr ? `media=${mediaAttr}` : '')
           }
 
           // 既存/新規すべての <source> について、自身が指すファイルの実寸を付与
@@ -205,7 +211,7 @@ for (const htmlPath of htmlFiles) {
           }
         }
 
-        console.log('  - already inside <picture>, sized and injected if available:', srcAttr)
+        // console.log('  - already inside <picture>, sized and injected if available:', srcAttr)
         sizedOnly++
         continue
       }
@@ -221,28 +227,32 @@ for (const htmlPath of htmlFiles) {
 
       if (!foundWebp && !foundAvif) {
         sizedOnly++
-        console.log('  - no alt formats, keep <img>:', distRel)
+        // console.log('  - no alt formats, keep <img>:', distRel)
         continue
       }
 
       const picture = doc.createElement('picture')
       if (foundAvif) {
         const s = doc.createElement('source')
-        s.setAttribute('srcset', '/' + foundAvif.rel)
+        // 相対パスに変更（./プレフィックス付き）
+        const relPath = relative(dirname(htmlPath), resolve(DIST, foundAvif.rel)).replaceAll('\\', '/')
+        s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
         s.setAttribute('type', 'image/avif')
-        const ownMetaAvif = await metaForSrcsetUrl('/' + foundAvif.rel, htmlPath)
+        const ownMetaAvif = await metaForSrcsetUrl(relPath, htmlPath)
         applySize(s, ownMetaAvif)
         picture.appendChild(s)
-        console.log('  - add AVIF:', foundAvif.rel)
+        // console.log('  - add AVIF:', foundAvif.rel)
       }
       if (foundWebp) {
         const s = doc.createElement('source')
-        s.setAttribute('srcset', '/' + foundWebp.rel)
+        // 相対パスに変更（./プレフィックス付き）
+        const relPath = relative(dirname(htmlPath), resolve(DIST, foundWebp.rel)).replaceAll('\\', '/')
+        s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
         s.setAttribute('type', 'image/webp')
-        const ownMetaWebp = await metaForSrcsetUrl('/' + foundWebp.rel, htmlPath)
+        const ownMetaWebp = await metaForSrcsetUrl(relPath, htmlPath)
         applySize(s, ownMetaWebp)
         picture.appendChild(s)
-        console.log('  - add WEBP:', foundWebp.rel)
+        // console.log('  - add WEBP:', foundWebp.rel)
       }
 
       for (const sourceEl of picture.querySelectorAll('source')) {
@@ -256,9 +266,9 @@ for (const htmlPath of htmlFiles) {
       picture.appendChild(cloned)
       img.replaceWith(picture)
       converted++
-      console.log('  - replaced with <picture>:', srcAttr)
+      // console.log('  - replaced with <picture>:', srcAttr)
     } catch (e) {
-      console.warn('[after-build] skip:', srcAttr, e?.message || e)
+      // console.warn('[after-build] skip:', srcAttr, e?.message || e)
     }
   }
 
@@ -286,7 +296,7 @@ for (const htmlPath of htmlFiles) {
   })
 
   writeFileSync(htmlPath, out)
-  console.log('rewrote:', htmlPath.split(sep).slice(-2).join('/'))
+  // console.log('rewrote:', htmlPath.split(sep).slice(-2).join('/'))
 }
 
-console.log(`[after-build] picture化: ${converted} / 寸法のみ付与: ${sizedOnly}`)
+// console.log(`[after-build] picture化: ${converted} / 寸法のみ付与: ${sizedOnly}`)

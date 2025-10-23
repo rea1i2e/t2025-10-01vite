@@ -5,20 +5,20 @@
   <title><%- page.title %></title>
   <meta name="description" content="<%- page.description %>" />
   <meta property="og:site_name" content="<%- page.title %>" />
-  <meta property="og:url" content="<%- DOMAIN + page.path %>" />
+  <meta property="og:url" content="<%- domain + page.path %>" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="<%- page.title %>" />
   <meta property="og:description" content="<%- page.description %>" />
   <meta property="og:locale" content="ja_JP" />
-  <meta property="og:image" content="<%- DOMAIN %><%- OGP_IMAGE %>" />
+  <meta property="og:image" content="<%- domain %>ogp.png" />
   <meta name="twitter:card" content="summary_large_image">
   <%# <meta name="twitter:site" content=""> %>
   <meta name="twitter:title" content="<%- page.title %>">
   <meta name="twitter:description" content="<%- page.description %>">
-  <meta name="twitter:image:src" content="<%- DOMAIN %><%- OGP_IMAGE %>">
-  <link rel="shortcut icon" href="<%- FAVICON_ICO %>" type="image/vnd.microsoft.icon">
-  <link rel="apple-touch-icon" href="<%- APPLE_TOUCH_ICON %>">
-  <link rel="canonical" href="<%- DOMAIN + page.path %>">
-  <link rel="preload" href="<%- FONT_PATH %>" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="<%- CSS_PATH %>">
+  <meta name="twitter:image:src" content="<%- domain %>ogp.png">
+  <link rel="canonical" href="<%- domain + page.path %>">
+  <link rel="shortcut icon" href="<%- page.root %>favicon.ico" type="image/vnd.microsoft.icon">
+  <link rel="apple-touch-icon" href="<%- page.root %>apple-touch-icon.png">
+  <link rel="preload" href="<%- page.root %>fonts/NotoSansJP-VF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/sass/style.scss">
 </head>
