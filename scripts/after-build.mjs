@@ -277,12 +277,7 @@ for (const htmlPath of htmlFiles) {
   
   // crossorigin="" を crossorigin に修正
   out = out.replace(/crossorigin=""/g, 'crossorigin')
-  
-  // 属性のクォートを修正
-  out = out.replace(/target=_blank/g, 'target="_blank"')
-  out = out.replace(/rel=noopener/g, 'rel="noopener"')
-  out = out.replace(/rel="noopener" noreferrer/g, 'rel="noopener noreferrer"')
-  
+    
   // <picture>タグの整形のみ
   out = out.replace(/(<picture[^>]*>)([\s\S]*?)(<\/picture>)/g, (m, open, inner, close) => {
     let formatted = inner
