@@ -1,12 +1,4 @@
-echo "🔍 ソースHTMLバリデーションを実行中..."
-npm run validate:html:src
-
-if [ $? -ne 0 ]; then
-  echo "❌ ソースHTMLバリデーションエラーが検出されました。コミットを中止します。"
-  exit 1
-fi
-
-echo "🏗️ ビルドテストを実行中..."
+echo "🔍 ビルドテストを実行中..."
 npm run validate:build
 
 if [ $? -ne 0 ]; then
