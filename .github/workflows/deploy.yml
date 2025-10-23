@@ -141,5 +141,14 @@ jobs:
           **ブランチ:** ${{ github.ref_name }}
           **コミット:** ${{ github.sha }}
           **コミッター:** ${{ github.actor }}
+          **イベント:** ${{ github.event_name }}
           
-          ログを確認してください。
+          **🔍 詳細確認:**
+          • [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          • [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          ${{ github.event_name == 'pull_request' && format('• [プルリクエスト](https://github.com/{0}/pull/{1})', github.repository, github.event.number) || '' }}
+          
+          **🌐 環境URL:**
+          ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && format('• テスト環境: {0}', secrets.TEST_URL) || '' }}
+          ${{ github.event_name == 'pull_request' && format('• PRテスト環境: {0}', secrets.TEST_URL) || '' }}
+          ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_to_production == true && '• 本番環境: 本番環境' || '' }}
