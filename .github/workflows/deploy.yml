@@ -33,6 +33,39 @@ jobs:
     - name: Build project
       run: npm run build
       
+    - name: Generate deployment summary
+      if: always()
+      run: |
+        echo "## 📋 デプロイサマリー" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**ブランチ:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "**コミット:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+        echo "**コミッター:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+        echo "**イベント:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.ref }}" = "refs/heads/master" ]; then
+          echo "**🌐 テスト環境:** ${{ secrets.TEST_URL }}" >> $GITHUB_STEP_SUMMARY
+        elif [ "${{ github.event_name }}" = "pull_request" ]; then
+          echo "**🌐 PRテスト環境:** ${{ secrets.TEST_URL }}" >> $GITHUB_STEP_SUMMARY
+        elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.deploy_to_production }}" = "true" ]; then
+          echo "**🌐 本番環境:** 本番環境" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📁 デプロイされたファイル" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        find dist -type f -name "*.html" -o -name "*.css" -o -name "*.js" | head -20 >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔗 確認リンク" >> $GITHUB_STEP_SUMMARY
+        echo "- [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+        echo "- [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})" >> $GITHUB_STEP_SUMMARY
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          echo "- [プルリクエスト](https://github.com/${{ github.repository }}/pull/${{ github.event.number }})" >> $GITHUB_STEP_SUMMARY
+        fi
+      
     - name: Deploy to Test Environment
       if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -97,6 +130,11 @@ jobs:
           
           **テストURL:** ${{ secrets.TEST_URL }}
           
+          **🔍 変更確認:**
+          • [テスト環境を開く](${{ secrets.TEST_URL }})
+          • [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          • [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          
     - name: Send Discord Notification - Production Deploy
       if: success() && github.event_name == 'workflow_dispatch' && inputs.deploy_to_production == true
       uses: Ilshidur/action-discord@master
@@ -113,6 +151,11 @@ jobs:
           
           **本番URL:** 本番環境
           
+          **🔍 変更確認:**
+          • [本番環境を開く](https://example.com)
+          • [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          • [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+          
     - name: Send Discord Notification - PR Test Deploy
       if: success() && github.event_name == 'pull_request'
       uses: Ilshidur/action-discord@master
@@ -128,6 +171,12 @@ jobs:
           **作成者:** ${{ github.actor }}
           
           **PRテストURL:** ${{ secrets.TEST_URL }}
+          
+          **🔍 変更確認:**
+          • [PRテスト環境を開く](${{ secrets.TEST_URL }})
+          • [プルリクエスト](https://github.com/${{ github.repository }}/pull/${{ github.event.number }})
+          • [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          • [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
           
     - name: Send Discord Notification - Failure
       if: failure()
