@@ -1,19 +1,9 @@
-echo "🔍 ビルド前のHTMLバリデーションを実行中..."
-npm run validate:html:src
+echo "🏗️ 包括的なビルドテストを実行中..."
+npm run validate:build
 
 if [ $? -ne 0 ]; then
-  echo "❌ HTMLバリデーションエラーが検出されました。プッシュを中止します。"
-  exit 1
-fi
-
-echo "🏗️ ビルドを実行中..."
-npm run build
-
-echo "🔍 ビルド後のHTMLバリデーションを実行中..."
-npm run validate:html:dist
-
-if [ $? -ne 0 ]; then
-  echo "❌ ビルド後のHTMLバリデーションエラーが検出されました。プッシュを中止します。"
+  echo "❌ ビルドテストでエラーが検出されました。プッシュを中止します。"
+  echo "💡 EJSファイルの構文エラーやHTMLの構造エラーを確認してください。"
   exit 1
 fi
 
