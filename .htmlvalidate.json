@@ -8,7 +8,9 @@
     "doctype-style": "off",
     "element-required-content": "off",
     "no-trailing-whitespace": "off",
-    "attr-quotes": "off"
+    "attr-quotes": "error",
+    "no-implicit-close": "error",
+    "element-permitted-content": "error"
   },
   "elements": ["html5"]
 }
