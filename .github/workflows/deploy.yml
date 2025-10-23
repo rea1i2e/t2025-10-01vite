@@ -1,0 +1,145 @@
+name: Deploy to FTP
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      deploy_to_production:
+        description: '本番環境にデプロイする'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build project
+      run: npm run build
+      
+    - name: Deploy to Test Environment
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./dist/
+        server-dir: ./
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.DS_Store
+          **/Thumbs.db
+          
+    - name: Deploy to Production
+      if: github.event_name == 'workflow_dispatch' && inputs.deploy_to_production == true
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./dist/
+        server-dir: ./
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.DS_Store
+          **/Thumbs.db
+          
+    - name: Deploy to Test Environment (PR)
+      if: github.event_name == 'pull_request'
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./dist/
+        server-dir: ./
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.DS_Store
+          **/Thumbs.db
+          
+    - name: Send Discord Notification - Test Deploy
+      if: success() && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+      uses: Ilshidur/action-discord@master
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      with:
+        args: |
+          🧪 **テスト環境デプロイ完了**
+          
+          **ブランチ:** ${{ github.ref_name }}
+          **コミット:** ${{ github.sha }}
+          **コミッター:** ${{ github.actor }}
+          **メッセージ:** ${{ github.event.head_commit.message }}
+          
+          **テストURL:** ${{ secrets.TEST_URL }}
+          
+    - name: Send Discord Notification - Production Deploy
+      if: success() && github.event_name == 'workflow_dispatch' && inputs.deploy_to_production == true
+      uses: Ilshidur/action-discord@master
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      with:
+        args: |
+          🚀 **本番環境デプロイ完了**
+          
+          **ブランチ:** ${{ github.ref_name }}
+          **コミット:** ${{ github.sha }}
+          **実行者:** ${{ github.actor }}
+          **メッセージ:** ${{ github.event.head_commit.message }}
+          
+          **本番URL:** 本番環境
+          
+    - name: Send Discord Notification - PR Test Deploy
+      if: success() && github.event_name == 'pull_request'
+      uses: Ilshidur/action-discord@master
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      with:
+        args: |
+          🔍 **PRテスト環境デプロイ完了**
+          
+          **PR:** #${{ github.event.number }}
+          **ブランチ:** ${{ github.head_ref }}
+          **コミット:** ${{ github.sha }}
+          **作成者:** ${{ github.actor }}
+          
+          **PRテストURL:** ${{ secrets.TEST_URL }}
+          
+    - name: Send Discord Notification - Failure
+      if: failure()
+      uses: Ilshidur/action-discord@master
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      with:
+        args: |
+          ❌ **デプロイ失敗**
+          
+          **ブランチ:** ${{ github.ref_name }}
+          **コミット:** ${{ github.sha }}
+          **コミッター:** ${{ github.actor }}
+          
+          ログを確認してください。
