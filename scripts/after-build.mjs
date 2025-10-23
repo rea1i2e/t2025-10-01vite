@@ -275,6 +275,9 @@ for (const htmlPath of htmlFiles) {
   // シンプルな整形
   let out = dom.serialize()
   
+  // crossorigin="" を crossorigin に修正
+  out = out.replace(/crossorigin=""/g, 'crossorigin')
+  
   // <picture>タグの整形のみ
   out = out.replace(/(<picture[^>]*>)([\s\S]*?)(<\/picture>)/g, (m, open, inner, close) => {
     let formatted = inner

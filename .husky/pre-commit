@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 HTMLバリデーションを実行中..."
+npm run validate:html:src
+
+if [ $? -ne 0 ]; then
+  echo "❌ HTMLバリデーションエラーが検出されました。コミットを中止します。"
+  exit 1
+fi
+
+echo "✅ HTMLバリデーション完了"

@@ -1,0 +1,9 @@
+{
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "close-order": "error",
+    "void-content": "error",
+    "attribute-empty-style": "off"
+  },
+  "elements": ["html5"]
+}
