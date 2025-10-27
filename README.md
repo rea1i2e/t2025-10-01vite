@@ -2,6 +2,18 @@
 
 Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP/AVIF 生成、HTML の <img> を <picture> 最適化、width/height 自動付与を行います。（AVIF生成は準備中）
 
+## GitHub CLIを使った導入手順
+
+### 新規リポジトリ作成＋クローンする場合は、コマンドを実行
+```bash
+gh repo create 新規リポジトリ名 \
+  --template rea1i2e/t2025-10-01vite \
+  --private \
+  --description "リポジトリの説明文" && \
+sleep 5 && \
+gh repo clone GitHubのユーザー名/新規リポジトリ名
+```
+
 ## 必要要件
 
 ### システム要件
