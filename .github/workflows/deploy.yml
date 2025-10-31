@@ -131,7 +131,6 @@ jobs:
           **テストURL:** ${{ secrets.TEST_URL }}
           
           **🔍 変更確認:**
-          • [テスト環境を開く](${{ secrets.TEST_URL }})
           • [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
           • [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
           
