@@ -293,9 +293,10 @@ for (const htmlPath of htmlFiles) {
   out = beautify.html(out, {
     indent_size: 2,
     indent_char: ' ',
-    max_preserve_newlines: 1,
+    max_preserve_newlines: 0, // 空行をなくす
     preserve_newlines: true,
-    end_with_newline: true
+    end_with_newline: true,
+    wrap_line_length: 0
   })
 
   writeFileSync(htmlPath, out)
