@@ -14,6 +14,10 @@
   @return math.div($size, $window_width) * 100vw;
 }
 
+@function cqi($window_width, $size) {
+  @return math.div($size, $window_width) * 100cqi;
+}
+
 // spデザインの状態を基準にvw変換
 @function vwsp($size) {
 	@return math.div($size, $width-sp) * 100vw;
@@ -70,5 +74,17 @@
 //   @return #{$pixels}px;
 // }
 // @function maxrem($pixels) {
+//   @return #{$pixels}px;
+// }
+// @function maxvwsp($pixels) {
+//   @return #{$pixels}px;
+// }
+// @function maxvwpc($pixels) {
+//   @return #{$pixels}px;
+// }
+// @function maxcqisp($pixels) {
+//   @return #{$pixels}px;
+// }
+// @function maxcqipc($pixels) {
 //   @return #{$pixels}px;
 // }

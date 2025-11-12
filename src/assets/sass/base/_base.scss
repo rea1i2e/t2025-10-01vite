@@ -1,28 +1,5 @@
 @use "../global" as *;
 
-@font-face {
-  font-family: "Noto Sans JP VF";
-  src: url("../../fonts/NotoSansJP-VF.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-:root {
-  --desigh-width: 375;
-  --to-design-vw: calc(100vw / var(--desigh-width) );
-  --base-font-family: "Noto Sans JP VF";
-  
-  --color-black: #333;
-  --color-white: #fff;
-  
-  --header-height: #{rem(60)};
-  @include mq() {
-    --desigh-width: 1440;
-    --header-height: #{rem(100)};
-  }
-}
-
 /* リキッドレイアウト */
 html {
   font-size: 16px;
@@ -30,10 +7,12 @@ html {
   @if $startFrom == sp {
     @media (max-width: 375px) {
       font-size: vw(375, 16);
+      font-size: cqi(375, 16);
     }
 
     @include mq() {
       font-size: vw($inner-pc + $padding-pc * 2, 16);
+      font-size: cqi($inner-pc + $padding-pc * 2, 16);
     }
 
     @media (min-width: #{$inner-pc + $padding-pc * 2}px) {
@@ -42,6 +21,7 @@ html {
   } @else {
     @media (max-width: #{$inner-pc + $padding-pc * 2}px) {
       font-size: vw($inner-pc + $padding-pc * 2, 16);
+      font-size: cqi($inner-pc + $padding-pc * 2, 16);
     }
 
     @include mq() {
@@ -50,6 +30,7 @@ html {
 
     @media (max-width: 375px) {
       font-size: vw(375, 16);
+      font-size: cqi(375, 16);
     }
   }
 }
@@ -101,4 +82,19 @@ body {
 
 main {
   flex: 1;
+}
+
+img {
+  /* 低解像度ディスプレイでのジャギー防止 */
+  overflow-clip-margin: unset;
+  display: block;
+}
+
+button {
+  border-width: 0;
+  padding: 0;
+}
+
+h1 {
+  margin-block: unset;
 }
