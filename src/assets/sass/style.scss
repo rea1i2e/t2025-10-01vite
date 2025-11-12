@@ -5,3 +5,7 @@
 @use "./layouts/**";
 @use "./components/**/*";
 @use "./utility/**";
+
+/* デバッグ用のスタイル */
+// html { scroll-behavior: auto; } // ピクパ時に邪魔になる
+// *, *::before, *::after { outline: 1px solid red; } // 横スクロール発見用
