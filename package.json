@@ -13,7 +13,7 @@
     "clean:all": "rm -rf dist src/.vite src/.img node_modules package-lock.json",
     "reinstall": "npm run clean:all && npm install",
     "validate:html": "html-validate dist/",
-    "validate:build": "npm run build:only && npm run validate:html",
+    "validate:build": "npm run build && npm run validate:html",
     "prepare": "husky"
   },
   "devDependencies": {
