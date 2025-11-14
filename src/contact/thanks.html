@@ -1,0 +1,14 @@
+<% 
+  const key = 'thanks'; // site.config.js の pages オブジェクトのキー
+  const pageData = pages[key];
+%>
+<%- include(ejsPath + 'layouts/layout.ejs', { 
+  page: {
+    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
+    description: pageData.description,
+    keywords: pageData.keywords,
+    path: pageData.path,
+    root: pageData.root,
+  },
+  content: '_' + key + '.ejs'
+}) %>

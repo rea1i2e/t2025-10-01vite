@@ -6,3 +6,6 @@ import './_slider.js';
 // import './_counter.js';
 // import './_tab.js';
 // import './_modal.js';
+import './_option-color.js';
+import './_checkFormValidity.js';
+import './_flatpickr.js';

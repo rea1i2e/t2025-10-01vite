@@ -15,7 +15,8 @@ export const siteConfig = {
   siteName: "静的サイト用ejsテンプレ",
   domain: "https://rea1i2e.net/",
   titleSeparator: " | ",
-  headerExcludePages: ["privacy"], // ヘッダーから除外するページ
+  headerExcludePages: ["privacy", "thanks"], // ヘッダーから除外するページ
+  footerExcludePages: ["thanks"], // フッターから除外するページ
   pages: {
     top: {
       label: "トップ",
@@ -51,7 +52,25 @@ export const siteConfig = {
       keywords: "プライバシーポリシー,個人情報保護,プライバシー",
     },
     contact: {
-      label: "お問い合わせ",
+      label: "お問い合わせフォーム",
+      root: "../",
+      path: "contact/",
+      title: "お問い合わせフォーム",
+      description:
+      "お問い合わせフォームページです。お問い合わせを送信することができます。",
+      keywords: "",
+    },
+    thanks: {
+      label: "お問い合わせ完了",
+      root: "../",
+      path: "thanks/",
+      title: "お問い合わせ完了",
+      description:
+      "お問い合わせフォームページです。お問い合わせを送信することができます。",
+      keywords: "",
+    },
+    mail: {
+      label: "メール送信",
       root: "",
       path: "mailto:contact@example.com",
     },
