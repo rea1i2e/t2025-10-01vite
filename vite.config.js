@@ -19,8 +19,10 @@ const imageminGif2webp = gif2webpCjs;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// src配下のHTMLを全部エントリに
-const htmlFiles = globSync("src/**/*.html");
+// src配下のHTMLを全部エントリに（publicディレクトリを除外）
+const htmlFiles = globSync("src/**/*.html", {
+  ignore: ["src/public/**/*.html"]
+});
 
 export default defineConfig({
   root: "src",
