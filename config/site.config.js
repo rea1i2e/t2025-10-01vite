@@ -16,6 +16,7 @@ export const siteConfig = {
   domain: "https://rea1i2e.net/",
   titleSeparator: " | ",
   headerExcludePages: ["privacy", "thanks"], // ヘッダーから除外するページ
+  drawerExcludePages: ["privacy", "thanks"], // ドロワーメニューから除外するページ
   footerExcludePages: ["thanks"], // フッターから除外するページ
   pages: {
     top: {

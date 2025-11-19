@@ -1,6 +1,5 @@
 <% 
-  const key = 'about'; // site.config.js の pages オブジェクトのキー
-  const pageData = pages[key];
+  const pageData = pages['about'];
   const page = {
     title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
     description: pageData.description,
@@ -8,6 +7,14 @@
     path: pageData.path,
     root: pageData.root,
   };
-  const content = '_' + key + '.ejs';
 %>
-<%- include(ejsPath + 'layouts/layout.ejs', { page, content }) %>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <main>
+  </main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+</html>
