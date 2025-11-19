@@ -276,7 +276,7 @@ for (const htmlPath of htmlFiles) {
   let out = dom.serialize()
   
   // ブール属性を簡潔な形式に変換（required="", checked="", disabled="" など）
-  out = out.replace(/\s+(required|checked|disabled|readonly|multiple|selected|autofocus|autoplay|controls|loop|muted|novalidate|open|reversed|async|defer|hidden|ismap|itemscope|nomodule|playsinline|seamless|truespeed|crossorigin)=""/g, ' $1')
+  out = out.replace(/\s+(required|checked|disabled|readonly|multiple|selected|autofocus|autoplay|controls|loop|muted|novalidate|open|reversed|async|defer|hidden|ismap|itemscope|nomodule|playsinline|seamless|truespeed|crossorigin|inert)=""/g, ' $1')
     
   // <picture>タグの整形のみ
   out = out.replace(/(<picture[^>]*>)([\s\S]*?)(<\/picture>)/g, (m, open, inner, close) => {

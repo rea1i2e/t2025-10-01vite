@@ -11,6 +11,7 @@ function openDrawer() {
     window.innerWidth - document.documentElement.clientWidth;
   menuButton.setAttribute("aria-expanded", "true");
   drawer.setAttribute("aria-hidden", "false");
+  drawer.inert = false;
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
   document.body.style.paddingRight = scrollbarWidth + "px";
@@ -21,6 +22,7 @@ function openDrawer() {
 function closeDrawer() {
   menuButton.setAttribute("aria-expanded", "false");
   drawer.setAttribute("aria-hidden", "true");
+  drawer.inert = true;
   document.documentElement.style.overflow = "";
   document.body.style.overflow = "";
   document.body.style.paddingRight = "";

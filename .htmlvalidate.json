@@ -10,7 +10,8 @@
     "no-trailing-whitespace": "off",
     "attr-quotes": "error",
     "no-implicit-close": "error",
-    "element-permitted-content": "error"
-  },
-  "elements": ["html5"]
+    "element-permitted-content": "error",
+    "no-inline-style": "off",
+    "tel-non-breaking": "off"
+  }
 }
