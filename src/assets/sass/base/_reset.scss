@@ -2,3 +2,12 @@
 * 参考：https://www.tak-dcxi.com/article/introduce-kiso-css/
 */
 @import "kiso.css";
+
+summary {
+  /* display: list-item;以外を指定してデフォルトの三角形アイコンを消します */
+  display: block;
+  /* Safariで表示されるデフォルトの三角形アイコンを非表示にします */
+  &::-webkit-details-marker {
+    display: none;
+  }
+}

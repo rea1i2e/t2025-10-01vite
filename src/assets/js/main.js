@@ -9,3 +9,4 @@ import './_slider.js';
 import './_option-color.js';
 import './_checkFormValidity.js';
 import './_flatpickr.js';
+import './_accordion.js';

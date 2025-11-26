@@ -23,7 +23,7 @@
 .p-top-mv__slider-item img {
   height: 100%;
   object-fit: cover;
-  transition: 8s ease-out;
+  transition: transform 8s ease-out;
 }
 
 .p-top-mv__slider-item.is-active img {
@@ -31,7 +31,6 @@
 }
 
 .p-top-mv__copy {
-  position: absolute;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
