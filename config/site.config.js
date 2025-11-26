@@ -70,6 +70,15 @@ export const siteConfig = {
       "お問い合わせフォームページです。お問い合わせを送信することができます。",
       keywords: "",
     },
+    fadeinDemo: {
+      label: "フェードインデモ",
+      root: "../",
+      path: "fadein-demo/",
+      title: "フェードインデモ",
+      description:
+      "スクロールに応じて要素が順次表示されるデモページです。",
+      keywords: "フェードイン,スクロールアニメーション,デモ",
+    },
     mail: {
       label: "メール送信",
       root: "",
