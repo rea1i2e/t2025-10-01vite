@@ -12,6 +12,7 @@
     "no-implicit-close": "error",
     "element-permitted-content": "error",
     "no-inline-style": "off",
-    "tel-non-breaking": "off"
+    "tel-non-breaking": "off",
+    "no-autoplay": "off"
   }
 }
