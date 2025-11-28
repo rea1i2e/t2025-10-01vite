@@ -248,7 +248,7 @@ label:has(input[type="radio" i]) {
   height: 100%;
   content: "";
   opacity: 0;
-  mask-image: url(../images/icon_check.svg);
+  // mask-image: url(../images/icon_check.svg);
   mask-repeat: no-repeat;
   mask-size: contain;
   background-color: var(--checkbox-check-color);
