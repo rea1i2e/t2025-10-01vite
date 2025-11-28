@@ -134,7 +134,7 @@
   transform: translateY(-50%);
   width: var(--select-icon-width);
   aspect-ratio: 16/9;
-  mask: url(/assets/images/arrow_down.png) no-repeat center / contain;
+  // mask: url(/assets/images/arrow_down.png) no-repeat center / contain;
   content: "";
   background-color: var(--select-icon-color);
   pointer-events: none;
