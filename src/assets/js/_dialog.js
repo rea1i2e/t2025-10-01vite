@@ -204,7 +204,18 @@ const restorePosition = (scrollPosition) => {
 const backfaceFixed = (fixed) => {
   const scrollBarWidth = getScrollBarSize();
   const scrollPosition = getScrollPosition(fixed);
-  document.body.style.paddingInlineEnd = fixed ? `${scrollBarWidth}px` : "";
+  
+  // scrollbar-gutter: stable; が設定されている場合は paddingInlineEnd を設定しない
+  const scrollbarGutter = window.getComputedStyle(document.body).scrollbarGutter;
+  const hasScrollbarGutter = scrollbarGutter && scrollbarGutter.includes('stable');
+  
+  if (!hasScrollbarGutter) {
+    document.body.style.paddingInlineEnd = fixed ? `${scrollBarWidth}px` : "";
+  } else if (!fixed) {
+    // モーダルを閉じる時は、scrollbar-gutter が設定されていても paddingInlineEnd をクリア
+    document.body.style.paddingInlineEnd = "";
+  }
+  
   applyStyles(scrollPosition, fixed);
   if (!fixed) {
     restorePosition(scrollPosition);
