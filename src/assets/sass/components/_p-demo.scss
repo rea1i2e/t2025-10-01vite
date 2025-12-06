@@ -7,7 +7,7 @@
 
 .p-demo__inner {
   display: grid;
-  gap: rem(60)
+  gap: rem(60);
 }
 
 .p-demo__title {
@@ -17,7 +17,21 @@
   margin-block: revert;
   padding-inline-start: revert;
   list-style-type: revert;
+  display: grid;
+  gap: rem(8);
+  
 }
 
 .p-demo__item {
+}
+
+.p-demo__cards {
+  @include mq() {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: rem(32);
+  }
+}
+
+.p-demo__card {
 }
