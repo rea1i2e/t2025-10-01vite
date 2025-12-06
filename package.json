@@ -14,7 +14,8 @@
     "reinstall": "npm run clean:all && npm install",
     "validate:html": "html-validate dist/",
     "validate:build": "npm run build && npm run validate:html",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "open https://t2025-10-01vite.rea1i2e.net/"
   },
   "devDependencies": {
     "@vheemstra/vite-plugin-imagemin": "^2.2.1",

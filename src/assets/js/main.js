@@ -9,7 +9,7 @@ import './_slider.js';
 import './_fadein.js';
 // import './_counter.js';
 // import './_tab.js';
-// import './_dialog.js';
+import './_dialog.js';
 // import './_modal.js';
 import './_accordion.js';
 

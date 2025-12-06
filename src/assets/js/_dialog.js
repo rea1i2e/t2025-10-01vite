@@ -1,3 +1,8 @@
+/**
+ * dialog要素を使用したモーダルウィンドウの実装
+ * 参考：https://www.tak-dcxi.com/article/implementation-example-of-a-modal-created-using-the-dialog-element#%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%99%E3%82%8B%E8%A6%81%E7%B4%A0%E3%81%AB%E3%81%AF-overscroll-behaviorcontain-%E3%82%92%E6%8C%87%E5%AE%9A%E3%81%99%E3%2582%258B
+ */
+
 const initializeModal = (modal) => {
   // モーダル要素が見つからない場合はエラーをログに記録して早期リターン
   if (!modal) {
@@ -204,7 +209,18 @@ const restorePosition = (scrollPosition) => {
 const backfaceFixed = (fixed) => {
   const scrollBarWidth = getScrollBarSize();
   const scrollPosition = getScrollPosition(fixed);
-  document.body.style.paddingInlineEnd = fixed ? `${scrollBarWidth}px` : "";
+  
+  // scrollbar-gutter: stable; が設定されている場合は paddingInlineEnd を設定しない
+  const scrollbarGutter = window.getComputedStyle(document.body).scrollbarGutter;
+  const hasScrollbarGutter = scrollbarGutter && scrollbarGutter.includes('stable');
+  
+  if (!hasScrollbarGutter) {
+    document.body.style.paddingInlineEnd = fixed ? `${scrollBarWidth}px` : "";
+  } else if (!fixed) {
+    // モーダルを閉じる時は、scrollbar-gutter が設定されていても paddingInlineEnd をクリア
+    document.body.style.paddingInlineEnd = "";
+  }
+  
   applyStyles(scrollPosition, fixed);
   if (!fixed) {
     restorePosition(scrollPosition);

@@ -35,10 +35,25 @@ html {
   }
 }
 
-/* スムーススクロール */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: var(--header-height);
+
+body {
+  container-type: inline-size;
+  display: grid;
+  /* headerは浮いているので、行数にカウントしない */
+  grid-template-rows: 1fr auto;
+  min-height: 100vh;
+  height: 100%;
+  text-rendering: optimizeSpeed;
+  font-family: var(--base-font-family);
+  line-height: 1.5;
+}
+
+a {
+  transition: opacity var(--hover-transition);
+}
+
+a:not([class]) {
+  text-decoration: underline;
 }
 
 /* pcの電話番号発信対応 */
@@ -55,10 +70,6 @@ a[href^="tel:"] {
   }
 }
 
-a {
-  transition: opacity 0.3s ease-in-out;
-}
-
 @media (any-hover: hover) {
   a:hover {
     opacity: 0.7;
@@ -67,35 +78,4 @@ a {
 
 a:focus-visible {
   opacity: 0.7;
-}
-
-
-body {
-  container-type: inline-size;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  text-rendering: optimizeSpeed;
-  font-family: var(--base-font-family);
-  line-height: 1.5;
-}
-
-main {
-  flex: 1;
-}
-
-img {
-  /* 低解像度ディスプレイでのジャギー防止 */
-  overflow-clip-margin: unset;
-  display: block;
-  width: 100%;
-}
-
-button {
-  border-width: 0;
-  padding: 0;
-}
-
-h1 {
-  margin-block: unset;
 }
