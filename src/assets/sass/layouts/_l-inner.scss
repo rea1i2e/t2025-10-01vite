@@ -1,22 +1,8 @@
 @use "../global" as *;
 
-@if $startFrom == sp {
-	.l-inner {
-		margin-inline: auto;
-		max-width: rem($inner-sp + $padding-sp * 2);
-		max-width: calc(var(--inner) + var(--inner-padding) * 2);
-		width: 100%;
-		padding-inline: var(--inner-padding);
-	}
-} @else {
-	.l-inner {
-		margin-inline: auto;
-		width: 100%;
-		padding-inline: rem($padding-pc);
-		max-width: rem($inner-pc + $padding-pc * 2);
-		@include mq(md) {
-			max-width: rem($inner-sp + $padding-sp * 2);
-			padding-inline: rem($padding-sp);
-		}
-	}
+.l-inner {
+	margin-inline: auto;
+	max-width: calc(var(--inner) + var(--inner-padding) * 2);
+	width: 100%;
+	padding-inline: var(--inner-padding);
 }

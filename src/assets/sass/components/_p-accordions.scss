@@ -1,6 +1,27 @@
 @use '../global' as *;
 
-.p-accordion__summary-inner {
+.p-accordions {
+  display: grid;
+  gap: rem(40);
+  
+}
+
+.p-accordions__details {
+  /* アコーディオンのベーススタイル */
+  display: block;
+}
+
+.p-accordions__summary {
+  /* display: list-item;以外を指定してデフォルトの三角形アイコンを消します */
+  display: block;
+}
+
+/* Safariで表示されるデフォルトの三角形アイコンを非表示にします */
+.p-accordions__summary::-webkit-details-marker {
+  display: none;
+}
+
+.p-accordions__summary-inner {
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -10,7 +31,7 @@
   border: 1px solid #d2beff;
 }
 
-.p-accordion__icon {
+.p-accordions__icon {
   width: rem(12);
   aspect-ratio: 12/9;
   background: url(/assets/images/common/arrow_down.svg) no-repeat center / cover;
@@ -18,19 +39,20 @@
 }
 
 /* is-openedクラスが付与されたときのスタイル */
-.p-accordion.is-opened .p-accordion__icon {
+.p-accordions__details.is-opened .p-accordions__icon {
   transform: rotate(180deg);
 }
 
 /* --------アコーディオンの中身のスタイル-------- */
-.p-accordion__content {
+.p-accordions__content {
   overflow: hidden;
   background-color: #f0f2ff;
 
   /* details直下のタグにpaddingを設定すると挙動がおかしくなるので、ここには指定しない */
 }
 
-.p-accordion__content-inner {
+.p-accordions__content-inner {
   padding-block: rem(24);
   padding-inline: rem(48);
 }
+

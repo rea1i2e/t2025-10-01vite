@@ -1,17 +1,20 @@
-<footer class="p-footer l-footer">
+<footer class="p-footer l-footer" id="footer">
   <div class="p-footer__inner l-inner">
     <div class="p-footer__nav">
-      <h3 class="p-footer__nav-title">フッターナビ</h3>
       <ul class="p-footer__nav-list">
-        <% Object.entries(pages).forEach(([key, item]) => { %>
-        <% if (!footerExcludePages.includes(key)) { %>
-        <li class="p-footer__nav-item">
-          <a href="<%- item.path.startsWith('http') || item.path.startsWith('mailto') ? item.path : page.root + item.path %>" class="p-footer__nav-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
-            <%- item.label %>
-          </a>
-        </li>
-        <% } %>
-        <% }); %>
+        <%
+          Object.entries(pages)
+            .filter(([key]) => !isExcluded(key, footerExcludePages))
+            .forEach(([key, item]) => {
+        %>
+          <li class="p-footer__nav-item">
+            <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" class="p-footer__nav-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
+              <span class="p-footer__nav-text-ja"><%- item.label %></span>
+            </a>
+          </li>
+        <%
+          });
+        %>
       </ul>
     </div>
   </div>

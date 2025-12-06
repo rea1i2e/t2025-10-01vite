@@ -14,9 +14,9 @@ let tag = (page.path === '') ? 'h1' : 'div';
     <nav class="p-header__nav" aria-label="グローバルナビゲーション">
       <ul class="p-header__nav-items">
         <% Object.entries(pages).forEach(([key, item]) => { %>
-        <% if (!headerExcludePages.includes(key)) { %>
+        <% if (!isExcluded(key, headerExcludePages)) { %>
         <li class="p-header__nav-item">
-          <a href="<%- item.path.startsWith('http') || item.path.startsWith('mailto') ? item.path : page.root + item.path %>" class="p-header__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
+          <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" class="p-header__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
             <%- item.label %>
           </a>
         </li>
@@ -31,9 +31,9 @@ let tag = (page.path === '') ? 'h1' : 'div';
     <nav class="p-drawer__nav" aria-label="ドロワーメニュー">
       <ul class="p-drawer__nav-items" id="js-drawer-menu">
         <% Object.entries(pages).forEach(([key, item]) => {
-          if (!drawerExcludePages.includes(key)) { %>
+          if (!isExcluded(key, drawerExcludePages)) { %>
         <li class="p-drawer__nav-item">
-          <a href="<%- item.path.startsWith('http') || item.path.startsWith('mailto') ? item.path : page.root + item.path %>" class="p-drawer__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
+          <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" class="p-drawer__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
             <%- item.label %>
           </a>
         </li>

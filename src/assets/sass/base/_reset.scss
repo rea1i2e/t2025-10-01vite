@@ -3,11 +3,18 @@
 */
 @import "kiso.css";
 
-summary {
-  /* display: list-item;以外を指定してデフォルトの三角形アイコンを消します */
+img {
+  /* 低解像度ディスプレイでのジャギー防止 */
+  overflow-clip-margin: unset;
   display: block;
-  /* Safariで表示されるデフォルトの三角形アイコンを非表示にします */
-  &::-webkit-details-marker {
-    display: none;
-  }
+  width: 100%;
+}
+
+button {
+  border-width: 0;
+  padding: 0;
+}
+
+h1 {
+  margin-block: unset;
 }

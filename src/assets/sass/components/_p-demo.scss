@@ -1,0 +1,23 @@
+@use "../global" as *;
+// demoページ用のスタイル（納品時にはファイルごと削除）
+
+.p-demo {
+  padding-block-start: calc(var(--header-height) + rem(80));
+}
+
+.p-demo__inner {
+  display: grid;
+  gap: rem(60)
+}
+
+.p-demo__title {
+}
+
+.p-demo__items {
+  margin-block: revert;
+  padding-inline-start: revert;
+  list-style-type: revert;
+}
+
+.p-demo__item {
+}

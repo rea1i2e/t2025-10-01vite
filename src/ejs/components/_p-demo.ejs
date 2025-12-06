@@ -1,0 +1,26 @@
+<%
+const demoItems = [
+  {
+    text: "スクロールアニメーション",
+    href: "./demo-fadein/"
+  },
+  {
+    text: "details/summaryタグを使ったアコーディオン",
+    href: "./demo-accordion/"
+  },
+  {
+    text: "dialogタグを使ったモーダル",
+    href: "./demo-dialog/"
+  }
+];
+%>
+<ul class="p-demo__items">
+  <% demoItems.forEach((item) => { %>
+    <li class="p-demo__item">
+      <a href="<%- item.href %>">
+        <%- item.text %>
+      </a>
+    </li>
+  <% }); %>
+</ul>
+
