@@ -59,6 +59,14 @@ const pages = {
       "お問い合わせフォームページです。お問い合わせを送信することができます。",
     keywords: "",
   },
+  privacy: {
+    label: "個人情報保護方針",
+    root: "../",
+    path: "privacy/",
+    title: "個人情報保護方針",
+    description: "個人情報保護方針ページです。",
+    keywords: "",
+  },
   // 外部リンク設置例
   x: {
     label: "X",
