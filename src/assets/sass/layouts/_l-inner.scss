@@ -4,12 +4,9 @@
 	.l-inner {
 		margin-inline: auto;
 		max-width: rem($inner-sp + $padding-sp * 2);
+		max-width: calc(var(--inner) + var(--inner-padding) * 2);
 		width: 100%;
-		padding-inline: rem($padding-sp);
-		@include mq(md) {
-			max-width: rem($inner-pc + $padding-pc * 2);
-			padding-inline: rem($padding-pc);
-		}
+		padding-inline: var(--inner-padding);
 	}
 } @else {
 	.l-inner {
