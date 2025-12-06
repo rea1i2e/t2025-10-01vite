@@ -4,7 +4,7 @@
  * スクリーンリーダー専用テキスト
  * 視覚的には非表示だが、スクリーンリーダーでは読み上げられる
  */
-.u-sr-only {
+.u-screen-reader {
   position: absolute;
   width: 1px;
   height: 1px;
