@@ -49,7 +49,7 @@ body {
 }
 
 a {
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity var(--hover-transition);
 }
 
 a:not([class]) {

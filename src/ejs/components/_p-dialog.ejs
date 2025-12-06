@@ -9,8 +9,8 @@
         <p class="p-dialog__description"><%- description %></p>
       <% }); %>
     </div>
-    <button class="close" type="button" aria-labelledby="close<%- index + 1 %>" data-modal-close>
-      <span id="close<%- index + 1 %>" style="display:none">モーダルを閉じる</span>
+    <button class="p-dialog__close" type="button" aria-labelledby="close<%- index + 1 %>" data-modal-close>
+      <span id="close<%- index + 1 %>" class="u-screen-reader">モーダルを閉じる</span>
     </button>
   </dialog>
 <% }); %>
