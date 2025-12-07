@@ -3,21 +3,29 @@
  * 参考：https://ics.media/entry/220901/#javascript%E3%81%A7%E9%96%8B%E9%96%89%E3%82%A2%E3%83%8B%E3%83%A1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E3%81%A4%E3%81%91%E3%82%8B%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%A8%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%E3%83%BC%E5%AF%BE%E5%BF%9C%EF%BC%89
  */
 
-document.addEventListener("DOMContentLoaded", () => {
+const initAccordion = () => {
   setUpAccordion();
-});
+};
+
+// type="module"のスクリプトはDOMContentLoadedの後に実行されるため、単純に呼び出すだけで良い
+initAccordion();
 
 /**
  * ブラウザの標準機能(Web Animations API)を使ってアコーディオンのアニメーションを制御します
  */
 const setUpAccordion = () => {
   const details = document.querySelectorAll(".js-details");
+  
+  if (details.length === 0) return;
+
   const RUNNING_VALUE = "running"; // アニメーション実行中のときに付与する予定のカスタムデータ属性の値
   const IS_OPENED_CLASS = "is-opened"; // アイコン操作用のクラス名
 
   details.forEach((element) => {
     const summary = element.querySelector(".js-summary");
     const content = element.querySelector(".js-content");
+
+    if (!summary || !content) return;
 
     summary.addEventListener("click", (event) => {
       // デフォルトの挙動を無効化

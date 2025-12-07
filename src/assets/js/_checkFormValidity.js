@@ -23,7 +23,7 @@
  * - エラー枠線: `[aria-invalid="true"]` をCSSで装飾w
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+const initCheckFormValidity = () => {
   const form = document.getElementById('js-form');
   const submitBtn = document.getElementById('js-submit');
   if (!form || !submitBtn) return;
@@ -64,4 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   update();
-});
+};
+
+// type="module"のスクリプトはDOMContentLoadedの後に実行されるため、単純に呼び出すだけで良い
+initCheckFormValidity();

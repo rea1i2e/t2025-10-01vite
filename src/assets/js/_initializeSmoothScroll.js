@@ -21,14 +21,8 @@ const initializeSmoothScroll = () => {
 
 // ページ読み込み時のハッシュ処理
 const handleHashOnLoad = () => {
-  // DOMが完全に読み込まれるまで待機
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(processHash, 100)
-    })
-  } else {
-    setTimeout(processHash, 100)
-  }
+  // type="module"のスクリプトはDOMContentLoadedの後に実行されるため、単純に処理を実行
+  setTimeout(processHash, 100)
 }
 
 // ハッシュ変更時の処理

@@ -1,8 +1,10 @@
 /**
  * スクロールアニメーション IntersectionObserver API
  */
-document.addEventListener('DOMContentLoaded', () => {
+const initFadein = () => {
   const fadeinItems = document.querySelectorAll('[data-fadein]');
+
+  if (fadeinItems.length === 0) return;
 
   const fadeinObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
@@ -24,4 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   fadeinItems.forEach(fadeinElement => fadeinObserver.observe(fadeinElement));
-});
+};
+
+// type="module"のスクリプトはDOMContentLoadedの後に実行されるため、単純に呼び出すだけで良い
+initFadein();

@@ -1,7 +1,9 @@
-document.addEventListener("DOMContentLoaded", () => {
+const initHeader = () => {
   // メインビジュアルセクションとヘッダーを取得
   const mvSection = document.getElementById("js-mv");
   const header = document.getElementById("js-header");
+
+  if (!mvSection || !header) return;
 
   // メインビジュアルの可視状態を管理するフラグ
   let isMvVisible = true;
@@ -41,4 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // メインビジュアルセクションを監視対象に追加
   mvObserver.observe(mvSection);
-});
+};
+
+// type="module"のスクリプトはDOMContentLoadedの後に実行されるため、単純に呼び出すだけで良い
+initHeader();

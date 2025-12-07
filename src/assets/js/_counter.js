@@ -13,7 +13,11 @@
  * カウントアップが実行されたら、監視を解除する
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+const initCounter = () => {
+  const counters = document.querySelectorAll('[data-counter]');
+  
+  if (counters.length === 0) return;
+
   // カウントアップのアニメーションの総時間（ミリ秒）
   const duration = 1000;
   // カウントアップの更新間隔（ミリ秒）
@@ -69,7 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // すべてのカウンター要素を監視対象に追加
-  document.querySelectorAll('[data-counter]').forEach(counter => {
+  counters.forEach(counter => {
       countUpObserver.observe(counter);
   });
-});
+};
+
+// type="module"のスクリプトはDOMContentLoadedの後に実行されるため、単純に呼び出すだけで良い
+initCounter();
