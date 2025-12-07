@@ -161,13 +161,6 @@ const isVerticalWritingMode = () => {
   return writingMode.includes("vertical");
 };
 
-// スクロールバーの幅を計算する
-const getScrollBarSize = () => {
-  const scrollBarXSize = window.innerHeight - document.body.clientHeight;
-  const scrollBarYSize = window.innerWidth - document.body.clientWidth;
-  return isVerticalWritingMode() ? scrollBarXSize : scrollBarYSize;
-};
-
 // スクロール位置を取得する
 const getScrollPosition = (fixed) => {
   if (fixed) {
@@ -207,20 +200,7 @@ const restorePosition = (scrollPosition) => {
 
 // 背面を固定する
 const backfaceFixed = (fixed) => {
-  const scrollBarWidth = getScrollBarSize();
   const scrollPosition = getScrollPosition(fixed);
-  
-  // scrollbar-gutter: stable; が設定されている場合は paddingInlineEnd を設定しない
-  const scrollbarGutter = window.getComputedStyle(document.body).scrollbarGutter;
-  const hasScrollbarGutter = scrollbarGutter && scrollbarGutter.includes('stable');
-  
-  if (!hasScrollbarGutter) {
-    document.body.style.paddingInlineEnd = fixed ? `${scrollBarWidth}px` : "";
-  } else if (!fixed) {
-    // モーダルを閉じる時は、scrollbar-gutter が設定されていても paddingInlineEnd をクリア
-    document.body.style.paddingInlineEnd = "";
-  }
-  
   applyStyles(scrollPosition, fixed);
   if (!fixed) {
     restorePosition(scrollPosition);
