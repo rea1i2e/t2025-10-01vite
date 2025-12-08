@@ -127,6 +127,8 @@ const openModal = (modal) => {
   isTransitioning = true;
   modal.showModal();
   // modal.show();
+  // モーダル内のスクロール位置をリセット（showModal()後のフォーカス移動でスクロール位置が変わってしまうのを防ぐ）
+  // modal.scrollTop = 0;
   backfaceFixed(true);
   manageEventListeners(modal, true);
 
