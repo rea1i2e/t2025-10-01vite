@@ -35,17 +35,19 @@ html {
   }
 }
 
-
 body {
   container-type: inline-size;
   display: grid;
   /* headerは浮いているので、行数にカウントしない */
   grid-template-rows: 1fr auto;
   min-height: 100vh;
-  height: 100%;
   text-rendering: optimizeSpeed;
   font-family: var(--base-font-family);
   line-height: 1.5;
+}
+
+body > * {
+  min-width: 0; /* gridの副作用防止 */
 }
 
 a {
