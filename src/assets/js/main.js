@@ -4,14 +4,18 @@ import './_initializeSmoothScroll.js';
 // import './_header.js';
 
 
-/* 機能ごと */
-import './_slider.js';
+/* スライダー */
+import './_splide-fade.js';
+import './_splide-loop.js';
+import './_splide-thumbnail.js';
+
+
 import './_fadein.js';
 // import './_counter.js';
 // import './_tab.js';
 import './_dialog.js';
 // import './_modal.js';
-import './_accordion.js';
+// import './_accordion.js';
 
 /* フォーム関連 */
 import './_option-color.js';

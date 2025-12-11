@@ -1,0 +1,49 @@
+@use "../global" as *;
+
+.p-splide-thumbnail {
+}
+
+.p-splide-thumbnail__main.splide {
+}
+
+.p-splide-thumbnail__main-track.splide__track {
+}
+
+.p-splide-thumbnail__main-list.splide__list {
+}
+
+.p-splide-thumbnail__main-item.splide__slide {
+}
+
+.p-splide-thumbnail__main-item.splide__slide img {
+  aspect-ratio: 3/2;
+  object-fit: cover;
+}
+
+.p-splide-thumbnail__nav.splide {
+  margin-top: rem(10);
+}
+
+.p-splide-thumbnail__nav-track.splide__track {
+}
+
+.p-splide-thumbnail__nav-list.splide__list {
+}
+
+.p-splide-thumbnail__nav-item.splide__slide {
+  width: rem(120);
+  cursor: pointer;
+  @include mq() {
+    width: rem(300);
+  }
+}
+
+.p-splide-thumbnail__nav-item.splide__slide.is-active {
+  border: 10px solid red;
+}
+
+.p-splide-thumbnail__nav-item.splide__slide img {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+

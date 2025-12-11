@@ -1,6 +1,6 @@
 /**
  * スムーススクロール
- * 参考 https://www.tak-dcxi.com/article/smooth-scroll-implementation-example/
+ * @see https://www.tak-dcxi.com/article/smooth-scroll-implementation-example/
  * ・TypeScript → JavaScript
  * ・ページ外からも機能させた上で、移動は瞬時に
  * ・フォーカスは無効化

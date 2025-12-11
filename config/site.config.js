@@ -34,6 +34,13 @@ const pages = {
     title: "モーダルデモ",
     description: "モーダルデモページです。",
   },
+  demoSplide: {
+    label: "スライダー（Splide）",
+    root: "../../",
+    path: "demo/demo-splide/",
+    title: "フェードで切り替えるスライダー（Splide）",
+    description: "フェードで切り替えるスライダー（Splide）デモページです。",
+  },
   demoFadein: {
     label: "フェードインデモ",
     root: "../../",
