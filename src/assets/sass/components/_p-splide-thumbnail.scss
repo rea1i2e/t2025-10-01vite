@@ -22,6 +22,9 @@
 
 .p-splide-thumbnail__nav.splide {
   margin-top: rem(10);
+  @include mq() {
+    margin-top: rem(24);
+  }
 }
 
 .p-splide-thumbnail__nav-track.splide__track {
@@ -33,13 +36,14 @@
 .p-splide-thumbnail__nav-item.splide__slide {
   width: rem(120);
   cursor: pointer;
+  transition: transform 0.3s ease-in-out;
   @include mq() {
     width: rem(300);
   }
 }
 
 .p-splide-thumbnail__nav-item.splide__slide.is-active {
-  border: 10px solid red;
+  opacity: 0.7;
 }
 
 .p-splide-thumbnail__nav-item.splide__slide img {

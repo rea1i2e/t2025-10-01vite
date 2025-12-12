@@ -20,12 +20,21 @@ if (mainElement && thumbnailsElement) {
   
   const thumbnails = new Splide(thumbnailsElement, {
     rewind: true,
-    autoWidth: true,
+    type: "loop",
+    autoplay: true, // 自動再生
+    perPage: 4,
     isNavigation: true,
-    gap: 10,
+    gap: "calc(24 / 16 * 1rem)",
     focus: "center",
     pagination: false,
     arrows: false,
+    breakpoints: {
+      768: {
+        gap: "calc(10 / 16 * 1rem)",
+        perPage: 1,
+        padding: "calc(48 / 16 * 1rem)",
+      },
+    },
   });
 
   main.sync(thumbnails);
