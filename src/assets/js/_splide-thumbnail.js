@@ -24,13 +24,13 @@ if (mainElement && thumbnailsElement) {
     autoplay: true, // 自動再生
     perPage: 4,
     isNavigation: true,
-    gap: "calc(24 / 16 * 1rem)",
+    // gap: "calc(24 / 16 * 1rem)",
     focus: "center",
     pagination: false,
-    arrows: false,
+    // arrows: false,
     breakpoints: {
       768: {
-        gap: "calc(10 / 16 * 1rem)",
+        // gap: "calc(10 / 16 * 1rem)",
         perPage: 1,
         padding: "calc(48 / 16 * 1rem)",
       },

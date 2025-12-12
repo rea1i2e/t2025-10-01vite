@@ -21,10 +21,24 @@
 }
 
 .p-splide-thumbnail__nav.splide {
-  margin-top: rem(10);
-  @include mq() {
-    margin-top: rem(24);
-  }
+}
+
+.p-splide-thumbnail__nav-arrows.splide__arrows {
+  // background-color: pink;
+  display: flex;
+  justify-content: space-between;
+}
+
+.p-splide-thumbnail__nav-prev.splide__arrow--prev,
+.p-splide-thumbnail__nav-next.splide__arrow--next {
+  background-color: currentColor;
+  width: rem(50);
+  aspect-ratio: 1;
+  mask: url(/assets/images/common/icon_arrow_right.svg) no-repeat center / contain;
+}
+
+.p-splide-thumbnail__nav-prev.splide__arrow--prev {
+  rotate: 180deg;
 }
 
 .p-splide-thumbnail__nav-track.splide__track {

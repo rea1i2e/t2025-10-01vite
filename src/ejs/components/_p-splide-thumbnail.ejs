@@ -20,6 +20,10 @@ const splideThumbnailImages = [
     </div>
   </div>
   <div class="p-splide-thumbnail__nav splide" id="js-splide-thumbnail-nav">
+    <div class="p-splide-thumbnail__nav-arrows splide__arrows">
+      <button class="p-splide-thumbnail__nav-prev splide__arrow splide__arrow--prev" type="button" aria-label="Previous slide" aria-controls="js-splide-thumbnail-nav-track"></button>
+      <button class="p-splide-thumbnail__nav-next splide__arrow splide__arrow--next" type="button" aria-label="Next slide" aria-controls="js-splide-thumbnail-nav-track"></button>
+    </div>
     <div class="p-splide-thumbnail__nav-track splide__track">
       <ul class="p-splide-thumbnail__nav-list splide__list">
         <% splideThumbnailImages.forEach((item) => { %>
@@ -31,5 +35,3 @@ const splideThumbnailImages = [
     </div>
   </div>
 </div>
-
-
