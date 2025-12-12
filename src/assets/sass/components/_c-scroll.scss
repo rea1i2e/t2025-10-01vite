@@ -1,20 +1,20 @@
 @use '../global' as *;
 
-.p-scroll {
+.c-scroll {
   writing-mode: vertical-lr;
 }
 
-.p-scroll__text {
+.c-scroll__text {
 
 }
 
-.p-scroll__text {
+.c-scroll__text {
   display: flex;
   gap: rem(15);
   align-items: center;
 }
 
-.p-scroll__text::before {
+.c-scroll__text::before {
   width: rem(7);
   aspect-ratio: 66/1732;
   content: "";
@@ -39,7 +39,8 @@
     transform-origin: 0 100%;
   }
   100% {
-    scale: 0 1;
+    scale: 1 0;
     transform-origin: 0 100%;
   }
 }
+
