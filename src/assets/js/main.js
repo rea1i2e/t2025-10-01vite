@@ -15,7 +15,7 @@ import './_fadein.js';
 // import './_tab.js';
 import './_dialog.js';
 // import './_modal.js';
-// import './_accordion.js';
+import './_accordion.js';
 
 /* フォーム関連 */
 import './_option-color.js';
