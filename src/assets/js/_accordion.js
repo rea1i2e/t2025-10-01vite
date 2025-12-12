@@ -3,12 +3,43 @@
  * @see https://ics.media/entry/220901/#javascript%E3%81%A7%E9%96%8B%E9%96%89%E3%82%A2%E3%83%8B%E3%83%A1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E3%81%A4%E3%81%91%E3%82%8B%E6%96%B9%E6%B3%95%EF%BC%88%E5%85%A8%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%E3%83%BC%E5%AF%BE%E5%BF%9C%EF%BC%89
  */
 
-const initAccordion = () => {
-  setUpAccordion();
+console.log("accordion.js");
+
+/**
+ * アニメーションの時間とイージング
+ */
+const animTiming = {
+  duration: 400,
+  easing: "ease-out"
 };
 
-// type="module"のスクリプトはDOMContentLoadedの後に実行されるため、単純に呼び出すだけで良い
-initAccordion();
+/**
+ * アコーディオンを閉じるときのキーフレームを作成します。
+ * @param content {HTMLElement}
+ */
+const closingAnimKeyframes = (content) => [
+  {
+    height: content.offsetHeight + 'px', // height: "auto"だとうまく計算されないため要素の高さを指定する
+    opacity: 1,
+  }, {
+    height: 0,
+    opacity: 0,
+  }
+];
+
+/**
+ * アコーディオンを開くときのキーフレームを作成します。
+ * @param content {HTMLElement}
+ */
+const openingAnimKeyframes = (content) => [
+  {
+    height: 0,
+    opacity: 0,
+  }, {
+    height: content.offsetHeight + 'px',
+    opacity: 1,
+  }
+];
 
 /**
  * ブラウザの標準機能(Web Animations API)を使ってアコーディオンのアニメーションを制御します
@@ -76,38 +107,9 @@ const setUpAccordion = () => {
   });
 }
 
-/**
- * アニメーションの時間とイージング
- */
-const animTiming = {
-  duration: 400,
-  easing: "ease-out"
+const initAccordion = () => {
+  setUpAccordion();
 };
 
-/**
- * アコーディオンを閉じるときのキーフレームを作成します。
- * @param content {HTMLElement}
- */
-const closingAnimKeyframes = (content) => [
-  {
-    height: content.offsetHeight + 'px', // height: "auto"だとうまく計算されないため要素の高さを指定する
-    opacity: 1,
-  }, {
-    height: 0,
-    opacity: 0,
-  }
-];
-
-/**
- * アコーディオンを開くときのキーフレームを作成します。
- * @param content {HTMLElement}
- */
-const openingAnimKeyframes = (content) => [
-  {
-    height: 0,
-    opacity: 0,
-  }, {
-    height: content.offsetHeight + 'px',
-    opacity: 1,
-  }
-];
+// type="module"のスクリプトはDOMContentLoadedの後に実行されるため、単純に呼び出すだけで良い
+initAccordion();

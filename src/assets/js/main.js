@@ -1,6 +1,8 @@
 /* 共通 */
-import './_drawer.js';
 import './_initializeSmoothScroll.js';
+import './_drawer.js';
+import './_toggle.js';
+
 // import './_header.js';
 
 
