@@ -48,6 +48,13 @@ const pages = {
     title: "フェードインデモ",
     description: "スクロールに応じて要素が順次表示されるデモページです。",
   },
+  demoCssAnime: {
+    label: "CSSアニメーションデモ",
+    root: "../../",
+    path: "demo/demo-css-animation/",
+    title: "CSSアニメーションデモ",
+    description: "CSSアニメーションデモページです。",
+  },
   contact: {
     label: "お問い合わせ",
     root: "../",
