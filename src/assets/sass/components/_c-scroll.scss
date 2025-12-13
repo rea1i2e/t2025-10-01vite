@@ -1,11 +1,10 @@
-@use '../global' as *;
+@use "../global" as *;
 
 .c-scroll {
   writing-mode: vertical-lr;
 }
 
 .c-scroll__text {
-
 }
 
 .c-scroll__text {
@@ -21,26 +20,20 @@
   mask: url(../images/common/arrow_scroll.svg) no-repeat center / contain;
   background-color: currentColor;
   animation: scroll 2s infinite;
-  transform-origin: bottom;
 }
 
 /* 矢印のアニメーション */
 @keyframes scroll {
   0% {
-    scale: 1 0;
-    transform-origin: 0 0;
+    clip-path: inset(0 0 0);
   }
   50% {
-    scale: 1 1;
-    transform-origin: 0 0;
+    clip-path: inset(100% 0 0);
   }
   51% {
-    scale: 1 1;
-    transform-origin: 0 100%;
+    clip-path: inset(0 0 100%);
   }
   100% {
-    scale: 1 0;
-    transform-origin: 0 100%;
+    clip-path: inset(0 0 0);
   }
 }
-
