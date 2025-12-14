@@ -1,0 +1,33 @@
+<% 
+  const key = 'demoHoverChange';
+  const pageData = pages[key];
+  const page = {
+    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
+    description: pageData.description,
+    keywords: pageData.keywords,
+    path: pageData.path,
+    root: pageData.root,
+  };
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+<main class="p-demo">
+  <div class="p-demo__inner l-inner">
+    <h1 class="p-demo__title">ホバーで画像を切り替えるUI</h1>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">PC表示でのみ、ホバーで画像やコンテンツの表示を切り替える</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-hover-change.ejs') %>
+      </div>
+    </section>
+  </div>
+</main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+
+</html>
+

@@ -55,6 +55,13 @@ const pages = {
     title: "CSSアニメーションデモ",
     description: "CSSアニメーションデモページです。",
   },
+  demoHoverChange: {
+    label: "ホバーチェンジデモ",
+    root: "../../",
+    path: "demo/demo-hover-change/",
+    title: "ホバーチェンジデモ",
+    description: "ホバーチェンジデモページです。",
+  },
   contact: {
     label: "お問い合わせ",
     root: "../",

@@ -1,0 +1,24 @@
+<div class="p-hover-change">
+  <ol class="p-hover-change__items">
+    <li class="p-hover-change__item p-hover-change__item--panel">
+      <% posts.forEach((post, index) => { %>
+      <figure class="p-hover-change__image-pc" data-image="<%- index %>">
+        <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+      </figure>
+      <% }); %>
+    </li>
+    <% posts.forEach((post, index) => { %>
+    <li class="p-hover-change__item" data-image="<%- index %>">
+      <div class="p-hover-change__item-inner">
+        <figure class="p-hover-change__image-sp">
+          <img src="<%- imagePath + post.image.fileSp %>" alt="<%- post.image.alt %>">
+        </figure>
+        <div class="p-hover-change__content">
+          <h3 class="p-hover-change__title"><%- post.title %></h3>
+          <p class="p-hover-change__description"><%- post.description %></p>
+        </div>
+      </div>
+    </li>
+    <% }); %>
+</div>
+</div>

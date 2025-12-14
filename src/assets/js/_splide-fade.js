@@ -15,6 +15,7 @@ if (splideFade) {
     speed: 2000,
     interval: 7000,
     pauseOnHover: false, // カーソルが乗ってもスクロールを停止させない
+    pauseOnFocus: false, // フォーカスが当たってもスクロールを停止させない
     perPage: 1,
     perMove: 1,
     gap: 0,

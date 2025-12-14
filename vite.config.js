@@ -14,6 +14,7 @@ import imageminWebp from "imagemin-webp";
 // imagemin-gif2webp は CJS なので default import の互換に依存せず、名前空間受け取りにします
 import gif2webpCjs from 'imagemin-gif2webp';
 import { siteConfig } from "./config/site.config.js";
+import { posts } from "./src/ejs/data/posts.js";
 const imageminGif2webp = gif2webpCjs;
 
 
@@ -55,7 +56,10 @@ export default defineConfig({
     }
   },
   plugins: [
-    ViteEjsPlugin(siteConfig),
+    ViteEjsPlugin({
+      ...siteConfig,
+      posts,
+    }),
     liveReload(["ejs/**/*.ejs"]),
     sassGlobImports(),
     // 画像圧縮とWebP変換
