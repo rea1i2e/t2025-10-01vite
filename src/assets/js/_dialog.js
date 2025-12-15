@@ -145,10 +145,10 @@ const closeModal = async (modal) => {
 
   isTransitioning = true;
   modal.setAttribute("data-active", "false");
-  backfaceFixed(false);
   manageEventListeners(modal, false);
 
   await waitModalAnimation(modal);
+  backfaceFixed(false);
   modal.close();
 
   if (currentOpenTrigger) {
