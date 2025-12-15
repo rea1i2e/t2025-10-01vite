@@ -62,6 +62,13 @@ const pages = {
     title: "ホバーチェンジデモ",
     description: "ホバーチェンジデモページです。",
   },
+  demoGridLayout: {
+    label: "グリッドレイアウトデモ",
+    root: "../../",
+    path: "demo/demo-grid-layout/",
+    title: "グリッドレイアウトデモ",
+    description: "グリッドレイアウトデモページです。",
+  },
   contact: {
     label: "お問い合わせ",
     root: "../",

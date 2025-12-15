@@ -1,0 +1,52 @@
+<% 
+  const key = 'demoGridLayout';
+  const pageData = pages[key];
+  const page = {
+    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
+    description: pageData.description,
+    keywords: pageData.keywords,
+    path: pageData.path,
+    root: pageData.root,
+  };
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+<main class="p-demo" style="outline: 1px solid red;">
+  <div class="p-demo__inner l-inner">
+    <h1 class="p-demo__title">グリッドレイアウトデモ</h1>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">基本的なグリッド（3列）</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-grid-layout.ejs', { type: 'basic' }) %>
+      </div>
+    </section>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">不等間隔グリッド</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-grid-layout.ejs', { type: 'uneven' }) %>
+      </div>
+    </section>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">レスポンシブグリッド</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-grid-layout.ejs', { type: 'responsive' }) %>
+      </div>
+    </section>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">カード型グリッド</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-grid-layout.ejs', { type: 'card' }) %>
+      </div>
+    </section>
+    <%- include(ejsPath + 'components/_p-grid-section.ejs') %>
+  </div>
+</main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+
+</html>
+

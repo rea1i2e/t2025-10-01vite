@@ -1,0 +1,68 @@
+<% if (type === 'basic') { %>
+<div class="p-grid-layout p-grid-layout--basic">
+  <% for (let i = 1; i <= 6; i++) { %>
+    <div class="p-grid-layout__item">
+      <div class="p-grid-layout__content">アイテム<%- i %></div>
+    </div>
+  <% } %>
+</div>
+<% } else if (type === 'uneven') { %>
+<div class="p-grid-layout p-grid-layout--uneven">
+  <div class="p-grid-layout__item p-grid-layout__item--large">
+    <div class="p-grid-layout__content">大きなアイテム</div>
+  </div>
+  <div class="p-grid-layout__item">
+    <div class="p-grid-layout__content">アイテム1</div>
+  </div>
+  <div class="p-grid-layout__item">
+    <div class="p-grid-layout__content">アイテム2</div>
+  </div>
+  <div class="p-grid-layout__item">
+    <div class="p-grid-layout__content">アイテム3</div>
+  </div>
+  <div class="p-grid-layout__item">
+    <div class="p-grid-layout__content">アイテム4</div>
+  </div>
+</div>
+<% } else if (type === 'responsive') { %>
+<div class="p-grid-layout p-grid-layout--responsive">
+  <% for (let i = 1; i <= 8; i++) { %>
+    <div class="p-grid-layout__item">
+      <div class="p-grid-layout__content">アイテム<%- i %></div>
+    </div>
+  <% } %>
+</div>
+<% } else if (type === 'card') { %>
+<div class="p-grid-layout p-grid-layout--card">
+  <% if (typeof posts !== 'undefined') { %>
+    <% posts.slice(0, 6).forEach((post) => { %>
+      <article class="p-grid-layout__item">
+        <div class="p-grid-layout__card">
+          <div class="p-grid-layout__card-image">
+            <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+          </div>
+          <div class="p-grid-layout__card-body">
+            <h3 class="p-grid-layout__card-title"><%- post.title %></h3>
+            <p class="p-grid-layout__card-description"><%- post.description %></p>
+          </div>
+        </div>
+      </article>
+    <% }); %>
+  <% } else { %>
+    <% for (let i = 1; i <= 6; i++) { %>
+      <article class="p-grid-layout__item">
+        <div class="p-grid-layout__card">
+          <div class="p-grid-layout__card-image">
+            <div class="p-grid-layout__card-placeholder">画像</div>
+          </div>
+          <div class="p-grid-layout__card-body">
+            <h3 class="p-grid-layout__card-title">カードタイトル<%- i %></h3>
+            <p class="p-grid-layout__card-description">カードの説明文です。グリッドレイアウトでカード型の表示を実装しています。</p>
+          </div>
+        </div>
+      </article>
+    <% } %>
+  <% } %>
+</div>
+<% } %>
+

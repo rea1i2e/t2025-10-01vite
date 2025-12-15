@@ -1,19 +1,23 @@
 @use "../global" as *;
 
 .p-splide-fade.splide {
+  height: 100vh;
 }
 
 .p-splide-fade__slider-track.splide__track {
+  height: 100%;
 }
 
 .p-splide-fade__slider-list.splide__list {
+  height: 100%;
 }
 
 .p-splide-fade__slider-item.splide__slide {
+  height: 100%;
 }
 
 .p-splide-fade__slider-item.splide__slide img {
-  aspect-ratio: 3/2;
+  height: 100%;
   object-fit: cover;
   transition: 8s;
 }

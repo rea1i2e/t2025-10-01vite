@@ -11,8 +11,9 @@ import './_splide-fade.js';
 import './_splide-loop.js';
 import './_splide-thumbnail.js';
 
-
+/* スクロールに応じた表示制御 */
 import './_fadein.js';
+import './_page-top.js';
 // import './_counter.js';
 // import './_tab.js';
 import './_dialog.js';
