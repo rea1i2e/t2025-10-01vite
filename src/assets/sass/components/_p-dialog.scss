@@ -38,7 +38,7 @@
   height: fit-content;
   max-height: 80%;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior: contain; /* この要素のスクロールが終端に達しても親要素（背景）にスクロールを伝播させない */
   background-color: var(--color-white);
   box-shadow: 0 0 0 100vmax rgba(#333, 0.8);
   transition:
@@ -47,7 +47,7 @@
   // contain: strict;
   contain: layout style paint; // sizeを除外（height: fit-contentと競合するため）
   outline: none;
-  /* この要素のスクロールが終端に達しても親要素（背景）にスクロールを伝播させない */
+  
 
   @include mq() {
     max-width: rem(1000);

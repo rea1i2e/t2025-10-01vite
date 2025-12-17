@@ -69,6 +69,13 @@ const pages = {
     title: "グリッドレイアウトデモ",
     description: "グリッドレイアウトデモページです。",
   },
+  demoButtonHover: {
+    label: "ボタンホバーデモ",
+    root: "../../",
+    path: "demo/demo-button-hover/",
+    title: "ボタンホバーデモ",
+    description: "ボタンホバーデモページです。",
+  },
   contact: {
     label: "お問い合わせ",
     root: "../",

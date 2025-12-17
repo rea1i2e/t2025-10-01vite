@@ -1,0 +1,69 @@
+<% 
+  const key = 'demoButtonHover';
+  const pageData = pages[key];
+  const page = {
+    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
+    description: pageData.description,
+    keywords: pageData.keywords,
+    path: pageData.path,
+    root: pageData.root,
+  };
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+<main class="p-demo">
+  <div class="p-demo__inner l-inner">
+    <h1 class="p-demo__title">ボタンホバーデモ</h1>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">背景色の変化</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-button-hover.ejs', { type: 'background' }) %>
+      </div>
+    </section>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">スケール（拡大/縮小）</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-button-hover.ejs', { type: 'scale' }) %>
+      </div>
+    </section>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">スライド</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-button-hover.ejs', { type: 'slide' }) %>
+      </div>
+    </section>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">シャドウの変化</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-button-hover.ejs', { type: 'shadow' }) %>
+      </div>
+    </section>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">グラデーションの変化</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-button-hover.ejs', { type: 'gradient' }) %>
+      </div>
+    </section>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">リップルエフェクト</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-button-hover.ejs', { type: 'ripple' }) %>
+      </div>
+    </section>
+    <section class="p-demo__section">
+      <h2 class="p-demo__subtitle">アイコンのアニメーション</h2>
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components/_p-button-hover.ejs', { type: 'icon' }) %>
+      </div>
+    </section>
+  </div>
+</main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+
+</html>
+
