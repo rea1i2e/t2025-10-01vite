@@ -16,7 +16,7 @@
     <%- include(ejsPath + 'common/_header.ejs', { page }) %>
     <main class="p-demo">
       <div class="p-demo__inner l-inner">
-        <h1 class="p-demo__title">デモの一覧</h1>
+        <h1 class="p-demo__title"><%- pageData.title %></h1>
         <div class="p-demo__content">
           <%- include(ejsPath + 'components/_p-demo.ejs', { page }) %>
         </div>

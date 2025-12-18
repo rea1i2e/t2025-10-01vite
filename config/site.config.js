@@ -70,11 +70,11 @@ const pages = {
     description: "グリッドレイアウトデモページです。",
   },
   demoButtonHover: {
-    label: "ボタンホバーデモ",
+    label: "ホバーエフェクトのデモ",
     root: "../../",
     path: "demo/demo-button-hover/",
-    title: "ボタンホバーデモ",
-    description: "ボタンホバーデモページです。",
+    title: "ホバーエフェクトのデモ",
+    description: "ホバーエフェクトのデモページです。",
   },
   contact: {
     label: "お問い合わせ",

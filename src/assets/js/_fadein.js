@@ -2,8 +2,7 @@
  * スクロールアニメーション IntersectionObserver API
  */
 const initFadein = () => {
-  const fadeinItems = document.querySelectorAll('[data-fadein]');
-
+  const fadeinItems = document.querySelectorAll('[data-fadein], [data-slidein-mask]');
   if (fadeinItems.length === 0) return;
 
   const fadeinObserver = new IntersectionObserver((entries, observer) => {
@@ -11,7 +10,7 @@ const initFadein = () => {
       if (!entry.isIntersecting) return;
 
       const fadeinElement = entry.target;
-      const delay = Number(fadeinElement.getAttribute('data-fadein')) || 0;
+      // const delay = Number(fadeinElement.getAttribute('data-fadein')) || 0;
 
       // 遅延は inline-style で付与（CSSの transition-delay を上書き）
       // fadeinElement.style.transitionDelay = `${delay}ms`;
