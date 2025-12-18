@@ -3,14 +3,12 @@
 .c-button {
   --button-bg: transparent;
   --button-text-color: #000;
-  --button-bg-hover: var(--button-bg);
-  --button-text-color-hover: var(--button-text-color);
+
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   padding: rem(16) rem(32);
-  font-size: rem(16);
-  overflow: hidden;
   background-color: var(--button-bg);
+  border: 2px solid var(--color-black);
   color: var(--button-text-color);
 }
 
@@ -22,24 +20,22 @@
 
 /* 背景色の変化 */
 .c-button-background {
-  --button-bg: #3498db;
   --button-bg-hover: #2ecc71;
-  --button-text-color: #fff;
-  transition: background-color var(--hover-transition);
+  --button-text-color-hover: #fff;
+  transition:
+  background-color var(--hover-transition),
+  color var(--hover-transition);
 }
 
 @media (any-hover: hover) {
   .c-button-background:hover {
     background-color: var(--button-bg-hover);
+    color: var(--button-text-color-hover);
   }
 }
 
 /* スケール（拡大/縮小） */
 .c-button-scale {
-  --button-bg: #e74c3c;
-  --button-text-color: #fff;
-  --button-bg-hover: #e74c3c;
-  --button-text-color-hover: #fff;
   transition: transform var(--hover-transition);
 }
 
@@ -53,24 +49,21 @@
 .c-button-slide {
   --button-bg: transparent;
   --button-bg-hover: #2ecc71;
+  --button-text-color-hover: #fff;
   position: relative;
-  border: 2px solid #2c3e50;
+  z-index: 0;
+  transition: color var(--hover-transition);
 }
 
 .c-button-slide::before {
   position: absolute;
   z-index: -1;
   inset: 0;
-  display: block;
   background-color: var(--button-bg-hover);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
   content: "";
-}
-
-.c-button-slide .p-button__text {
-  transition: color var(--hover-transition);
 }
 
 @media (any-hover: hover) {
