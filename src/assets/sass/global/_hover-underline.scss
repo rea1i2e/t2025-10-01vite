@@ -1,0 +1,48 @@
+/* 使い方
+
+.c-hover-text-underline-slide {
+  @include hover-text-underline-slide(); // デフォルト
+}
+
+.p-nav a {
+  @include hover-text-underline-slide($height: 2px, $offset: -2px);
+}
+
+.p-link--accent {
+  @include hover-text-underline-slide($color: #3b5bff);
+}
+
+*/
+@mixin hover-text-underline-slide(
+  $height: 1px,
+  $color: currentColor,
+  $offset: 0,              // 下線の位置（例: -2px で少し下へ）
+  $duration: var(--hover-transition)
+) {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: $offset;
+    height: $height;
+    background-color: $color;
+    content: "";
+    scale: 0 1;
+    transform-origin: right;
+    transition: scale $duration;
+  }
+
+  @media (any-hover: hover) {
+    &:hover::before {
+      scale: 1 1;
+      transform-origin: left;
+    }
+  }
+
+  // キーボード操作でも見えるように（必要なら）
+  &:focus-visible::before {
+    scale: 1 1;
+    transform-origin: left;
+  }
+}

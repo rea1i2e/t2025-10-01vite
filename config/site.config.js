@@ -69,12 +69,19 @@ const pages = {
     title: "グリッドレイアウトデモ",
     description: "グリッドレイアウトデモページです。",
   },
-  demoButtonHover: {
-    label: "ホバーエフェクトのデモ",
+  demoHoverButton: {
+    label: "ホバーエフェクトのデモ（ボタン）",
     root: "../../",
-    path: "demo/demo-button-hover/",
-    title: "ホバーエフェクトのデモ",
-    description: "ホバーエフェクトのデモページです。",
+    path: "demo/demo-hover-button/",
+    title: "ホバーエフェクトのデモ（ボタン）",
+    description: "ホバーエフェクトのデモ（ボタン）ページです。",
+  },
+  demoHoverText: {
+    label: "ホバーエフェクトのデモ（テキスト）",
+    root: "../../",
+    path: "demo/demo-hover-text/",
+    title: "ホバーエフェクトのデモ（テキスト）",
+    description: "ホバーエフェクトのデモ（テキスト）ページです。",
   },
   contact: {
     label: "お問い合わせ",
