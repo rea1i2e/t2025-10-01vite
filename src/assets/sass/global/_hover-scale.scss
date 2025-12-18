@@ -17,8 +17,7 @@
 
 @mixin hover-scale($scale: 1.1, $duration: 0.3s, $easing: ease-in-out) {
   transition:
-    scale $duration $easing,
-    opacity $duration $easing;
+    scale $duration $easing;
 
   @media (any-hover: hover) {
     &:hover {
@@ -35,8 +34,7 @@
 
 @mixin hover-scale-parent($parent: 'a', $scale: 1.1, $duration: 0.3s, $easing: ease-in-out) {
   transition:
-    scale $duration $easing,
-    opacity $duration $easing;
+    scale $duration $easing;
 
   @media (any-hover: hover) {
     #{$parent}:hover & {
@@ -46,24 +44,6 @@
   }
 
   #{$parent}:focus-visible & {
-    opacity: 1;
-    scale: $scale;
-  }
-}
-
-@mixin hover-underline($duration: 0.3s, $easing: ease-in-out) {
-  transition:
-    scale $duration $easing,
-    opacity $duration $easing;
-
-  @media (any-hover: hover) {
-    &:hover {
-      opacity: 1;
-      scale: $scale;
-    }
-  }
-
-  &:focus-visible {
     opacity: 1;
     scale: $scale;
   }

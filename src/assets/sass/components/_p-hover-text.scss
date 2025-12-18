@@ -14,24 +14,5 @@
 }
 
 .c-hover-text-underline-slide {
-  position: relative;
-}
-
-.c-hover-text-underline-slide::before {
-  position: absolute;
-  inset-inline: 0;
-  inset-block-end: 0;
-  height: 1px;
-  background-color: currentColor;
-  content: "";
-  scale: 0 1;
-  transform-origin: right;
-  transition: scale var(--hover-transition);
-}
-
-@media (any-hover: hover) {
-  .c-hover-text-underline-slide:hover::before {
-    scale: 1 1;
-    transform-origin: left;
-  }
+  @include hover-text-underline-slide();
 }
