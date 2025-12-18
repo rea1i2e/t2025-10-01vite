@@ -21,6 +21,10 @@
 ) {
   position: relative;
 
+  &:hover {
+    opacity: 1;
+  }
+
   &::before {
     position: absolute;
     inset-inline: 0;
