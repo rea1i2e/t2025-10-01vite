@@ -17,6 +17,7 @@ const splideLoopOptions = {
   autoScroll: {
     speed: 0.5, // スクロール速度
     pauseOnHover: false, // カーソルが乗ってもスクロールを停止させない
+    pauseOnFocus: false, // フォーカスが当たってもスクロールを停止させない
   },
 };
 
