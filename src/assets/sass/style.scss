@@ -3,7 +3,8 @@
 @use "./base/_root";
 @use "./base/_base";
 @use "./layouts/**";
-@use "./components/**/*";
+@use "./demo-components/**"; // demoページ用スタイル
+@use "./components/**";
 @use "./utility/**";
 
 /* デバッグ用のスタイル */
