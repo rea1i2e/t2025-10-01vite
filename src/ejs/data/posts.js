@@ -8,6 +8,7 @@ export const posts = [
       fileSp: "demo/dummy1.jpg",
       alt: "ダミー画像1",
     },
+    link: "#"
   },
   {
     title: "都市の夜景",
@@ -18,6 +19,7 @@ export const posts = [
       fileSp: "demo/dummy2.jpg",
       alt: "ダミー画像2",
     },
+    link: "#"
   },
   {
     title: "海辺の夕日",
@@ -28,6 +30,7 @@ export const posts = [
       fileSp: "demo/dummy3.jpg",
       alt: "ダミー画像3",
     },
+    link: "#"
   },
   {
     title: "山々の連なる風景",
@@ -38,6 +41,7 @@ export const posts = [
       fileSp: "demo/dummy4.jpg",
       alt: "ダミー画像4",
     },
+    link: "#"
   },
   {
     title: "街角のカフェ",
@@ -48,6 +52,7 @@ export const posts = [
       fileSp: "demo/dummy5.jpg",
       alt: "ダミー画像5",
     },
+    link: "#"
   },
   {
     title: "花畑の風景",
@@ -58,6 +63,7 @@ export const posts = [
       fileSp: "demo/nagasaki1.jpg",
       alt: "ダミー画像6",
     },
+    link: "#"
   },
   {
     title: "古い街並み",
@@ -68,5 +74,6 @@ export const posts = [
       fileSp: "demo/nagasaki2.jpg",
       alt: "ダミー画像7",
     },
+    link: "#"
   },
 ];
