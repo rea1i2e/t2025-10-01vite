@@ -1,6 +1,6 @@
 # t2025-10-01vite
 
-Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP/AVIF 生成、HTML の <img> を <picture> 最適化、width/height 自動付与を行います。（AVIF生成は準備中）
+Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP 生成、HTML の <img> を <picture> 最適化、width/height 自動付与を行います。（AVIFは「生成」は未対応ですが、`dist/` にAVIFが存在する場合は <picture> に <source type="image/avif"> を挿入します）
 
 ## GitHub CLIを使った導入手順
 
@@ -107,15 +107,18 @@ npm run reinstall    # クリーン後に再インストール
 ```
 src/                 # 開発用ルート（Vite root）
   index.html         # エントリ（複数HTML対応）
-  about/index.html
-  ejs/               # EJS パーツとレイアウト
-    layouts/layout.ejs
-    components/(_head.ejs, _header.ejs, _footer.ejs)
-    main/(_top.ejs, _about.ejs)
+  contact/index.html
+  demo/**/index.html
+  privacy/index.html
+  ejs/               # EJS 共通パーツ/部品/データ
+    common/(_head.ejs, _header.ejs, _footer.ejs)
+    components/（ページ部品）
+    data/（ダミーデータ等）
   assets/
     sass/            # Sass（グロブインポート対応）
     js/              # JSモジュール
     images/          # 画像（dummy/common）
+  public/            # Vite public（root=src のため src/public）
 dist/                # 本番出力（ビルド生成物）
 scripts/after-build.mjs  # HTML後処理スクリプト
 vite.config.js
@@ -129,28 +132,22 @@ vite.config.js
 ## EJS の使い方
 - 既定変数（`vite.config.js` 内）:
   - `siteName`: サイト名
-  - `siteUrl`: サイトURL
 - **サイト設定（`config/site.config.js`）**:
   - `siteName`: サイト名（タイトル生成に使用）
-  - `siteUrl`: サイトURL
+  - `domain`: ドメイン（OGP/canonical等に使用）
   - `titleSeparator`: タイトル区切り文字（デフォルト: " | "）
   - `headerExcludePages`: ヘッダーメニューから除外するページのキー配列
   - `pages`: ページ情報のオブジェクト（キー: ページ識別子、値: ページ情報）
     - `label`: メニュー表示名
-    - `url`: ページURL
+    - `path`: ページパス（または外部URL）
+    - `root`: そのページから見たルート相対（例: `"../"`）
     - `title`: ページタイトル（省略時はサイト名のみ）
     - `description`: メタディスクリプション
     - `keywords`: メタキーワード
     - `targetBlank`: 外部リンクで新しいタブで開く場合に`true`
 - htmlファイル
-  - `src/index.html` などから `ejs/layouts/layout.ejs` をレイアウトとして読み込み、`ejs/components` をインクルードして組み立てる想定です。
-  - title: 'ページタイトルを指定'
-  - content: '_top.ejs' などで<main>タグの中身を指定します
-  - src/about/index.html を作成すると、aboutページを作成可能です
-- src/ejs/layouts/layout.ejs
-  - html > head + body > header + main + footer のような構成を決めています
-- src/ejs/main/_*.ejs で各ページのmainタグの中身を作成します
- - 例 main/_top.ejs でtopページのmainを作成します
+  - `src/index.html` 等のHTMLから `ejs/common` や `ejs/components` を `include` して組み立てます。
+  - ページごとの `pageData`（`pages['top']` など）から `page` を組み立て、`_head.ejs` へ渡して title/description 等を出力します。
 ## Sass/スタイル
 - `vite-plugin-sass-glob-import` により、Sass のグロブインポートが可能です。
 - `src/assets/sass/style.scss` をエントリに、`base/`, `components/`, `layouts/`, `utility/` へ分割。
@@ -202,7 +199,7 @@ vite.config.js
 ```javascript
 export const siteConfig = {
   siteName: "サイト名",
-  siteUrl: "https://example.com",
+  domain: "https://example.com/",
   titleSeparator: " | ", // タイトル区切り文字
   headerExcludePages: ['privacy'], // ヘッダーから除外するページ
   pages: {/* ページオブジェクト */} // 配列ではなくオブジェクト形式
@@ -214,7 +211,8 @@ export const siteConfig = {
 
 - **必須プロパティ**:
   - `label`: ヘッダーメニューの表示名
-  - `url`: ページのURL
+  - `path`: ページパス（または外部URL）
+  - `root`: そのページから見たルート相対
 
 - **オプションプロパティ**:
   - `title`: ページタイトル（省略時はサイト名のみ）
@@ -225,17 +223,25 @@ export const siteConfig = {
 ### 使用例
 ```javascript
 pages: {
-  about: {
-    label: "会社概要",
-    url: "/about/",
-    title: "会社概要",
-    description: "会社の概要ページです。",
-    keywords: "会社概要,企業情報"
+  contact: {
+    label: "お問い合わせ",
+    root: "../",
+    path: "contact/",
+    title: "お問い合わせ",
+    description: "お問い合わせフォームページです。"
   },
-  twitter: {
-    label: "Twitter",
-    url: "https://twitter.com/example",
-    targetBlank: true // 外部リンク（新しいタブで開く）
+  privacy: {
+    label: "個人情報保護方針",
+    root: "../",
+    path: "privacy/",
+    title: "個人情報保護方針",
+    description: "個人情報保護方針ページです。"
+  },
+  x: {
+    label: "X",
+    root: "",
+    path: "https://x.com/xxxxxxxx",
+    targetBlank: true
   }
 }
 ```
@@ -245,11 +251,11 @@ EJSファイル内では以下のようにページ情報にアクセスでき�
 
 ```ejs
 <!-- 直接アクセス（推奨） -->
-<a href="<%- pages.privacy.url %>">プライバシーポリシー</a>
+<a href="<%- page.root + pages.privacy.path %>">プライバシーポリシー</a>
 
 <!-- ループ処理 -->
 <% Object.entries(pages).forEach(([key, item]) => { %>
-  <a href="<%- item.url %>"><%- item.label %></a>
+  <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>"><%- item.label %></a>
 <% }); %>
 ```
 
@@ -263,17 +269,17 @@ EJSファイル内では以下のようにページ情報にアクセスでき�
 ### 直接アクセス（推奨）
 ```ejs
 <!-- 特定のページのURLを取得 -->
-<a href="<%- pages.about.url %>">会社概要</a>
+<a href="<%- page.root + pages.contact.path %>">お問い合わせ</a>
 
 <!-- 特定のページのラベルを取得 -->
-<h1><%- pages.about.label %></h1>
+<h1><%- pages.contact.label %></h1>
 ```
 
 ### ループ処理
 ```ejs
 <!-- すべてのページをループ処理 -->
 <% Object.entries(pages).forEach(([key, item]) => { %>
-  <a href="<%- item.url %>" 
+  <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" 
      <%= item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
     <%- item.label %>
   </a>
@@ -284,7 +290,7 @@ EJSファイル内では以下のようにページ情報にアクセスでき�
 ```ejs
 <!-- 特定のページが存在するかチェック -->
 <% if (pages.privacy) { %>
-  <a href="<%- pages.privacy.url %>">プライバシーポリシー</a>
+  <a href="<%- page.root + pages.privacy.path %>">プライバシーポリシー</a>
 <% } %>
 ```
 
