@@ -20,6 +20,13 @@ const pages = {
     title: "デモ一覧",
     description: "デモの一覧ページです。",
   },
+  demoList: {
+    label: "リスト",
+    root: "../../",
+    path: "demo/demo-list/",
+    title: "リスト",
+    description: "リストデモページです。",
+  },
   demoAccordion: {
     label: "アコーディオン",
     root: "../../",

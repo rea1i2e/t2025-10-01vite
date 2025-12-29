@@ -1,0 +1,35 @@
+<% 
+  const key = 'demoList';
+  const pageData = pages[key];
+  const page = {
+    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
+    description: pageData.description,
+    keywords: pageData.keywords,
+    path: pageData.path,
+    root: pageData.root,
+  };
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <main class="p-demo">
+    <div class="p-demo__inner l-inner">
+      <h1 class="p-demo__title"><%- pageData.title %></h1>
+      <div class="p-demo__content">
+        <ul class="p-demo-list">
+          <% posts.forEach((post) => { %>
+          <li class="p-demo-list__item">
+            <span class="p-demo-list__item-text"><%- post.title %> - <%- post.description %></span>
+          </li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+  </main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+
+</html>

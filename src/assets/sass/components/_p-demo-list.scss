@@ -1,0 +1,25 @@
+@use "../global" as *;
+
+.p-demo-list {
+  --icon-size: #{rem(4)}; // アイコンの高さ
+}
+
+.p-demo-list__item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: rem(10);
+  align-items: flex-start;
+}
+
+.p-demo-list__item::before {
+  margin-block: calc((1lh - var(--icon-size)) / 2);
+  block-size: var(--icon-size);
+  aspect-ratio: 1/1;
+  background-color: currentColor;
+  border-radius: 50%;
+  content: "";
+}
+
+.p-demo-list__item-text {
+}
+
