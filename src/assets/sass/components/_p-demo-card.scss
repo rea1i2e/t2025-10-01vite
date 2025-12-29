@@ -1,0 +1,38 @@
+@use "../global" as *;
+
+.p-demo-card {
+  --card-padding-block: 1em;
+  --card-padding-inline: 1em;
+}
+
+.p-demo-card__link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  border-radius: rem(8);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.p-demo-card__link--hover-scale {
+  @include hover-scale-img();
+}
+
+.p-demo-card__image {
+}
+
+.p-demo-card__image img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.p-demo-card__title {
+  padding-block-start: var(--card-padding-block);
+  padding-inline: var(--card-padding-inline);
+}
+
+.p-demo-card__desc {
+  padding-block-end: var(--card-padding-block);
+  padding-inline: var(--card-padding-inline);
+}

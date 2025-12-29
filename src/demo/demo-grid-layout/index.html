@@ -15,60 +15,103 @@
 
 <body>
   <%- include(ejsPath + 'common/_header.ejs', { page }) %>
-<main class="p-demo" style="outline: 1px solid red;">
-  <div class="p-demo__inner l-inner">
-    <h1 class="p-demo__title"><%- pageData.title %></h1>
-    <section class="p-demo__section">
-      <h2 class="p-demo__subtitle">基本的なグリッド（3列）</h2>
-      <div class="p-demo__content">
-        <div class="p-grid-layout p-grid-layout--basic">
-          <% for (let i = 1; i <= 6; i++) { %>
-            <div class="p-grid-layout__item">
-              <div class="p-grid-layout__content">アイテム<%- i %></div>
+  <main class="p-demo" style="outline: 1px solid red;">
+    <div class="p-demo__inner l-inner">
+      <h1 class="p-demo__title"><%- pageData.title %></h1>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">画面幅に応じて1〜3カラム</h2>
+        <div class="p-demo__content">
+          <div class="p-demo-grid p-demo-grid--basic">
+            <% for (let i = 1; i <= 6; i++) { %>
+            <div class="p-demo-grid__item">
+              <div class="p-demo-grid__content">アイテム<%- i %></div>
             </div>
-          <% } %>
-        </div>
-      </div>
-    </section>
-    <section class="p-demo__section">
-      <h2 class="p-demo__subtitle">不等間隔グリッド</h2>
-      <div class="p-demo__content">
-        <div class="p-grid-layout p-grid-layout--uneven">
-          <div class="p-grid-layout__item p-grid-layout__item--large">
-            <div class="p-grid-layout__content">大きなアイテム</div>
-          </div>
-          <div class="p-grid-layout__item">
-            <div class="p-grid-layout__content">アイテム1</div>
-          </div>
-          <div class="p-grid-layout__item">
-            <div class="p-grid-layout__content">アイテム2</div>
-          </div>
-          <div class="p-grid-layout__item">
-            <div class="p-grid-layout__content">アイテム3</div>
-          </div>
-          <div class="p-grid-layout__item">
-            <div class="p-grid-layout__content">アイテム4</div>
+            <% } %>
           </div>
         </div>
-      </div>
-    </section>
-    <section class="p-demo__section">
-      <h2 class="p-demo__subtitle">レスポンシブグリッド</h2>
-      <div class="p-demo__content">
-        <div class="p-grid-layout p-grid-layout--responsive">
-          <% for (let i = 1; i <= 8; i++) { %>
-            <div class="p-grid-layout__item">
-              <div class="p-grid-layout__content">アイテム<%- i %></div>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">不等間隔グリッド</h2>
+        <div class="p-demo__content">
+          <div class="p-demo-grid p-demo-grid--uneven">
+            <div class="p-demo-grid__item p-demo-grid__item--large">
+              <div class="p-demo-grid__content">大きなアイテム</div>
             </div>
-          <% } %>
+            <div class="p-demo-grid__item">
+              <div class="p-demo-grid__content">アイテム1</div>
+            </div>
+            <div class="p-demo-grid__item">
+              <div class="p-demo-grid__content">アイテム2</div>
+            </div>
+            <div class="p-demo-grid__item">
+              <div class="p-demo-grid__content">アイテム3</div>
+            </div>
+            <div class="p-demo-grid__item">
+              <div class="p-demo-grid__content">アイテム4</div>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
-    <%- include(ejsPath + 'components/_p-grid-section.ejs') %>
-  </div>
-</main>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">auto-fit</h2>
+        <div class="p-demo__content">
+          <p class="p-demo__desc">子要素の幅は常に300px</p>
+          <div class="p-demo-grid p-demo-grid--auto-fit">
+            <% for (let i = 1; i <= 8; i++) { %>
+            <div class="p-demo-grid__item">
+              <div class="p-demo-grid__content">アイテム<%- i %></div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">auto-fit：要素1つの場合</h2>
+        <div class="p-demo__content">
+          <p class="p-demo__desc">
+            子要素の幅は常に300px。<br />
+            右側に中途半端な余白ができてしまうのが気になるところ。
+          </p>
+          <div class="p-demo-grid p-demo-grid--auto-fit">
+            <% for (let i = 1; i <= 1; i++) { %>
+            <div class="p-demo-grid__item">
+              <div class="p-demo-grid__content">アイテム<%- i %></div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">auto-fill</h2>
+        <div class="p-demo__content">
+          <p class="p-demo__desc">
+            子要素の幅が最小で300px。最大で1fr。<br />
+            子要素の数がカラム数を超える場合には少ない指定でいい感じに配置されて便利。
+          </p>
+          <div class="p-demo-grid p-demo-grid--auto-fill">
+            <% for (let i = 1; i <= 8; i++) { %>
+            <div class="p-demo-grid__item">
+              <div class="p-demo-grid__content">アイテム<%- i %></div>
+            </div>
+            <% } %>
+          </div>
+          <p class="p-demo__desc">
+            子要素の数が少ない場合を想定する必要があるときには、幅いっぱいになっtしまうので向かない。<br />
+            → ブレイクポイントごとにカラム数を指定する用法がよさそう。
+          </p>
+          <div class="p-demo-grid p-demo-grid--auto-fill">
+            <% for (let i = 1; i <= 1; i++) { %>
+            <div class="p-demo-grid__item">
+              <div class="p-demo-grid__content">アイテム<%- i %></div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </section>
+      <%- include(ejsPath + 'components/_p-grid-section.ejs') %>
+    </div>
+  </main>
   <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
 </body>
 
 </html>
-

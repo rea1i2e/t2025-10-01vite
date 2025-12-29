@@ -1,8 +1,8 @@
 export const posts = [
   {
-    title: "春の訪れを感じる風景",
+    title: "ボルネオゾウ",
     description:
-      "桜が咲き誇る美しい春の風景写真です。新緑と桜のコントラストが印象的で、季節の移り変わりを感じさせてくれます。",
+      "短い説明文。",
     image: {
       file: "demo/dummy1.jpg",
       fileSp: "demo/dummy1.jpg",
@@ -11,9 +11,9 @@ export const posts = [
     link: "#"
   },
   {
-    title: "都市の夜景",
+    title: "オランウータン",
     description:
-      "高層ビルが立ち並ぶ都市の夜景です。ネオンサインが輝き、活気に満ちた街の様子が伝わってきます。",
+      "オランウータンの説明文。",
     image: {
       file: "demo/dummy2.jpg",
       fileSp: "demo/dummy2.jpg",
@@ -22,9 +22,9 @@ export const posts = [
     link: "#"
   },
   {
-    title: "海辺の夕日",
+    title: "テングザル",
     description:
-      "水平線に沈む夕日の美しい瞬間を捉えた一枚です。オレンジ色に染まる空と海のグラデーションが幻想的です。",
+      "大きな鼻が特徴的な霊長類。河川沿いの森で群れを作って暮らし、木の上を器用に移動します。朝夕に活発に行動し、葉や果実を中心に食べることで知られています。遠くからでも目を引く独特のシルエットが魅力です。",
     image: {
       file: "demo/dummy3.jpg",
       fileSp: "demo/dummy3.jpg",

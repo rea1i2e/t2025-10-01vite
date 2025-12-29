@@ -13,7 +13,7 @@ $mediaquerys: (
 @if $startFrom == sp {
   //スマホファースト
   $breakpoints: (
-    sm: 600,
+    sm: 480, // gridレイアウト 1 or 2カラムの切り替え
     md: 768,
     lg: 1024,
     xl: 1440,

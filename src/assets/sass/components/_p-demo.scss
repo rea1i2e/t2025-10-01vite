@@ -54,5 +54,14 @@
   text-align: center;
 }
 
-.p-demo__text {
+.p-demo__content {
+  display: grid;
+  gap: rem(10);
+}
+
+.p-demo__content > * {
+  min-width: 0;
+}
+
+.p-demo__desc {
 }
