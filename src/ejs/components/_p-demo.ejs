@@ -10,9 +10,9 @@ const demoItems = Object.keys(pages)
     };
   });
 %>
-<ul class="p-demo__items">
+<ul class="p-demo-list">
   <% demoItems.forEach((item) => { %>
-    <li class="p-demo__item">
+    <li class="p-demo-list__item">
       <a href="<%- page.root + item.href %>">
         <%- item.text %>
       </a>

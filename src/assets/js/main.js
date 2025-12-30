@@ -16,7 +16,6 @@ import './_fadein.js';
 import './_page-top.js';
 // import './_counter.js';
 // import './_tab.js';
-import './_dialog.js';
 // import './_modal.js';
 import './_accordion.js';
 
@@ -25,5 +24,7 @@ import './_option-color.js';
 import './_checkFormValidity.js';
 import './_flatpickr.js';
 
-/* 動画モーダル */
-import './_movie-modal.js';
+/* モーダル */
+// import './_dialog-common.js'; // 各ファイルから読み込んでいるため、ここでの読み込みは不要
+import './_dialog-general.js';
+import './_dialog-youtube.js';

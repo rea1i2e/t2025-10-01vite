@@ -6,7 +6,7 @@ export const posts = [
     image: {
       file: "demo/dummy1.jpg",
       fileSp: "demo/dummy1.jpg",
-      alt: "ダミー画像1",
+      alt: "写真：ボルネオゾウ",
     },
     link: "#"
   },
@@ -17,7 +17,7 @@ export const posts = [
     image: {
       file: "demo/dummy2.jpg",
       fileSp: "demo/dummy2.jpg",
-      alt: "ダミー画像2",
+      alt: "写真：オランウータン",
     },
     link: "#"
   },
@@ -28,19 +28,42 @@ export const posts = [
     image: {
       file: "demo/dummy3.jpg",
       fileSp: "demo/dummy3.jpg",
-      alt: "ダミー画像3",
+      alt: "写真：テングザル",
     },
     link: "#"
   },
   {
-    title: "山々の連なる風景",
+    title: "ラフレシアに関するYouTube",
     description:
-      "緑豊かな山々が連なる壮大な風景です。雲が山頂を覆い、神秘的な雰囲気を醸し出しています。",
+      "動画タイトル：旅を振り返る～ボルネオ編～【ラフレシア】【ネペンテス】【食虫植物】(Rafflesia, Borneo) Malaysia",
     image: {
       file: "demo/dummy4.jpg",
       fileSp: "demo/dummy4.jpg",
+      alt: "写真：ラフレシア",
+    },
+    videoId: "0OGjwRE8Bt8", // YouTube動画ID
+    link: "#"
+  },
+  {
+    title: "ヤマネコに関するYouTube",
+    description:
+      "動画タイトル：【ボルネオヤマネコの雑学】#雑学 #cat #cat",
+    image: {
+      file: "demo/dummy5.jpg",
       alt: "ダミー画像4",
     },
+    videoId: "GnPuKV909sY", // YouTube動画ID
+    link: "#"
+  },
+  {
+    title: "ロング・イスンに関するYouTube",
+    description:
+      "動画タイトル：森のために闘う：ボルネオ島、ロング・イスンの先住民族コミュニティ",
+    image: {
+      file: "demo/dummy6.jpg",
+      alt: "ダミー画像4",
+    },
+    videoId: "GnPuKV909sY", // YouTube動画ID
     link: "#"
   },
   {
@@ -48,8 +71,8 @@ export const posts = [
     description:
       "レトロな雰囲気の街角のカフェです。温かみのある内装と外観が、訪れる人々に安らぎを与えてくれます。",
     image: {
-      file: "demo/dummy5.jpg",
-      fileSp: "demo/dummy5.jpg",
+      file: "demo/nagasaki3.jpg",
+      fileSp: "demo/nagasaki3.jpg",
       alt: "ダミー画像5",
     },
     link: "#"

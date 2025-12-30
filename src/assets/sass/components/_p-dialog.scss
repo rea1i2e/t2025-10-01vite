@@ -113,3 +113,24 @@
 .p-dialog__close:focus-visible {
   opacity: 0.7;
 }
+
+/* 動画モーダル用 */
+.p-dialog--movie {
+}
+
+.p-dialog--movie::backdrop {
+}
+
+.p-dialog__movie-content {
+  position: relative;
+  aspect-ratio: 16/9;
+}
+
+.p-dialog__movie-content iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+
+// 動画モーダル用の閉じるボタン
+.p-dialog__close--movie {
+}

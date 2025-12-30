@@ -1,15 +1,15 @@
-<div class="p-demo__cards">
-  <% dialogs.forEach((dialog, index) => { %>
-  <article class="p-demo__card p-dialog-trigger">
+<div class="p-demo-grid p-demo-grid--basic">
+  <% posts.slice(0, 3).forEach((post, index) => { %>
+  <article class="p-demo-grid__item p-dialog-trigger">
     <figure class="p-dialog-trigger__thumbnail">
-      <img src="<%- imagePath + dialog.image.file %>" alt="<%- dialog.image.alt %>">
+      <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
     </figure>
     <div class="p-dialog-trigger__content">
-      <h3 class="p-dialog-trigger__title"><%- dialog.title %></h3>
-      <p class="p-dialog-trigger__excerpt"><%- dialog.descriptions[0] %></p>
+      <h3 class="p-dialog-trigger__title"><%- post.title %></h3>
+      <p class="p-dialog-trigger__excerpt"><%- post.description %></p>
     </div>
-    <button class="p-dialog-trigger__button" type="button" data-modal-open="modal<%- index + 1 %>" aria-label="<%- dialog.title %>を開く">
-      <span class="u-screen-reader"><%- dialog.title %>を開く</span>
+    <button class="p-dialog-trigger__button" type="button" data-modal-open="modal<%- index + 1 %>" aria-label="<%- post.title %>を開く">
+      <span class="u-screen-reader"><%- post.title %>を開く</span>
     </button>
   </article>
   <% }); %>

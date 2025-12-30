@@ -1,0 +1,11 @@
+<div class="p-demo-grid p-demo-grid--basic">
+  <% posts.filter(post => post.videoId).forEach((post) => { %>
+  <article class="p-demo-grid__item p-dialog-trigger-movie">
+    <button class="p-dialog-trigger-movie__thumbnail" type="button" data-modal-open="youtube-modal" data-video-id="<%- post.videoId %>" aria-label="<%- post.title %>を開く">
+      <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+    </button>
+    <h3 class="p-dialog-trigger-movie__title"><%- post.title %></h3>
+    <p class="p-dialog-trigger-movie__desc"><%- post.description %></p>
+  </article>
+  <% }); %>
+</div>

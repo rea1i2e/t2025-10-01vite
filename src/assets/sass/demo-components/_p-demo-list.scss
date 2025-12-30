@@ -4,6 +4,11 @@
   --icon-size: #{rem(8)}; // アイコンの高さ
   --icon-color: var(--color-theme);
   // --icon-color: var(--color-accent);
+  margin-block: revert;
+  padding-inline-start: revert;
+  list-style-type: revert;
+  display: grid;
+  gap: rem(8);
 }
 
 .p-demo-list__item {
