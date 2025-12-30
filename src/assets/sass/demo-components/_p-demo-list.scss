@@ -1,7 +1,9 @@
 @use "../global" as *;
 
 .p-demo-list {
-  --icon-size: #{rem(4)}; // アイコンの高さ
+  --icon-size: #{rem(8)}; // アイコンの高さ
+  --icon-color: var(--color-theme);
+  // --icon-color: var(--color-accent);
 }
 
 .p-demo-list__item {
@@ -15,7 +17,7 @@
   margin-block: calc((1lh - var(--icon-size)) / 2);
   block-size: var(--icon-size);
   aspect-ratio: 1/1;
-  background-color: currentColor;
+  background-color: var(--icon-color, currentColor);
   border-radius: 50%;
   content: "";
 }
