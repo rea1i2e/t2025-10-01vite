@@ -27,6 +27,10 @@
           <h2 class="p-demo__section-title">動画再生モーダル：YouTube</h2>
           <%- include(ejsPath + 'components/_p-dialog-trigger-movie.ejs') %>
         </section>
+        <section class="p-demo__section">
+          <h2 class="p-demo__section-title">動画再生モーダル：video要素</h2>
+          <%- include(ejsPath + 'components/_p-dialog-trigger-video.ejs') %>
+        </section>
       </div>
       <aside class="p-demo__reference">
         <h2 class="p-demo__reference-title">参考サイト</h2>
@@ -42,6 +46,7 @@
   </main>
   <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
   <%- include(ejsPath + 'components/_p-dialog.ejs') %>
+  <%- include(ejsPath + 'components/_p-dialog-video.ejs') %>
 </body>
 
 </html>

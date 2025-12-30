@@ -68,7 +68,7 @@ const initDialogYoutube = () => {
   // dialog要素を作成
   modal = document.createElement("dialog");
   modal.id = "youtube-modal";
-  modal.className = "p-dialog p-dialog--movie js-dialog-movie";
+  modal.className = "p-dialog p-dialog--youtube js-dialog-movie";
 
   // モーダルコンテンツの要素を作成
   const modalContent = document.createElement("div");

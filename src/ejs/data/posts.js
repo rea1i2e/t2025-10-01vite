@@ -2,12 +2,13 @@ export const posts = [
   {
     title: "ボルネオゾウ",
     description:
-      "短い説明文。",
+      "動画の像はどこの像かわかりません。ボルネオのゾウかもしれないし、そうじゃないかもしれない。",
     image: {
       file: "demo/dummy1.jpg",
       fileSp: "demo/dummy1.jpg",
       alt: "写真：ボルネオゾウ",
     },
+    videoSrc: "demo/elephant.mp4", // 動画ファイルのパス
     link: "#"
   },
   {
@@ -78,14 +79,19 @@ export const posts = [
     link: "#"
   },
   {
-    title: "花畑の風景",
+    title: "空と海と森",
     description:
-      "色とりどりの花が咲き乱れる花畑の風景です。春から夏にかけての季節感が感じられる美しい光景です。",
+    "サムネイルと動画は無関係だよ。",
     image: {
       file: "demo/nagasaki1.jpg",
       fileSp: "demo/nagasaki1.jpg",
       alt: "ダミー画像6",
     },
+    // videoSrc: {
+      //   mp4: "demo/sample.mp4",
+      //   webm: "demo/sample.webm"
+      // }, // 複数フォーマット対応（オブジェクト形式）
+      videoSrc: "demo/forest.mp4", // 動画ファイルのパス
     link: "#"
   },
   {
@@ -97,6 +103,17 @@ export const posts = [
       fileSp: "demo/nagasaki2.jpg",
       alt: "ダミー画像7",
     },
+    link: "#"
+  },
+  {
+    title: "三日月",
+    description:
+      "動画は夜の三日月",
+    image: {
+      file: "demo/moon.png",
+      alt: "写真：ヒマラヤスギと三日月",
+    },
+    videoSrc: "demo/moon.mp4", // 動画ファイルのパス
     link: "#"
   },
 ];

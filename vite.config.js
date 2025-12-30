@@ -45,7 +45,8 @@ export default defineConfig({
       output: {
         assetFileNames: (info) => {
           const n = info.name ?? "";
-          if (/\.(png|jpe?g|gif|svg|webp|avif)$/i.test(n))
+          // 画像と動画ファイルを assets/images/ に配置
+          if (/\.(png|jpe?g|gif|svg|webp|avif|mp4|webm|mov|ogv)$/i.test(n))
             return "assets/images/[name]-[hash][extname]";
           if (/\.css$/i.test(n)) return "assets/css/[name]-[hash][extname]";
           return "assets/[name]-[hash][extname]";

@@ -1,0 +1,14 @@
+<div class="p-demo-grid p-demo-grid--basic">
+  <% 
+  const videoPosts = posts.filter(post => post.videoSrc);
+  videoPosts.forEach((post, index) => { 
+  %>
+  <article class="p-demo-grid__item p-dialog-trigger-video">
+    <button class="p-dialog-trigger-video__thumbnail" type="button" data-modal-open="video-modal<%- index + 1 %>" aria-label="<%- post.title %>を開く">
+      <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+    </button>
+    <h3 class="p-dialog-trigger-video__title"><%- post.title %></h3>
+    <p class="p-dialog-trigger-video__desc"><%- post.description %></p>
+  </article>
+  <% }); %>
+</div>

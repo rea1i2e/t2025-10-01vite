@@ -28,3 +28,4 @@ import './_flatpickr.js';
 // import './_dialog-common.js'; // 各ファイルから読み込んでいるため、ここでの読み込みは不要
 import './_dialog-general.js';
 import './_dialog-youtube.js';
+import './_dialog-video.js';
