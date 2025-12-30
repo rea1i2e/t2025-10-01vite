@@ -24,3 +24,6 @@ import './_accordion.js';
 import './_option-color.js';
 import './_checkFormValidity.js';
 import './_flatpickr.js';
+
+/* 動画モーダル */
+import './_movie-modal.js';

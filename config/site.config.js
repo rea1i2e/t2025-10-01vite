@@ -48,6 +48,20 @@ const pages = {
     title: "フェードで切り替えるスライダー（Splide）",
     description: "フェードで切り替えるスライダー（Splide）デモページです。",
   },
+  demoDialogMovie: {
+    label: "動画再生モーダル",
+    root: "../../",
+    path: "demo/demo-dialog-movie/",
+    title: "動画再生モーダル",
+    description: "動画再生モーダルのデモページです。",
+  },
+  // demoSound: {
+  //   label: "音声再生",
+  //   root: "../../",
+  //   path: "demo/demo-sound/",
+  //   title: "音声再生",
+  //   description: "音声再生のデモページです。",
+  // },
   demoFadein: {
     label: "フェードイン",
     root: "../../",
