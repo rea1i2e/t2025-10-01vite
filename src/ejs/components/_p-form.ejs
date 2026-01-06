@@ -1,4 +1,11 @@
-<%# 必須項目には required 属性を付与（mail.phpでも別途必須項目指定が必要） %>
+<%# 
+  必須項目には required 属性を付与（mail.phpでも別途必須項目指定が必要）
+  
+  チェックボックスについて：
+  PHP工房のmail.phpを使用する場合、チェックボックスのname属性は必ず配列形式（[]付き）にする必要があります。
+  例：name="問い合わせ種別[]"
+  これにより、複数の値を正しく取得できます。
+%>
 <form class="p-form" method="post" action="../MailForm01_utf8/mail.php" id="js-form">
   <dl class="p-form__dl">
     <dt class="p-form__dt"><label class="p-form__label" for="name">お名前<span class="p-form__required">必須</span></label></dt>
@@ -12,8 +19,8 @@
     </dd>
     <dt class="p-form__dt"><label class="p-form__label">問い合わせ種別<span class="p-form__optional">任意</span></label></dt>
     <dd class="p-form__dd">
-      <label><input type="checkbox" name="問い合わせ種別" value="質問" />質問</label>
-      <label><input type="checkbox" name="問い合わせ種別" value="相談" />相談</label>
+      <label><input type="checkbox" name="問い合わせ種別[]" value="質問" />質問</label>
+      <label><input type="checkbox" name="問い合わせ種別[]" value="相談" />相談</label>
     </dd>
     <dt class="p-form__dt"><label class="p-form__label" for="tel">電話番号<span class="p-form__optional">任意</span></label></dt>
     <dd class="p-form__dd">
