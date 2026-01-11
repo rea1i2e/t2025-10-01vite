@@ -1,32 +1,35 @@
 @use "../global" as *;
 
 .p-demo-list {
-  --icon-size: #{rem(8)}; // アイコンの高さ
-  --icon-color: var(--color-theme);
-  // --icon-color: var(--color-accent);
-  margin-block: revert;
-  padding-inline-start: revert;
-  list-style-type: revert;
+  // CSS変数の定義（カスタマイズ可能）
+  --_marker-size: var(--icon-list--marker-size, #{rem(8)});
+  --_marker-color: var(--icon-list--marker-color, var(--color-theme));
+  --_row-gap: var(--icon-list--row-gap, #{rem(8)});
+  --_column-gap: var(--icon-list--column-gap, #{rem(10)});
+
+  // margin-block: revert;
+  // padding-inline-start: revert;
   display: grid;
-  gap: rem(8);
+  gap: var(--_row-gap);
 }
 
 .p-demo-list__item {
+  position: relative;
+  // マーカー分のスペースを確保
+  padding-inline-start: calc(var(--_marker-size) + var(--_column-gap));
   display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: rem(10);
+  grid-template-columns: 1fr;
   align-items: flex-start;
 }
 
 .p-demo-list__item::before {
-  margin-block: calc((1lh - var(--icon-size)) / 2);
-  block-size: var(--icon-size);
-  aspect-ratio: 1/1;
-  background-color: var(--icon-color, currentColor);
+  position: absolute;
+  inset-block-start: calc((1lh - var(--_marker-size)) / 2 );
+  inset-inline-start: 0;
+  inline-size: var(--_marker-size);
+  block-size: var(--_marker-size);
+  aspect-ratio: 1;
+  background-color: var(--_marker-color, currentColor);
   border-radius: 50%;
   content: "";
 }
-
-.p-demo-list__item-text {
-}
-

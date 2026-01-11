@@ -1,0 +1,21 @@
+@use "../global" as *;
+/*
+::marker は 通常のボックスではなく、特別扱いの「マーカー領域」 に描画されるため以下のプロパティ指定はできない
+margin, padding, display, width, bckground, border
+位置調整するには、paddingを使う
+::markerを使わない場合、list-style: ""とする（kiso.cssで指定済み）
+代わりに::beforeなどを使う
+*/
+
+.p-demo-list-ordered {
+  list-style: decimal;
+  padding-inline-start: 1em;
+}
+
+.p-demo-list-ordered__item {
+
+}
+
+.p-demo-list-ordered__item::marker {
+  color: var(--color-theme);
+}
