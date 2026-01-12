@@ -183,19 +183,22 @@
 }
 
 label:has(input[type="radio" i]) {
-  display: inline grid;
-  grid-template-columns: auto 1fr;
-  column-gap: rem(10);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
   align-items: flex-start;
   cursor: pointer;
+  // ラジオボタン分のスペースを確保
+  padding-inline-start: calc(var(--radio-size) + #{rem(10)});
 }
 
 .p-form input[type="radio" i] {
-  margin-block: calc((1lh - var(--radio-size)) / 2);
-  position: relative;
+  position: absolute;
+  inset-block-start: calc((1lh - var(--radio-size)) / 2 );
+  inset-inline-start: 0;
   inline-size: var(--radio-size);
   block-size: var(--radio-size); /* aspect-rationだとSafariでつぶれる */
-  background-color: var(--radio-size);
+  background-color: var(--radio-bg);
   border: var(--border-width) solid var(--border-color);
   border-radius: 50%;
   appearance: none; /* 標準の見た目とCSSの制限を除去 */
@@ -230,16 +233,19 @@ label:has(input[type="radio" i]) {
 }
 
 .p-form label:has(input[type="checkbox" i]) {
-  display: inline grid;
-  grid-template-columns: auto auto;
-  column-gap: rem(10);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
   align-items: flex-start;
   cursor: pointer;
+  // チェックボックス分のスペースを確保
+  padding-inline-start: calc(var(--checkbox-size) + #{rem(10)});
 }
 
 .p-form input[type="checkbox" i] {
-  margin-block: calc((1lh - var(--checkbox-size)) / 2);
-  position: relative;
+  position: absolute;
+  inset-block-start: calc((1lh - var(--checkbox-size)) / 2 );
+  inset-inline-start: 0;
   inline-size: var(--checkbox-size);
   block-size: var(--checkbox-size); /* aspect-rationだとSafariでつぶれる */
   background-color: var(--checkbox-bg);
