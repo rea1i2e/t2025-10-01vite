@@ -237,9 +237,9 @@ label:has(input[type="radio" i]) {
   display: grid;
   grid-template-columns: 1fr;
   align-items: flex-start;
-  cursor: pointer;
-  // チェックボックス分のスペースを確保
+  width: fit-content;
   padding-inline-start: calc(var(--checkbox-size) + #{rem(10)});
+  cursor: pointer;
 }
 
 .p-form input[type="checkbox" i] {
@@ -309,6 +309,7 @@ input::-webkit-date-and-time-value {
 
 .p-form textarea {
   field-sizing: content;
+  display: block;
   width: 100%;
   min-height: 5lh;
   resize: none;
@@ -330,7 +331,6 @@ input::-webkit-date-and-time-value {
 
 .p-form__agree {
   margin-top: rem(16);
-  text-align: center;
 }
 
 .p-form__agree-text a {
