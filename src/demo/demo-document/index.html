@@ -1,0 +1,132 @@
+<% 
+  const key = 'demoDocument';
+  const pageData = pages[key];
+  const page = {
+    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
+    description: pageData.description,
+    keywords: pageData.keywords,
+    path: pageData.path,
+    root: pageData.root,
+  };
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <main class="p-demo">
+    <div class="p-demo__inner l-inner">
+      <h1 class="p-demo__title"><%- pageData.title %></h1>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">順序なしリスト（ul）</h2>
+        <div class="p-demo__content">
+          <ul class="p-demo-list">
+            <% posts.forEach((post) => { %>
+            <li class="p-demo-list__item">
+              <span class="p-demo-list__item-text"><%- post.title %> - <%- post.description %></span>
+            </li>
+            <% }); %>
+          </ul>
+        </div>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">順序付きリスト（ol）</h2>
+        <div class="p-demo__content">
+          <ol class="p-demo-list-ordered">
+            <% posts.forEach((post) => { %>
+            <li class="p-demo-list-ordered__item">
+              <span class="p-demo-list-ordered__item-text"><%- post.title %> - <%- post.description %></span>
+            </li>
+            <% }); %>
+          </ol>
+        </div>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">定義リスト（dl, dt, dd）</h2>
+        <div class="p-demo__content">
+          <%
+            const documentItems = [
+              {
+                heading: '会社名',
+                text: '株式会社サンプル'
+              },
+              {
+                heading: '代表者',
+                text: '山田 太郎'
+              },
+              {
+                heading: '所在地',
+                text: '埼玉県朝霞市サンプル1-2-3'
+              },
+              {
+                heading: '電話番号',
+                text: '090-0000-0000'
+              },
+              {
+                heading: 'メールアドレス',
+                // text: ty_('afmaar128', 'gmail.com', true) // リンクあり
+                text: ty_('afmaar128', 'gmail.com', false) // リンクなし
+              },
+              {
+                heading: '事業内容',
+                text: 'Web制作・システム開発・コンサルティング'
+              },
+            ];
+          %>
+          <dl class="p-demo-dl p-demo-dl--border">
+            <% documentItems.forEach((item) => { %>
+              <dt class="p-dl__dt"><%- item.heading %></dt>
+              <dd class="p-dl__dd"><%- item.text %></dd>
+            <% }); %>
+          </dl>
+        </div>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">メールアドレス保護（直接出力）</h2>
+        <div class="p-demo__content">
+          <p>問合せ先メールアドレス（リンクなし）：<%- ty_('yoko', 'eoosaka.org', false) %></p>
+          <p>問合せ先メールアドレス（リンクあり）：<%- ty_('yoko', 'eoosaka.org', true) %></p>
+          <%
+            const email = ty_('yoko', 'eoosaka.org', true);
+          %>
+          <p>変数に代入して出力：<%- email %></p>
+        </div>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">テーブル（table）</h2>
+        <div class="p-demo__content">
+          <table class="p-demo-table">
+            <thead class="p-table__thead">
+              <tr class="p-table__tr">
+                <th class="p-table__th">項目1</th>
+                <th class="p-table__th">項目2</th>
+                <th class="p-table__th">項目3</th>
+              </tr>
+            </thead>
+            <tbody class="p-table__tbody">
+              <tr class="p-table__tr">
+                <td class="p-table__td">データ1-1</td>
+                <td class="p-table__td">データ1-2</td>
+                <td class="p-table__td">データ1-3</td>
+              </tr>
+              <tr class="p-table__tr">
+                <td class="p-table__td">データ2-1</td>
+                <td class="p-table__td">データ2-2</td>
+                <td class="p-table__td">データ2-3</td>
+              </tr>
+              <tr class="p-table__tr">
+                <td class="p-table__td">データ3-1</td>
+                <td class="p-table__td">データ3-2</td>
+                <td class="p-table__td">データ3-3</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+
+</html>

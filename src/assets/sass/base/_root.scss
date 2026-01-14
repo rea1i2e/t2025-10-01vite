@@ -20,6 +20,7 @@
   --inner: #{rem($inner-sp)};
   --inner-padding: #{rem($padding-sp)};
   --hover-transition: 0.3s ease-in-out;
+  --border: 1px solid #ccc;
   @include mq() {
     --desigh-width: 1440;
     --header-height: #{rem(90)};

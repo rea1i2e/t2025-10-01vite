@@ -1,0 +1,42 @@
+@use "../global" as *;
+
+// 定義リスト（dl, dt, dd）
+.p-demo-dl {
+  --dl-padding-block: #{rem(16)};
+  
+  display: grid;
+  @include mq() {
+    --dl-padding-block: #{rem(24)};
+
+    grid-template-columns: rem(200) 1fr;
+  }
+}
+
+.p-dl__dt {
+  padding-block-start: var(--dl-padding-block);
+  border-top: var(--border);
+  @include mq() {
+    padding-block: var(--dl-padding-block);
+    padding-inline-end: 1em;
+  }
+}
+
+.p-dl__dt:last-of-type {
+  @include mq() {
+    border-bottom: var(--border);
+  }
+}
+
+.p-dl__dd {
+  padding-block-end: var(--dl-padding-block);
+  padding-inline-start: 1em;
+  @include mq() {
+    padding-block: var(--dl-padding-block);
+    padding-inline-start: 0;
+    border-top: var(--border);
+  }
+}
+
+.p-dl__dd:last-of-type {
+  border-bottom: var(--border);
+}

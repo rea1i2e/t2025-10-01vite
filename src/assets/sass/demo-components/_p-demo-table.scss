@@ -1,0 +1,23 @@
+@use "../global" as *;
+
+// テーブル（table）
+.p-demo-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: var(--border);
+}
+
+.p-table__th {
+  padding: rem(12) rem(16);
+  background-color: var(--color-bg-sub, #f5f5f5);
+  border: var(--border);
+}
+
+.p-table__td {
+  padding: rem(12) rem(16);
+  border: var(--border);
+}
+
+.p-table__tbody .p-table__tr:nth-child(even) {
+  background-color: var(--color-bg-sub, #f9f9f9);
+}

@@ -197,7 +197,84 @@ flowchart LR
 - `src/ejs/components/_p-demo.ejs`
   - `pages` から `demo` で始まるキーを抽出してデモ一覧を自動生成
 
-### 3.10 npm scripts
+### 3.10 メールアドレス保護機能
+
+**実現箇所**
+- `config/utils.js`
+  - `email()`関数の定義（`toString()`メソッドにより文字列化時に自動的にHTMLを返す）
+- `config/site.config.js`
+  - `email`関数を`siteConfig`に追加し、EJSテンプレートで自動的に利用可能
+- `src/ejs/components-demo/_c-email.ejs`
+  - メールアドレス保護用のHTML出力（文字列やオブジェクトを自動判定）
+- `src/assets/js/_email-protection.js`
+  - メールアドレスの復元とリンク生成
+- `src/assets/js/main.js`
+  - `_email-protection.js`をインポート
+
+**必要なファイル**
+1. 呼び出し元のHTMLまたはEJSファイル
+2. `config/utils.js`（`email`関数）
+3. `config/site.config.js`（`email`関数のエクスポート）
+4. `src/assets/js/_email-protection.js`
+5. `src/assets/js/main.js`
+
+**使い方（シンプル版）**
+
+1. データ定義時に`email()`関数を使用
+```javascript
+const documentItems = [
+  {
+    heading: 'メールアドレス',
+    text: email('afmaar128', 'gmail.com')
+  },
+  {
+    heading: '事業内容',
+    text: 'Web制作・システム開発・コンサルティング'
+  },
+];
+```
+
+2. 表示部分は`<%- item.text %>`だけで済む（条件分岐不要）
+```ejs
+<dl class="p-demo-dl">
+  <% documentItems.forEach((item) => { %>
+    <dt class="p-dl__dt"><%- item.heading %></dt>
+    <dd class="p-dl__dd"><%- item.text %></dd>
+  <% }); %>
+</dl>
+```
+
+**オプション**
+
+- リンクなしで表示する場合:
+```javascript
+text: email('afmaar128', 'gmail.com', { link: false })
+```
+
+**処理の流れ**
+
+1. **ビルド時（サーバー側）**
+   - `email('afmaar128', 'gmail.com')`でメールアドレスオブジェクトを生成
+   - `toString()`メソッドにより、文字列として扱われたときに自動的にHTMLを返す
+   - 出力されるHTML: `<span class="js-email-protection" data-email-user="afmaar128" data-email-domain="gmail.com" data-link="true"></span><noscript>afmaar128[at]gmail.com</noscript>`
+
+2. **ブラウザ（クライアント側）**
+   - `_email-protection.js`が`DOMContentLoaded`で実行
+   - `.js-email-protection`要素を検索してメールアドレスを復元
+   - `data-link`が`true`の場合は`<a>`タグを生成、`false`の場合はテキストのみ表示
+
+**スパムボット対策**
+- HTMLに`@`を含めない（`data-email-user`と`data-email-domain`に分割）
+- JavaScriptで動的にメールアドレスを復元
+- `<noscript>`タグでJavaScript無効時も情報を表示
+
+**メリット**
+- データ定義と表示ロジックが分離され、使い回しやすい
+- 条件分岐が不要で、通常のテキストと同じように扱える
+- `toString()`メソッドにより、`<%- item.text %>`だけで自動的にメールアドレス保護が適用される
+- WordPressテーマ開発など、他のフレームワークにも移植しやすい設計（共通部分とフレームワーク固有部分を分離）
+
+### 3.11 npm scripts
 
 **定義**
 - `package.json`

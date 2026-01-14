@@ -29,3 +29,6 @@ import './_flatpickr.js';
 import './_dialog-general.js';
 import './_dialog-youtube.js';
 import './_dialog-video.js';
+
+/* メールアドレス保護 */
+import './_email-protection.js';

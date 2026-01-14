@@ -1,4 +1,4 @@
-import { isExcluded } from "./utils.js";
+import { isExcluded, email, ty_ } from "./utils.js";
 
 /**
  * ページ設定
@@ -19,13 +19,6 @@ const pages = {
     path: "demo/",
     title: "デモ一覧",
     description: "デモの一覧ページです。",
-  },
-  demoList: {
-    label: "リスト",
-    root: "../../",
-    path: "demo/demo-list/",
-    title: "リスト",
-    description: "リストデモページです。",
   },
   demoAccordion: {
     label: "アコーディオン",
@@ -104,6 +97,13 @@ const pages = {
     title: "ホバーエフェクト（画像切り替え）",
     description: "ホバーエフェクト（画像切り替え）ページです。",
   },
+  demoDocument: {
+    label: "ドキュメント（ul, ol, dl, dt, dd, table）",
+    root: "../../",
+    path: "demo/demo-document/",
+    title: "ドキュメント",
+    description: "ul, ol, dl, dt, dd, tableなどドキュメントページです。",
+  },
   contact: {
     label: "お問い合わせ",
     root: "../",
@@ -168,6 +168,10 @@ export const siteConfig = {
 
   // 除外ページチェック関数
   isExcluded,
+
+  // メールアドレス保護用ヘルパー関数
+  email,
+  ty_,
 
   // ページ設定
   pages,

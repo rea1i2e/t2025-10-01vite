@@ -1,0 +1,62 @@
+<% 
+  // 入力値の正規化（共通ロジック）
+  let emailUser = '';
+  let emailDomain = '';
+  let shouldLink = true;
+  
+  // パラメータの受け取り方に対応
+  if (typeof text !== 'undefined') {
+    // textパラメータを直接受け取る（最もシンプルな使い方）
+    if (text && typeof text === 'object' && text._isEmail) {
+      // email()関数の戻り値（オブジェクト）
+      emailUser = text.user;
+      emailDomain = text.domain;
+      shouldLink = text._link !== false;
+    } else if (typeof text === 'string' && text.includes('@')) {
+      // 文字列から自動検出
+      const parts = text.split('@');
+      emailUser = parts[0];
+      emailDomain = parts[1];
+      shouldLink = typeof link !== 'undefined' ? link : true;
+    } else {
+      // メールアドレスではない場合は通常のテキストを出力
+      %><%- text %><%
+      return;
+    }
+  } else if (typeof user !== 'undefined' && typeof domain !== 'undefined') {
+    // 直接指定: { user: 'xxx', domain: 'yyy' }
+    emailUser = user;
+    emailDomain = domain;
+    shouldLink = typeof link !== 'undefined' ? link : true;
+  } else if (typeof item !== 'undefined' && item) {
+    // itemオブジェクトから取得
+    if (item.text && item.text._isEmail) {
+      // email()関数の戻り値
+      emailUser = item.text.user;
+      emailDomain = item.text.domain;
+      shouldLink = item.text._link !== false;
+    } else if (item.user && item.domain) {
+      // user/domainが直接指定
+      emailUser = item.user;
+      emailDomain = item.domain;
+      shouldLink = item.link !== false;
+    } else if (item.text && typeof item.text === 'string' && item.text.includes('@')) {
+      // 文字列から自動検出
+      const parts = item.text.split('@');
+      emailUser = parts[0];
+      emailDomain = parts[1];
+      shouldLink = item.link !== false;
+    } else {
+      // メールアドレスではない場合は通常のテキストを出力
+      %><%- item.text %><%
+      return;
+    }
+  } else if (typeof emailParam !== 'undefined' && emailParam) {
+    // emailParam文字列から取得（後方互換性のため）
+    const parts = emailParam.split('@');
+    emailUser = parts[0];
+    emailDomain = parts[1];
+  }
+%>
+<span class="js-email-protection" data-email-user="<%= emailUser %>" data-email-domain="<%= emailDomain %>" data-link="<%= shouldLink %>"></span>
+<noscript><%= emailUser %>[at]<%= emailDomain %></noscript>
