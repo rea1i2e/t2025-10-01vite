@@ -65,8 +65,8 @@
               },
               {
                 heading: 'メールアドレス',
-                // text: ty_('afmaar128', 'gmail.com', true) // リンクあり
-                text: ty_('afmaar128', 'gmail.com', false) // リンクなし
+                // text: ty_email_protection('afmaar128', 'gmail.com', true) // リンクあり
+                text: ty_email_protection('afmaar128', 'gmail.com', false) // リンクなし
               },
               {
                 heading: '事業内容',
@@ -85,10 +85,10 @@
       <section class="p-demo__section">
         <h2 class="p-demo__subtitle">メールアドレス保護（直接出力）</h2>
         <div class="p-demo__content">
-          <p>問合せ先メールアドレス（リンクなし）：<%- ty_('yoko', 'eoosaka.org', false) %></p>
-          <p>問合せ先メールアドレス（リンクあり）：<%- ty_('yoko', 'eoosaka.org', true) %></p>
+          <p>問合せ先メールアドレス（リンクなし）：<%- ty_email_protection('afmaar128', 'gmail.com', false) %></p>
+          <p>問合せ先メールアドレス（リンクあり）：<%- ty_email_protection('afmaar128', 'gmail.com', true) %></p>
           <%
-            const email = ty_('yoko', 'eoosaka.org', true);
+            const email = ty_email_protection('afmaar128', 'gmail.com', true);
           %>
           <p>変数に代入して出力：<%- email %></p>
         </div>

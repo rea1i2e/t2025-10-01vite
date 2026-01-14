@@ -1,4 +1,4 @@
-import { isExcluded, email, ty_ } from "./utils.js";
+import { isExcluded, email, ty_email_protection } from "./utils.js";
 
 /**
  * ページ設定
@@ -171,7 +171,7 @@ export const siteConfig = {
 
   // メールアドレス保護用ヘルパー関数
   email,
-  ty_,
+  ty_email_protection,
 
   // ページ設定
   pages,

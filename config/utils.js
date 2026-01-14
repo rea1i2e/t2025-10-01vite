@@ -63,7 +63,7 @@ export const email = (user, domain, options = {}) => {
 };
 
 /**
- * メールアドレス保護用の直接出力関数（PHPのty_()と同様の使い方）
+ * メールアドレス保護用の直接出力関数
  * スパムボット対策として、メールアドレスを分割してHTMLを直接返す
  * 
  * @param {string} user - メールアドレスのユーザー名部分
@@ -72,10 +72,10 @@ export const email = (user, domain, options = {}) => {
  * @returns {string} メールアドレス保護用のHTML文字列
  * 
  * @example
- * <%- ty_('yoko', 'eoosaka.org', false) %>
- * <%- ty_('yoko', 'eoosaka.org', true) %>
+ * <%- ty_email_protection('afmaar128', 'gmail.com', false) %>
+ * <%- ty_email_protection('afmaar128', 'gmail.com', true) %>
  */
-export const ty_ = (user, domain, link = true) => {
+export const ty_email_protection = (user, domain, link = true) => {
   const linkAttr = link ? 'true' : 'false';
   return `<span class="js-email-protection" data-email-user="${user}" data-email-domain="${domain}" data-link="${linkAttr}"></span><noscript>${user}[at]${domain}</noscript>`;
 };
