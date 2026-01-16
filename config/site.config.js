@@ -48,11 +48,11 @@ const pages = {
   //   title: "音声再生",
   //   description: "音声再生のデモページです。",
   // },
-  demoFadein: {
-    label: "フェードイン",
+  demoScrollAnimation: {
+    label: "スクロールアニメーション",
     root: "../../",
-    path: "demo/demo-fadein/",
-    title: "フェードイン",
+    path: "demo/demo-scroll-animation/",
+    title: "スクロールアニメーション",
     description: "スクロールに応じて要素が順次表示されるデモページです。",
   },
   demoCssAnime: {
