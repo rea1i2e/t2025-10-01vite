@@ -9,6 +9,7 @@
 .p-fadein-demo__hero,
 .p-fadein-demo__guide,
 .p-fadein-demo__cards,
+.p-fadein-demo__counter,
 .p-fadein-demo__notes {
   padding-block: clamp(60px, 8vw, 120px);
 }
@@ -122,5 +123,36 @@
 
 .p-fadein-demo__notes p {
   max-width: 720px;
+}
+
+.p-fadein-demo__counter {
+  background-color: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.p-fadein-demo__counter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: rem(40);
+  margin-top: rem(32);
+}
+
+.p-fadein-demo__counter-item {
+  text-align: center;
+}
+
+.p-fadein-demo__counter-number {
+  display: block;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 700;
+  color: #6c5ce7;
+  line-height: 1.2;
+  margin-bottom: rem(12);
+}
+
+.p-fadein-demo__counter-label {
+  font-size: rem(16);
+  color: #666;
 }
 
