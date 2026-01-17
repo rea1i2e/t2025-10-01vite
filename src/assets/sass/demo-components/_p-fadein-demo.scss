@@ -144,6 +144,8 @@
 
 .p-fadein-demo__counter-number {
   display: block;
+  /* 数字によって幅に差があるフォントをあえて指定 */
+  font-family: "Montserrat", sans-serif;
   font-size: clamp(40px, 5vw, 64px);
   font-weight: 700;
   color: #6c5ce7;

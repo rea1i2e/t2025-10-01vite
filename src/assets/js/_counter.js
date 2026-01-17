@@ -40,6 +40,9 @@ const initCounter = () => {
       // カウンターの幅を固定するために、目標値の幅を事前に計算して設定
       const targetWidth = formatWithCommas(target).length;
       counter.style.minWidth = `${targetWidth}ch`;
+      // 等幅数字を有効化（レイアウトシフト防止）
+      counter.style.fontVariantNumeric = 'tabular-nums';
+      counter.style.fontFeatureSettings = '"tnum"';
 
       // 一定間隔でカウントアップを実行するタイマーを設定
       const timer = setInterval(() => {
@@ -69,7 +72,7 @@ const initCounter = () => {
           }
       });
   }, {
-      threshold: 0.5 // 要素が50%表示されたときにトリガー
+      threshold: 1 // 要素が100%表示されたときにトリガー
   });
 
   // すべてのカウンター要素を監視対象に追加
