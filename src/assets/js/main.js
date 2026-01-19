@@ -32,3 +32,6 @@ import './_dialog-video.js';
 
 /* メールアドレス保護 */
 import './_email-protection.js';
+
+/* スクロールヒント */
+import './_scroll-hint.js';

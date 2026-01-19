@@ -5,6 +5,8 @@
   width: 100%;
   border-collapse: collapse;
   border: var(--border);
+  /* scroll-hint確認用 */
+  white-space: nowrap;
 }
 
 .p-table__th {
