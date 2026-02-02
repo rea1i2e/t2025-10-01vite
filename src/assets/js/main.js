@@ -13,6 +13,7 @@ import './_splide-thumbnail.js';
 
 /* スクロールに応じた表示制御 */
 import './_fadein.js';
+import './_nav-current-section.js';
 import './_page-top.js';
 import './_counter.js';
 // import './_tab.js';

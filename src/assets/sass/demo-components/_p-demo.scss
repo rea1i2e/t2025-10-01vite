@@ -24,9 +24,17 @@
   min-width: 0;
 }
 
+.p-demo__section-inner {
+  display: grid;
+  gap: rem(16);
+  max-width: 60ch;
+}
+
 .p-demo__title {
 }
 
+.p-demo__title {
+}
 
 .p-demo__button {
   margin-block-start: rem(80);
@@ -43,4 +51,83 @@
 }
 
 .p-demo__desc {
+  line-height: 1.7;
+}
+
+.p-demo__desc code {
+  padding-inline: rem(4);
+  font-size: 0.9em;
+  background-color: var(--color-bg-code, #f0f0f0);
+  border-radius: rem(4);
+}
+
+/* ページ内ナビ（カレントセクションデモなど） */
+.p-demo__nav {
+  position: sticky;
+  top: calc(var(--header-height) + rem(16));
+  z-index: 10;
+  padding-block: rem(16);
+  padding-inline: rem(16);
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: rem(8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.p-demo__nav-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(8) rem(24);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.p-demo__nav-item {
+  margin: 0;
+}
+
+.p-demo__nav-link {
+  display: inline-block;
+  padding-block: rem(4);
+  padding-inline: 0;
+  color: inherit;
+  text-decoration: none;
+  border-block-end: 2px solid transparent;
+  transition: border-color 0.2s ease, font-weight 0.2s ease;
+}
+
+.p-demo__nav-link:hover {
+  text-decoration: none;
+  border-block-end-color: rgba(0, 0, 0, 0.2);
+}
+
+.p-demo__nav-item.is-current-section .p-demo__nav-link {
+  font-weight: 700;
+  border-block-end-color: currentColor;
+}
+
+.p-demo__section p {
+  margin: 0;
+  line-height: 1.8;
+}
+
+.p-demo__section code {
+  padding-inline: rem(4);
+  font-size: 0.9em;
+  background-color: var(--color-bg-code, #f0f0f0);
+  border-radius: rem(4);
+}
+
+/* カレントセクションデモ用：セクションを縦長にしてスクロールでカレント切り替えを確認しやすくする */
+.p-demo--current-section .p-demo__section {
+  min-block-size: 60vh;
+  display: flex;
+  align-items: center;
+  padding-block: rem(48);
+  border-block-start: 1px solid #e8e8e8;
+}
+
+.p-demo--current-section .p-demo__section:first-of-type {
+  border-block-start: none;
 }

@@ -90,6 +90,13 @@ const pages = {
     title: "ホバーエフェクト（カード）",
     description: "ホバーエフェクトのデモ（カード）ページです。",
   },
+  demoCurrentSection: {
+    label: "カレントセクション",
+    root: "../../",
+    path: "demo/demo-current-section/",
+    title: "カレントセクション",
+    description: "カレントセクションデモページです。",
+  },
   demoHoverChange: {
     label: "ホバーエフェクト（画像切り替え）",
     root: "../../",

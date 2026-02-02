@@ -1,0 +1,79 @@
+<%
+  const key = 'demoCurrentSection';
+  const pageData = pages[key];
+  const page = {
+    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
+    description: pageData.description,
+    keywords: pageData.keywords,
+    path: pageData.path,
+    root: pageData.root,
+  };
+  const sectionNavItems = [
+    { id: 'overview', label: '概要' },
+    { id: 'feature', label: '特徴' },
+    { id: 'price', label: '料金' },
+    { id: 'contact', label: 'お問い合わせ' },
+  ];
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <main class="p-demo p-demo--current-section l-main">
+    <div class="p-demo__inner l-inner">
+      <h1 class="p-demo__title"><%- pageData.title %></h1>
+      <p class="p-demo__desc">
+        スクロールすると、ビューポート中央付近に入ったセクションに応じてナビ項目に <code>is-current-section</code> が付きます。
+      </p>
+
+      <nav class="p-demo__nav" aria-label="ページ内ナビゲーション">
+        <ul class="p-demo__nav-items">
+          <% sectionNavItems.forEach((item) => { %>
+          <li class="p-demo__nav-item" data-section-id="<%- item.id %>">
+            <a href="#<%- item.id %>" class="p-demo__nav-link"><%- item.label %></a>
+          </li>
+          <% }); %>
+        </ul>
+      </nav>
+
+      <section class="p-demo__section js-section" id="overview">
+        <div class="p-demo__section-inner">
+          <h2 class="p-demo__title">概要</h2>
+          <p>
+            このデモでは、<code>_nav-current-section.js</code> により、監視対象のセクション（<code>.js-section</code>）がビューポート中央付近に入ったタイミングで、対応するナビ項目（<code>data-section-id</code>）に <code>is-current-section</code> クラスが付与されます。
+          </p>
+        </div>
+      </section>
+
+      <section class="p-demo__section js-section" id="feature">
+        <div class="p-demo__section-inner">
+          <h2 class="p-demo__title">特徴</h2>
+          <p>
+            IntersectionObserver API を使用しており、<code>rootMargin: '-50% 0px'</code> により「画面中央付近」を基準にカレントを判定しています。長いページや LP のナビで「今どのブロックにいるか」をハイライトする用途に向いています。
+          </p>
+        </div>
+      </section>
+
+      <section class="p-demo__section js-section" id="price">
+        <div class="p-demo__section-inner">
+          <h2 class="p-demo__title">料金</h2>
+          <p>
+            セクション側には <code>class="js-section"</code> と <code>id</code> を、ナビ側の <code>li</code> には <code>data-section-id="セクションのid"</code> を付与してください。同一ページ内に <code>.js-section</code> が1つもない場合はスクリプトは何も実行しません。
+          </p>
+        </div>
+      </section>
+
+      <section class="p-demo__section js-section" id="contact">
+        <div class="p-demo__section-inner">
+          <h2 class="p-demo__title">お問い合わせ</h2>
+          <p>
+            カレント表示の見た目は CSS で自由に調整できます。このデモではナビリンクに下線と太字を付けています。必要に応じて <code>.is-current-section</code> 用のスタイルを追加してください。
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+</html>
