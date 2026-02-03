@@ -1,0 +1,52 @@
+<%
+  const tabPosts1 = posts.slice(0, 3);
+  const tabPosts2 = posts.slice(3, 6);
+%>
+
+<div class="p-demo__section">
+  <h2 class="p-demo__section-title">タブ切り替え（cards 1〜3）</h2>
+  <div class="p-tab js-tab">
+    <ul class="p-tab__menu-items">
+      <% tabPosts1.forEach((post, index) => { %>
+      <li class="p-tab__menu-item">
+        <button type="button" class="p-tab__button js-tab-trigger<%- index === 0 ? ' is-active' : '' %>" data-id="tab1-0<%- index + 1 %>"><%- post.title %></button>
+      </li>
+      <% }); %>
+    </ul>
+    <div class="p-tab__contents">
+      <% tabPosts1.forEach((post, index) => { %>
+      <div class="p-tab__content js-tab-target<%- index === 0 ? ' is-active' : '' %>" id="tab1-0<%- index + 1 %>">
+        <figure class="p-dialog-trigger__thumbnail">
+          <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+        </figure>
+        <h3 class="p-dialog-trigger__title"><%- post.title %></h3>
+        <p class="p-dialog-trigger__excerpt"><%- post.description %></p>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</div>
+
+<div class="p-demo__section">
+  <h2 class="p-demo__section-title">タブ切り替え（cards 4〜6）</h2>
+  <div class="p-tab js-tab">
+    <ul class="p-tab__menu-items">
+      <% tabPosts2.forEach((post, index) => { %>
+      <li class="p-tab__menu-item">
+        <button type="button" class="p-tab__button js-tab-trigger<%- index === 0 ? ' is-active' : '' %>" data-id="tab2-0<%- index + 1 %>"><%- post.title %></button>
+      </li>
+      <% }); %>
+    </ul>
+    <div class="p-tab__contents">
+      <% tabPosts2.forEach((post, index) => { %>
+      <div class="p-tab__content js-tab-target<%- index === 0 ? ' is-active' : '' %>" id="tab2-0<%- index + 1 %>">
+        <figure class="p-dialog-trigger__thumbnail">
+          <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+        </figure>
+        <h3 class="p-dialog-trigger__title"><%- post.title %></h3>
+        <p class="p-dialog-trigger__excerpt"><%- post.description %></p>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</div>
