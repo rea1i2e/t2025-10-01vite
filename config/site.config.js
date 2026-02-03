@@ -34,6 +34,13 @@ const pages = {
     title: "モーダル",
     description: "モーダルデモページです。",
   },
+  demoTab: {
+    label: "タブ切り替え",
+    root: "../../",
+    path: "demo/demo-tab/",
+    title: "タブ切り替え",
+    description: "タブ切り替えデモページです。",
+  },
   demoSplide: {
     label: "スライダー（Splide）",
     root: "../../",
