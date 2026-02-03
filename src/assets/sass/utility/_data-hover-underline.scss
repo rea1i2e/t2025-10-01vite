@@ -1,0 +1,53 @@
+[data-hover-underline] {
+  --underline-color: currentColor;
+  --bottom: 0;
+  --delay: 0s;
+  --line-width: 2px;
+
+  background-repeat: no-repeat;
+  background-image: linear-gradient(var(--underline-color), var(--underline-color));
+  background-size: 0% var(--line-width);
+  background-position: bottom var(--bottom) right;
+}
+
+// 伸びるアニメーション（JS で is-expanded を付与）
+@keyframes expand {
+  0% {
+    background-size: 0% var(--line-width);
+    background-position: bottom var(--bottom) left;
+  }
+  100% {
+    background-position: bottom var(--bottom) left;
+    background-size: 100% var(--line-width);
+  }
+}
+
+// 縮むアニメーション（JS で is-contracting を付与、animationend でクラス削除）
+@keyframes contract {
+  0% {
+    background-size: 100% var(--line-width);
+    background-position: bottom var(--bottom) right;
+  }
+  100% {
+    background-position: bottom var(--bottom) right;
+    background-size: 0% var(--line-width);
+  }
+}
+
+[data-hover-underline].is-expanded {
+  animation: expand 0.3s var(--delay) forwards;
+}
+
+[data-hover-underline].is-contracting {
+  animation: contract 0.3s forwards;
+}
+
+@media (any-hover: hover) {
+  a:hover:has([data-hover-underline]) {
+    opacity: 1;
+  }
+}
+
+a:focus-visible:has([data-hover-underline]) {
+  opacity: 1;
+}

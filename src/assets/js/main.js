@@ -36,3 +36,6 @@ import './_email-protection.js';
 
 /* スクロールヒント */
 import './_scroll-hint.js';
+
+/* テキストアンダーライン */
+import './_text-underline.js';

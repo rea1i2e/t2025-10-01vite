@@ -1,4 +1,5 @@
 @use "../global" as *;
+/* a, button, summaryの子要素にクラス付与 */
 
 .d-hover-text-underline {
   @include hover-text-underline();
