@@ -19,6 +19,30 @@
   @include hover-scale-img();
 }
 
+/* ホバーでシャドウを強くする */
+.p-demo-card__link--hover-shadow {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+@media (any-hover: hover) {
+  .p-demo-card__link--hover-shadow:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+  }
+}
+
+/* ホバーで明るさ・不透明度を上げる */
+.p-demo-card__link--hover-brightness {
+  transition: filter 0.3s ease;
+}
+
+@media (any-hover: hover) {
+  .p-demo-card__link--hover-brightness:hover {
+    filter: brightness(1.1);
+    opacity: 1;
+  }
+}
+
 .p-demo-card__image {
 }
 

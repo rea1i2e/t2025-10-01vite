@@ -37,12 +37,30 @@
         </div>
       </section>
       <section class="p-demo__section">
-        <h2 class="p-demo__subtitle">カード型：シャドウ（途中）</h2>
+        <h2 class="p-demo__subtitle">カード型：シャドウ</h2>
         <div class="p-demo__content">
           <div class="p-demo-grid p-demo-grid--basic">
             <% posts.slice(0, 3).forEach((post) => { %>
             <article class="p-demo-card">
-              <a href="<%- post.link %>" class="p-demo-card__link">
+              <a href="<%- post.link %>" class="p-demo-card__link p-demo-card__link--hover-shadow">
+                <figure class="p-demo-card__image">
+                  <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+                </figure>
+                <h3 class="p-demo-card__title"><%- post.title %></h3>
+                <p class="p-demo-card__desc"><%- post.description %></p>
+              </a>
+            </article>
+            <% }); %>
+          </div>
+        </div>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">カード型：明るさ</h2>
+        <div class="p-demo__content">
+          <div class="p-demo-grid p-demo-grid--basic">
+            <% posts.slice(0, 3).forEach((post) => { %>
+            <article class="p-demo-card">
+              <a href="<%- post.link %>" class="p-demo-card__link p-demo-card__link--hover-brightness">
                 <figure class="p-demo-card__image">
                   <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
                 </figure>
