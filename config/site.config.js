@@ -62,6 +62,13 @@ const pages = {
     title: "スクロールアニメーション",
     description: "スクロールに応じて要素が順次表示されるデモページです。",
   },
+  demoTextDecoration: {
+    label: "テキスト装飾",
+    root: "../../",
+    path: "demo/demo-text-decoration/",
+    title: "テキスト装飾",
+    description: "テキスト装飾デモページです。",
+  },
   demoCssAnime: {
     label: "CSSアニメーション",
     root: "../../",

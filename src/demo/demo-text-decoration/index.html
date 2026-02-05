@@ -1,0 +1,36 @@
+<%
+  const key = 'demoTextDecoration';
+  const pageData = pages[key];
+  const page = {
+    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
+    description: pageData.description,
+    keywords: pageData.keywords,
+    path: pageData.path,
+    root: pageData.root,
+  };
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <main class="p-demo">
+    <div class="p-demo__inner l-inner">
+      <h1 class="p-demo__title"><%- pageData.title %></h1>
+      <p class="p-demo__desc"><%- pageData.description %></p>
+
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">マーカー（.u-marker）</h2>
+        <div class="p-demo__content">
+          <p class="p-demo__desc">
+            <span class="u-marker">テーマ色でマーカー風の下線</span>が付きます。CSS変数 <code>--marker-color</code> と <code>--marker-width</code> で変更できます。
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+
+</html>
