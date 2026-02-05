@@ -24,10 +24,27 @@
         <h2 class="p-demo__subtitle">マーカー（.u-marker）</h2>
         <div class="p-demo__content">
           <p class="p-demo__desc">
-            <span class="u-marker">テーマ色でマーカー風の下線</span>が付きます。CSS変数 <code>--marker-color</code> と <code>--marker-width</code> で変更できます。
+            <em class="u-marker">テーマ色でマーカー風の下線</em>が付きます。CSS変数 <code>--marker-color</code> と <code>--marker-width</code> で変更できます。
+          </p>
+          <p class="p-demo__desc">
+            複数業にも対応。<br />
+            <em class="u-marker">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti minus, ex magnam saepe facere unde illo molestias reiciendis obcaecati sed deserunt, hic soluta inventore et quas voluptates officiis dolorum consequatur!</em>
           </p>
         </div>
       </section>
+
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">丸みマーカー（.u-marker-round）</h2>
+        <div class="p-demo__content">
+            <p class="p-demo__desc">
+              <em class="u-marker-round">丸みのあるマーカー風</em>の下線です。複数行には対応していません。<code>--marker-color</code> と <code>--marker-width</code> で変更できます。
+            </p>
+            <p class="p-demo__desc">
+              見出しに使う例：<em class="u-marker-round">重要なキーワード</em>
+            </p>
+          </div>
+      </section>
+
     </div>
   </main>
   <%- include(ejsPath + 'common/_footer.ejs', { page }) %>

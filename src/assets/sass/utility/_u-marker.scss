@@ -5,7 +5,7 @@
  * --marker-color, --marker-width でカスタマイズ可能
  */
 .u-marker {
-  --marker-color: color-mix(in srgb, var(--color-accent), transparent 50%);
+  --marker-color: color-mix(in srgb, var(--color-theme), transparent 70%);
   --marker-width: #{rem(8)};
 
   background-image: linear-gradient(to top, var(--marker-color) var(--marker-width), transparent var(--marker-width));
