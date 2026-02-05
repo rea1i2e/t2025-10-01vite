@@ -1,0 +1,14 @@
+@use '../global' as *;
+
+.u-anime-rotate {
+  animation: rotate 15s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
