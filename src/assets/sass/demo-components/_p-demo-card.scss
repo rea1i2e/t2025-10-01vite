@@ -19,7 +19,12 @@
   @include hover-scale-img();
 }
 
-/* ホバーでシャドウを強くする */
+
+
+.p-demo-card__link--hover-up {
+  @include hover-up();
+}
+
 .p-demo-card__link--hover-shadow {
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }

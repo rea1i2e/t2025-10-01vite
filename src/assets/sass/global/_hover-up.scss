@@ -1,0 +1,23 @@
+/* 使い方
+・カードなどホバーで上に浮かせる
+.p-card__link {
+  @include hover-up();
+  @include hover-up(-8px); // 浮き幅を変える
+}
+*/
+
+@mixin hover-up($translateY: -4px, $duration: 0.3s, $easing: ease) {
+  transition: transform $duration $easing;
+
+  @media (any-hover: hover) {
+    &:hover {
+      opacity: 1;
+      transform: translateY($translateY);
+    }
+  }
+
+  &:focus-visible {
+    opacity: 1;
+    transform: translateY($translateY);
+  }
+}
