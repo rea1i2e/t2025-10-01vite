@@ -1,6 +1,7 @@
 /**
  * video要素動画再生モーダル（dialog要素を使用）
  * _dialog-general.jsと同じアプローチで、EJS側で生成されたdialog要素を初期化
+ * 自動再生させない場合はtry, catch構文を削除
  */
 
 import {

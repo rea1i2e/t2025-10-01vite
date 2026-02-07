@@ -1,6 +1,7 @@
 /**
  * YouTube動画再生モーダル（dialog要素を使用）
  * data-modal-open="youtube-modal" 属性を持つ要素をクリックすると、data-video-id 属性から動画IDを取得してモーダルを開く
+ * 自動再生させない場合は、allow属性の autoplay を削除
  */
 
 import {
@@ -81,7 +82,7 @@ const initDialogYoutube = () => {
   videoPlayer.height = "315";
   videoPlayer.frameBorder = "0";
   videoPlayer.allow =
-    "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+    // "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
   videoPlayer.setAttribute("allowfullscreen", "");
 
   // 閉じるボタンを作成

@@ -28,7 +28,7 @@ const pages = {
     description: "アコーディオンデモページです。",
   },
   demoDialog: {
-    label: "モーダル",
+    label: "モーダル（動画再生モーダル）",
     root: "../../",
     path: "demo/demo-dialog/",
     title: "モーダル",
