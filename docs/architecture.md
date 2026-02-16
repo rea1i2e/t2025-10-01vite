@@ -1,26 +1,28 @@
-# 構成調査レポート（t2025-10-01vite）
+# アーキテクチャ仕様（t2025-10-01vite）
 
-対象リポジトリ: `t2025-10-01vite`  
-調査範囲: `node_modules/` と `.git/` を除外した全ファイル（合計 **197** ファイル）  
-主な目的: 機能一覧と「どのファイルでどう実現しているか」を根拠付きで整理する
+本ドキュメントは、静的サイトテンプレート `t2025-10-01vite` の設計・構成・各機能の仕様を定義する。
 
 ---
 
-## 1. 概要
+## 1. 設計概要
 
-このテンプレートは **Vite + EJS + Sass** を中心に、ビルド時に **画像最適化（圧縮/WebP生成）** と **HTML後処理（`<picture>`化・`width/height`自動付与）** を行う静的サイトテンプレートです。  
-また、開発フローの品質担保として **husky（pre-commit/pre-push）** と **html-validate**、運用として **GitHub Actions（FTPデプロイ + Discord通知）** が用意されています。
+本テンプレートは **Vite + EJS + Sass** を基盤とした静的サイトジェネレータである。  
+ビルド時に **画像最適化（圧縮/WebP生成）** と **HTML後処理（`<picture>`化・`width/height`自動付与）** を自動実行し、品質担保として **husky + html-validate** によるバリデーション、運用として **GitHub Actions** による自動デプロイを備える。
 
-- **開発ソース**: `src/`（Viteの`root`）
-- **ビルド成果物**: `dist/`
-- **プロジェクト設定**: `config/`
-- **ビルド後処理**: `scripts/after-build.mjs`
-- **CI/CD**: `.github/workflows/deploy.yml`
-- **Gitフック**: `.husky/`
+### 主要ディレクトリの役割
+
+| パス | 役割 |
+|------|------|
+| `src/` | 開発ソース（Viteの `root`） |
+| `dist/` | ビルド成果物（最終配布物） |
+| `config/` | プロジェクト設定 |
+| `scripts/` | ビルド後処理スクリプト |
+| `.github/workflows/` | CI/CD 定義 |
+| `.husky/` | Git フック |
 
 ---
 
-## 2. 全体フロー（開発〜デプロイ）
+## 2. システム構成図
 
 ```mermaid
 flowchart LR
@@ -37,190 +39,172 @@ flowchart LR
   validate --> deploy["GitHub_Actions_FTP_deploy"]
 ```
 
-ポイント:
-- **ビルド手順**は `vite build` の後に `scripts/after-build.mjs` が必ず走ります（`package.json`）。
-- **HTML検証**は `dist/` を対象に `html-validate` を実行します（`validate:html`）。
+- ビルドは `vite build` → `scripts/after-build.mjs`（HTML後処理）の順で実行される（`package.json` の `build` スクリプトで定義）
+- HTML検証は `dist/` を対象に `html-validate` で実行する（`validate:html`）
 
 ---
 
-## 3. 機能一覧と実現方法（根拠ファイル付き）
+## 3. 機能仕様
 
-### 3.1 EJS → HTML
+### 3.1 EJS テンプレートエンジン
 
-**実現箇所**
-- `vite.config.js`
-  - `ViteEjsPlugin({ ...siteConfig, posts })` でEJSへ変数注入
-  - `liveReload(["ejs/**/*.ejs"])` でEJS更新時のリロード
-- `vite.config.js`
-  - `globSync("src/**/*.html", { ignore: ["src/public/**/*.html"] })` を `rollupOptions.input` に登録し、`src/` 配下のHTMLを **複数エントリとして自動ビルド対象** にする
-- `src/**/*.html`（例: `src/index.html`, `src/demo/index.html`, `src/contact/index.html`）
-  - HTML側でEJSの `include()` を使って共通パーツを組み立て
-- `src/ejs/common/*.ejs`（共通: head/header/footer）
-- `src/ejs/components/*.ejs`（ページ部品）
+#### 関連ファイル
+- `vite.config.js` — `ViteEjsPlugin({ ...siteConfig, posts })` でEJSへ変数を注入
+- `vite.config.js` — `liveReload(["ejs/**/*.ejs"])` でEJS更新時にリロード
+- `vite.config.js` — `globSync("src/**/*.html", { ignore: ["src/public/**/*.html"] })` を `rollupOptions.input` に登録し、複数HTMLを自動ビルド対象とする
+- `src/**/*.html` — HTML側でEJSの `include()` により共通パーツを組み立てる
+- `src/ejs/common/*.ejs` — 共通パーツ（head / header / footer）
+- `src/ejs/components/*.ejs` — ページ固有の部品
 
-**仕組み（最低限）**
-- 各ページHTMLで `pages['top']` のようにページ設定を取得し、`page` オブジェクト（title/description/path/root等）を組み立てます。
-- `ejsPath`（`config/site.config.js`）を使って、`common/_head.ejs` 等を `include` して構成します。
+#### 動作仕様
+- 各ページHTMLは `pages['top']` のように `config/site.config.js` のページ設定を取得し、`page` オブジェクト（title / description / path / root 等）を構成する
+- `ejsPath`（`config/site.config.js` で定義）を使い、`common/_head.ejs` 等を `include` する
 
-例（ページHTML側の構成）:
+#### ページHTML側の構成例
 - `src/index.html`
   - `include(ejsPath + 'common/_head.ejs', { page })`
   - `include(ejsPath + 'common/_header.ejs', { page })`
   - `include(ejsPath + 'common/_footer.ejs', { page })`
 
-### 3.2 SCSS → CSS
+### 3.2 SCSS ビルドパイプライン
 
-**実現箇所**
-- `src/ejs/common/_head.ejs`
-  - `<link rel="stylesheet" href="/assets/sass/style.scss">` を読み込み（Viteがビルド対象として解釈）
-- `src/assets/sass/style.scss`
-  - `@use "./layouts/**";` のようなglob指定で構成を集約
-- `vite.config.js`
-  - `vite-plugin-sass-glob-import` により `@use "./**"` のglobを有効化
-- `postcss.config.cjs`
-  - `autoprefixer`
-  - `postcss-sort-media-queries`（`mobile-first`）
+#### 関連ファイル
+- `src/ejs/common/_head.ejs` — `<link rel="stylesheet" href="/assets/sass/style.scss">` でSCSSを読み込む（Viteがビルド対象として解釈）
+- `src/assets/sass/style.scss` — エントリファイル。`@use "./layouts/**";` のようなglob指定で構成を集約
+- `vite.config.js` — `vite-plugin-sass-glob-import` により `@use "./**"` のglobを有効化
+- `postcss.config.cjs` — `autoprefixer` / `postcss-sort-media-queries`（`mobile-first`）
 
-**ビルド出力**
-- `vite.config.js` の `assetFileNames` により、CSSは `assets/css/[name]-[hash].css`
+#### ビルド出力
+- `assets/css/[name]-[hash].css`（`vite.config.js` の `assetFileNames` で定義）
 
-### 3.3 JSバンドル
+### 3.3 JS バンドル
 
-**実現箇所**
-- `src/ejs/common/_head.ejs`
-  - `<script type="module" src="/assets/js/main.js"></script>`
-- `src/assets/js/main.js`
-  - 機能別モジュール（`_drawer.js`, `_splide-*.js`, `_fadein.js` など）を `import` で束ねる
-- `vite.config.js`
-  - `entryFileNames` / `chunkFileNames` を `assets/js/[name]-[hash].js` に統一
+#### 関連ファイル
+- `src/ejs/common/_head.ejs` — `<script type="module" src="/assets/js/main.js"></script>`
+- `src/assets/js/main.js` — エントリファイル。機能別モジュール（`_drawer.js`, `_splide-*.js`, `_fadein.js` 等）を `import` で束ねる
+- `vite.config.js` — `entryFileNames` / `chunkFileNames` を `assets/js/[name]-[hash].js` に統一
 
-### 3.4 画像最適化（圧縮、WebP生成）
+### 3.4 画像最適化パイプライン
 
-**実現箇所**
-- `vite.config.js`
-  - `@vheemstra/vite-plugin-imagemin` を使用
-  - 圧縮対象: `include: /\.(png|jpe?g|gif|svg)$/i`
-  - JPEG: `imagemin-mozjpeg({ quality: 75, progressive: true })`
-  - PNG: `imagemin-pngquant({ quality: [0.65, 0.8], speed: 3 })`
-  - GIF: `imagemin-gifsicle({ optimizationLevel: 2 })`
-  - SVG: `imagemin-svgo()`
-  - WebP生成: `makeWebp`（jpg/png/gif→webp、`skipIfLargerThan: "optimized"`）
+#### 関連ファイル
+- `vite.config.js` — `@vheemstra/vite-plugin-imagemin` を使用
 
-**ビルド出力（画像）**
-- `vite.config.js` の `assetFileNames` で、画像は `assets/images/[name]-[hash][extname]`
+#### 圧縮仕様
+- 対象: `include: /\.(png|jpe?g|gif|svg)$/i`
+- JPEG: `imagemin-mozjpeg({ quality: 75, progressive: true })`
+- PNG: `imagemin-pngquant({ quality: [0.65, 0.8], speed: 3 })`
+- GIF: `imagemin-gifsicle({ optimizationLevel: 2 })`
+- SVG: `imagemin-svgo()`
 
-補足:
-- READMEに「AVIF生成は準備中」とあり、`scripts/after-build.mjs` 側はAVIFも候補探索しますが、現状 `vite.config.js` ではAVIF生成設定は入っていません（“存在すれば対応する”構成）。
+#### WebP 生成仕様
+- `makeWebp` により jpg / png / gif から WebP を生成
+- `skipIfLargerThan: "optimized"` — 元画像より大きくなる場合は生成しない
 
-### 3.5 width/height自動生成 + WebP配信用タグ挿入（after-build）
+#### ビルド出力
+- `assets/images/[name]-[hash][extname]`（`vite.config.js` の `assetFileNames` で定義）
 
-**実現箇所**
+#### AVIF について
+- AVIF の「生成」は現状未対応。ただし `scripts/after-build.mjs` は `dist/` にAVIFが存在する場合 `<source type="image/avif">` を挿入する（"存在すれば対応する"構成）
+
+### 3.5 HTML後処理（after-build）
+
+#### 関連ファイル
 - `scripts/after-build.mjs`
 
-**対象**
-- `dist/` 配下の `**/*.html` を再帰走査して処理
+#### 対象
+- `dist/**/*.html` を再帰走査
 
-**処理内容（要点）**
-- `<img src="...">` を対象に、元画像の実寸を `sharp(...).metadata()` で取得し `width/height` を付与
-- `dist/` にWebP/AVIFが存在する場合:
-  - `<img>` を `<picture>` でラップし、`<source type="image/webp">` / `<source type="image/avif">` を自動挿入
-  - 既に `<picture>` の場合は **壊さず**、不足する `<source>` だけ補完（art-direction用の`media`も維持）
-- 最後に `js-beautify` でHTML全体を整形
+#### 処理仕様
+1. `<img src="...">` を対象に、元画像の実寸を `sharp(...).metadata()` で取得し `width` / `height` を付与
+2. `dist/` にWebP / AVIFが存在する場合:
+   - `<img>` を `<picture>` でラップし、`<source type="image/webp">` / `<source type="image/avif">` を自動挿入
+   - 既に `<picture>` の場合は破壊せず、不足する `<source>` のみ補完（art-direction用の `media` も維持）
+   - 各 `<source>` にも参照ファイルの実寸を付与
+3. `js-beautify` でHTML全体を整形
 
-**スキップ条件**
-- `http(s)://` の外部URL、`data:`、SVGなどは対象外（主にラスタ画像の最適化を想定）
+#### スキップ条件
+- `http(s)://` の外部URL
+- `data:` スキーム
+- SVG（非ラスタ画像は `<picture>` 化しない）
 
-### 3.6 バリデーションチェック（html-validate, husky）
+### 3.6 バリデーション
 
-**実現箇所**
-- `package.json`
-  - `validate:html`: `html-validate dist/`
-  - `validate:build`: `npm run build && npm run validate:html`
-  - `prepare`: `husky`
-- `.htmlvalidate.json`
-  - `extends: ["html-validate:recommended"]` + 独自ルール調整
-- `.husky/pre-commit`
-  - `npm run build:only`（コミット前にビルドだけ通す）
-- `.husky/pre-push`
-  - `npm run validate:build`（プッシュ前にビルド+HTML検証）
+#### 関連ファイル
+- `package.json` — `validate:html`: `html-validate dist/`、`validate:build`: `npm run build && npm run validate:html`
+- `.htmlvalidate.json` — `extends: ["html-validate:recommended"]` + 独自ルール調整
+- `.husky/pre-commit` — `npm run build:only`（コミット前にビルドを実行）
+- `.husky/pre-push` — `npm run validate:build`（プッシュ前にビルド + HTML検証）
 
-### 3.7 ページ情報の一元管理（site.config.js）
+#### Git hooks の動作
+- **pre-commit**: `npm run build:only`（ビルドのみ実行し、通らなければコミット拒否）
+- **pre-push**: `npm run validate:build`（ビルド + HTML検証、通らなければプッシュ拒否）
 
-**実現箇所**
-- `config/site.config.js`
-  - `pages` オブジェクトで、各ページの `label/root/path/title/description/...` を集約
-  - `headerExcludePages` / `drawerExcludePages` など「表示除外」設定
-  - `ejsPath`, `domain`, `titleSeparator` など共通設定
-- `config/utils.js`
-  - `isExcluded(key, excludePages)`（`demo*` や `demo[A-Z]*` のようなパターンを解釈）
-- `vite.config.js`
-  - `ViteEjsPlugin({ ...siteConfig, posts })` でEJSへ注入
+### 3.7 ページ情報管理（site.config.js）
 
-**利用例（テンプレ側）**
-- `src/ejs/common/_header.ejs`
-  - `Object.entries(pages)` をループしてヘッダ/ドロワーメニューを生成
-  - `isExcluded(key, headerExcludePages)` 等で除外制御
+#### 関連ファイル
+- `config/site.config.js` — ページ情報・共通設定の一元管理
+- `config/utils.js` — `isExcluded(key, excludePages)` 関数（パターンマッチングによる除外判定）
+- `vite.config.js` — `ViteEjsPlugin({ ...siteConfig, posts })` でEJSへ注入
 
-### 3.8 自動デプロイ（GitHub Actions）
+#### 設定構造
+- `pages` オブジェクト: 各ページの `label` / `root` / `path` / `title` / `description` 等を集約
+- `headerExcludePages` / `drawerExcludePages`: メニューから除外するページのキー配列
+- `ejsPath` / `domain` / `titleSeparator`: 共通設定
 
-**実現箇所**
+#### テンプレート側での利用
+- `src/ejs/common/_header.ejs` で `Object.entries(pages)` をループし、ヘッダ/ドロワーメニューを生成
+- `isExcluded(key, headerExcludePages)` 等で除外制御（`demo*` や `demo[A-Z]*` のパターンに対応）
+
+### 3.8 CI/CD（GitHub Actions）
+
+#### 関連ファイル
 - `.github/workflows/deploy.yml`
 
-**トリガー**
-- `push`（`main`/`master`）
-- `pull_request`（`main`/`master`）
+#### トリガー
+- `push`（`main` / `master`）
+- `pull_request`（`main` / `master`）
 - `workflow_dispatch`（手動実行）: `deploy_to_production` 入力あり
 
-**処理フロー**
-- `actions/checkout@v4`
-- `actions/setup-node@v4`（Node 20、npmキャッシュ）
-- `npm ci`
-- `npm run build`
-- FTPデプロイ（`SamKirkland/FTP-Deploy-Action@v4.3.4`）
-  - push: テスト環境へ
-  - PR: PRテスト環境へ
-  - 手動: 本番へ（`deploy_to_production: true` のとき）
-- Discord通知（`Ilshidur/action-discord@master`）: 成功/失敗で分岐
+#### 処理フロー
+1. `actions/checkout@v4`
+2. `actions/setup-node@v4`（Node 20、npmキャッシュ）
+3. `npm ci`
+4. `npm run build`
+5. FTPデプロイ（`SamKirkland/FTP-Deploy-Action@v4.3.4`）
+   - push → テスト環境
+   - PR → PRテスト環境
+   - 手動（`deploy_to_production: true`）→ 本番
+6. Discord通知（`Ilshidur/action-discord@master`）: 成功/失敗で分岐
 
-**必要Secrets（最低限）**
+#### 必要な GitHub Secrets
 - `FTP_SERVER`
 - `FTP_USERNAME`
 - `FTP_PASSWORD`
 - `TEST_URL`
 - `DISCORD_WEBHOOK`
 
-### 3.9 demoページ
+### 3.9 デモページシステム
 
-**実現箇所**
-- `src/demo/**/index.html`（例: `src/demo/demo-accordion/index.html`）
-  - `const key = 'demoAccordion'` のように `pages` のキーを指定してページ情報を参照
-- `src/ejs/components/_p-demo.ejs`
-  - `pages` から `demo` で始まるキーを抽出してデモ一覧を自動生成
+#### 関連ファイル
+- `src/demo/**/index.html` — 各デモページ（例: `src/demo/demo-accordion/index.html`）
+- `src/ejs/components/_p-demo.ejs` — デモ一覧の自動生成
+
+#### 動作仕様
+- 各デモページHTMLで `const key = 'demoAccordion'` のように `pages` のキーを指定してページ情報を参照
+- `_p-demo.ejs` は `pages` から `demo` で始まるキーを抽出し、デモ一覧を自動生成する
 
 ### 3.10 メールアドレス保護機能
 
-**実現箇所**
-- `config/utils.js`
-  - `email()`関数の定義（`toString()`メソッドにより文字列化時に自動的にHTMLを返す）
-- `config/site.config.js`
-  - `email`関数を`siteConfig`に追加し、EJSテンプレートで自動的に利用可能
-- `src/ejs/components-demo/_c-email.ejs`
-  - メールアドレス保護用のHTML出力（文字列やオブジェクトを自動判定）
-- `src/assets/js/_email-protection.js`
-  - メールアドレスの復元とリンク生成
-- `src/assets/js/main.js`
-  - `_email-protection.js`をインポート
+#### 関連ファイル
+- `config/utils.js` — `email()` 関数の定義（`toString()` メソッドにより文字列化時に自動的にHTMLを返す）
+- `config/site.config.js` — `email` 関数を `siteConfig` に追加し、EJSテンプレートで利用可能にする
+- `src/ejs/components-demo/_c-email.ejs` — メールアドレス保護用のHTML出力
+- `src/assets/js/_email-protection.js` — メールアドレスの復元とリンク生成
+- `src/assets/js/main.js` — `_email-protection.js` をインポート
 
-**必要なファイル**
-1. 呼び出し元のHTMLまたはEJSファイル
-2. `config/utils.js`（`email`関数）
-3. `config/site.config.js`（`email`関数のエクスポート）
-4. `src/assets/js/_email-protection.js`
-5. `src/assets/js/main.js`
+#### 使用方法
 
-**使い方（シンプル版）**
-
-1. データ定義時に`email()`関数を使用
+1. データ定義時に `email()` 関数を使用:
 ```javascript
 const documentItems = [
   {
@@ -234,7 +218,7 @@ const documentItems = [
 ];
 ```
 
-2. 表示部分は`<%- item.text %>`だけで済む（条件分岐不要）
+2. 表示部分は `<%- item.text %>` だけで完結する（条件分岐不要）:
 ```ejs
 <dl class="p-demo-dl">
   <% documentItems.forEach((item) => { %>
@@ -244,89 +228,100 @@ const documentItems = [
 </dl>
 ```
 
-**オプション**
-
-- リンクなしで表示する場合:
+3. リンクなしで表示する場合:
 ```javascript
 text: email('afmaar128', 'gmail.com', { link: false })
 ```
 
-**処理の流れ**
+#### 処理フロー
 
 1. **ビルド時（サーバー側）**
-   - `email('afmaar128', 'gmail.com')`でメールアドレスオブジェクトを生成
-   - `toString()`メソッドにより、文字列として扱われたときに自動的にHTMLを返す
-   - 出力されるHTML: `<span class="js-email-protection" data-email-user="afmaar128" data-email-domain="gmail.com" data-link="true"></span><noscript>afmaar128[at]gmail.com</noscript>`
+   - `email('afmaar128', 'gmail.com')` でメールアドレスオブジェクトを生成
+   - `toString()` メソッドにより、文字列として扱われた時点で自動的にHTMLを返す
+   - 出力HTML: `<span class="js-email-protection" data-email-user="afmaar128" data-email-domain="gmail.com" data-link="true"></span><noscript>afmaar128[at]gmail.com</noscript>`
 
 2. **ブラウザ（クライアント側）**
-   - `_email-protection.js`が`DOMContentLoaded`で実行
-   - `.js-email-protection`要素を検索してメールアドレスを復元
-   - `data-link`が`true`の場合は`<a>`タグを生成、`false`の場合はテキストのみ表示
+   - `_email-protection.js` が `DOMContentLoaded` で実行
+   - `.js-email-protection` 要素を検索してメールアドレスを復元
+   - `data-link` が `true` → `<a>` タグを生成、`false` → テキストのみ表示
 
-**スパムボット対策**
-- HTMLに`@`を含めない（`data-email-user`と`data-email-domain`に分割）
+#### スパムボット対策の仕組み
+- HTMLに `@` を含めない（`data-email-user` と `data-email-domain` に分割）
 - JavaScriptで動的にメールアドレスを復元
-- `<noscript>`タグでJavaScript無効時も情報を表示
-
-**メリット**
-- データ定義と表示ロジックが分離され、使い回しやすい
-- 条件分岐が不要で、通常のテキストと同じように扱える
-- `toString()`メソッドにより、`<%- item.text %>`だけで自動的にメールアドレス保護が適用される
-- WordPressテーマ開発など、他のフレームワークにも移植しやすい設計（共通部分とフレームワーク固有部分を分離）
-
-### 3.11 npm scripts
-
-**定義**
-- `package.json`
-
-**一覧（用途別）**
-- 開発:
-  - `dev`: `vite`
-- ビルド:
-  - `build`: `vite build && node scripts/after-build.mjs`（本番ビルド + HTML後処理）
-  - `build:only`: `vite build`（後処理なし）
-- プレビュー:
-  - `preview`: `vite preview`
-  - `build:preview`: `npm run build && npm run preview`
-- 掃除:
-  - `clean`: `dist`, `src/.vite`, `src/.img` 削除
-  - `clean:all`: `clean` + `node_modules` + `package-lock.json` も削除
-  - `reinstall`: `clean:all` 後に `npm install`
-- 検証:
-  - `validate:html`: `html-validate dist/`
-  - `validate:build`: `build` → `validate:html`
-- Git hooks:
-  - `prepare`: `husky`
+- `<noscript>` タグでJavaScript無効時にも情報を表示
 
 ---
 
-## 4. ディレクトリ構成（要点）
+## 4. ディレクトリ構成
 
-- `src/`: 開発ルート（Vite `root`）
-  - `index.html`, `contact/index.html`, `demo/**/index.html` などページ実体（EJS includeを含む）
-  - `ejs/`: 共通・部品（`common/`, `components/`, `data/`）
-  - `assets/`: `sass/`, `js/`, `images/`
-  - `public/`: 静的コピー（Viteの`publicDir`。`root=src` のため `src/public` が使われる）
-    - 例: `favicon.ico`, `fonts/`, `MailForm01_utf8/mail.php` 等
-- `dist/`: ビルド生成物（最終配布物）
-- `config/`: `site.config.js`（ページ/共通設定）、`utils.js`（除外判定）
-- `scripts/`: `after-build.mjs`（HTML後処理）
-- `.github/workflows/`: `deploy.yml`（CI/CD）
-- `.husky/`: pre-commit / pre-push などのGitフック
+```
+src/                     開発ルート（Vite root）
+  index.html             エントリ（複数HTML対応）
+  contact/index.html
+  demo/**/index.html
+  privacy/index.html
+  ejs/                   EJS テンプレート
+    common/              共通パーツ（_head.ejs, _header.ejs, _footer.ejs）
+    components/          ページ部品
+    data/                ダミーデータ等
+  assets/
+    sass/                Sass（グロブインポート対応）
+    js/                  JSモジュール
+    images/              画像（dummy / common）
+  public/                Vite public（root=src のため src/public）
+dist/                    本番出力（ビルド生成物）
+config/
+  site.config.js         ページ情報・共通設定
+  utils.js               ユーティリティ（除外判定、email関数）
+scripts/
+  after-build.mjs        HTML後処理スクリプト
+.github/workflows/
+  deploy.yml             CI/CD 定義
+.husky/
+  pre-commit             コミット前ビルド
+  pre-push               プッシュ前ビルド+検証
+```
 
 ---
 
-## 5. 変更・拡張ポイント（短く）
+## 5. npm scripts 仕様
 
-- **ページ追加**: `src/` 配下に `xxx/index.html` を追加し、必要なら `config/site.config.js` の `pages` に同キーを追加
-- **メニューの除外制御**: `headerExcludePages` / `drawerExcludePages` を調整（`config/utils.js` のパターン仕様に従う）
-- **画像最適化の品質調整**: `vite.config.js` の `imagemin*` / `makeWebp` の設定を変更
-- **`<picture>`化の挙動調整**: `scripts/after-build.mjs` の対象条件・挿入順・整形の方針を変更
-- **デプロイ先/方式変更**: `.github/workflows/deploy.yml`（FTP→別方式への置換など）
+### 開発
+- `dev` — `vite`（開発サーバー起動）
+
+### ビルド
+- `build` — `vite build && node scripts/after-build.mjs`（本番ビルド + HTML後処理）
+- `build:only` — `vite build`（後処理なし）
+
+### プレビュー
+- `preview` — `vite preview`
+- `build:preview` — `npm run build && npm run preview`
+
+### クリーン
+- `clean` — `dist` / `src/.vite` / `src/.img` を削除
+- `clean:all` — `clean` + `node_modules` + `package-lock.json` も削除
+- `reinstall` — `clean:all` → `npm install`
+
+### 検証
+- `validate:html` — `html-validate dist/`
+- `validate:build` — `build` → `validate:html`
+
+### Git hooks
+- `prepare` — `husky`
 
 ---
 
-## 6. 付録（関連ファイル早見）
+## 6. 拡張・変更ガイド
+
+- **ページ追加**: `src/` 配下に `xxx/index.html` を追加し、`config/site.config.js` の `pages` に同キーを追加
+- **メニュー除外制御**: `headerExcludePages` / `drawerExcludePages` を調整（`config/utils.js` のパターン仕様に従う）
+- **画像最適化の品質調整**: `vite.config.js` の `imagemin*` / `makeWebp` 設定を変更
+- **`<picture>` 化の挙動調整**: `scripts/after-build.mjs` の対象条件・挿入順・整形方針を変更
+- **デプロイ先・方式変更**: `.github/workflows/deploy.yml` を編集（FTP → 別方式への置換など）
+
+---
+
+## 7. 関連ファイル一覧
 
 - Vite設定: `vite.config.js`
 - ページ設定: `config/site.config.js`
@@ -335,4 +330,3 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - HTML検証: `.htmlvalidate.json`
 - Git hooks: `.husky/pre-commit`, `.husky/pre-push`
 - デプロイ: `.github/workflows/deploy.yml`
-

@@ -1,6 +1,8 @@
 # t2025-10-01vite
 
-Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP 生成、HTML の <img> を <picture> 最適化、width/height 自動付与を行います。（AVIFは「生成」は未対応ですが、`dist/` にAVIFが存在する場合は <picture> に <source type="image/avif"> を挿入します）
+Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP 生成、HTML の `<img>` を `<picture>` 最適化、width/height 自動付与を行います。（AVIFは「生成」は未対応ですが、`dist/` にAVIFが存在する場合は `<picture>` に `<source type="image/avif">` を挿入します）
+
+> 詳細な技術仕様は [docs/architecture.md](docs/architecture.md) を参照してください。
 
 ## GitHub CLIを使った導入手順
 
@@ -102,27 +104,6 @@ npm run clean:all    # + node_modules と lock も削除
 npm run reinstall    # クリーン後に再インストール
 ```
 
-## ディレクトリ構成（主要）
-```
-src/                 # 開発用ルート（Vite root）
-  index.html         # エントリ（複数HTML対応）
-  contact/index.html
-  demo/**/index.html
-  privacy/index.html
-  ejs/               # EJS 共通パーツ/部品/データ
-    common/(_head.ejs, _header.ejs, _footer.ejs)
-    components/（ページ部品）
-    data/（ダミーデータ等）
-  assets/
-    sass/            # Sass（グロブインポート対応）
-    js/              # JSモジュール
-    images/          # 画像（dummy/common）
-  public/            # Vite public（root=src のため src/public）
-dist/                # 本番出力（ビルド生成物）
-scripts/after-build.mjs  # HTML後処理スクリプト
-vite.config.js
-```
-
 ## 開発フロー
 1. `npm run dev` を実行
 2. `src/` 以下を編集（EJS/HTML/Sass/JS）
@@ -145,40 +126,6 @@ vite.config.js
 - htmlファイル
   - `src/index.html` 等のHTMLから `ejs/common` や `ejs/components` を `include` して組み立てます。
   - ページごとの `pageData`（`pages['top']` など）から `page` を組み立て、`_head.ejs` へ渡して title/description 等を出力します。
-## Sass/スタイル
-- `vite-plugin-sass-glob-import` により、Sass のグロブインポートが可能です。
-- `src/assets/sass/style.scss` をエントリに、`base/`, `components/`, `layouts/`, `utility/` へ分割。
-
-## 画像最適化（ビルド時）
-- プラグイン: `@vheemstra/vite-plugin-imagemin`
-- 圧縮対象: PNG/JPEG/GIF/SVG
-- 生成:
-  - WebP: JPEG/PNG/GIF から生成
-- 出力パス:（現状、images以下のディレクトリ構成はフラットになります）
-  - 画像: `assets/images/[name]-[hash][ext]`
-  - CSS: `assets/css/[name]-[hash].css`
-  - JS: `assets/js/[name]-[hash].js`
-
-## after-build（HTML 後処理）の挙動
-- 対象: `dist/**/*.html`
-- 処理内容:
-  - `<img>` に `width`/`height` を自動付与
-  - WebP/AVIF が `dist` に存在する場合、`<picture>` 化して `<source>` を自動挿入
-  - 既存 `<picture>` がある場合は崩さず、不足する `<source>` のみ追加
-  - `<source>` それぞれにも参照ファイルの実寸を付与
-  - 最後に HTML を整形（`js-beautify`）
-- スキップ条件:
-  - 外部 URL / `data:` 画像
-  - 非ラスタ（SVG を `<picture>` 化はしません）
-- ログ:
-  - 変換件数、寸法付与のみの件数を標準出力に表示
-
-## ビルド入力（複数 HTML 対応）
-- `globSync("src/**/*.html")` をエントリーとして登録
-- `src/` 以下に HTML を追加すると、自動的にビルド対象に含まれます
-
-## ライセンス
-プロジェクトに合わせて追記してください。
 
 ## サイト設定（site.config.js）
 
@@ -233,4 +180,5 @@ pages: {
 }
 ```
 
-
+## ライセンス
+プロジェクトに合わせて追記してください。
