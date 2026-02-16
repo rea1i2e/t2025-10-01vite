@@ -4,16 +4,16 @@
   position: sticky;
   bottom: rem(60);
   padding-inline-end: rem(60);
-  background-color: orange;
   text-align: right;
+  pointer-events: none;
 }
 
 .c-page-top__button {
   display: inline-flex;
   flex-direction: column;
   gap: rem(10);
-  background-color: pink;
   opacity: 0;
+  pointer-events: all;
 }
 
 .c-page-top__button.is-show {

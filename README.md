@@ -19,7 +19,6 @@ gh repo clone GitHubのユーザー名/新規リポジトリ名
 ### システム要件
 - **Node.js**: 18.x 以上（推奨: 20.x LTS）
 - **npm**: 9.x 以上
-- **メモリ**: 4GB以上（推奨: 8GB以上）
 
 ### プラットフォーム別追加要件
 - **macOS**: Xcode Command Line Tools
@@ -130,8 +129,6 @@ vite.config.js
 3. ビルドは `npm run build`、出力は `dist/`
 
 ## EJS の使い方
-- 既定変数（`vite.config.js` 内）:
-  - `siteName`: サイト名
 - **サイト設定（`config/site.config.js`）**:
   - `siteName`: サイト名（タイトル生成に使用）
   - `domain`: ドメイン（OGP/canonical等に使用）
@@ -180,16 +177,6 @@ vite.config.js
 - `globSync("src/**/*.html")` をエントリーとして登録
 - `src/` 以下に HTML を追加すると、自動的にビルド対象に含まれます
 
-## よくあるトラブル
-- `sharp` のビルド/インストール失敗
-  - macOS: Xcode Command Line Tools の導入を確認
-  - Node のメジャー更新後は `npm rebuild sharp` を試す
-- 権限エラー
-  - `dist/` やプロジェクトルートの書き込み権限を確認
-- 画像が `<picture>` 化されない
-  - 対象拡張子か、対応 WebP/AVIF が `dist` に存在するか確認
-  - `data:` や外部 URL は対象外
-
 ## ライセンス
 プロジェクトに合わせて追記してください。
 
@@ -220,7 +207,7 @@ export const siteConfig = {
   - `keywords`: メタキーワード
   - `targetBlank`: `true`で新しいタブで開く（外部リンク用）
 
-### 使用例
+#### 例: ページ設定
 ```javascript
 pages: {
   contact: {
@@ -244,54 +231,6 @@ pages: {
     targetBlank: true
   }
 }
-```
-
-### ページへのアクセス方法
-EJSファイル内では以下のようにページ情報にアクセスできます：
-
-```ejs
-<!-- 直接アクセス（推奨） -->
-<a href="<%- page.root + pages.privacy.path %>">プライバシーポリシー</a>
-
-<!-- ループ処理 -->
-<% Object.entries(pages).forEach(([key, item]) => { %>
-  <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>"><%- item.label %></a>
-<% }); %>
-```
-
-### タイトル生成
-- ページに`title`が設定されている場合: `ページタイトル | サイト名`
-- ページに`title`が設定されていない場合: `サイト名`
-- 区切り文字は`titleSeparator`で変更可能
-
-## ページ情報へのアクセス方法
-
-### 直接アクセス（推奨）
-```ejs
-<!-- 特定のページのURLを取得 -->
-<a href="<%- page.root + pages.contact.path %>">お問い合わせ</a>
-
-<!-- 特定のページのラベルを取得 -->
-<h1><%- pages.contact.label %></h1>
-```
-
-### ループ処理
-```ejs
-<!-- すべてのページをループ処理 -->
-<% Object.entries(pages).forEach(([key, item]) => { %>
-  <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" 
-     <%= item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
-    <%- item.label %>
-  </a>
-<% }); %>
-```
-
-### 条件分岐
-```ejs
-<!-- 特定のページが存在するかチェック -->
-<% if (pages.privacy) { %>
-  <a href="<%- page.root + pages.privacy.path %>">プライバシーポリシー</a>
-<% } %>
 ```
 
 
