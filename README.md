@@ -180,5 +180,16 @@ pages: {
 }
 ```
 
+## デプロイ（GitHub Actions）
+
+FTP デプロイと Discord 通知に必要な GitHub Secrets は、ローカルの `.env.deploy` から一括登録できる。
+
+1. `cp env.deploy.example .env.deploy` で `.env.deploy` を作成
+2. `.env.deploy` に FTP のサーバー・ユーザー・パスワード（と任意で Discord Webhook・テストURL）を記入
+3. [GitHub CLI](https://cli.github.com/) をインストールし `gh auth login` で認証
+4. `./scripts/setup-secrets.sh` を実行
+
+詳細は [docs/architecture.md](docs/architecture.md) の「3.8 CI/CD」を参照。
+
 ## ライセンス
 プロジェクトに合わせて追記してください。

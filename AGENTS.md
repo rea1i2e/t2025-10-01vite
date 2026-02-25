@@ -15,6 +15,8 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理 |
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、整形） |
+| `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
+| `env.deploy.example` | デプロイ用環境変数テンプレート（`.env.deploy` の雛形） |
 | `src/ejs/common/` | 共通テンプレート（head / header / footer） |
 | `src/ejs/components/` | ページ固有の部品テンプレート |
 | `src/assets/js/main.js` | JSエントリファイル |

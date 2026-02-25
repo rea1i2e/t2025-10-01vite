@@ -177,11 +177,19 @@ flowchart LR
 6. Discord通知（`Ilshidur/action-discord@master`）: 成功/失敗で分岐
 
 #### 必要な GitHub Secrets
-- `FTP_SERVER`
-- `FTP_USERNAME`
-- `FTP_PASSWORD`
-- `TEST_URL`
-- `DISCORD_WEBHOOK`
+- **必須**: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`
+- **任意**: `TEST_URL`（サマリー・Discord に表示するURL）, `DISCORD_WEBHOOK`（Discord 通知用）
+
+#### GitHub Secrets の一括設定
+- `scripts/setup-secrets.sh` — `.env.deploy` の値を GitHub CLI（`gh`）でリポジトリの Secrets に登録する
+- `env.deploy.example` — 必要な変数名のテンプレート。コピーして `.env.deploy` を作成し、値を記入する
+- `.env.deploy` は `.gitignore` に含まれるためコミットされない
+
+**手順**
+1. `cp env.deploy.example .env.deploy` で `.env.deploy` を作成
+2. `.env.deploy` に FTP のサーバー・ユーザー・パスワード（と任意で Discord Webhook・テストURL）を記入
+3. `gh` をインストールし `gh auth login` で認証
+4. プロジェクトルートで `./scripts/setup-secrets.sh` を実行
 
 ### 3.9 デモページシステム
 
@@ -275,6 +283,8 @@ config/
   utils.js               ユーティリティ（除外判定、email関数）
 scripts/
   after-build.mjs        HTML後処理スクリプト
+  setup-secrets.sh       GitHub Secrets 一括登録（gh + .env.deploy）
+env.deploy.example       デプロイ用変数テンプレート
 .github/workflows/
   deploy.yml             CI/CD 定義
 .husky/
