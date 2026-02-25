@@ -16,6 +16,9 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、整形） |
 | `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
+| `scripts/font-compress.sh` | フォントを全グリフのまま WOFF2 に圧縮（pyftsubset） |
+| `scripts/font-compress-subset.sh` | フォントを指定文字のみサブセット化して WOFF2 に圧縮 |
+| `scripts/README-font-compress.md` | フォント圧縮ツールの前提条件・使い方 |
 | `env.deploy.example` | デプロイ用環境変数テンプレート（`.env.deploy` の雛形） |
 | `src/ejs/common/` | 共通テンプレート（head / header / footer） |
 | `src/ejs/components/` | ページ固有の部品テンプレート |

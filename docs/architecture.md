@@ -258,6 +258,23 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - JavaScriptで動的にメールアドレスを復元
 - `<noscript>` タグでJavaScript無効時にも情報を表示
 
+### 3.11 フォント圧縮ツール
+
+#### 関連ファイル
+- `scripts/font-compress.sh` — 全グリフを維持したまま TTF 等を WOFF2 に変換
+- `scripts/font-compress-subset.sh` — 指定文字列のみをサブセット化して WOFF2 に変換
+- `scripts/README-font-compress.md` — 前提条件・使い方
+
+#### 動作仕様
+- **前提**: Python 3.x と `fonttools[woff]`（`pip install fonttools[woff]`）が必要。内部で `pyftsubset` を使用
+- **全グリフ圧縮**: `font-compress.sh 入力.ttf 出力.woff2` で全グリフを WOFF2 に変換
+- **サブセット化**: `font-compress-subset.sh 入力.ttf 出力.woff2 "使用する文字列"` で指定文字のみの WOFF2 を生成し、ファイルサイズを削減
+- 可変フォント（Variable Font）にも対応
+
+#### 使用方法
+- 詳細は `scripts/README-font-compress.md` を参照
+- 圧縮したフォントは `src/assets/fonts/` に配置する想定
+
 ---
 
 ## 4. ディレクトリ構成
@@ -284,6 +301,9 @@ config/
 scripts/
   after-build.mjs        HTML後処理スクリプト
   setup-secrets.sh       GitHub Secrets 一括登録（gh + .env.deploy）
+  font-compress.sh       フォント全グリフ → WOFF2 圧縮
+  font-compress-subset.sh フォントサブセット → WOFF2 圧縮
+  README-font-compress.md フォント圧縮ツールの使い方
 env.deploy.example       デプロイ用変数テンプレート
 .github/workflows/
   deploy.yml             CI/CD 定義
@@ -337,6 +357,7 @@ env.deploy.example       デプロイ用変数テンプレート
 - ページ設定: `config/site.config.js`
 - 除外判定: `config/utils.js`
 - HTML後処理: `scripts/after-build.mjs`
+- フォント圧縮: `scripts/font-compress.sh`, `scripts/font-compress-subset.sh`, `scripts/README-font-compress.md`
 - HTML検証: `.htmlvalidate.json`
 - Git hooks: `.husky/pre-commit`, `.husky/pre-push`
 - デプロイ: `.github/workflows/deploy.yml`
