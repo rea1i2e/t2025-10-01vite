@@ -1,13 +1,6 @@
 <% 
   const key = 'demoDocument';
-  const pageData = pages[key];
-  const page = {
-    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
-    description: pageData.description,
-    keywords: pageData.keywords,
-    path: pageData.path,
-    root: pageData.root,
-  };
+  const page = getPage(key);
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -17,7 +10,7 @@
   <%- include(ejsPath + 'common/_header.ejs', { page }) %>
   <main class="p-demo">
     <div class="p-demo__inner l-inner">
-      <h1 class="p-demo__title"><%- pageData.title %></h1>
+      <h1 class="p-demo__title"><%- pages[key].title %></h1>
       <section class="p-demo__section">
         <h2 class="p-demo__subtitle">順序なしリスト（ul）</h2>
         <div class="p-demo__content">

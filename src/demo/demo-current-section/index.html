@@ -1,13 +1,6 @@
 <%
   const key = 'demoCurrentSection';
-  const pageData = pages[key];
-  const page = {
-    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
-    description: pageData.description,
-    keywords: pageData.keywords,
-    path: pageData.path,
-    root: pageData.root,
-  };
+  const page = getPage(key);
   const sectionNavItems = [
     { id: 'overview', label: '概要' },
     { id: 'feature', label: '特徴' },
@@ -22,7 +15,7 @@
   <%- include(ejsPath + 'common/_header.ejs', { page }) %>
   <main class="p-demo p-demo--current-section l-main">
     <div class="p-demo__inner l-inner">
-      <h1 class="p-demo__title"><%- pageData.title %></h1>
+      <h1 class="p-demo__title"><%- pages[key].title %></h1>
       <p class="p-demo__desc">
         スクロールすると、ビューポート中央付近に入ったセクションに応じてナビ項目に <code>is-current-section</code> が付きます。
       </p>

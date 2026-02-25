@@ -57,11 +57,16 @@ flowchart LR
 - `src/ejs/components/*.ejs` — ページ固有の部品
 
 #### 動作仕様
-- 各ページHTMLは `pages['top']` のように `config/site.config.js` のページ設定を取得し、`page` オブジェクト（title / description / path / root 等）を構成する
-- `ejsPath`（`config/site.config.js` で定義）を使い、`common/_head.ejs` 等を `include` する
+- 各ページHTMLでは `config/site.config.js` の `getPage(pageKey)` でページ情報を取得し、`page` オブジェクト（title / description / keywords / path / root）を得る。存在しないキーを渡すとエラーを投げる。
+- `ejsPath`（`config/site.config.js` で定義）を使い、`common/_head.ejs` 等を `include` する。
+- 見出しなどで「ページ単体のタイトル」が必要な場合は `pages[key].title` または `pages['キー'].title` を参照する（`getPage` の `title` はメタ用の結合済みタイトル）。
 
 #### ページHTML側の構成例
-- `src/index.html`
+- 固定キーのページ（例: `src/index.html`）
+  - `<% const page = getPage('top'); %>`
+- 変数キーのページ（例: デモサブページ）
+  - `const key = 'demoTab';` のうえで `<% const page = getPage(key); %>`
+- 共通パーツの利用
   - `include(ejsPath + 'common/_head.ejs', { page })`
   - `include(ejsPath + 'common/_header.ejs', { page })`
   - `include(ejsPath + 'common/_footer.ejs', { page })`

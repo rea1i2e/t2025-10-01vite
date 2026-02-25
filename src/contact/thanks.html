@@ -1,13 +1,4 @@
-<% 
-  const pageData = pages['thanks'];
-  const page = {
-    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
-    description: pageData.description,
-    keywords: pageData.keywords,
-    path: pageData.path,
-    root: pageData.root,
-  };
-%>
+<% const page = getPage('thanks'); %>
 <!DOCTYPE html>
 <html lang="ja">
 <%- include(ejsPath + 'common/_head.ejs', { page }) %>

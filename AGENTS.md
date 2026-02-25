@@ -12,7 +12,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | ファイル | 役割 |
 |----------|------|
 | `vite.config.js` | Vite設定（EJS注入、Sassグロブ、画像最適化、ビルド出力パス） |
-| `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理 |
+| `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage() |
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、整形） |
 | `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
@@ -54,7 +54,7 @@ npm run build
 
 1. `src/` 配下に `xxx/index.html` を作成
 2. `config/site.config.js` の `pages` オブジェクトに同キーのページ情報を追加
-3. HTML内で `pages['xxx']` からページ情報を取得し、EJSテンプレートを `include` して構成する
+3. HTML内で `const page = getPage('xxx');` でページ情報を取得し、EJSテンプレートを `include` して構成する
 
 ## EJSテンプレートの構成ルール
 

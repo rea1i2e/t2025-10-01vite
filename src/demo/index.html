@@ -1,13 +1,4 @@
-<%
-  const pageData = pages['demo'];
-  const page = {
-    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
-    description: pageData.description,
-    keywords: pageData.keywords,
-    path: pageData.path,
-    root: pageData.root,
-  };
-%>
+<% const page = getPage('demo'); %>
 <!DOCTYPE html>
 <html lang="ja">
 <%- include(ejsPath + 'common/_head.ejs', { page }) %>
@@ -16,7 +7,7 @@
     <%- include(ejsPath + 'common/_header.ejs', { page }) %>
     <main class="p-demo">
       <div class="p-demo__inner l-inner">
-        <h1 class="p-demo__title"><%- pageData.title %></h1>
+        <h1 class="p-demo__title"><%- pages['demo'].title %></h1>
         <div class="p-demo__content">
           <%- include(ejsPath + 'components-demo/_p-demo.ejs', { page }) %>
         </div>

@@ -1,13 +1,6 @@
 <% 
   const key = 'demoScrollAnimation';
-  const pageData = pages[key];
-  const page = {
-    title: pageData.title ? pageData.title + titleSeparator + siteName : siteName,
-    description: pageData.description,
-    keywords: pageData.keywords,
-    path: pageData.path,
-    root: pageData.root,
-  };
+  const page = getPage(key);
   const cards = [
     {
       title: "シンプルな見出し",

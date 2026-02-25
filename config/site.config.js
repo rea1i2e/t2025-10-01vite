@@ -196,6 +196,27 @@ export const siteConfig = {
 
   // ページ設定
   pages,
+
+  /**
+   * ページ情報を取得する関数
+   * @param {string} pageKey - ページのキー（例: 'top', 'demo'）
+   * @returns {object} pageオブジェクト（title, description, keywords, path, root）
+   */
+  getPage(pageKey) {
+    const pageData = this.pages[pageKey];
+    if (!pageData) {
+      throw new Error(`Page "${pageKey}" not found in pages config`);
+    }
+    return {
+      title: pageData.title
+        ? pageData.title + this.titleSeparator + this.siteName
+        : this.siteName,
+      description: pageData.description,
+      keywords: pageData.keywords,
+      path: pageData.path,
+      root: pageData.root,
+    };
+  },
 };
 
 /**
