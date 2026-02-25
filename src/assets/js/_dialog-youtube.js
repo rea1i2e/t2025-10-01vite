@@ -82,7 +82,7 @@ const initDialogYoutube = () => {
   videoPlayer.height = "315";
   videoPlayer.frameBorder = "0";
   videoPlayer.allow =
-    // "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
+    "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
   videoPlayer.setAttribute("allowfullscreen", "");
 
   // 閉じるボタンを作成

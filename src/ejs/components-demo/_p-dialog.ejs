@@ -1,4 +1,4 @@
-<% posts.forEach((post, index) => { %>
+<% posts.slice(0, 3).forEach((post, index) => { %>
   <dialog class="p-dialog js-dialog" <%- index === 0 ? 'autofocus' : '' %> id="modal<%- index + 1 %>">
     <div class="p-dialog__container">
       <figure class="p-dialog__image">

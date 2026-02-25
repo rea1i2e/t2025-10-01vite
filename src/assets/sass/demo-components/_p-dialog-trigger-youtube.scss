@@ -1,14 +1,14 @@
 @use "../global" as *;
 
-.p-dialog-trigger-movie {
+.p-dialog-trigger-youtube {
   position: relative;
 }
 
-.p-dialog-trigger-movie__thumbnail {
+.p-dialog-trigger-youtube__thumbnail {
   position: relative;
 }
 
-.p-dialog-trigger-movie__thumbnail::after {
+.p-dialog-trigger-youtube__thumbnail::after {
   position: absolute;
   inset: 0;
   aspect-ratio: 16 / 9;
@@ -22,18 +22,18 @@
   }
 }
 
-.p-dialog-trigger-movie__thumbnail img {
+.p-dialog-trigger-youtube__thumbnail img {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
-.p-dialog-trigger-movie__title {
+.p-dialog-trigger-youtube__title {
 
 }
 
-.p-dialog-trigger-movie__desc {
+.p-dialog-trigger-youtube__desc {
 
 }
 
@@ -43,7 +43,7 @@
 
 
 @media (any-hover: hover) {
-  .p-dialog-trigger-movie__thumbnail:hover::after {
+  .p-dialog-trigger-youtube__thumbnail:hover::after {
     background-color: rgba(#000, 0.5);
   }
 }
