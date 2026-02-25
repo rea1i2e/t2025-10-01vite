@@ -81,3 +81,7 @@ a[href^="tel:"] {
 a:focus-visible {
   opacity: 0.7;
 }
+
+iframe[src*="youtube.com"] {
+  aspect-ratio: 16 / 9;
+}
