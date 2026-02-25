@@ -108,6 +108,7 @@
   --button-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --button-text-color: #fff;
   --button-bg-hover: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  
   position: relative;
   z-index: 0;
   background-image: var(--button-bg);
@@ -123,14 +124,23 @@
   z-index: -1;
 }
 
-// .c-button-gradient > * {
-//   position: relative;
-//   z-index: 1;
-// }
-
 @media (any-hover: hover) {
   .c-button-gradient:hover::before {
     opacity: 1;
+  }
+}
+
+.c-button-gradient2 {
+  background-image: linear-gradient(to right, #667eea, #764ba2, #667eea);
+  background-size: 200% 100%;
+  color: var(--color-white);
+  transition: background-position var(--hover-transition);
+}
+
+@media (any-hover: hover) {
+  .c-button-gradient2:hover {
+    /* 100%だと右に隙間ができる場合あり */
+    background-position: 99% 0;
   }
 }
 
