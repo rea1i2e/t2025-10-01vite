@@ -280,6 +280,26 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - 詳細は `scripts/README-font-compress.md` を参照
 - 圧縮したフォントは `src/assets/fonts/` に配置する想定
 
+### 3.12 パララックス機能
+
+#### 関連ファイル
+- `src/assets/js/_parallax.js` — 汎用パララックス（GSAP ScrollTrigger 使用）
+- `src/assets/js/main.js` — `_parallax.js` を import
+
+#### 動作仕様
+- **トリガー・移動量**: 要素に `data-parallax` 属性を付与するとパララックスが有効になる。属性値で移動量（%）を数値で指定可能。値なしまたは省略時は `30`。正の値で下方向、負の値で上方向に移動。数値は `parseFloat` でパースし、無効な場合はデフォルトを使用。
+- 対象要素内の img を、要素がビューポートを通過する間（`start: 'top bottom'` 〜 `end: 'bottom top'`）にスクロールに連動して translateY で移動させる（`scrub: true`）。
+- GSAP および ScrollTrigger プラグインに依存する。
+
+#### 使用方法
+- デフォルトの移動量で使う場合: 対象要素に `data-parallax` を付与する（値なし）。
+- 移動量を指定する場合: `data-parallax="50"` のように % の数値を属性値で指定する。逆方向は `data-parallax="-30"` など負の値で指定する。
+
+#### 使用例（HTML側）
+- `<div data-parallax>...</div>` — デフォルト（30%）で視差を付与
+- `<div data-parallax="50">...</div>` — 50% の移動量
+- `<div data-parallax="-30">...</div>` — 上方向に 30% 移動
+
 ---
 
 ## 4. ディレクトリ構成

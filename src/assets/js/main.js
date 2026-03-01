@@ -39,3 +39,6 @@ import './_scroll-hint.js';
 
 /* テキストアンダーライン */
 import './_text-underline.js';
+
+/* パララックス */
+import './_parallax.js';

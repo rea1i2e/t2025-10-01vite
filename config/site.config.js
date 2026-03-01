@@ -62,6 +62,13 @@ const pages = {
     title: "スクロールアニメーション",
     description: "スクロールに応じて要素が順次表示されるデモページです。",
   },
+  demoParallax: {
+    label: "パララックス",
+    root: "../../",
+    path: "demo/demo-parallax/",
+    title: "パララックス",
+    description: "パララックスデモページです。",
+  },
   demoTextDecoration: {
     label: "テキスト装飾",
     root: "../../",

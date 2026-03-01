@@ -41,6 +41,7 @@
     "vite-plugin-sass-glob-import": "^5.0.0"
   },
   "dependencies": {
+    "gsap": "^3.12.5",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "flatpickr": "^4.6.13",

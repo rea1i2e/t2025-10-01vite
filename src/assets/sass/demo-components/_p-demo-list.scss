@@ -15,11 +15,7 @@
 
 .p-demo-list__item {
   position: relative;
-  // マーカー分のスペースを確保
   padding-inline-start: calc(var(--_marker-size) + var(--_column-gap));
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: flex-start;
 }
 
 .p-demo-list__item::before {

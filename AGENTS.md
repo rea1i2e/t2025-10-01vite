@@ -23,6 +23,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `src/ejs/common/` | 共通テンプレート（head / header / footer） |
 | `src/ejs/components/` | ページ固有の部品テンプレート |
 | `src/assets/js/main.js` | JSエントリファイル |
+| `src/assets/js/_parallax.js` | 汎用パララックス（data-parallax でトリガー・移動量を指定） |
 | `src/assets/sass/style.scss` | Sassエントリファイル |
 | `.github/workflows/deploy.yml` | CI/CD（FTPデプロイ + Discord通知） |
 
