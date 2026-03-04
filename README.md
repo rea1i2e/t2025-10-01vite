@@ -112,7 +112,7 @@ npm run reinstall    # クリーン後に再インストール
 ## EJS の使い方
 - **サイト設定（`config/site.config.js`）**:
   - `siteName`: サイト名（タイトル生成に使用）
-  - `domain`: ドメイン（OGP/canonical等に使用）
+  - `baseUrl`: サイトのベースURL（OGP/canonical等に使用）
   - `titleSeparator`: タイトル区切り文字（デフォルト: " | "）
   - `headerExcludePages`: ヘッダーメニューから除外するページのキー配列
   - `pages`: ページ情報のオブジェクト（キー: ページ識別子、値: ページ情報）
@@ -133,7 +133,7 @@ npm run reinstall    # クリーン後に再インストール
 ```javascript
 export const siteConfig = {
   siteName: "サイト名",
-  domain: "https://example.com/",
+  baseUrl: "https://example.com/",
   titleSeparator: " | ", // タイトル区切り文字
   headerExcludePages: ['privacy'], // ヘッダーから除外するページ
   pages: {/* ページオブジェクト */} // 配列ではなくオブジェクト形式

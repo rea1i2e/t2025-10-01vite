@@ -154,7 +154,7 @@ flowchart LR
 #### 設定構造
 - `pages` オブジェクト: 各ページの `label` / `root` / `path` / `title` / `description` 等を集約
 - `headerExcludePages` / `drawerExcludePages`: メニューから除外するページのキー配列
-- `ejsPath` / `domain` / `titleSeparator`: 共通設定
+- `ejsPath` / `baseUrl` / `titleSeparator`: 共通設定
 
 #### テンプレート側での利用
 - `src/ejs/common/_header.ejs` で `Object.entries(pages)` をループし、ヘッダ/ドロワーメニューを生成
