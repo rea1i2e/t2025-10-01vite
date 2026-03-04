@@ -11,7 +11,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 
 | ファイル | 役割 |
 |----------|------|
-| `vite.config.js` | Vite設定（EJS注入、Sassグロブ、画像最適化、ビルド出力パス） |
+| `vite.config.js` | Vite設定（EJS注入、Sassグロブ、画像最適化、ビルド出力パス）。アセットのインライン化を無効にする場合は `assetsInlineLimit` のコメントを参照 |
 | `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage() |
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、整形） |
@@ -65,6 +65,7 @@ npm run build
 
 - ビルド成果物は `dist/` に出力される
 - 画像圧縮・WebP生成はビルド時に自動実行されるため、手動変換は不要
+- CSS 内で参照した 4KB 未満のアセット（SVG 等）はデフォルトで data URI としてインライン化される。別ファイルで出力したい場合は `vite.config.js` の `assetsInlineLimit` のコメントを参照
 
 ## Git hooks に関する注意
 

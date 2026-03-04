@@ -300,6 +300,20 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - `<div data-parallax="50">...</div>` — 50% の移動量
 - `<div data-parallax="-30">...</div>` — 上方向に 30% 移動
 
+### 3.13 CSS内アセットのインライン化
+
+#### 関連ファイル
+- `vite.config.js` — `build.assetsInlineLimit`（デフォルトは未指定＝Viteのデフォルト 4096 バイトが適用される）
+
+#### 動作仕様
+- CSS（Sass 経由含む）の `url()` で参照した画像・SVG などは、ビルド時に Vite が解決する。
+- ファイルサイズが **4KB 未満** のアセットは、デフォルトで **data URI として CSS にインライン埋め込み** される（HTTP リクエスト削減）。
+- SVG は `data:image/svg+xml,...` 形式（URL エンコード）で埋め込まれる。
+
+#### インライン化を無効にしたい場合
+- SVG や小さい画像を **別ファイルとして** `dist/assets/images/` に出力したい場合は、`vite.config.js` の `build` 内にある **`assetsInlineLimit: 0`** の行のコメントを解除する。
+- コメント解除後は、`url()` で参照したアセットはすべて別ファイルとして出力され、CSS 内の参照は `url(./assets/images/xxx-[hash].svg)` のようなパスに置き換わる。
+
 ---
 
 ## 4. ディレクトリ構成
