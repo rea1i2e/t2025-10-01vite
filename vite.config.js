@@ -35,6 +35,8 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
+    // 4KB未満のアセットをインライン化しない（SVG等を別ファイルで出力したいときはコメント解除）
+    // assetsInlineLimit: 0,
     rollupOptions: {
       input: Object.fromEntries(
         htmlFiles.map((file) => [
