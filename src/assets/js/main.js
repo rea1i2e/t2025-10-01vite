@@ -10,6 +10,7 @@ import './_toggle.js';
 import './_splide-fade.js';
 import './_splide-loop.js';
 import './_splide-thumbnail.js';
+import './_splide-progress.js';
 
 /* スクロールに応じた表示制御 */
 import './_fadein.js';

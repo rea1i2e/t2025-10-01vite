@@ -1,0 +1,29 @@
+<% 
+const splideProgressItems = [
+  { file: "demo/dummy1.jpg", alt: "" },
+  { file: "demo/dummy2.jpg", alt: "" },
+  { file: "demo/dummy3.jpg", alt: "" },
+  { file: "demo/dummy4.jpg", alt: "" },
+  { file: "demo/dummy5.jpg", alt: "" },
+];
+%>
+<div class="p-splide-progress splide" id="js-splide-progress">
+  <div class="p-splide-progress__track splide__track">
+    <ul class="p-splide-progress__list splide__list">
+      <% splideProgressItems.forEach((item) => { %>
+      <li class="p-splide-progress__item splide__slide">
+        <img src="<%- imagePath %><%- item.file %>" alt="<%= (item.alt || '').replace(/<[^>]*>/g, '') %>">
+      </li>
+      <% }); %>
+    </ul>
+  </div>
+  <div class="p-splide-progress__controls">
+    <div class="p-splide-progress__progress">
+      <div class="p-splide-progress__progress-bar js-splide-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div class="p-splide-progress__arrows splide__arrows">
+      <button class="p-splide-progress__arrow splide__arrow splide__arrow--prev" type="button" aria-label="前へ"></button>
+      <button class="p-splide-progress__arrow splide__arrow splide__arrow--next" type="button" aria-label="次へ"></button>
+    </div>
+  </div>
+</div>
