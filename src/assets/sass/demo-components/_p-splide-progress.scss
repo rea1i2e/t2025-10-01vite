@@ -39,19 +39,20 @@
 }
 
 .p-splide-progress__progress {
+  // height: fit-content;
+  height: rem(10);
   flex: 1;
-  background-color: var(--color-white);
+  background-color: #ccc;
 }
 
 .p-splide-progress__progress-bar {
   width: 0;
-  height: rem(3);
-  background-color: var(--color-theme);
+  height: 100%;
+  background-color: var(--color-accent);
   transition: width 0.3s ease-out;
 }
 
 .p-splide-progress__arrows.splide__arrows {
-  color: var(--color-theme);
 }
 
 .p-splide-progress__arrow.splide__arrow {
