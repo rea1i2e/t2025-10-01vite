@@ -17,7 +17,7 @@ let tag = (page.path === '') ? 'h1' : 'div';
         <% if (!isExcluded(key, headerExcludePages)) { %>
         <li class="p-header__nav-item">
           <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" class="p-header__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
-            <%- item.label %>
+            <span class="p-header__nav-item-text"><%- item.label %></span>
           </a>
         </li>
         <% } %>
@@ -34,7 +34,7 @@ let tag = (page.path === '') ? 'h1' : 'div';
           if (!isExcluded(key, drawerExcludePages)) { %>
         <li class="p-drawer__nav-item">
           <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" class="p-drawer__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
-            <%- item.label %>
+            <span class="p-drawer__nav-item-text"><%- item.label %></span>
           </a>
         </li>
         <% }

@@ -61,8 +61,7 @@
   gap: rem(8);
   height: 100%;
   padding-inline: rem(16);
-  @include mq() {
-  }
+  @include hover-text-underline-slide;
 }
 
 .p-header__nav-item-link[target="_blank"]::after {
@@ -76,6 +75,10 @@
   mask-size: contain;
   background-color: currentColor;
   content: "";
+}
+
+.p-header__nav-item-text {
+  padding-inline: 1em;
 }
 
 .p-header__menu-button {

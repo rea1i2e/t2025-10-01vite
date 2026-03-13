@@ -42,11 +42,14 @@
   $color: currentColor,
   $offset: 0,              // 下線の位置（例: -2px で少し下へ）
 ) {
-  position: relative;
-
-  &::before {
+  
+  span {
+    position: relative;
+    display: inline-block;
+  }
+  span::before {
     position: absolute;
-    inset-inline: 0;
+    inset-inline: 1em;
     inset-block-end: $offset;
     height: $height;
     background-color: $color;
@@ -61,17 +64,17 @@
       opacity: 1;
     }
   
-    &:hover::before {
+    &:hover span::before {
       scale: 1 1;
       transform-origin: left;
     }
   }
 
-  &:focus-visible {
+  &:focus-visible span {
     opacity: 1;
   }
 
-  &:focus-visible::before {
+  &:focus-visible span::before {
     scale: 1 1;
     transform-origin: left;
   }
