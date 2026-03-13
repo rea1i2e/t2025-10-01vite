@@ -1,0 +1,44 @@
+@use "../global" as *;
+
+.p-fixed-menu {
+  position: fixed;
+  inset-inline-end: rem(24);
+  inset-block-end: rem(24);
+  z-index: 50;
+  opacity: 0;
+  transform: translateY(rem(16));
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+
+  &.is-show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+.p-fixed-menu__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: rem(8);
+  padding: rem(8) rem(14);
+  border-radius: rem(999);
+  background: color-mix(in srgb, #020617 85%, transparent);
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.45),
+    0 0 0 1px rgba(148, 163, 184, 0.5);
+}
+
+.p-fixed-menu__dot {
+  width: rem(8);
+  height: rem(8);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 30% 30%, #e0f2fe 0, #38bdf8 30%, #0369a1 100%);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.7),
+    0 0 12px rgba(56, 189, 248, 0.7);
+}
+

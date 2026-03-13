@@ -41,6 +41,10 @@
       </div>
     </section>
 
+    <div id="js-fixed-menu-trigger" aria-hidden="true">
+      固定メニュー表示のトリガー要素
+    </div>
+
     <section class="p-fadein-demo__guide" data-fadein="200">
       <div class="l-inner">
         <h2 class="p-fadein-demo__section-title">使い方</h2>
@@ -93,6 +97,13 @@
       </div>
     </section>
   </main>
+  <div id="js-fixed-menu" class="p-fixed-menu" aria-hidden="true">
+    <div class="p-fixed-menu__inner">
+      <span class="p-fixed-menu__dot"></span>
+      <span class="p-fixed-menu__dot"></span>
+      <span class="p-fixed-menu__dot"></span>
+    </div>
+  </div>
   <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
 </body>
 </html>
