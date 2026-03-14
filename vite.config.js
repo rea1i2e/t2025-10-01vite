@@ -12,11 +12,16 @@ import imageminOptipng from "imagemin-optipng";
 import imageminGifsicle from "imagemin-gifsicle";
 import imageminSvgo from "imagemin-svgo";
 import imageminWebp from "imagemin-webp";
+import imageminAvif from "imagemin-avif";
 // imagemin-gif2webp は CJS なので default import の互換に依存せず、名前空間受け取りにします
 import gif2webpCjs from 'imagemin-gif2webp';
 import { siteConfig } from "./config/site.config.js";
 import { posts } from "./src/ejs/data/posts.js";
 const imageminGif2webp = gif2webpCjs;
+
+const { imageAltFormats } = siteConfig;
+const makeWebpEnabled = imageAltFormats === 'webp' || imageAltFormats === 'both';
+const makeAvifEnabled = imageAltFormats === 'avif' || imageAltFormats === 'both';
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -98,28 +103,38 @@ export default defineConfig({
     }),
     liveReload(["ejs/**/*.ejs"]),
     sassGlobImports(),
-    // 画像圧縮とWebP変換
+    // 画像圧縮と WebP/AVIF 変換（config/site.config.js の imageAltFormats で制御）
     viteImagemin({
       root: path.resolve(__dirname), // 絶対パスを維持（相対パスNG）
       onlyAssets: true,
       include: /\.(png|jpe?g|gif|svg)$/i,
       plugins: {
-        // 静的インポートに変更
         jpg: imageminMozjpeg({ quality: 75, progressive: true }),
         png: imageminOptipng({ optimizationLevel: 2 }),
         gif: imageminGifsicle({ optimizationLevel: 2 }),
         svg: imageminSvgo()
       },
-      makeWebp: {
-        plugins: {
-          // 静的インポートに変更
-          jpg: imageminWebp({ quality: 75 }),
-          png: imageminWebp({ quality: 75 }),
-          gif: imageminGif2webp({ quality: 75 }),
-        },
-        formatFilePath: (file) => file.replace(/\.(jpe?g|png|gif)$/i, ".webp"),
-        skipIfLargerThan: "optimized"
-      }
+      ...(makeWebpEnabled && {
+        makeWebp: {
+          plugins: {
+            jpg: imageminWebp({ quality: 75 }),
+            png: imageminWebp({ quality: 75 }),
+            gif: imageminGif2webp({ quality: 75 }),
+          },
+          formatFilePath: (file) => file.replace(/\.(jpe?g|png|gif)$/i, ".webp"),
+          skipIfLargerThan: "optimized"
+        }
+      }),
+      ...(makeAvifEnabled && {
+        makeAvif: {
+          plugins: {
+            jpg: imageminAvif({ quality: 50 }),
+            png: imageminAvif({ quality: 50 }),
+          },
+          formatFilePath: (file) => file.replace(/\.(jpe?g|png)$/i, ".avif"),
+          skipIfLargerThan: "optimized"
+        }
+      })
     })
   ]
 });

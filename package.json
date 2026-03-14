@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@vheemstra/vite-plugin-imagemin": "^2.2.1",
+    "imagemin-avif": "^0.1.6",
     "autoprefixer": "^10.4.21",
     "glob": "^11.0.0",
     "html-validate": "^10.1.2",

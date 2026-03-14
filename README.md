@@ -1,6 +1,6 @@
 # t2025-10-01vite
 
-Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP 生成、HTML の `<img>` を `<picture>` 最適化、width/height 自動付与を行います。（AVIFは「生成」は未対応ですが、`dist/` にAVIFが存在する場合は `<picture>` に `<source type="image/avif">` を挿入します）
+Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP/AVIF 生成、HTML の `<img>` を `<picture>` 最適化、width/height 自動付与を行います。画像の代替フォーマット（png,jpg のみ / +webp / +avif / 両方）は `config/site.config.js` の `imageAltFormats` で切り替えられます。
 
 > 詳細な技術仕様は [docs/architecture.md](docs/architecture.md) を参照してください。
 
@@ -84,7 +84,7 @@ npm run dev
 ```
 
 - 本番ビルド: `dist/` に出力 + ビルド後最適化（after-build）
-※ ビルドに時webP生成、picture, sourceタグ挿入、width/height自動付与
+※ ビルド時に WebP/AVIF 生成（設定により切り替え可）、picture/source 挿入、width/height 自動付与
 ```bash
 npm run build
 ```
@@ -115,6 +115,7 @@ npm run reinstall    # クリーン後に再インストール
   - `baseUrl`: サイトのベースURL（OGP/canonical等に使用）
   - `titleSeparator`: タイトル区切り文字（デフォルト: " | "）
   - `headerExcludePages`: ヘッダーメニューから除外するページのキー配列
+  - `imageAltFormats`: 画像の代替フォーマット（`'none'` / `'webp'` / `'avif'` / `'both'`）。ビルド・after-build で使用
   - `pages`: ページ情報のオブジェクト（キー: ページ識別子、値: ページ情報）
     - `label`: メニュー表示名
     - `path`: ページパス（または外部URL）
@@ -136,6 +137,7 @@ export const siteConfig = {
   baseUrl: "https://example.com/",
   titleSeparator: " | ", // タイトル区切り文字
   headerExcludePages: ['privacy'], // ヘッダーから除外するページ
+  imageAltFormats: 'webp', // 'none' | 'webp' | 'avif' | 'both'（画像の代替フォーマット）
   pages: {/* ページオブジェクト */} // 配列ではなくオブジェクト形式
 };
 ```

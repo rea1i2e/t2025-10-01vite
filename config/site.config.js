@@ -189,6 +189,15 @@ export const siteConfig = {
   titleSeparator: " | ",
 
   /**
+   * 画像の代替フォーマット（ビルド・after-build で使用）
+   * - 'avif'  : png, jpg + avif
+   * - 'webp'  : png, jpg + webp
+   * - 'both'  : png, jpg + webp + avif
+   * - 'none'  : png, jpg のみ（picture 化しない）
+   */
+  imageAltFormats: "avif",
+
+  /**
    * ページ除外設定
    * ヘッダー、ドロワー、フッターから除外するページの指定
    *

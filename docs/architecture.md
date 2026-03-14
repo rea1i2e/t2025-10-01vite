@@ -92,40 +92,55 @@ flowchart LR
 ### 3.4 画像最適化パイプライン
 
 #### 関連ファイル
+- `config/site.config.js` — 画像代替フォーマット（`siteConfig.imageAltFormats`）。Vite と after-build で共有
 - `vite.config.js` — `@vheemstra/vite-plugin-imagemin` を使用
+
+#### 画像代替フォーマット（imageAltFormats）
+`config/site.config.js` の `siteConfig.imageAltFormats` で次を切り替える。
+
+| 値 | 出力 |
+|----|------|
+| `'none'` | png, jpg のみ（代替フォーマットを生成・挿入しない） |
+| `'webp'` | png, jpg + webp |
+| `'avif'` | png, jpg + avif |
+| `'both'` | png, jpg + webp + avif |
 
 #### 圧縮仕様
 - 対象: `include: /\.(png|jpe?g|gif|svg)$/i`
 - JPEG: `imagemin-mozjpeg({ quality: 75, progressive: true })`
-- PNG: `imagemin-pngquant({ quality: [0.65, 0.8], speed: 3 })`
+- PNG: `imagemin-optipng({ optimizationLevel: 2 })`
 - GIF: `imagemin-gifsicle({ optimizationLevel: 2 })`
 - SVG: `imagemin-svgo()`
 
 #### WebP 生成仕様
-- `makeWebp` により jpg / png / gif から WebP を生成
+- `imageAltFormats` が `'webp'` または `'both'` のとき `makeWebp` が有効
+- jpg / png / gif から WebP を生成
 - `skipIfLargerThan: "optimized"` — 元画像より大きくなる場合は生成しない
+
+#### AVIF 生成仕様
+- `imageAltFormats` が `'avif'` または `'both'` のとき `makeAvif` が有効
+- jpg / png から AVIF を生成（`imagemin-avif` 使用。sharp ベースでネイティブバイナリ不要）
+- `skipIfLargerThan: "optimized"` で元より大きい場合は生成しない
 
 #### ビルド出力
 - `assets/images/[name]-[hash][extname]`（`vite.config.js` の `assetFileNames` で定義）
 
-#### AVIF について
-- AVIF の「生成」は現状未対応。ただし `scripts/after-build.mjs` は `dist/` にAVIFが存在する場合 `<source type="image/avif">` を挿入する（"存在すれば対応する"構成）
-
 ### 3.5 HTML後処理（after-build）
 
 #### 関連ファイル
-- `scripts/after-build.mjs`
+- `scripts/after-build.mjs` — `config/site.config.js` の `imageAltFormats` を参照
 
 #### 対象
 - `dist/**/*.html` を再帰走査
 
 #### 処理仕様
 1. `<img src="...">` を対象に、元画像の実寸を `sharp(...).metadata()` で取得し `width` / `height` を付与
-2. `dist/` にWebP / AVIFが存在する場合:
-   - `<img>` を `<picture>` でラップし、`<source type="image/webp">` / `<source type="image/avif">` を自動挿入
-   - 既に `<picture>` の場合は破壊せず、不足する `<source>` のみ補完（art-direction用の `media` も維持）
+2. `imageAltFormats` で有効なフォーマット（webp / avif）について、`dist/` にファイルが存在する場合:
+   - `<img>` を `<picture>` でラップし、`<source type="image/avif">` / `<source type="image/webp">` を自動挿入（ブラウザの優先順に AVIF → WebP の順）
+   - 既に `<picture>` の場合は破壊せず、不足する `<source>` のみ補完（art-direction 用の `media` も維持）
    - 各 `<source>` にも参照ファイルの実寸を付与
-3. `js-beautify` でHTML全体を整形
+3. CSS の `background-image` / `background` で参照した jpg/png について、有効なフォーマットが dist に存在すれば `image-set(...)` を追加（avif → webp → jpg の順）
+4. `js-beautify` でHTML全体を整形
 
 #### スキップ条件
 - `http(s)://` の外部URL
@@ -401,7 +416,8 @@ env.deploy.example       デプロイ用変数テンプレート
 
 - **ページ追加**: `src/` 配下に `xxx/index.html` を追加し、`config/site.config.js` の `pages` に同キーを追加
 - **メニュー除外制御**: `headerExcludePages` / `drawerExcludePages` を調整（`config/utils.js` のパターン仕様に従う）
-- **画像最適化の品質調整**: `vite.config.js` の `imagemin*` / `makeWebp` 設定を変更
+- **画像代替フォーマット**: `config/site.config.js` の `siteConfig.imageAltFormats` で none / webp / avif / both を切り替え
+- **画像最適化の品質調整**: `vite.config.js` の `imagemin*` / `makeWebp` / `makeAvif` 設定を変更
 - **`<picture>` 化の挙動調整**: `scripts/after-build.mjs` の対象条件・挿入順・整形方針を変更
 - **デプロイ先・方式変更**: `.github/workflows/deploy.yml` を編集（FTP → 別方式への置換など）
 

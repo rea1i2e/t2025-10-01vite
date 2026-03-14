@@ -1,13 +1,21 @@
 // scripts/after-build.mjs
 // HTMLを後処理して <img> を <picture> 化し、width/height を自動付与します。
+// config/site.config.js の imageAltFormats に従い、挿入する代替フォーマット（webp/avif）を制御します。
 
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join, relative, resolve, sep } from 'node:path'
 import { JSDOM } from 'jsdom'
 import sharp from 'sharp'
 import beautify from 'js-beautify'
+import { siteConfig } from '../config/site.config.js'
 
 const DIST = 'dist'
+
+// 挿入対象フォーマット（picture 内の並びは AVIF → WebP）
+const imageAltFormats = siteConfig.imageAltFormats
+const injectFormats = imageAltFormats === 'none' ? [] : imageAltFormats === 'webp' ? ['webp'] : imageAltFormats === 'avif' ? ['avif'] : ['avif', 'webp']
+const injectWebp = injectFormats.includes('webp')
+const injectAvif = injectFormats.includes('avif')
 
 function listHtmlFiles(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -140,49 +148,41 @@ for (const htmlPath of htmlFiles) {
         meta = await sharp(abs).metadata().catch(() => null)
       }
 
-      // 既に <picture> 内なら、ラップはしないが WebP/AVIF の <source> を不足分だけ挿入する
+      // 既に <picture> 内なら、ラップはしないが設定で有効な WebP/AVIF の <source> を不足分だけ挿入する
       if (insidePicture) {
         const pictureEl = img.parentElement
 
-        // 既存のタイプを把握
         const hasWebp = !!pictureEl.querySelector('source[type="image/webp"]')
         const hasAvif = !!pictureEl.querySelector('source[type="image/avif"]')
 
         const distRel = toDistRel(abs)
         if (distRel) {
-          const webpCand = hasWebp ? null : candidates(distRel, ['webp'])
-          const avifCand = hasAvif ? null : candidates(distRel, ['avif'])
-
+          const webpCand = injectWebp && !hasWebp ? candidates(distRel, ['webp']) : null
+          const avifCand = injectAvif && !hasAvif ? candidates(distRel, ['avif']) : null
           const foundWebp = webpCand ? firstExisting(webpCand) : null
           const foundAvif = avifCand ? firstExisting(avifCand) : null
 
-          // 既存の art-direction（media 指定）を崩さないよう、フォールバック <img> の直前に差し込む
+          // 既存の art-direction（media 指定）を崩さないよう、フォールバック <img> の直前に差し込む（AVIF → WebP の順）
           if (foundAvif) {
             const s = doc.createElement('source')
-            // 相対パスに変更（./プレフィックス付き）
             const relPath = relative(dirname(htmlPath), resolve(DIST, foundAvif.rel)).replaceAll('\\', '/')
             s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
             s.setAttribute('type', 'image/avif')
-            // size from its own file (not from <img>)
             const ownMetaAvif = await metaForSrcsetUrl(relPath, htmlPath)
             applySize(s, ownMetaAvif)
             pictureEl.insertBefore(s, img)
-            // console.log('  - inject AVIF into existing <picture>:', foundAvif.rel)
           }
           if (foundWebp) {
             const s = doc.createElement('source')
-            // 相対パスに変更（./プレフィックス付き）
             const relPath = relative(dirname(htmlPath), resolve(DIST, foundWebp.rel)).replaceAll('\\', '/')
             s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
             s.setAttribute('type', 'image/webp')
             const ownMetaWebp = await metaForSrcsetUrl(relPath, htmlPath)
             applySize(s, ownMetaWebp)
             pictureEl.insertBefore(s, img)
-            // console.log('  - inject WEBP into existing <picture>:', foundWebp.rel)
           }
 
-          // For each existing JPG/PNG <source> (often art-direction with media),
-          // add a corresponding WebP <source> with the SAME media if a webp asset exists
+          // 既存の JPG/PNG <source>（art-direction の media 付き）に対し、有効なフォーマットの <source> を同じ media で追加（AVIF → WebP の順）
           const currentSources = Array.from(pictureEl.querySelectorAll('source'))
           for (const jpgSrc of currentSources) {
             const t = (jpgSrc.getAttribute('type') || '').toLowerCase()
@@ -190,40 +190,39 @@ for (const htmlPath of htmlFiles) {
             const ss = jpgSrc.getAttribute('srcset') || ''
             const url = firstUrlFromSrcset(ss)
             if (!url) continue
-            // only target raster types we can webp-ize
             if (!/\.(jpe?g|png)(?:\?.*)?$/i.test(url)) continue
             const mediaAttr = jpgSrc.getAttribute('media') || ''
-
-            // find webp variant for this exact source
             const rel = urlToRelFromHtml(htmlPath, url)
             if (!rel) continue
-            const cand = candidates(rel, ['webp'])
-            const found = firstExisting(cand)
-            if (!found) continue
 
-            // check if a webp <source> with same media and same file already exists
-            let existsSame = false
-            for (const s of pictureEl.querySelectorAll('source[type="image/webp"]')) {
-              const smedia = s.getAttribute('media') || ''
-              const srel = urlToRelFromHtml(htmlPath, firstUrlFromSrcset(s.getAttribute('srcset') || ''))
-              if (smedia === mediaAttr && srel === found.rel) { existsSame = true; break }
+            for (const fmt of ['avif', 'webp']) {
+              if (fmt === 'avif' && !injectAvif) continue
+              if (fmt === 'webp' && !injectWebp) continue
+              const type = fmt === 'avif' ? 'image/avif' : 'image/webp'
+              const cand = candidates(rel, [fmt])
+              const found = firstExisting(cand)
+              if (!found) continue
+
+              const existingSameType = pictureEl.querySelectorAll(`source[type="${type}"]`)
+              let existsSame = false
+              for (const s of existingSameType) {
+                const smedia = s.getAttribute('media') || ''
+                const srel = urlToRelFromHtml(htmlPath, firstUrlFromSrcset(s.getAttribute('srcset') || ''))
+                if (smedia === mediaAttr && srel === found.rel) { existsSame = true; break }
+              }
+              if (existsSame) continue
+
+              const s = doc.createElement('source')
+              const relPath = relative(dirname(htmlPath), resolve(DIST, found.rel)).replaceAll('\\', '/')
+              s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
+              s.setAttribute('type', type)
+              if (mediaAttr) s.setAttribute('media', mediaAttr)
+              const ownMeta = await metaForSrcsetUrl(relPath, htmlPath)
+              applySize(s, ownMeta)
+              pictureEl.insertBefore(s, jpgSrc)
             }
-            if (existsSame) continue
-
-            // create and insert webp BEFORE the jpg source so browsers prefer it
-            const s = doc.createElement('source')
-            // 相対パスに変更（./プレフィックス付き）
-            const relPath = relative(dirname(htmlPath), resolve(DIST, found.rel)).replaceAll('\\', '/')
-            s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
-            s.setAttribute('type', 'image/webp')
-            if (mediaAttr) s.setAttribute('media', mediaAttr)
-            const ownMeta = await metaForSrcsetUrl(relPath, htmlPath)
-            applySize(s, ownMeta)
-            pictureEl.insertBefore(s, jpgSrc)
-            // console.log('  - add WEBP for media source:', found.rel, mediaAttr ? `media=${mediaAttr}` : '')
           }
 
-          // 既存/新規すべての <source> について、自身が指すファイルの実寸を付与
           for (const sourceEl of pictureEl.querySelectorAll('source')) {
             const ss = sourceEl.getAttribute('srcset') || ''
             const ownMeta = await metaForSrcsetUrl(ss, htmlPath)
@@ -231,7 +230,6 @@ for (const htmlPath of htmlFiles) {
           }
         }
 
-        // console.log('  - already inside <picture>, sized and injected if available:', srcAttr)
         sizedOnly++
         continue
       }
@@ -239,40 +237,32 @@ for (const htmlPath of htmlFiles) {
       const distRel = toDistRel(abs)
       if (!distRel) continue
 
-      const webpCand = candidates(distRel, ['webp'])
-      const avifCand = candidates(distRel, ['avif'])
-
-      const foundWebp = firstExisting(webpCand)
-      const foundAvif = firstExisting(avifCand)
+      const foundAvif = injectAvif ? firstExisting(candidates(distRel, ['avif'])) : null
+      const foundWebp = injectWebp ? firstExisting(candidates(distRel, ['webp'])) : null
 
       if (!foundWebp && !foundAvif) {
         sizedOnly++
-        // console.log('  - no alt formats, keep <img>:', distRel)
         continue
       }
 
       const picture = doc.createElement('picture')
       if (foundAvif) {
         const s = doc.createElement('source')
-        // 相対パスに変更（./プレフィックス付き）
         const relPath = relative(dirname(htmlPath), resolve(DIST, foundAvif.rel)).replaceAll('\\', '/')
         s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
         s.setAttribute('type', 'image/avif')
         const ownMetaAvif = await metaForSrcsetUrl(relPath, htmlPath)
         applySize(s, ownMetaAvif)
         picture.appendChild(s)
-        // console.log('  - add AVIF:', foundAvif.rel)
       }
       if (foundWebp) {
         const s = doc.createElement('source')
-        // 相対パスに変更（./プレフィックス付き）
         const relPath = relative(dirname(htmlPath), resolve(DIST, foundWebp.rel)).replaceAll('\\', '/')
         s.setAttribute('srcset', relPath.startsWith('.') ? relPath : './' + relPath)
         s.setAttribute('type', 'image/webp')
         const ownMetaWebp = await metaForSrcsetUrl(relPath, htmlPath)
         applySize(s, ownMetaWebp)
         picture.appendChild(s)
-        // console.log('  - add WEBP:', foundWebp.rel)
       }
 
       for (const sourceEl of picture.querySelectorAll('source')) {
@@ -323,9 +313,8 @@ for (const htmlPath of htmlFiles) {
   // console.log('rewrote:', htmlPath.split(sep).slice(-2).join('/'))
 }
 
-// === CSS: background-image / background の jpg/png のみ → dist に WebP があれば image-set を追加 ===
-// SCSS では background-image: url(...jpg) または background: url(...jpg) ... の1行で書く。
-// ビルド後に dist に同名の .webp があれば、ここで image-set(webp, jpg) に展開する。
+// === CSS: background-image / background の jpg/png → dist に WebP/AVIF があれば image-set を追加 ===
+// config/site.config.js の imageAltFormats に従い、有効なフォーマットだけ image-set に含める（avif → webp → jpg の順）
 const cssDir = join(resolve(DIST), 'assets', 'css')
 const distImagesDir = join(resolve(DIST), 'assets', 'images')
 if (existsSync(cssDir) && existsSync(distImagesDir)) {
@@ -346,8 +335,17 @@ if (existsSync(cssDir) && existsSync(distImagesDir)) {
       jpgFile = path
     }
     if (!jpgFile) return null
-    const webpFile = imageFiles.find((f) => f.startsWith(base + '-') && f.toLowerCase().endsWith('.webp'))
-    return { base, jpgFile, webpFile }
+    const webpFile = injectWebp ? imageFiles.find((f) => f.startsWith(base + '-') && f.toLowerCase().endsWith('.webp')) : null
+    const avifFile = injectAvif ? imageFiles.find((f) => f.startsWith(base + '-') && f.toLowerCase().endsWith('.avif')) : null
+    return { base, jpgFile, webpFile, avifFile }
+  }
+  const buildImageSet = (prefix, r) => {
+    const parts = []
+    if (r.avifFile) parts.push(`url(${prefix}${r.avifFile}) type("image/avif")`)
+    if (r.webpFile) parts.push(`url(${prefix}${r.webpFile}) type("image/webp")`)
+    parts.push(`url(${prefix}${r.jpgFile}) type("image/jpeg")`)
+    if (parts.length <= 1) return null
+    return `image-set(${parts.join(',')})`
   }
   for (const cssFile of cssFiles) {
     const cssPath = join(cssDir, cssFile)
@@ -357,13 +355,15 @@ if (existsSync(cssDir) && existsSync(distImagesDir)) {
     const newCss = css
       .replace(bgImagePattern, (match, prefix, path) => {
         const r = resolveBgImage(path)
-        if (!r?.webpFile) return match
-        return `background-image:url(${prefix}${r.jpgFile});background-image:image-set(url(${prefix}${r.webpFile}) type("image/webp"),url(${prefix}${r.jpgFile}) type("image/jpeg"));`
+        const imageSet = r ? buildImageSet(prefix, r) : null
+        if (!imageSet) return match
+        return `background-image:url(${prefix}${r.jpgFile});background-image:${imageSet};`
       })
       .replace(bgShorthandPattern, (match, prefix, path, rest) => {
         const r = resolveBgImage(path)
-        if (!r?.webpFile) return match
-        return `background:url(${prefix}${r.jpgFile})${rest};background-image:image-set(url(${prefix}${r.webpFile}) type("image/webp"),url(${prefix}${r.jpgFile}) type("image/jpeg"));`
+        const imageSet = r ? buildImageSet(prefix, r) : null
+        if (!imageSet) return match
+        return `background:url(${prefix}${r.jpgFile})${rest};background-image:${imageSet};`
       })
     if (newCss !== css) writeFileSync(cssPath, newCss)
   }

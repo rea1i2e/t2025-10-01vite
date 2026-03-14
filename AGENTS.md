@@ -12,9 +12,9 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | ファイル | 役割 |
 |----------|------|
 | `vite.config.js` | Vite設定（EJS注入、Sassグロブ、画像最適化、ビルド出力パス）。アセットのインライン化を無効にする場合は `assetsInlineLimit` のコメントを参照 |
-| `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage() |
+| `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage()。画像代替フォーマット（`imageAltFormats`）もここで指定 |
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数） |
-| `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、整形） |
+| `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、CSS image-set、整形）。config/site.config.js の imageAltFormats を参照 |
 | `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
 | `scripts/font-compress.sh` | フォントを全グリフのまま WOFF2 に圧縮（pyftsubset） |
 | `scripts/font-compress-subset.sh` | フォントを指定文字のみサブセット化して WOFF2 に圧縮 |
@@ -60,8 +60,8 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 
 ```
 npm run build
-  1. vite build          … HTML/CSS/JS/画像のビルド + 画像圧縮・WebP生成
-  2. after-build.mjs     … dist/ 内HTMLに width/height 付与、picture化、整形
+  1. vite build          … HTML/CSS/JS/画像のビルド + 画像圧縮・WebP/AVIF生成（config/site.config.js の imageAltFormats で制御）
+  2. after-build.mjs     … dist/ 内HTMLに width/height 付与、picture化、CSS image-set、整形
 ```
 
 - ビルド成果物は `dist/` に出力される
