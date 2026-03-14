@@ -7,31 +7,17 @@
 .p-sub-mv__inner {
 }
 
-.p-sub-mv__title {
-  color: var(--color-deep-green);
-  padding-bottom: rem(58);
+.p-sub-mv__heading {
+}
 
+.p-sub-mv__title {
 }
 
 .p-sub-mv__title-ja {
-  font-family: var(--font-zen-old-mincho);
-  font-size: maxrem(28);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  @include mq() {
-    font-size: maxrem(48);
-  }
 }
 
 .p-sub-mv__title-en {
-  margin-top: rem(4);
-  font-family: var(--font-zen-old-mincho);
-  font-size: maxrem(14);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  @include mq() {
-    font-size: maxrem(16);
-  }
+
 }
 
 .p-sub-mv__image {

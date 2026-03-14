@@ -20,8 +20,8 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `scripts/font-compress-subset.sh` | フォントを指定文字のみサブセット化して WOFF2 に圧縮 |
 | `scripts/README-font-compress.md` | フォント圧縮ツールの前提条件・使い方 |
 | `env.deploy.example` | デプロイ用環境変数テンプレート（`.env.deploy` の雛形） |
-| `src/ejs/common/` | 共通テンプレート（head / header / footer） |
-| `src/ejs/components/` | ページ固有の部品テンプレート |
+| `src/ejs/components/` | 毎回使う部品テンプレート |
+| `src/ejs/demo-components/` | よく使うの部品テンプレート |
 | `src/assets/js/main.js` | JSエントリファイル |
 | `src/assets/js/_parallax.js` | 汎用パララックス（data-parallax でトリガー・移動量を指定） |
 | `src/assets/sass/style.scss` | Sassエントリファイル |

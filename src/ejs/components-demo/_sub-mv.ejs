@@ -1,0 +1,24 @@
+<%
+  const _titleJa = typeof titleJa !== 'undefined' && titleJa != null ? titleJa : '';
+  const _titleEn = typeof titleEn !== 'undefined' && titleEn != null ? titleEn : '';
+  const _hasImage = typeof imageSrc !== 'undefined' && imageSrc != null && imageSrc !== '';
+  const _imageSrc = _hasImage ? imagePath + imageSrc : '';
+  const _imageAlt = (typeof imageAlt !== 'undefined' && imageAlt != null ? imageAlt : '').replace(/<[^>]*>/g, '');
+%>
+<section class="p-sub-mv">
+  <% if (_hasImage) { %>
+    <div class="p-sub-mv__image">
+      <img src="<%= _imageSrc %>" alt="<%= _imageAlt %>" loading="eager">
+    </div>
+    <% } %>
+    <div class="p-sub-mv__inner l-inner">
+      <hgroup class="p-sub-mv__heading">
+        <% if (_titleJa) { %>
+        <h1 class="p-sub-mv__title p-sub-mv__title-ja"><%= (_titleJa || '').replace(/<[^>]*>/g, '') %></h1>
+        <% } %>
+        <% if (_titleEn) { %>
+        <p class="p-sub-mv__title-en"><%= (_titleEn || '').replace(/<[^>]*>/g, '') %></p>
+        <% } %>
+      </hgroup>
+    </div>
+</section>

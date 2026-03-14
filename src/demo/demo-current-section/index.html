@@ -13,9 +13,9 @@
 <%- include(ejsPath + 'common/_head.ejs', { page }) %>
 <body>
   <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy4.jpg', imageAlt: '' }) %>
   <main class="p-demo p-demo--current-section l-main">
     <div class="p-demo__inner l-inner">
-      <h1 class="p-demo__title"><%- pages[key].title %></h1>
       <p class="p-demo__desc">
         スクロールすると、ビューポート中央付近に入ったセクションに応じてナビ項目に <code>is-current-section</code> が付きます。
       </p>

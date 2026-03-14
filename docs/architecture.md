@@ -53,8 +53,8 @@ flowchart LR
 - `vite.config.js` — `liveReload(["ejs/**/*.ejs"])` でEJS更新時にリロード
 - `vite.config.js` — `globSync("src/**/*.html", { ignore: ["src/public/**/*.html"] })` を `rollupOptions.input` に登録し、複数HTMLを自動ビルド対象とする
 - `src/**/*.html` — HTML側でEJSの `include()` により共通パーツを組み立てる
-- `src/ejs/common/*.ejs` — 共通パーツ（head / header / footer）
-- `src/ejs/components/*.ejs` — ページ固有の部品
+- `src/ejs/components/` — 毎回使う部品テンプレート
+- `src/ejs/demo-components/` — よく使うデモ用の部品テンプレート
 
 #### 動作仕様
 - 各ページHTMLでは `config/site.config.js` の `getPage(pageKey)` でページ情報を取得し、`page` オブジェクト（title / description / keywords / path / root）を得る。存在しないキーを渡すとエラーを投げる。
@@ -313,6 +313,23 @@ text: email('afmaar128', 'gmail.com', { link: false })
 #### インライン化を無効にしたい場合
 - SVG や小さい画像を **別ファイルとして** `dist/assets/images/` に出力したい場合は、`vite.config.js` の `build` 内にある **`assetsInlineLimit: 0`** の行のコメントを解除する。
 - コメント解除後は、`url()` で参照したアセットはすべて別ファイルとして出力され、CSS 内の参照は `url(./assets/images/xxx-[hash].svg)` のようなパスに置き換わる。
+
+### 3.14 サブページMVコンポーネント（p-sub-mv）
+
+#### 関連ファイル
+- `src/ejs/components-demo/_sub-mv.ejs` — 共通テンプレート（hgroup + h1 / p / 画像）
+- `src/assets/sass/demo-components/_p-sub-mv.scss` — スタイル
+
+#### 動作仕様
+- サブページ用のメインビジュアル（MV）を、ページごとに h1・p・画像を設定して表示する。
+- include の第二引数で渡した `titleJa`（h1）、`titleEn`（p）、`imageSrc` / `imageAlt`（画像）を参照する。未指定の項目は表示しない。`imageSrc` が未指定のときは `p-sub-mv__image` ブロック自体を出力しない。
+- 画像の `src` は `site.config.js` の `imagePath` と渡した `imageSrc` を結合して生成する（`imageSrc` は `imagePath` からの相対パス、例: `'demo/dummy1.jpg'`）。
+- 属性値（alt 等）はタグ除去したうえで出力する。
+
+#### 使用方法
+- 各ページの `index.html` で、ヘッダー直下に include し、第二引数で任意の項目を渡す。
+- 例: `include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy1.jpg', imageAlt: '' })`
+- titleJa / titleEn / imageSrc / imageAlt は任意。テキストは人間が記述する。
 
 ---
 

@@ -8,9 +8,9 @@
 
 <body>
   <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/nagasaki3.jpg', imageAlt: '' }) %>
   <main class="p-demo" style="outline: 1px solid red;">
     <div class="p-demo__inner l-inner">
-      <h1 class="p-demo__title"><%- pages[key].title %></h1>
       <section class="p-demo__section">
         <h2 class="p-demo__subtitle">画面幅に応じて1〜3カラム</h2>
         <div class="p-demo__content">
