@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { globSync } from "glob";
 import viteImagemin from "@vheemstra/vite-plugin-imagemin";
 import imageminMozjpeg from "imagemin-mozjpeg";
-import imageminPngquant from "imagemin-pngquant";
+import imageminOptipng from "imagemin-optipng";
 import imageminGifsicle from "imagemin-gifsicle";
 import imageminSvgo from "imagemin-svgo";
 import imageminWebp from "imagemin-webp";
@@ -73,7 +73,7 @@ export default defineConfig({
       plugins: {
         // 静的インポートに変更
         jpg: imageminMozjpeg({ quality: 75, progressive: true }),
-        png: imageminPngquant({ quality: [0.65, 0.8], speed: 3 }),
+        png: imageminOptipng({ optimizationLevel: 2 }),
         gif: imageminGifsicle({ optimizationLevel: 2 }),
         svg: imageminSvgo()
       },
