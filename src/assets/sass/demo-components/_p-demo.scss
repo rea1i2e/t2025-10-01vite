@@ -130,5 +130,12 @@
 }
 
 .p-demo__image-box {
-  width: rem(300);
+  max-width: rem(300);
 }
+
+.p-demo__image-box--bg {
+    aspect-ratio: 16 / 9;
+    background: url(../images/demo/dummy3.jpg) no-repeat center / cover;
+    background-image: url(../images/demo/dummy3.jpg);
+}
+

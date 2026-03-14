@@ -1,10 +1,6 @@
 <%
   const key = 'demoImages';
   const page = getPage(key);
-  const documentImages = [
-    { pc: 'demo/dummy1.jpg', sp: 'demo/dummy1.jpg', alt: '' },
-    { pc: 'demo/dummy2.jpg', sp: 'demo/dummy3.jpg', alt: '' },
-  ];
 %>
 <!DOCTYPE html>
 <html lang="ja">
@@ -18,20 +14,22 @@
       <p class="p-demo__desc"><%- pages[key].description %></p>
 
       <section class="p-demo__section">
-        <h2 class="p-demo__subtitle">img（PC+SP共通）</h2>
+        <h2 class="p-demo__subtitle">img（PC／SP共通）</h2>
         <div class="p-demo__content">
-          <div class="p-document-image p-document-image--single">
-            <img src="<%- imagePath + documentImages[0].pc %>" alt="<%= (documentImages[0].alt || '').replace(/<[^>]*>/g, '') %>" loading="lazy" decoding="async">
+          <div class="p-demo__image-box">
+            <img src="<%- imagePath + 'demo/dummy1.jpg' %>" alt="" loading="lazy">
           </div>
         </div>
       </section>
 
       <section class="p-demo__section">
-        <h2 class="p-demo__subtitle">img（PCのみ／PC+SPで別画像）</h2>
+        <h2 class="p-demo__subtitle">img（PC/SP出し分け）</h2>
         <div class="p-demo__content">
-          <div class="p-document-image p-document-image--pc-sp">
-            <img src="<%- imagePath + documentImages[1].pc %>" alt="<%= (documentImages[1].alt || '').replace(/<[^>]*>/g, '') %>" loading="lazy" decoding="async" class="u-pc">
-            <img src="<%- imagePath + documentImages[1].sp %>" alt="<%= (documentImages[1].alt || '').replace(/<[^>]*>/g, '') %>" loading="lazy" decoding="async" class="u-sp">
+          <div class="p-demo__image-box">
+<picture>
+  <source srcset="<%= imagePath %>demo/dummy2_sp.jpg" media="(max-width: 767px)" />
+  <img src="<%= imagePath %>demo/dummy2.jpg" loading="lazy" alt="">
+</picture>
           </div>
         </div>
       </section>
@@ -39,7 +37,7 @@
       <section class="p-demo__section">
         <h2 class="p-demo__subtitle">background-image</h2>
         <div class="p-demo__content">
-          <div class="p-document-image p-document-image--bg" aria-hidden="true"></div>
+          <div class="p-demo__image-box p-demo__image-box--bg"></div>
         </div>
       </section>
     </div>
