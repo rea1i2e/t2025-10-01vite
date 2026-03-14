@@ -1,4 +1,4 @@
-<% 
+<%
   const key = 'demoDocument';
   const page = getPage(key);
 %>
@@ -8,7 +8,7 @@
 
 <body>
   <%- include(ejsPath + 'common/_header.ejs', { page }) %>
-  <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy5.jpg', imageAlt: '' }) %>
+  <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy4.jpg', imageAlt: '' }) %>
   <main class="p-demo">
     <div class="p-demo__inner l-inner">
       <section class="p-demo__section">
@@ -40,37 +40,18 @@
         <div class="p-demo__content">
           <%
             const documentItems = [
-              {
-                heading: '会社名',
-                text: '株式会社サンプル'
-              },
-              {
-                heading: '代表者',
-                text: '山田 太郎'
-              },
-              {
-                heading: '所在地',
-                text: '埼玉県朝霞市サンプル1-2-3'
-              },
-              {
-                heading: '電話番号',
-                text: '090-0000-0000'
-              },
-              {
-                heading: 'メールアドレス',
-                // text: ty_email_protection('afmaar128', 'gmail.com', true) // リンクあり
-                text: ty_email_protection('afmaar128', 'gmail.com', false) // リンクなし
-              },
-              {
-                heading: '事業内容',
-                text: 'Web制作・システム開発・コンサルティング'
-              },
+              { heading: '会社名', text: '株式会社サンプル' },
+              { heading: '代表者', text: '山田 太郎' },
+              { heading: '所在地', text: '埼玉県朝霞市サンプル1-2-3' },
+              { heading: '電話番号', text: '090-0000-0000' },
+              { heading: 'メールアドレス', text: ty_email_protection('afmaar128', 'gmail.com', false) },
+              { heading: '事業内容', text: 'Web制作・システム開発・コンサルティング' },
             ];
           %>
           <dl class="p-demo-dl p-demo-dl--border">
             <% documentItems.forEach((item) => { %>
-              <dt class="p-dl__dt"><%- item.heading %></dt>
-              <dd class="p-dl__dd"><%- item.text %></dd>
+            <dt class="p-dl__dt"><%- item.heading %></dt>
+            <dd class="p-dl__dd"><%- item.text %></dd>
             <% }); %>
           </dl>
         </div>

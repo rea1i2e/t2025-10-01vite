@@ -132,6 +132,13 @@ const pages = {
     title: "ドキュメント",
     description: "ul, ol, dl, dt, dd, tableなどドキュメントページです。",
   },
+  demoImages: {
+    label: "画像いろいろ",
+    root: "../../",
+    path: "demo/demo-images/",
+    title: "画像いろいろ",
+    description: "imgタグ（PCのみ／PC+SP）、background-imageの設置例です。",
+  },
   contact: {
     label: "お問い合わせ",
     root: "../",

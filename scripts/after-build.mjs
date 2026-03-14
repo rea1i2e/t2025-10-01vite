@@ -84,12 +84,32 @@ function applySize(el, meta) {
   }
 }
 
+// プレフィックス付きロゴ（common_logo-xxx.svg, demo_logo-xxx.svg）または同名で1つにまとまった logo-xxx.svg を解決
+const imagesDir = join(resolve(DIST), 'assets', 'images')
+const logoMap = {}
+if (existsSync(imagesDir)) {
+  let fallbackLogo = null
+  for (const name of readdirSync(imagesDir)) {
+    if (/^common_logo-.+\.svg$/i.test(name)) logoMap['common/logo.svg'] = name
+    if (/^demo_logo-.+\.svg$/i.test(name)) logoMap['demo/logo.svg'] = name
+    if (/^logo-.+\.svg$/i.test(name)) fallbackLogo = name
+  }
+  if (fallbackLogo) {
+    if (!logoMap['common/logo.svg']) logoMap['common/logo.svg'] = fallbackLogo
+    if (!logoMap['demo/logo.svg']) logoMap['demo/logo.svg'] = fallbackLogo
+  }
+}
+
 const htmlFiles = listHtmlFiles(DIST)
 let converted = 0
 let sizedOnly = 0
 
 for (const htmlPath of htmlFiles) {
-  const html = readFileSync(htmlPath, 'utf8')
+  let html = readFileSync(htmlPath, 'utf8')
+  // EJS で出力した common/logo.svg, demo/logo.svg をビルド後のファイル名に置換
+  for (const [logical, actual] of Object.entries(logoMap)) {
+    html = html.replace(new RegExp(logical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), actual)
+  }
   const dom = new JSDOM(html)
   const doc = dom.window.document
 
@@ -301,6 +321,52 @@ for (const htmlPath of htmlFiles) {
 
   writeFileSync(htmlPath, out)
   // console.log('rewrote:', htmlPath.split(sep).slice(-2).join('/'))
+}
+
+// === CSS: background-image / background の jpg/png のみ → dist に WebP があれば image-set を追加 ===
+// SCSS では background-image: url(...jpg) または background: url(...jpg) ... の1行で書く。
+// ビルド後に dist に同名の .webp があれば、ここで image-set(webp, jpg) に展開する。
+const cssDir = join(resolve(DIST), 'assets', 'css')
+const distImagesDir = join(resolve(DIST), 'assets', 'images')
+if (existsSync(cssDir) && existsSync(distImagesDir)) {
+  const cssFiles = readdirSync(cssDir).filter((n) => n.toLowerCase().endsWith('.css'))
+  const imageFiles = readdirSync(distImagesDir)
+  const imageExt = /\.(jpe?g|png)$/i
+  const hashedBase = /^(.+)-[a-zA-Z0-9]+\.(jpe?g|png)$/i
+  const resolveBgImage = (path) => {
+    if (!imageExt.test(path)) return null
+    let base
+    let jpgFile
+    if (path.includes('/')) {
+      base = path.replace(/^.*\//, '').replace(imageExt, '')
+      jpgFile = imageFiles.find((f) => f.startsWith(base + '-') && imageExt.test(f))
+    } else {
+      const m = path.match(hashedBase)
+      base = m ? m[1] : path.replace(imageExt, '')
+      jpgFile = path
+    }
+    if (!jpgFile) return null
+    const webpFile = imageFiles.find((f) => f.startsWith(base + '-') && f.toLowerCase().endsWith('.webp'))
+    return { base, jpgFile, webpFile }
+  }
+  for (const cssFile of cssFiles) {
+    const cssPath = join(cssDir, cssFile)
+    let css = readFileSync(cssPath, 'utf8')
+    const bgImagePattern = /background-image:url\((\.\.\/images\/)([^)]+)\)\s*;/g
+    const bgShorthandPattern = /background:url\((\.\.\/images\/)([^)]+)\)\s*([^;]*);/g
+    const newCss = css
+      .replace(bgImagePattern, (match, prefix, path) => {
+        const r = resolveBgImage(path)
+        if (!r?.webpFile) return match
+        return `background-image:url(${prefix}${r.jpgFile});background-image:image-set(url(${prefix}${r.webpFile}) type("image/webp"),url(${prefix}${r.jpgFile}) type("image/jpeg"));`
+      })
+      .replace(bgShorthandPattern, (match, prefix, path, rest) => {
+        const r = resolveBgImage(path)
+        if (!r?.webpFile) return match
+        return `background:url(${prefix}${r.jpgFile})${rest};background-image:image-set(url(${prefix}${r.webpFile}) type("image/webp"),url(${prefix}${r.jpgFile}) type("image/jpeg"));`
+      })
+    if (newCss !== css) writeFileSync(cssPath, newCss)
+  }
 }
 
 // console.log(`[after-build] picture化: ${converted} / 寸法のみ付与: ${sizedOnly}`)

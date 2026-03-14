@@ -1,0 +1,26 @@
+@use "../global" as *;
+
+.p-document-image {
+  min-width: 0;
+}
+
+.p-document-image--single img,
+.p-document-image--pc-sp img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  vertical-align: top;
+}
+
+.p-document-image--pc-sp .u-sp {
+  width: 100%;
+}
+
+.p-document-image--bg {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: url(../images/demo/dummy3.jpg) no-repeat center / cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
