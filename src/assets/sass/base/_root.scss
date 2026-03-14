@@ -16,6 +16,7 @@
   --color-white: #fff;
   --color-theme: #1b435d;
   --color-accent: #f99f48;
+  --gradation-theme: linear-gradient(var(--color-theme), var(--color-accent));
   --header-height: #{rem(72)};
   --inner: #{rem($inner-sp)};
   --inner-padding: #{rem($padding-sp)};
