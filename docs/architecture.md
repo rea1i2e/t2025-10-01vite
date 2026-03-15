@@ -124,6 +124,7 @@ flowchart LR
 
 #### ビルド出力
 - `assets/images/[name]-[hash][extname]`（`vite.config.js` の `assetFileNames` で定義）
+- フォント（woff2 / woff / ttf / otf / eot）は `assets/fonts/[name]-[hash][extname]` に出力（同様に `assetFileNames` で定義）
 
 ### 3.5 HTML後処理（after-build）
 
@@ -364,8 +365,9 @@ src/                     開発ルート（Vite root）
     sass/                Sass（グロブインポート対応）
     js/                  JSモジュール
     images/              画像（dummy / common）
+    fonts/               フォント（woff2 等）
   public/                Vite public（root=src のため src/public）
-dist/                    本番出力（ビルド生成物）
+dist/                    本番出力（ビルド生成物。assets/css/, assets/js/, assets/images/, assets/fonts/ 等）
 config/
   site.config.js         ページ情報・共通設定
   utils.js               ユーティリティ（除外判定、email関数）

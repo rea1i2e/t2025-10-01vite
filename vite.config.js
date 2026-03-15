@@ -87,6 +87,10 @@ export default defineConfig({
             const prefix = dir !== "." ? `${dir.replace(/\//g, "_")}_` : "";
             return `assets/images/${prefix}${base}-[hash][extname]`;
           }
+          // フォントファイルを assets/fonts/ に配置
+          if (/\.(woff2?|ttf|otf|eot)$/i.test(n)) {
+            return "assets/fonts/[name]-[hash][extname]";
+          }
           if (/\.css$/i.test(n)) return "assets/css/[name]-[hash][extname]";
           return "assets/[name]-[hash][extname]";
         },
