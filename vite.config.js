@@ -4,7 +4,6 @@ import liveReload from "vite-plugin-live-reload";
 import sassGlobImports from "vite-plugin-sass-glob-import";
 import path, { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import fs from "node:fs";
 import { globSync } from "glob";
 import viteImagemin from "@vheemstra/vite-plugin-imagemin";
 import imageminMozjpeg from "imagemin-mozjpeg";
@@ -25,32 +24,6 @@ const makeAvifEnabled = imageAltFormats === 'avif' || imageAltFormats === 'both'
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-/**
- * EJS のみで参照されるロゴ（common/logo.svg, demo/logo.svg）をビルドに含め、
- * assetFileNames のプレフィックスで common_logo / demo_logo として出力する
- */
-function emitHeaderLogos() {
-  const imagesRoot = path.resolve(__dirname, "src/assets/images");
-  const logos = ["common/logo.svg", "demo/logo.svg"];
-  return {
-    name: "emit-header-logos",
-    apply: "build",
-    buildStart() {
-      for (const rel of logos) {
-        const abs = path.join(imagesRoot, rel);
-        if (fs.existsSync(abs)) {
-          const source = fs.readFileSync(abs);
-          this.emitFile({
-            type: "asset",
-            name: rel,
-            source,
-          });
-        }
-      }
-    },
-  };
-}
 
 // src配下のHTMLを全部エントリに（publicディレクトリを除外）
 const htmlFiles = globSync("src/**/*.html", {
@@ -80,12 +53,9 @@ export default defineConfig({
         assetFileNames: (info) => {
           const n = (info.name ?? "").replaceAll("\\", "/");
           // 画像と動画ファイルを assets/images/ に配置
-          // サブディレクトリ（common/, demo/ 等）はファイル名のプレフィックスとして残し、同名の上書きを防ぐ
           if (/\.(png|jpe?g|gif|svg|webp|avif|mp4|webm|mov|ogv)$/i.test(n)) {
-            const dir = path.posix.dirname(n);
             const base = path.posix.basename(n, path.posix.extname(n));
-            const prefix = dir !== "." ? `${dir.replace(/\//g, "_")}_` : "";
-            return `assets/images/${prefix}${base}-[hash][extname]`;
+            return `assets/images/${base}-[hash][extname]`;
           }
           // フォントファイルを assets/fonts/ に配置
           if (/\.(woff2?|ttf|otf|eot)$/i.test(n)) {
@@ -100,7 +70,6 @@ export default defineConfig({
     }
   },
   plugins: [
-    emitHeaderLogos(),
     ViteEjsPlugin({
       ...siteConfig,
       posts,
