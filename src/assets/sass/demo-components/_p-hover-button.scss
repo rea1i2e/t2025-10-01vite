@@ -90,7 +90,7 @@
   --button-text-color: #fff;
   --button-bg-hover: #9b59b6;
   --button-text-color-hover: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
   transition:
     box-shadow var(--hover-transition),
     transform var(--hover-transition);
@@ -98,7 +98,7 @@
 
 @media (any-hover: hover) {
   .c-button-shadow:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-hover);
     transform: translateY(-2px);
   }
 }

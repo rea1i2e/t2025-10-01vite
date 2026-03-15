@@ -12,11 +12,12 @@
   width: rem(60);
   aspect-ratio: 1;
   padding: 0;
-  background-color: var(--color-surface);
-  color: var(--color-text);
-  border: var(--border);
+  /* 視認性のためテーマを反転（背景=文字色、アイコン=背景色） */
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border: 1px solid var(--color-text);
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow);
   cursor: pointer;
   transition: background-color var(--hover-transition), color var(--hover-transition), border-color var(--hover-transition), box-shadow var(--hover-transition);
 }
@@ -24,7 +25,7 @@
 @media (any-hover: hover) {
   .c-theme-toggle:hover {
     opacity: 0.9;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-hover);
   }
 }
 

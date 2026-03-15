@@ -202,7 +202,7 @@ label:has(input[type="radio" i]) {
   border: var(--border-width) solid var(--border-color);
   border-radius: 50%;
   appearance: none; /* 標準の見た目とCSSの制限を除去 */
-  box-shadow: 0 0 0 0 transparent;
+  box-shadow: var(--shadow-none);
 }
 
 .p-form input[type="radio" i]::before {
@@ -252,7 +252,7 @@ label:has(input[type="radio" i]) {
   border: var(--border-width) solid var(--border-color);
   border-radius: var(--border-rdius);
   appearance: none; /* 標準の見た目とCSSの制限を除去 */
-  box-shadow: 0 0 0 0 transparent;
+  box-shadow: var(--shadow-none);
 }
 
 .p-form input[type="checkbox" i]::before {

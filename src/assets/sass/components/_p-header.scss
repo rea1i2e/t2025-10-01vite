@@ -1,12 +1,11 @@
 @use "../global" as *;
 
 .p-header {
-  background-color: #ccc;
+  background-color: var(--color-bg-sub);
   transition: background-color 0.3s ease-in-out;
 }
 
 .p-header.is-show {
-  background-color: #eee;
 }
 
 .p-header__inner {
