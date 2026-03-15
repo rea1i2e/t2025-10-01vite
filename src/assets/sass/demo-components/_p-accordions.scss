@@ -47,7 +47,7 @@
 /* --------アコーディオンの中身のスタイル-------- */
 .p-accordions__content {
   overflow: hidden;
-  background-color: var(--color-surface);
+  background-color: var(--color-bg-sub);
   color: var(--color-text);
   /* details直下のタグにpaddingを設定すると挙動がおかしくなるので、ここには指定しない */
 }

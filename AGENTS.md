@@ -66,12 +66,15 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 |------|--------|--------|
 | ページ背景 | `--color-bg` | `body`、メインコンテンツ背景 |
 | 本文・見出しの文字色 | `--color-text` | 通常のテキスト |
-| カード・パネル・ナビなど「面」の背景 | `--color-surface` | カード、アコーディオン内容、モーダル、サイドナビ |
-| テーブル斑・サブ面 | `--color-bg-sub` | テーブル th/偶数行、リストの交互背景 |
+| カード・パネル・ナビ・テーブル斑など「面」の背景 | `--color-bg-sub` | カード、アコーディオン、モーダル、テーブル th/偶数行 |
 | インラインコード・コードブロック背景 | `--color-bg-code` | `code` 要素の背景 |
 | 枠線 | `--border` | `border: var(--border)` |
+| 通常の影 | `--shadow` | `box-shadow: var(--shadow)` |
+| ホバー・浮き上がり用の影 | `--shadow-hover` | ホバー時に `box-shadow: var(--shadow-hover)` |
+| 影なし | `--shadow-none` | フォーム等のリセット用 |
+| 内側の影 | `--shadow-inset` | オーバーレイ等 |
 
-新規パーツで「面」を持つ場合は `background-color: var(--color-surface); color: var(--color-text);`、枠線は `border: var(--border);` を指定する。これにより追加対応なしでライト/ダークに連動する。
+新規パーツで「面」を持つ場合は `background-color: var(--color-bg-sub); color: var(--color-text);`、枠線は `border: var(--border);` を指定する。これにより追加対応なしでライト/ダークに連動する。
 
 ## ビルドフロー
 

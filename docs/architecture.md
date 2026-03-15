@@ -368,7 +368,7 @@ text: email('afmaar128', 'gmail.com', { link: false })
 ### 3.16 ライト／ダークモード（Demo用）
 
 #### 関連ファイル
-- `src/assets/sass/base/_root.scss` — テーマ用の CSS 変数（`--color-bg` / `--color-text` / `--color-surface` 等）の定義。`@media (prefers-color-scheme: dark)` は `:root:not([data-theme])` に限定。`html[data-theme="light"]` / `html[data-theme="dark"]` で手動選択時に変数を上書き。
+- `src/assets/sass/base/_root.scss` — テーマ用の CSS 変数（`--color-bg` / `--color-text` / `--color-bg-sub` 等）の定義。`@media (prefers-color-scheme: dark)` は `:root:not([data-theme])` に限定。`html[data-theme="light"]` / `html[data-theme="dark"]` で手動選択時に変数を上書き。
 - `src/assets/sass/base/_base.scss` — `body` に `background-color: var(--color-bg)` と `color: var(--color-text)` を適用。
 - `src/ejs/common/_head.ejs` — `<meta name="color-scheme" content="light dark">` と、描画前に `localStorage.getItem('theme')` を読み `data-theme` を付与するインラインスクリプト（FOUC防止）。
 - **Demo用**: `src/ejs/components-demo/_theme-toggle.ejs` — 切り替えボタンのマークアップ。`src/ejs/common/_footer.ejs` から include。
@@ -379,7 +379,7 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - **初回**: システム設定（`prefers-color-scheme`）に従う。ユーザーがボタンで切り替えた場合はその選択を localStorage に保存し、次回以降はそれを優先する。
 - **ライト**: `:root` および `html[data-theme="light"]` で変数定義。
 - **ダーク**: `@media (prefers-color-scheme: dark)` の `:root:not([data-theme])` または `html[data-theme="dark"]` で変数を上書き。
-- コンポーネントで背景・文字色をテーマ連動させたい場合は `var(--color-bg)` / `var(--color-text)` / `var(--color-surface)` を参照する。
+- コンポーネントで背景・文字色をテーマ連動させたい場合は `var(--color-bg)` / `var(--color-text)` / `var(--color-bg-sub)` を参照する。
 - **ライト/ダークモードは Demo 扱い**。案件リポジトリ作成時に demo を削除する際は、AGENTS.md の「デモ削除時の手順」に従いボタン・JS・必要に応じて head の script と _root の data-theme 用スタイルを削除する。
 
 #### テーマ変数一覧（役割ベース）
@@ -387,11 +387,14 @@ text: email('afmaar128', 'gmail.com', { link: false })
 |--------|------|--------------|--------------|
 | `--color-bg` | ページ背景 | #fff | #1a1a1a |
 | `--color-text` | 本文・見出し | #111 | #eee |
-| `--color-surface` | カード・パネル・ナビ等の面 | #f5f5f5 | #2a2a2a |
-| `--color-bg-sub` | テーブル斑・サブ面 | #f5f5f5 | #333 |
+| `--color-bg-sub` | カード・パネル・ナビ等の面・テーブル斑 | #eee | #333 |
 | `--color-bg-code` | インラインコード・コードブロック背景 | #f0f0f0 | #383838 |
 | `--border` | 枠線 | 1px solid #ccc | 1px solid #444 |
 | `--color-theme` / `--color-accent` | アクセント色 | 既存値 | ダーク用に調整 |
+| `--shadow` | カード・パネル等の通常時の影 | 0 2px 8px rgba(0,0,0,0.1) | 同上 |
+| `--shadow-hover` | ホバー時・浮き上がり用の影 | 0 8px 20px rgba(0,0,0,0.15) | 同上 |
+| `--shadow-none` | 影なし（フォーム等のリセット用） | 0 0 0 0 transparent | 同上 |
+| `--shadow-inset` | 内側の影（オーバーレイ等） | inset 0 0 0.625rem rgba(0,0,0,0.3) | 同上 |
 
 ---
 

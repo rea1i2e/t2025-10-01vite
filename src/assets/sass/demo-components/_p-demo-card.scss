@@ -9,11 +9,11 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: var(--color-surface);
+  background-color: var(--color-bg-sub);
   color: var(--color-text);
   border-radius: rem(8);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
 }
 
 .p-demo-card__link--hover-scale {
@@ -32,7 +32,7 @@
 
 @media (any-hover: hover) {
   .p-demo-card__link--hover-shadow:hover {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-hover);
     transform: translateY(-4px);
   }
 }
