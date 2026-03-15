@@ -44,6 +44,10 @@ body {
   text-rendering: optimizeSpeed;
   font-family: var(--base-font-family);
   line-height: 1.5;
+
+  /* ライトモード・ダークモード切り替え用 */
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 body > * {

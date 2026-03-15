@@ -33,7 +33,7 @@
 
 
   --duration: 0.5s;
-  --dialog-background-color: var(--color-white);
+  --dialog-background-color: var(--color-surface);
   --dialog-overlay-color: color-mix(in srgb, var(--color-black), transparent 50%);
   --close-button-size: #{rem(54)};
   --close-line-color: var(--color-theme);
@@ -45,6 +45,7 @@
   overflow-y: auto;
   overscroll-behavior: contain; /* この要素のスクロールが終端に達しても親要素（背景）にスクロールを伝播させない */
   background-color: var(--dialog-background-color);
+  color: var(--color-text);
   transition:
     opacity var(--duration),
     scale var(--duration);

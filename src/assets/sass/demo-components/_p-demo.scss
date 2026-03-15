@@ -54,7 +54,7 @@
 .p-demo__desc code {
   padding-inline: rem(4);
   font-size: 0.9em;
-  background-color: var(--color-bg-code, #f0f0f0);
+  background-color: var(--color-bg-code);
   border-radius: rem(4);
 }
 
@@ -65,8 +65,9 @@
   z-index: 10;
   padding-block: rem(16);
   padding-inline: rem(16);
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: var(--border);
   border-radius: rem(8);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
@@ -112,7 +113,7 @@
 .p-demo__section code {
   padding-inline: rem(4);
   font-size: 0.9em;
-  background-color: var(--color-bg-code, #f0f0f0);
+  background-color: var(--color-bg-code);
   border-radius: rem(4);
 }
 
@@ -122,7 +123,7 @@
   display: flex;
   align-items: center;
   padding-block: rem(48);
-  border-block-start: 1px solid #e8e8e8;
+  border-block-start: var(--border);
 }
 
 .p-demo--current-section .p-demo__section:first-of-type {

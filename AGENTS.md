@@ -25,6 +25,8 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `src/assets/js/main.js` | JSエントリファイル |
 | `src/assets/js/_parallax.js` | 汎用パララックス（data-parallax でトリガー・移動量を指定） |
 | `src/assets/sass/style.scss` | Sassエントリファイル |
+| `src/assets/sass/base/_root.scss` | フォント・CSS変数（`:root`）。ライト/ダーク用の `--color-bg` / `--color-text` 等と `@media (prefers-color-scheme: dark)` による上書き |
+| `src/assets/js/_theme-toggle.js` | **Demo用**。ライト/ダーク切り替えボタンのクリック処理。案件時は本ファイル削除と main.js の import 削除が必要 |
 | `.github/workflows/deploy.yml` | CI/CD（FTPデプロイ + Discord通知） |
 
 ## ドキュメント更新ルール
@@ -56,6 +58,21 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 - **Sass構成**: `base/` / `components/` / `layouts/` / `utility/` のディレクトリ構成に従う
 - **JSモジュール**: 機能単位で `_xxx.js` としてファイルを分割し、`main.js` で `import` する
 
+### デモページ・コンポーネント追加時のカラー指定
+
+デモページやデモ用コンポーネントを追加するときは、背景色・文字色・枠線に**共通のカスタムプロパティ**（`src/assets/sass/base/_root.scss` の `:root` で定義）を使う。ライト/ダークモードは `prefers-color-scheme` で切り替わるため、直書きの色指定を避ける。
+
+| 用途 | 変数名 | 使用例 |
+|------|--------|--------|
+| ページ背景 | `--color-bg` | `body`、メインコンテンツ背景 |
+| 本文・見出しの文字色 | `--color-text` | 通常のテキスト |
+| カード・パネル・ナビなど「面」の背景 | `--color-surface` | カード、アコーディオン内容、モーダル、サイドナビ |
+| テーブル斑・サブ面 | `--color-bg-sub` | テーブル th/偶数行、リストの交互背景 |
+| インラインコード・コードブロック背景 | `--color-bg-code` | `code` 要素の背景 |
+| 枠線 | `--border` | `border: var(--border)` |
+
+新規パーツで「面」を持つ場合は `background-color: var(--color-surface); color: var(--color-text);`、枠線は `border: var(--border);` を指定する。これにより追加対応なしでライト/ダークに連動する。
+
 ## ビルドフロー
 
 ```
@@ -85,4 +102,14 @@ npm run build
 - `src/ejs/components/` — ページ固有の部品
 - `src/ejs/data/` — ダミーデータ等
 - テンプレートのインクルードには `ejsPath`（`config/site.config.js` で定義）を使用する
+
+## デモ削除時の手順（案件リポジトリ作成時）
+
+demo ページ・コンポーネントを削除する際、**ライト/ダークモード（Demo用）** を外す場合は以下を実施する。
+
+1. `src/ejs/common/_footer.ejs` から `components-demo/_theme-toggle.ejs` の include 行を削除
+2. `src/ejs/components-demo/_theme-toggle.ejs` を削除（または components-demo ごと削除）
+3. `src/assets/js/_theme-toggle.js` を削除し、`main.js` の `import './_theme-toggle.js';` を削除
+4. `src/assets/sass/demo-components/` を丸ごと削除する場合は `_c-theme-toggle.scss` も一緒に削除される
+5. ライト/ダーク機能自体が不要な場合は、`_head.ejs` の theme 用インラインスクリプトと `_root.scss` の `html[data-theme]` / `:root:not([data-theme])` まわりを削除する
 

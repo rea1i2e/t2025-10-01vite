@@ -2,6 +2,7 @@
 import './_initializeSmoothScroll.js';
 import './_drawer.js';
 import './_toggle.js';
+import './_theme-toggle.js'; // Demo用。案件時は削除すること
 
 // import './_header.js';
 

@@ -139,6 +139,14 @@ const pages = {
     title: "画像いろいろ",
     description: "imgタグ（PCのみ／PC+SP）、background-imageの設置例です。",
   },
+  demoMedia: {
+    label: "メディアいろいろ",
+    root: "../../",
+    path: "demo/demo-media/",
+    title: "メディアいろいろ",
+    description:
+      "画像（img・picture・background-image）と動画（video デフォルト・自動再生・画面サイズ出し分け）の設置例です。",
+  },
   contact: {
     label: "お問い合わせ",
     root: "../",

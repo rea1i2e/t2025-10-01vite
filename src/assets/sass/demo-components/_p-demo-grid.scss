@@ -22,7 +22,8 @@
 
 .p-demo-grid__content {
   padding: rem(20);
-  background-color: #f0f0f0;
+  background-color: var(--color-surface);
+  color: var(--color-text);
   border-radius: rem(8);
   text-align: center;
 }
