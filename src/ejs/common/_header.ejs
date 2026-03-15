@@ -6,7 +6,6 @@ let tag = (page.path === '') ? 'h1' : 'div';
     <<%= tag %> class="p-header__logo">
       <a href="<%- page.root %>" class="p-header__logo-link">
         <img src="<%- imagePath + 'common/logo.svg' %>" alt="vite">
-        <img src="<%- imagePath + 'demo/logo.svg' %>" alt="vite">
       </a>
     </<%= tag %>>
     <button type="button" class="p-header__menu-button c-menu-button" id="js-menu" aria-controls="js-drawer" aria-expanded="false" aria-label="メニューを開閉する">
