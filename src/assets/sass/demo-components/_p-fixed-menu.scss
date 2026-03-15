@@ -25,20 +25,16 @@
   gap: rem(8);
   padding: rem(8) rem(14);
   border-radius: rem(999);
-  background: color-mix(in srgb, #020617 85%, transparent);
-  box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.45),
-    0 0 0 1px rgba(148, 163, 184, 0.5);
+  background: color-mix(in srgb, var(--color-text) 90%, transparent);
+  border: var(--border);
+  box-shadow: var(--shadow-hover);
 }
 
 .p-fixed-menu__dot {
   width: rem(8);
   height: rem(8);
   border-radius: 999px;
-  background:
-    radial-gradient(circle at 30% 30%, #e0f2fe 0, #38bdf8 30%, #0369a1 100%);
-  box-shadow:
-    0 0 0 1px rgba(15, 23, 42, 0.7),
-    0 0 12px rgba(56, 189, 248, 0.7);
+  background: var(--gradation-theme);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-theme) 50% transparent);
 }
 

@@ -4,9 +4,7 @@
   position: relative;
   z-index: 0;
   clip-path: inset(0 100% 0 0);
-  --mask-color: var(--color-orange);
-  --mask-color: #fb9250;
-  // --mask-color: var(--color-white);
+  --mask-color: var(--color-accent);
 }
 
 [data-slidein-mask]::before {
