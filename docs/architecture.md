@@ -347,6 +347,24 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - 例: `include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy1.jpg', imageAlt: '' })`
 - titleJa / titleEn / imageSrc / imageAlt は任意。テキストは人間が記述する。
 
+### 3.15 メディアデモ（画像・動画）
+
+#### 関連ファイル
+- `config/site.config.js` — ページキー `demoMedia`（メディアいろいろ）
+- `src/demo/demo-media/index.html` — 画像セクションと動画セクションを同居した1ページ
+
+#### 動作仕様
+- **画像セクション**: img（PC/SP共通）、img（PC/SP出し分け・picture）、background-image の3パターンを設置。既存の demo-images と同様のマークアップ。
+- **動画セクション**: 3つのサブセクションで、それぞれ説明文（`p.p-demo__desc`）を添える。
+  1. **videoタグデフォルト** — `<video controls>` でユーザー操作による再生。
+  2. **自動再生** — `autoplay muted playsinline loop` の例（多くのブラウザでは muted 必須）。
+  3. **画面サイズによる出し分け** — `<source media="(min-width: 800px)" />` で大画面用、続けてデフォルト用の `<source>` を配置。`srcLarge` を持つ動画データのみ large 用 source を出力。
+- 動画データは当該 HTML ファイル先頭で配列として定義し、同一ファイル内でデータとマークアップを分離している。動画パスは `page.root + 'assets/images/' + src` で相対パスにし、Vite がアセットを解決しやすくする。
+- 使用する mp4 は `src/assets/images/demo/` に配置する想定。
+
+#### 使用方法
+- デモ一覧（`_p-demo.ejs`）で `demoMedia` が列挙され、メディアいろいろページへリンクされる。各動画セクションの説明文はプレースホルダとして記載し、必要に応じてユーザーが編集する。
+
 ---
 
 ## 4. ディレクトリ構成
