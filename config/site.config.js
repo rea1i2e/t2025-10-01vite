@@ -151,7 +151,7 @@ const pages = {
   thanks: {
     label: "お問い合わせ完了",
     root: "../",
-    path: "thanks/",
+    path: "contact/thanks.html",
     title: "お問い合わせ完了",
     description:
       "お問い合わせフォームページです。お問い合わせを送信することができます。",
