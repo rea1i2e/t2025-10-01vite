@@ -351,7 +351,7 @@ if (existsSync(cssDir) && existsSync(distImagesDir)) {
     const cssPath = join(cssDir, cssFile)
     let css = readFileSync(cssPath, 'utf8')
     const bgImagePattern = /background-image:\s*url\((\.\.\/images\/)([^)]+)\)\s*([;}])/g
-    const bgShorthandPattern = /background:\s*url\((\.\.\/images\/)([^)]+)\)\s*([^;]*);/g
+    const bgShorthandPattern = /background:\s*url\((\.\.\/images\/)([^)]+)\)\s*([^;}]*)([;}])/g
     const newCss = css
       .replace(bgImagePattern, (match, prefix, path, terminator) => {
         const r = resolveBgImage(path)
@@ -359,10 +359,13 @@ if (existsSync(cssDir) && existsSync(distImagesDir)) {
         if (!imageSet) return match
         return `background-image:url(${prefix}${r.jpgFile});background-image:${imageSet};${terminator === '}' ? '}' : ';'}`
       })
-      .replace(bgShorthandPattern, (match, prefix, path, rest) => {
+      .replace(bgShorthandPattern, (match, prefix, path, rest, terminator) => {
         const r = resolveBgImage(path)
         const imageSet = r ? buildImageSet(prefix, r) : null
         if (!imageSet) return match
+        if (terminator === '}') {
+          return `background:url(${prefix}${r.jpgFile})${rest};background-image:${imageSet};}`
+        }
         return `background:url(${prefix}${r.jpgFile})${rest};background-image:${imageSet};`
       })
     if (newCss !== css) writeFileSync(cssPath, newCss)
