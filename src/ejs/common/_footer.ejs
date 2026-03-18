@@ -4,7 +4,7 @@
       <ul class="p-footer__nav-list">
         <%
           Object.entries(pages)
-            .filter(([key]) => !isExcluded(key, footerExcludePages))
+            .filter(([key]) => !ty_isExcluded(key, footerExcludePages))
             .forEach(([key, item]) => {
         %>
           <li class="p-footer__nav-item">

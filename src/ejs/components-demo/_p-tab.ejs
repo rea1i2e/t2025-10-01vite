@@ -17,7 +17,7 @@
       <% tabPosts1.forEach((post, index) => { %>
       <div class="p-tab__content js-tab-target<%- index === 0 ? ' is-active' : '' %>" id="tab1-0<%- index + 1 %>">
         <figure class="p-dialog-trigger__thumbnail">
-          <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+          <img src="<%- imagePath + post.image.file %>" alt="<%= ty_stripTags(post.image.alt) %>">
         </figure>
         <h3 class="p-dialog-trigger__title"><%- post.title %></h3>
         <p class="p-dialog-trigger__excerpt"><%- post.description %></p>
@@ -41,7 +41,7 @@
       <% tabPosts2.forEach((post, index) => { %>
       <div class="p-tab__content js-tab-target<%- index === 0 ? ' is-active' : '' %>" id="tab2-0<%- index + 1 %>">
         <figure class="p-dialog-trigger__thumbnail">
-          <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+          <img src="<%- imagePath + post.image.file %>" alt="<%= ty_stripTags(post.image.alt) %>">
         </figure>
         <h3 class="p-dialog-trigger__title"><%- post.title %></h3>
         <p class="p-dialog-trigger__excerpt"><%- post.description %></p>

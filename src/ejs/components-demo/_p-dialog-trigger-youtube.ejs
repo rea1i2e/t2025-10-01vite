@@ -2,7 +2,7 @@
   <% posts.filter(post => post.videoId).forEach((post) => { %>
   <article class="p-demo-grid__item p-dialog-trigger-youtube">
     <button class="p-dialog-trigger-youtube__thumbnail" type="button" data-modal-open="youtube-modal" data-video-id="<%- post.videoId %>" aria-label="<%- post.title %>を開く">
-      <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+      <img src="<%- imagePath + post.image.file %>" alt="<%= ty_stripTags(post.image.alt) %>">
     </button>
     <h3 class="p-dialog-trigger-youtube__title"><%- post.title %></h3>
     <p class="p-dialog-trigger-youtube__desc"><%- post.description %></p>

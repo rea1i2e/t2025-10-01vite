@@ -1,4 +1,9 @@
-import { isExcluded, email, ty_email_protection } from "./utils.js";
+import {
+  ty_isExcluded,
+  ty_email,
+  ty_email_protection,
+  ty_stripTags,
+} from "./utils.js";
 
 /**
  * ページ設定
@@ -212,11 +217,14 @@ export const siteConfig = {
   // footerExcludePages: ["demo[A-Z]*", "thanks"],
 
   // 除外ページチェック関数
-  isExcluded,
+  ty_isExcluded,
 
   // メールアドレス保護用ヘルパー関数
-  email,
+  ty_email,
   ty_email_protection,
+
+  // HTMLタグ除去関数（alt・aria-label など属性値に使用）
+  ty_stripTags,
 
   // ページ設定
   pages,
@@ -226,7 +234,7 @@ export const siteConfig = {
    * @param {string} pageKey - ページのキー（例: 'top', 'demo'）
    * @returns {object} pageオブジェクト（title, description, keywords, path, root）
    */
-  getPage(pageKey) {
+  ty_getPage(pageKey) {
     const pageData = this.pages[pageKey];
     if (!pageData) {
       throw new Error(`Page "${pageKey}" not found in pages config`);

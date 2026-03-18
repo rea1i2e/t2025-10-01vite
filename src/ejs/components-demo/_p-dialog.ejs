@@ -2,7 +2,7 @@
   <dialog class="p-dialog js-dialog" <%- index === 0 ? 'autofocus' : '' %> id="modal<%- index + 1 %>">
     <div class="p-dialog__container">
       <figure class="p-dialog__image">
-        <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+        <img src="<%- imagePath + post.image.file %>" alt="<%= ty_stripTags(post.image.alt) %>">
       </figure>
       <h1 class="p-dialog__title"><%- post.title %></h1>
       <p class="p-dialog__desc"><%- post.description %></p>

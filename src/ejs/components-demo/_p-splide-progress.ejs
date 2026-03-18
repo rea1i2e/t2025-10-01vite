@@ -12,7 +12,7 @@ const splideProgressItems = [
     <ul class="p-splide-progress__list splide__list">
       <% splideProgressItems.forEach((item) => { %>
       <li class="p-splide-progress__item splide__slide">
-        <img src="<%- imagePath %><%- item.file %>" alt="<%= (item.alt || '').replace(/<[^>]*>/g, '') %>">
+        <img src="<%- imagePath %><%- item.file %>" alt="<%= ty_stripTags(item.alt) %>">
       </li>
       <% }); %>
     </ul>

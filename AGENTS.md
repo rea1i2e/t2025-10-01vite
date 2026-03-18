@@ -13,7 +13,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 |----------|------|
 | `vite.config.js` | Vite設定（EJS注入、Sassグロブ、画像最適化、ビルド出力パス）。アセットのインライン化を無効にする場合は `assetsInlineLimit` のコメントを参照 |
 | `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage()。画像代替フォーマット（`imageAltFormats`）もここで指定 |
-| `config/utils.js` | ユーティリティ関数（除外判定、email関数） |
+| `config/utils.js` | ユーティリティ関数（除外判定、email関数、ty_stripTags） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、CSS image-set、整形）。config/site.config.js の imageAltFormats を参照 |
 | `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
 | `scripts/font-compress.sh` | フォントを全グリフのまま WOFF2 に圧縮（pyftsubset） |
@@ -54,7 +54,11 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 - **コミットメッセージ**: 日本語で記述する
 - **EJS/HTMLのテキストコンテンツ**: 自動補完・自動生成しない。HTMLタグ内のテキストは人間が書く
 - **データとHTMLの分離**: データ取得・定義とHTMLの記述は可能な限り分離する。別ファイルに限らず、同一ファイル内でデータを上部・マークアップを下部に分けて書く形でもよい。
-- **EJS の属性値出力**: `alt`・`title`・`aria-label` など HTML 属性にデータを出すときは、タグを除去しつつエスケープする。`<%= (value || '').replace(/<[^>]*>/g, '') %>` を使い、`<%- value %>` は使わない。表示用の要素（例: 見出しの `<h2>` 内で改行タグを活かす）では `<%- %>` のまま可。
+- **EJS の属性値出力**: `alt`・`title`・`aria-label` など HTML 属性にデータを出すときは、`config/utils.js` の `ty_stripTags` 関数を使ってタグを除去しつつエスケープする。`<%= ty_stripTags(value) %>` を使い、`<%- value %>` は使わない。表示用の要素（例: 見出しの `<h2>` 内で改行タグを活かす）では `<%- %>` のまま可。
+
+### EJS内で使う自作関数の命名規約
+
+- **EJSから呼ぶ自作ヘルパーは `ty_` プレフィックスで統一**する（標準APIや外部ライブラリのメソッドと区別しやすくするため）
 - **Sass構成**: `base/` / `components/` / `layouts/` / `utility/` のディレクトリ構成に従う
 - **JSモジュール**: 機能単位で `_xxx.js` としてファイルを分割し、`main.js` で `import` する
 
@@ -97,7 +101,7 @@ npm run build
 
 1. `src/` 配下に `xxx/index.html` を作成
 2. `config/site.config.js` の `pages` オブジェクトに同キーのページ情報を追加
-3. HTML内で `const page = getPage('xxx');` でページ情報を取得し、EJSテンプレートを `include` して構成する
+3. HTML内で `const page = ty_getPage('xxx');` でページ情報を取得し、EJSテンプレートを `include` して構成する
 
 ## EJSテンプレートの構成ルール
 

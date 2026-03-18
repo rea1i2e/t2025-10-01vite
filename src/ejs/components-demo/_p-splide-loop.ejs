@@ -12,7 +12,7 @@ const splideLoopImages = [
     <ul class="p-splide-loop__slider-list splide__list">
       <% splideLoopImages.forEach((item) => { %>
       <li class="p-splide-loop__slider-item splide__slide">
-        <img src="<%- imagePath %><%- item.file %>" alt="<%- item.alt %>">
+        <img src="<%- imagePath %><%- item.file %>" alt="<%= ty_stripTags(item.alt) %>">
       </li>
       <% }); %>
     </ul>

@@ -10,7 +10,7 @@ const splideFadeImages = [
     <ul class="p-splide-fade__slider-list splide__list">
       <% splideFadeImages.forEach((item) => { %>
       <li class="p-splide-fade__slider-item splide__slide">
-        <img src="<%- imagePath %><%- item.file %>" alt="<%- item.alt %>">
+        <img src="<%- imagePath %><%- item.file %>" alt="<%= ty_stripTags(item.alt) %>">
       </li>
       <% }); %>
     </ul>

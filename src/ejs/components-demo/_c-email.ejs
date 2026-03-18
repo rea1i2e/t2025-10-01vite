@@ -8,7 +8,7 @@
   if (typeof text !== 'undefined') {
     // textパラメータを直接受け取る（最もシンプルな使い方）
     if (text && typeof text === 'object' && text._isEmail) {
-      // email()関数の戻り値（オブジェクト）
+      // ty_email()関数の戻り値（オブジェクト）
       emailUser = text.user;
       emailDomain = text.domain;
       shouldLink = text._link !== false;
@@ -31,7 +31,7 @@
   } else if (typeof item !== 'undefined' && item) {
     // itemオブジェクトから取得
     if (item.text && item.text._isEmail) {
-      // email()関数の戻り値
+      // ty_email()関数の戻り値
       emailUser = item.text.user;
       emailDomain = item.text.domain;
       shouldLink = item.text._link !== false;

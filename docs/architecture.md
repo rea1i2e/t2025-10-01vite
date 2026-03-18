@@ -164,7 +164,7 @@ flowchart LR
 
 #### 関連ファイル
 - `config/site.config.js` — ページ情報・共通設定の一元管理
-- `config/utils.js` — `isExcluded(key, excludePages)` 関数（パターンマッチングによる除外判定）
+- `config/utils.js` — `ty_isExcluded(key, excludePages)` 関数（パターンマッチングによる除外判定）
 - `vite.config.js` — `ViteEjsPlugin({ ...siteConfig, posts })` でEJSへ注入
 
 #### 設定構造
@@ -174,7 +174,7 @@ flowchart LR
 
 #### テンプレート側での利用
 - `src/ejs/common/_header.ejs` で `Object.entries(pages)` をループし、ヘッダ/ドロワーメニューを生成
-- `isExcluded(key, headerExcludePages)` 等で除外制御（`demo*` や `demo[A-Z]*` のパターンに対応）
+- `ty_isExcluded(key, headerExcludePages)` 等で除外制御（`demo*` や `demo[A-Z]*` のパターンに対応）
 
 ### 3.8 CI/CD（GitHub Actions）
 

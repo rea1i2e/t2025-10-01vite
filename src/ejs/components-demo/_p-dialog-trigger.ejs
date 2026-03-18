@@ -2,7 +2,7 @@
   <% posts.slice(0, 3).forEach((post, index) => { %>
   <article class="p-demo-grid__item p-dialog-trigger">
     <figure class="p-dialog-trigger__thumbnail">
-      <img src="<%- imagePath + post.image.file %>" alt="<%- post.image.alt %>">
+      <img src="<%- imagePath + post.image.file %>" alt="<%= ty_stripTags(post.image.alt) %>">
     </figure>
     <div class="p-dialog-trigger__content">
       <h3 class="p-dialog-trigger__title"><%- post.title %></h3>
