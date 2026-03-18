@@ -2,19 +2,20 @@
  * 背景位置スライドのホバー／フォーカス用（background-size 等の準備スタイル＋:hover / :focus-visible）
  * 使い方: .c-button { @include hover-bg-position-slide; }
  */
-@mixin hover-bg-position-slide {
-  background-size: 200% 100%;
+ @mixin hover-bg-position-slide {
+  background-size: 100% 200%;
   background-repeat: no-repeat;
+  transition: background-position var(--hover-transition);
 
   @media (any-hover: hover) {
     &:hover {
       opacity: 1;
-      background-position: 100% 0;
+      background-position: 0 100%;
     }
   }
 
   &:focus-visible {
     opacity: 1;
-    background-position: 100% 0;
+    background-position: 0 100%;
   }
 }
