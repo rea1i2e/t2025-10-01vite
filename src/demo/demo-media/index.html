@@ -46,7 +46,7 @@
         <p class="p-demo__desc"><code>controls</code> を付けると、ブラウザが音量・シーク・一時停止などの再生コントロールを表示する（<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video#controls" target="_blank" rel="noopener noreferrer">MDN: video</a>）。</p>
         <div class="p-demo__content">
           <div class="p-demo__image-box">
-            <video controls src="<%= imagePath %>demo/elephant.mp4">
+            <video controls src="<%= videoPath %>demo/elephant.mp4">
               動画を再生できません。
             </video>
           </div>
@@ -58,7 +58,7 @@
         <p class="p-demo__desc"><code>autoplay</code> は多くのブラウザで音声付きだとブロックされるため、<code>muted</code> を付与する。<code>playsinline</code> はモバイルでインライン再生するために推奨される（<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video#autoplay" target="_blank" rel="noopener noreferrer">MDN: video</a>）。</p>
         <div class="p-demo__content">
           <div class="p-demo__image-box">
-            <video autoplay muted playsinline loop src="<%= imagePath %>demo/elephant.mp4">
+            <video autoplay muted playsinline loop src="<%= videoPath %>demo/elephant.mp4">
               動画を再生できません。
             </video>
           </div>
@@ -72,8 +72,8 @@
         <div class="p-demo__content">
           <div class="p-demo__image-box">
             <video controls>
-              <source src="<%= imagePath %>demo/elephant.mp4" media="(max-width: 767px)" />
-              <source src="<%= imagePath %>demo/forest.mp4" />
+              <source src="<%= videoPath %>demo/elephant.mp4" media="(max-width: 767px)" />
+              <source src="<%= videoPath %>demo/forest.mp4" />
               動画を再生できません。
             </video>
           </div>
