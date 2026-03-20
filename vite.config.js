@@ -52,10 +52,13 @@ export default defineConfig({
       output: {
         assetFileNames: (info) => {
           const n = (info.name ?? "").replaceAll("\\", "/");
-          // 画像と動画ファイルを assets/images/ に配置
-          if (/\.(png|jpe?g|gif|svg|webp|avif|mp4|webm|mov|ogv)$/i.test(n)) {
-            const base = path.posix.basename(n, path.posix.extname(n));
-            return `assets/images/${base}-[hash][extname]`;
+          // 動画ファイルを assets/videos/ に配置
+          if (/\.(mp4|webm|mov|ogv)$/i.test(n)) {
+            return `assets/videos/[name]-[hash][extname]`;
+          }
+          // 画像ファイルを assets/images/ に配置
+          if (/\.(png|jpe?g|gif|svg|webp|avif)$/i.test(n)) {
+            return `assets/images/[name]-[hash][extname]`;
           }
           // フォントファイルを assets/fonts/ に配置
           if (/\.(woff2?|ttf|otf|eot)$/i.test(n)) {

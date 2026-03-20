@@ -186,6 +186,7 @@ export const siteConfig = {
    */
   ejsPath: "./ejs/", // ルート相対パスで書くと、ズレる（システムルートの解釈）
   imagePath: "/assets/images/",
+  videoPath: "/assets/videos/",
 
   /**
    * プロジェクト設定（案件固有のもの）
