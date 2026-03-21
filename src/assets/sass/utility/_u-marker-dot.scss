@@ -3,7 +3,7 @@
 .u-marker-dot {
   /* 文字数はhtmlのstyle属性で指定（可変にする場合はJSで対応） */
   // --dot-count: 3;
-  --dot-size: #{rem(3)};
+  --dot-size: #{rem(5)};
   --dot-offset: #{rem(8)};
   --dot-color: var(--color-accent);
   position: relative;
@@ -21,8 +21,8 @@
   /* 他の行のレイアウトに影響を出さないようにする場合 */
   // inset-block-start: calc(var(--dot-offset) * -1);
 
-  height: calc(var(--dot-size) * 2);
-  mask-size: calc(100% / var(--dot-count)) calc(var(--dot-size) * 2);
+  height: var(--dot-size);
+  mask-size: calc(100% / var(--dot-count)) var(--dot-size);
   mask-repeat: space no-repeat;
   mask-position: center;
   mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><circle cx="1" cy="1" r="1" fill="black"/></svg>');
