@@ -1,6 +1,6 @@
 @use "../global" as *;
 
-.p-demo-list {
+.p-list {
   // CSS変数の定義（カスタマイズ可能）
   --_marker-size: var(--icon-list--marker-size, #{rem(8)});
   --_marker-color: var(--icon-list--marker-color, var(--color-theme));
@@ -13,12 +13,12 @@
   gap: var(--_row-gap);
 }
 
-.p-demo-list__item {
+.p-list__item {
   position: relative;
   padding-inline-start: calc(var(--_marker-size) + var(--_column-gap));
 }
 
-.p-demo-list__item::before {
+.p-list__item::before {
   position: absolute;
   inset-block-start: calc((1lh - var(--_marker-size)) / 2 );
   inset-inline-start: 0;
@@ -26,6 +26,31 @@
   block-size: var(--_marker-size);
   aspect-ratio: 1;
   background-color: var(--_marker-color, currentColor);
+  border-radius: 50%;
+  content: "";
+}
+
+.p-list {
+  // CSS変数の定義（カスタマイズ可能）
+  --list-row-gap: #{rem(8)};
+  --list-marker-size: #{rem(19)};
+  --list-column-gap: #{rem(10)};
+  display: grid;
+  gap: var(--list-row-gap);
+}
+
+.p-list__item {
+  position: relative;
+  padding-inline-start: calc(var(--list-marker-size) + var(--list-column-gap));
+}
+
+.p-list__item::before {
+  position: absolute;
+  inset-block-start: calc((1lh - var(--list-marker-size)) / 2 );
+  inset-inline-start: 0;
+  block-size: var(--list-marker-size);
+  aspect-ratio: 1;
+  background: url(../images/icon_check_blue.svg) no-repeat center / contain;
   border-radius: 50%;
   content: "";
 }

@@ -7,15 +7,15 @@ margin, padding, display, width, bckground, border
 代わりに::beforeなどを使う
 */
 
-.p-demo-list-ordered {
+.p-list-ordered {
   list-style: decimal;
   padding-inline-start: 1em;
 }
 
-.p-demo-list-ordered__item {
+.p-list-ordered__item {
 
 }
 
-.p-demo-list-ordered__item::marker {
+.p-list-ordered__item::marker {
   color: var(--color-theme);
 }

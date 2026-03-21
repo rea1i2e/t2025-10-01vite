@@ -14,10 +14,10 @@
       <section class="p-demo__section">
         <h2 class="p-demo__subtitle">順序なしリスト（ul）</h2>
         <div class="p-demo__content">
-          <ul class="p-demo-list">
+          <ul class="p-list">
             <% posts.forEach((post) => { %>
-            <li class="p-demo-list__item">
-              <span class="p-demo-list__item-text"><%- post.title %> - <%- post.description %></span>
+            <li class="p-list__item">
+              <span class="p-list__item-text"><%- post.title %> - <%- post.description %></span>
             </li>
             <% }); %>
           </ul>
@@ -26,10 +26,10 @@
       <section class="p-demo__section">
         <h2 class="p-demo__subtitle">順序付きリスト（ol）</h2>
         <div class="p-demo__content">
-          <ol class="p-demo-list-ordered">
+          <ol class="p-list-ordered">
             <% posts.forEach((post) => { %>
-            <li class="p-demo-list-ordered__item">
-              <span class="p-demo-list-ordered__item-text"><%- post.title %> - <%- post.description %></span>
+            <li class="p-list-ordered__item">
+              <span class="p-list-ordered__item-text"><%- post.title %> - <%- post.description %></span>
             </li>
             <% }); %>
           </ol>
