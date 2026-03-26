@@ -1,0 +1,29 @@
+{
+  "defaults": {
+    "scale": "1280:-2",
+    "videoBitrate": "2000k",
+    "audioBitrate": "128k",
+    "fps": 30,
+    "crf": 23,
+    "preset": "slow"
+  },
+  "videos": [
+    {
+      "input": "raw/videos/top-mv.mp4",
+      "output": "src/assets/videos/top-mv.mp4",
+      "purpose": "hero",
+      "sizeTarget": "3MB以下",
+      "note": ""
+    },
+    {
+      "input": "raw/videos/intro.mp4",
+      "output": "src/assets/videos/intro.mp4",
+      "purpose": "content",
+      "sizeTarget": "",
+      "note": "",
+      "scale": "640:-2",
+      "videoBitrate": "500k",
+      "audioBitrate": "96k"
+    }
+  ]
+}

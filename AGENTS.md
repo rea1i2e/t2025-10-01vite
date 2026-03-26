@@ -16,6 +16,8 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数、ty_stripTags） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、CSS image-set、整形）。config/site.config.js の imageAltFormats を参照 |
 | `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
+| `raw/videos/inspect-videos.mjs` | 動画情報サマリー出力（AI依頼時に使用） |
+| `raw/videos/compress-video.mjs` | 動画まとめ圧縮＋レポート生成 |
 | `scripts/font-compress.sh` | フォントを全グリフのまま WOFF2 に圧縮（pyftsubset） |
 | `scripts/font-compress-subset.sh` | フォントを指定文字のみサブセット化して WOFF2 に圧縮 |
 | `scripts/README-font-compress.md` | フォント圧縮ツールの前提条件・使い方 |
@@ -49,6 +51,17 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 - site.config.js のオプションが増えた場合 →「サイト設定」セクションに追加
 
 
+
+## プロンプト下書き
+
+AIへの作業依頼プロンプトの下書きは `prompts/` に置く。
+ナレッジリポジトリの `prompts/` にあるテンプレートをもとに、案件ごとの情報を記入して使う。
+
+| ファイル | 用途 |
+|---|---|
+| [`prompts/video-compress.md`](prompts/video-compress.md) | 動画圧縮をAIに依頼するプロンプト |
+
+---
 
 ## コーディング規約
 

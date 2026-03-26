@@ -77,6 +77,17 @@ gh repo clone GitHubのユーザー名/新規リポジトリ名
    ```
 
 
+## プロンプト下書き
+
+AIへの作業依頼プロンプトの下書きは `prompts/` に置いています。
+ナレッジリポジトリのテンプレートをもとに、案件ごとの情報を記入して使います。
+
+| ファイル | 用途 |
+|---|---|
+| [prompts/video-compress.md](./prompts/video-compress.md) | 動画圧縮をAIに依頼するプロンプト |
+
+---
+
 ## スクリプト
 - 開発サーバー: EJS/HTML/Sass/JS を監視して自動反映
 ```bash
