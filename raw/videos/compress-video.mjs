@@ -74,7 +74,7 @@ function extractInfo(info) {
 }
 
 function buildFfmpegArgs(input, output, options) {
-  const { scale, videoBitrate, audioBitrate, fps, crf, preset } = options;
+  const { scale, videoBitrate, audioBitrate, fps, crf, preset, noCrf, maxrate, bufsize } = options;
   const vf = [scale ? `scale=${scale}` : null, fps ? `fps=${fps}` : null]
     .filter(Boolean)
     .join(',');
@@ -83,8 +83,10 @@ function buildFfmpegArgs(input, output, options) {
   if (vf) args.push('-vf', vf);
   args.push('-c:v', 'libx264');
   args.push('-preset', preset ?? 'slow');
-  if (crf != null) args.push('-crf', String(crf));
+  if (!noCrf && crf != null) args.push('-crf', String(crf));
   if (videoBitrate) args.push('-b:v', videoBitrate);
+  if (maxrate) args.push('-maxrate', maxrate);
+  if (bufsize) args.push('-bufsize', bufsize);
   args.push('-c:a', 'aac');
   if (audioBitrate) args.push('-b:a', audioBitrate);
   args.push('-movflags', '+faststart');
@@ -137,6 +139,9 @@ for (const video of videos) {
     fps: video.fps ?? defaults.fps,
     crf: video.crf ?? defaults.crf,
     preset: video.preset ?? defaults.preset,
+    noCrf: Boolean(video.noCrf),
+    maxrate: video.maxrate,
+    bufsize: video.bufsize,
   };
 
   const beforeInfo = extractInfo(getVideoInfo(inputPath));

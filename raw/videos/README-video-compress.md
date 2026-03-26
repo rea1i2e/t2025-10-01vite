@@ -59,7 +59,7 @@ cp raw/videos/compress-config.sample.json raw/videos/compress-config.json
 
 - `defaults` に標準設定を書く
 - `videos` の各動画に個別設定を書くと `defaults` を上書きできる
-- パスはプロジェクトルートからの相対パス
+- `input` / `output` のパスは **`raw/videos/` を基準とした相対パス**（`compress-video.mjs` が `resolve(__dirname, …)` で解決する）。例: 入力 `demo/foo.mp4`、出力を `src/public` 配下に出すときは `../../src/public/assets/videos/demo/foo.mp4`
 
 #### 方針・目標フィールド（`compression-video.md` の用途分類に対応）
 
@@ -68,6 +68,9 @@ cp raw/videos/compress-config.sample.json raw/videos/compress-config.json
 | `purpose` | 用途。`hero` / `loop` / `content` のいずれかを指定 |
 | `sizeTarget` | サイズ目標（例: `3MB以下`）。レポートに記載される |
 | `note` | 備考（任意）。特記事項があれば記載 |
+| `noCrf` | `true` のとき `-crf` を付けず、`-b:v`（と任意の `-maxrate` / `-bufsize`）によるレート制御に寄せる。長尺ヒーローでファイルサイズ上限を狙うときに使う |
+| `maxrate` | （任意）映像の `-maxrate`。`noCrf` と組み合わせることが多い |
+| `bufsize` | （任意）映像の `-bufsize`。`noCrf` と組み合わせることが多い |
 
 **`purpose` の値と対応する方針**
 

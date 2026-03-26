@@ -9,15 +9,21 @@
   },
   "videos": [
     {
-      "input": "raw/videos/top-mv.mp4",
-      "output": "src/assets/videos/top-mv.mp4",
+      "input": "demo/top-mv.mp4",
+      "output": "../../src/public/assets/videos/demo/top-mv.mp4",
       "purpose": "hero",
       "sizeTarget": "3MB以下",
-      "note": ""
+      "note": "input/output は raw/videos/ からの相対パス",
+      "noCrf": true,
+      "scale": "854:-2",
+      "videoBitrate": "680k",
+      "maxrate": "680k",
+      "bufsize": "1360k",
+      "audioBitrate": "48k"
     },
     {
-      "input": "raw/videos/intro.mp4",
-      "output": "src/assets/videos/intro.mp4",
+      "input": "demo/intro.mp4",
+      "output": "../../src/public/assets/videos/demo/intro.mp4",
       "purpose": "content",
       "sizeTarget": "",
       "note": "",
