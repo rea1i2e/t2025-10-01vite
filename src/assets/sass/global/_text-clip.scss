@@ -1,9 +1,0 @@
-/**
- * テキストを背景（グラデーション・画像など）で塗るスタイル（background-clip: text）
- * 使い方: @include text-clip; または @include text-clip($image);
- */
-@mixin text-clip($image: var(--gradation-theme)) {
-  background-clip: text;
-  background-image: $image;
-  -webkit-text-fill-color: transparent;
-}
