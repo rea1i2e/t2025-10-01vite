@@ -1,0 +1,23 @@
+<% 
+  const key = 'demoTab';
+  const page = ty_getPage(key);
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy4.jpg', imageAlt: '' }) %>
+  <main class="p-demo">
+    <div class="p-demo__inner l-inner">
+      <div class="p-demo__content">
+        <%- include(ejsPath + 'components-demo/_p-tab.ejs') %>
+      </div>
+    </div>
+  </main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+
+</html>
+

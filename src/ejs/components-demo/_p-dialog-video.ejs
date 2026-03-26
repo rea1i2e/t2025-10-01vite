@@ -1,0 +1,31 @@
+<%# video要素モーダル %>
+<%# 各動画ごとにdialog要素を作成（Viteが検出できるように） %>
+<% 
+const videoPosts = posts.filter(function(post) { return post.videoSrc; });
+videoPosts.forEach(function(post, index) {
+%>
+<dialog class="p-dialog p-dialog--video js-dialog-video" id="video-modal<%- index + 1 %>">
+  <div class="p-dialog__video-content">
+    <video controls playsinline>
+      <% 
+      if (typeof post.videoSrc === 'object') {
+        Object.keys(post.videoSrc).forEach(function(type) {
+      %>
+        <source src="<%- imagePath + post.videoSrc[type] %>" type="video/<%- type %>">
+      <% 
+        });
+      } else {
+      %>
+        <source src="<%- imagePath + post.videoSrc %>" type="video/mp4">
+      <% 
+      }
+      %>
+    </video>
+  </div>
+  <button class="p-dialog__close p-dialog__close--video" type="button" aria-label="モーダルを閉じる" data-modal-close>
+    <span class="u-screen-reader">モーダルを閉じる</span>
+  </button>
+</dialog>
+<% 
+});
+%>

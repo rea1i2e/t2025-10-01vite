@@ -1,0 +1,504 @@
+# アーキテクチャ仕様（t2025-10-01vite）
+
+本ドキュメントは、静的サイトテンプレート `t2025-10-01vite` の設計・構成・各機能の仕様を定義する。
+
+---
+
+## 1. 設計概要
+
+本テンプレートは **Vite + EJS + Sass** を基盤とした静的サイトジェネレータである。  
+ビルド時に **画像最適化（圧縮/WebP生成）** と **HTML後処理（`<picture>`化・`width/height`自動付与）** を自動実行し、品質担保として **husky + html-validate** によるバリデーション、運用として **GitHub Actions** による自動デプロイを備える。
+
+### 主要ディレクトリの役割
+
+| パス | 役割 |
+|------|------|
+| `src/` | 開発ソース（Viteの `root`） |
+| `dist/` | ビルド成果物（最終配布物） |
+| `config/` | プロジェクト設定 |
+| `scripts/` | ビルド後処理スクリプト |
+| `.github/workflows/` | CI/CD 定義 |
+| `.husky/` | Git フック |
+
+---
+
+## 2. システム構成図
+
+```mermaid
+flowchart LR
+  dev["npm_run_dev"] --> viteDev["Vite_dev_server(root=src)"]
+  viteDev --> ejsRender["EJS_render(vite-plugin-ejs)"]
+  viteDev --> sassBuild["Sass_build(+sass_glob_import)"]
+  viteDev --> jsBundle["JS_bundle(ESM_entry)"]
+
+  build["npm_run_build"] --> viteBuild["vite_build"]
+  viteBuild --> imgMin["image_optimize(vite-plugin-imagemin)"]
+  viteBuild --> distOut["dist_output(assets_hashed)"]
+  distOut --> afterBuild["after-build(HTML_postprocess)"]
+  afterBuild --> validate["html-validate(dist)"]
+  validate --> deploy["GitHub_Actions_FTP_deploy"]
+```
+
+- ビルドは `vite build` → `scripts/after-build.mjs`（HTML後処理）の順で実行される（`package.json` の `build` スクリプトで定義）
+- HTML検証は `dist/` を対象に `html-validate` で実行する（`validate:html`）
+
+---
+
+## 3. 機能仕様
+
+### 3.1 EJS テンプレートエンジン
+
+#### 関連ファイル
+- `vite.config.js` — `ViteEjsPlugin({ ...siteConfig, posts })` でEJSへ変数を注入
+- `vite.config.js` — `liveReload(["ejs/**/*.ejs"])` でEJS更新時にリロード
+- `vite.config.js` — `globSync("src/**/*.html", { ignore: ["src/public/**/*.html"] })` を `rollupOptions.input` に登録し、複数HTMLを自動ビルド対象とする
+- `src/**/*.html` — HTML側でEJSの `include()` により共通パーツを組み立てる
+- `src/ejs/components/` — 毎回使う部品テンプレート
+- `src/ejs/demo-components/` — よく使うデモ用の部品テンプレート
+
+#### 動作仕様
+- 各ページHTMLでは `config/site.config.js` の `getPage(pageKey)` でページ情報を取得し、`page` オブジェクト（title / description / keywords / path / root）を得る。存在しないキーを渡すとエラーを投げる。
+- `ejsPath`（`config/site.config.js` で定義）を使い、`common/_head.ejs` 等を `include` する。
+- 見出しなどで「ページ単体のタイトル」が必要な場合は `pages[key].title` または `pages['キー'].title` を参照する（`getPage` の `title` はメタ用の結合済みタイトル）。
+
+#### ページHTML側の構成例
+- 固定キーのページ（例: `src/index.html`）
+  - `<% const page = getPage('top'); %>`
+- 変数キーのページ（例: デモサブページ）
+  - `const key = 'demoTab';` のうえで `<% const page = getPage(key); %>`
+- 共通パーツの利用
+  - `include(ejsPath + 'common/_head.ejs', { page })`
+  - `include(ejsPath + 'common/_header.ejs', { page })`
+  - `include(ejsPath + 'common/_footer.ejs', { page })`
+
+### 3.2 SCSS ビルドパイプライン
+
+#### 関連ファイル
+- `src/ejs/common/_head.ejs` — `<link rel="stylesheet" href="/assets/sass/style.scss">` でSCSSを読み込む（Viteがビルド対象として解釈）
+- `src/assets/sass/style.scss` — エントリファイル。`@use "./layouts/**";` のようなglob指定で構成を集約
+- `vite.config.js` — `vite-plugin-sass-glob-import` により `@use "./**"` のglobを有効化
+- `postcss.config.cjs` — `autoprefixer` / `postcss-sort-media-queries`（`mobile-first`）
+
+#### ビルド出力
+- `assets/css/[name]-[hash].css`（`vite.config.js` の `assetFileNames` で定義）
+
+### 3.3 JS バンドル
+
+#### 関連ファイル
+- `src/ejs/common/_head.ejs` — `<script type="module" src="/assets/js/main.js"></script>`
+- `src/assets/js/main.js` — エントリファイル。機能別モジュール（`_drawer.js`, `_splide-*.js`, `_fadein.js` 等）を `import` で束ねる
+- `vite.config.js` — `entryFileNames` / `chunkFileNames` を `assets/js/[name]-[hash].js` に統一
+
+### 3.4 画像最適化パイプライン
+
+#### 関連ファイル
+- `config/site.config.js` — 画像代替フォーマット（`siteConfig.imageAltFormats`）。Vite と after-build で共有
+- `vite.config.js` — `@vheemstra/vite-plugin-imagemin` を使用
+
+#### 画像代替フォーマット（imageAltFormats）
+`config/site.config.js` の `siteConfig.imageAltFormats` で次を切り替える。
+
+| 値 | 出力 |
+|----|------|
+| `'none'` | png, jpg のみ（代替フォーマットを生成・挿入しない） |
+| `'webp'` | png, jpg + webp |
+| `'avif'` | png, jpg + avif |
+| `'both'` | png, jpg + webp + avif |
+
+#### 圧縮仕様
+- 対象: `include: /\.(png|jpe?g|gif|svg)$/i`
+- JPEG: `imagemin-mozjpeg({ quality: 75, progressive: true })`
+- PNG: `imagemin-optipng({ optimizationLevel: 2 })`
+- GIF: `imagemin-gifsicle({ optimizationLevel: 2 })`
+- SVG: `imagemin-svgo()`
+
+#### WebP 生成仕様
+- `imageAltFormats` が `'webp'` または `'both'` のとき `makeWebp` が有効
+- jpg / png / gif から WebP を生成
+- `skipIfLargerThan: "optimized"` — 元画像より大きくなる場合は生成しない
+
+#### AVIF 生成仕様
+- `imageAltFormats` が `'avif'` または `'both'` のとき `makeAvif` が有効
+- jpg / png から AVIF を生成（`imagemin-avif` 使用。sharp ベースでネイティブバイナリ不要）
+- `skipIfLargerThan: "optimized"` で元より大きい場合は生成しない
+
+#### ビルド出力
+- `assets/images/[name]-[hash][extname]`（`vite.config.js` の `assetFileNames` で定義）
+- フォント（woff2 / woff / ttf / otf / eot）は `assets/fonts/[name]-[hash][extname]` に出力（同様に `assetFileNames` で定義）
+
+### 3.5 HTML後処理（after-build）
+
+#### 関連ファイル
+- `scripts/after-build.mjs` — `config/site.config.js` の `imageAltFormats` を参照
+
+#### 対象
+- `dist/**/*.html` を再帰走査
+
+#### 処理仕様
+1. `<img src="...">` を対象に、元画像の実寸を `sharp(...).metadata()` で取得し `width` / `height` を付与
+2. `imageAltFormats` で有効なフォーマット（webp / avif）について、`dist/` にファイルが存在する場合:
+   - `<img>` を `<picture>` でラップし、`<source type="image/avif">` / `<source type="image/webp">` を自動挿入（ブラウザの優先順に AVIF → WebP の順）
+   - 既に `<picture>` の場合は破壊せず、不足する `<source>` のみ補完（art-direction 用の `media` も維持）
+   - 各 `<source>` にも参照ファイルの実寸を付与
+3. CSS の `background-image` / `background` で参照した jpg/png について、有効なフォーマットが dist に存在すれば `image-set(...)` を追加（avif → webp → jpg の順）
+4. `js-beautify` でHTML全体を整形
+
+#### スキップ条件
+- `http(s)://` の外部URL
+- `data:` スキーム
+- SVG（非ラスタ画像は `<picture>` 化しない）
+
+### 3.6 バリデーション
+
+#### 関連ファイル
+- `package.json` — `validate:html`: `html-validate dist/`、`validate:build`: `npm run build && npm run validate:html`
+- `.htmlvalidate.json` — `extends: ["html-validate:recommended"]` + 独自ルール調整
+- `.husky/pre-commit` — `npm run build:only`（コミット前にビルドを実行）
+- `.husky/pre-push` — `npm run validate:build`（プッシュ前にビルド + HTML検証）
+
+#### Git hooks の動作
+- **pre-commit**: `npm run build:only`（ビルドのみ実行し、通らなければコミット拒否）
+- **pre-push**: `npm run validate:build`（ビルド + HTML検証、通らなければプッシュ拒否）
+
+### 3.7 ページ情報管理（site.config.js）
+
+#### 関連ファイル
+- `config/site.config.js` — ページ情報・共通設定の一元管理
+- `config/utils.js` — `ty_isExcluded(key, excludePages)` 関数（パターンマッチングによる除外判定）
+- `vite.config.js` — `ViteEjsPlugin({ ...siteConfig, posts })` でEJSへ注入
+
+#### 設定構造
+- `pages` オブジェクト: 各ページの `label` / `root` / `path` / `title` / `description` 等を集約
+- `headerExcludePages` / `drawerExcludePages`: メニューから除外するページのキー配列
+- `ejsPath` / `baseUrl` / `titleSeparator`: 共通設定
+
+#### テンプレート側での利用
+- `src/ejs/common/_header.ejs` で `Object.entries(pages)` をループし、ヘッダ/ドロワーメニューを生成
+- `ty_isExcluded(key, headerExcludePages)` 等で除外制御（`demo*` や `demo[A-Z]*` のパターンに対応）
+
+### 3.8 CI/CD（GitHub Actions）
+
+#### 関連ファイル
+- `.github/workflows/deploy.yml`
+
+#### トリガー
+- `push`（`main` / `master`）
+- `pull_request`（`main` / `master`）
+- `workflow_dispatch`（手動実行）: `deploy_to_production` 入力あり
+
+#### 処理フロー
+1. `actions/checkout@v4`
+2. `actions/setup-node@v4`（Node 20、npmキャッシュ）
+3. `npm ci`
+4. `npm run build`
+5. FTPデプロイ（`SamKirkland/FTP-Deploy-Action@v4.3.4`）
+   - push → テスト環境
+   - PR → PRテスト環境
+   - 手動（`deploy_to_production: true`）→ 本番
+6. Discord通知（`Ilshidur/action-discord@master`）: 成功/失敗で分岐
+
+#### 必要な GitHub Secrets
+- **必須**: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`
+- **任意**: `TEST_URL`（サマリー・Discord に表示するURL）, `DISCORD_WEBHOOK`（Discord 通知用）
+
+#### GitHub Secrets の一括設定
+- `scripts/setup-secrets.sh` — `.env.deploy` の値を GitHub CLI（`gh`）でリポジトリの Secrets に登録する
+- `env.deploy.example` — 必要な変数名のテンプレート。コピーして `.env.deploy` を作成し、値を記入する
+- `.env.deploy` は `.gitignore` に含まれるためコミットされない
+
+**手順**
+1. `cp env.deploy.example .env.deploy` で `.env.deploy` を作成
+2. `.env.deploy` に FTP のサーバー・ユーザー・パスワード（と任意で Discord Webhook・テストURL）を記入
+3. `gh` をインストールし `gh auth login` で認証
+4. プロジェクトルートで `./scripts/setup-secrets.sh` を実行
+
+### 3.9 デモページシステム
+
+#### 関連ファイル
+- `src/demo/**/index.html` — 各デモページ（例: `src/demo/demo-accordion/index.html`）
+- `src/ejs/components/_p-demo.ejs` — デモ一覧の自動生成
+
+#### 動作仕様
+- 各デモページHTMLで `const key = 'demoAccordion'` のように `pages` のキーを指定してページ情報を参照
+- `_p-demo.ejs` は `pages` から `demo` で始まるキーを抽出し、デモ一覧を自動生成する
+
+### 3.10 メールアドレス保護機能
+
+#### 関連ファイル
+- `config/utils.js` — `email()` 関数の定義（`toString()` メソッドにより文字列化時に自動的にHTMLを返す）
+- `config/site.config.js` — `email` 関数を `siteConfig` に追加し、EJSテンプレートで利用可能にする
+- `src/ejs/components-demo/_c-email.ejs` — メールアドレス保護用のHTML出力
+- `src/assets/js/_email-protection.js` — メールアドレスの復元とリンク生成
+- `src/assets/js/main.js` — `_email-protection.js` をインポート
+
+#### 使用方法
+
+1. データ定義時に `email()` 関数を使用:
+```javascript
+const documentItems = [
+  {
+    heading: 'メールアドレス',
+    text: email('afmaar128', 'gmail.com')
+  },
+  {
+    heading: '事業内容',
+    text: 'Web制作・システム開発・コンサルティング'
+  },
+];
+```
+
+2. 表示部分は `<%- item.text %>` だけで完結する（条件分岐不要）:
+```ejs
+<dl class="p-demo-dl">
+  <% documentItems.forEach((item) => { %>
+    <dt class="p-dl__dt"><%- item.heading %></dt>
+    <dd class="p-dl__dd"><%- item.text %></dd>
+  <% }); %>
+</dl>
+```
+
+3. リンクなしで表示する場合:
+```javascript
+text: email('afmaar128', 'gmail.com', { link: false })
+```
+
+#### 処理フロー
+
+1. **ビルド時（サーバー側）**
+   - `email('afmaar128', 'gmail.com')` でメールアドレスオブジェクトを生成
+   - `toString()` メソッドにより、文字列として扱われた時点で自動的にHTMLを返す
+   - 出力HTML: `<span class="js-email-protection" data-email-user="afmaar128" data-email-domain="gmail.com" data-link="true"></span><noscript>afmaar128[at]gmail.com</noscript>`
+
+2. **ブラウザ（クライアント側）**
+   - `_email-protection.js` が `DOMContentLoaded` で実行
+   - `.js-email-protection` 要素を検索してメールアドレスを復元
+   - `data-link` が `true` → `<a>` タグを生成、`false` → テキストのみ表示
+
+#### スパムボット対策の仕組み
+- HTMLに `@` を含めない（`data-email-user` と `data-email-domain` に分割）
+- JavaScriptで動的にメールアドレスを復元
+- `<noscript>` タグでJavaScript無効時にも情報を表示
+
+### 3.11 フォント圧縮ツール
+
+#### 関連ファイル
+- `scripts/font-compress.sh` — 全グリフを維持したまま TTF 等を WOFF2 に変換
+- `scripts/font-compress-subset.sh` — 指定文字列のみをサブセット化して WOFF2 に変換
+- `scripts/README-font-compress.md` — 前提条件・使い方
+
+#### 動作仕様
+- **前提**: Python 3.x と `fonttools[woff]`（`pip install fonttools[woff]`）が必要。内部で `pyftsubset` を使用
+- **全グリフ圧縮**: `font-compress.sh 入力.ttf 出力.woff2` で全グリフを WOFF2 に変換
+- **サブセット化**: `font-compress-subset.sh 入力.ttf 出力.woff2 "使用する文字列"` で指定文字のみの WOFF2 を生成し、ファイルサイズを削減
+- 可変フォント（Variable Font）にも対応
+
+#### 使用方法
+- 詳細は `scripts/README-font-compress.md` を参照
+- 圧縮したフォントは `src/assets/fonts/` に配置する想定
+
+### 3.12 パララックス機能
+
+#### 関連ファイル
+- `src/assets/js/_parallax.js` — 汎用パララックス（GSAP ScrollTrigger 使用）
+- `src/assets/js/main.js` — `_parallax.js` を import
+
+#### 動作仕様
+- **トリガー・移動量**: 要素に `data-parallax` 属性を付与するとパララックスが有効になる。属性値で移動量（%）を数値で指定可能。値なしまたは省略時は `30`。正の値で下方向、負の値で上方向に移動。数値は `parseFloat` でパースし、無効な場合はデフォルトを使用。
+- 対象要素内の img を、要素がビューポートを通過する間（`start: 'top bottom'` 〜 `end: 'bottom top'`）にスクロールに連動して translateY で移動させる（`scrub: true`）。
+- GSAP および ScrollTrigger プラグインに依存する。
+
+#### 使用方法
+- デフォルトの移動量で使う場合: 対象要素に `data-parallax` を付与する（値なし）。
+- 移動量を指定する場合: `data-parallax="50"` のように % の数値を属性値で指定する。逆方向は `data-parallax="-30"` など負の値で指定する。
+
+#### 使用例（HTML側）
+- `<div data-parallax>...</div>` — デフォルト（30%）で視差を付与
+- `<div data-parallax="50">...</div>` — 50% の移動量
+- `<div data-parallax="-30">...</div>` — 上方向に 30% 移動
+
+### 3.13 CSS内アセットのインライン化
+
+#### 関連ファイル
+- `vite.config.js` — `build.assetsInlineLimit`（デフォルトは未指定＝Viteのデフォルト 4096 バイトが適用される）
+
+#### 動作仕様
+- CSS（Sass 経由含む）の `url()` で参照した画像・SVG などは、ビルド時に Vite が解決する。
+- ファイルサイズが **4KB 未満** のアセットは、デフォルトで **data URI として CSS にインライン埋め込み** される（HTTP リクエスト削減）。
+- SVG は `data:image/svg+xml,...` 形式（URL エンコード）で埋め込まれる。
+
+#### インライン化を無効にしたい場合
+- SVG や小さい画像を **別ファイルとして** `dist/assets/images/` に出力したい場合は、`vite.config.js` の `build` 内にある **`assetsInlineLimit: 0`** の行のコメントを解除する。
+- コメント解除後は、`url()` で参照したアセットはすべて別ファイルとして出力され、CSS 内の参照は `url(./assets/images/xxx-[hash].svg)` のようなパスに置き換わる。
+
+### 3.14 サブページMVコンポーネント（p-sub-mv）
+
+#### 関連ファイル
+- `src/ejs/components-demo/_sub-mv.ejs` — 共通テンプレート（hgroup + h1 / p / 画像）
+- `src/assets/sass/demo-components/_p-sub-mv.scss` — スタイル
+
+#### 動作仕様
+- サブページ用のメインビジュアル（MV）を、ページごとに h1・p・画像を設定して表示する。
+- include の第二引数で渡した `titleJa`（h1）、`titleEn`（p）、`imageSrc` / `imageAlt`（画像）を参照する。未指定の項目は表示しない。`imageSrc` が未指定のときは `p-sub-mv__image` ブロック自体を出力しない。
+- 画像の `src` は `site.config.js` の `imagePath` と渡した `imageSrc` を結合して生成する（`imageSrc` は `imagePath` からの相対パス、例: `'demo/dummy1.jpg'`）。
+- 属性値（alt 等）はタグ除去したうえで出力する。
+
+#### 使用方法
+- 各ページの `index.html` で、ヘッダー直下に include し、第二引数で任意の項目を渡す。
+- 例: `include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy1.jpg', imageAlt: '' })`
+- titleJa / titleEn / imageSrc / imageAlt は任意。テキストは人間が記述する。
+
+### 3.15 メディアデモ（画像・動画）
+
+#### 関連ファイル
+- `config/site.config.js` — ページキー `demoMedia`（メディアいろいろ）
+- `src/demo/demo-media/index.html` — 画像セクションと動画セクションを同居した1ページ
+
+#### 動作仕様
+- **画像セクション**: img（PC/SP共通）、img（PC/SP出し分け・picture）、background-image の3パターンを設置。既存の demo-images と同様のマークアップ。
+- **動画セクション**: 3つのサブセクションで、それぞれ説明文（`p.p-demo__desc`）を添える。
+  1. **videoタグデフォルト** — `<video controls>` でユーザー操作による再生。
+  2. **自動再生** — `autoplay muted playsinline loop` の例（多くのブラウザでは muted 必須）。
+  3. **画面サイズによる出し分け** — `<source media="(min-width: 800px)" />` で大画面用、続けてデフォルト用の `<source>` を配置。`srcLarge` を持つ動画データのみ large 用 source を出力。
+- 動画データは当該 HTML ファイル先頭で配列として定義し、同一ファイル内でデータとマークアップを分離している。動画パスは `page.root + 'assets/images/' + src` で相対パスにし、Vite がアセットを解決しやすくする。
+- 使用する mp4 は `src/assets/images/demo/` に配置する想定。
+
+#### 使用方法
+- デモ一覧（`_p-demo.ejs`）で `demoMedia` が列挙され、メディアいろいろページへリンクされる。各動画セクションの説明文はプレースホルダとして記載し、必要に応じてユーザーが編集する。
+
+### 3.16 ライト／ダークモード（Demo用）
+
+#### 関連ファイル
+- `src/assets/sass/base/_root.scss` — テーマ用の CSS 変数（`--color-bg` / `--color-text` / `--color-bg-sub` 等）の定義。`@media (prefers-color-scheme: dark)` は `:root:not([data-theme])` に限定。`html[data-theme="light"]` / `html[data-theme="dark"]` で手動選択時に変数を上書き。
+- `src/assets/sass/base/_base.scss` — `body` に `background-color: var(--color-bg)` と `color: var(--color-text)` を適用。
+- `src/ejs/common/_head.ejs` — `<meta name="color-scheme" content="light dark">` と、描画前に `localStorage.getItem('theme')` を読み `data-theme` を付与するインラインスクリプト（FOUC防止）。
+- **Demo用**: `src/ejs/components-demo/_theme-toggle.ejs` — 切り替えボタンのマークアップ。`src/ejs/common/_footer.ejs` から include。
+- **Demo用**: `src/assets/sass/demo-components/_c-theme-toggle.scss` — ボタンスタイル（ページ右下 fixed）。
+- **Demo用**: `src/assets/js/_theme-toggle.js` — ボタンクリックで `data-theme` を反転し localStorage に保存。案件時は本ファイル削除と main.js の import 削除が必要。
+
+#### 動作仕様
+- **初回**: システム設定（`prefers-color-scheme`）に従う。ユーザーがボタンで切り替えた場合はその選択を localStorage に保存し、次回以降はそれを優先する。
+- **ライト**: `:root` および `html[data-theme="light"]` で変数定義。
+- **ダーク**: `@media (prefers-color-scheme: dark)` の `:root:not([data-theme])` または `html[data-theme="dark"]` で変数を上書き。
+- コンポーネントで背景・文字色をテーマ連動させたい場合は `var(--color-bg)` / `var(--color-text)` / `var(--color-bg-sub)` を参照する。
+- **ライト/ダークモードは Demo 扱い**。案件リポジトリ作成時に demo を削除する際は、AGENTS.md の「デモ削除時の手順」に従いボタン・JS・必要に応じて head の script と _root の data-theme 用スタイルを削除する。
+
+#### テーマ変数一覧（役割ベース）
+| 変数名 | 用途 | ライト（例） | ダーク（例） |
+|--------|------|--------------|--------------|
+| `--color-bg` | ページ背景 | #fff | #1a1a1a |
+| `--color-text` | 本文・見出し | #111 | #eee |
+| `--color-bg-sub` | カード・パネル・ナビ等の面・テーブル斑 | #eee | #333 |
+| `--color-bg-code` | インラインコード・コードブロック背景 | #f0f0f0 | #383838 |
+| `--border` | 枠線 | 1px solid #ccc | 1px solid #444 |
+| `--color-theme` / `--color-accent` | アクセント色 | 既存値 | ダーク用に調整 |
+| `--shadow` | カード・パネル等の通常時の影 | 0 2px 8px rgba(0,0,0,0.1) | 同上 |
+| `--shadow-hover` | ホバー時・浮き上がり用の影 | 0 8px 20px rgba(0,0,0,0.15) | 同上 |
+| `--shadow-none` | 影なし（フォーム等のリセット用） | 0 0 0 0 transparent | 同上 |
+| `--shadow-inset` | 内側の影（オーバーレイ等） | inset 0 0 0.625rem rgba(0,0,0,0.3) | 同上 |
+
+### 3.17 ファーストビュー動画デモ（PC/SP 出し分け・音声トグル）
+
+#### 関連ファイル
+- `config/site.config.js` — ページキー `demoFvVideo`（`path`: `demo/demo-fv-video/`）
+- `src/demo/demo-fv-video/index.html` — ヒーロー用 `<video>`（`data-pc-src` / `data-sp-src`、`poster`、右下トグルボタン）
+- `src/assets/js/_demo-fv-video.js` — `main.js` から import。`[data-demo-fv-video]` があるページのみ初期化
+- `src/assets/sass/demo-components/_p-demo-fv-video.scss` — `100vh`、`object-fit: cover`、ボタン配置（テーマ変数使用）
+
+#### 動作仕様
+- **表示**: 動画エリアは高さ 100vh、`object-fit: cover`。`loop` なしのため終了後は最後のフレームで停止。
+- **ブレークポイント**: `matchMedia('(min-width: 768px)')` で判定。768px 以上は `data-pc-src`（`videoPath` + `demo/forest.mp4`）、767px 以下は `data-sp-src`（`demo/elephant.mp4`）。`<video>` の `src` は常に1本のみとし、不要な動画は読み込まない。
+- **切替**: メディアクエリの `change` で境界を跨いだときだけ `src` を差し替え。跨ぎ時は `muted` に戻し、ボタン表示もミュート側に同期してから `load()` → `loadedmetadata` 後に先頭からミュート再生を試行。
+- **自動再生**: 初期および上記の再読込後は `muted` のまま `play()`。`play()` の Promise は拒否時も `.catch(() => {})` で握りつぶし、未処理エラーにしない。
+- **音声トグル**: 初期はミュート。ボタンで `muted` を切替。オンにすると `currentTime = 0` から再生。オフにするとミュートのみ（再生位置は維持）。`aria-pressed` と `aria-label`・ボタン文言は状態に同期。
+
+#### 使用方法
+- デモ一覧から `demoFvVideo` のリンクで開く。動画ファイルは `public` 経由で `/assets/videos/demo/` に配置する（Vite の `root` が `src` のため `src/public/assets/videos/demo/`）。既存のメディアデモ（`demoMedia`）と同じパス規約。
+
+---
+
+## 4. ディレクトリ構成
+
+```
+src/                     開発ルート（Vite root）
+  index.html             エントリ（複数HTML対応）
+  contact/index.html
+  demo/**/index.html
+  privacy/index.html
+  ejs/                   EJS テンプレート
+    common/              共通パーツ（_head.ejs, _header.ejs, _footer.ejs）
+    components/          ページ部品
+    data/                ダミーデータ等
+  assets/
+    sass/                Sass（グロブインポート対応）
+    js/                  JSモジュール
+    images/              画像（dummy / common）
+    fonts/               フォント（woff2 等）
+  public/                Vite public（root=src のため src/public）
+dist/                    本番出力（ビルド生成物。assets/css/, assets/js/, assets/images/, assets/fonts/ 等）
+config/
+  site.config.js         ページ情報・共通設定
+  utils.js               ユーティリティ（除外判定、email関数）
+scripts/
+  after-build.mjs        HTML後処理スクリプト
+  setup-secrets.sh       GitHub Secrets 一括登録（gh + .env.deploy）
+  font-compress.sh       フォント全グリフ → WOFF2 圧縮
+  font-compress-subset.sh フォントサブセット → WOFF2 圧縮
+  README-font-compress.md フォント圧縮ツールの使い方
+env.deploy.example       デプロイ用変数テンプレート
+.github/workflows/
+  deploy.yml             CI/CD 定義
+.husky/
+  pre-commit             コミット前ビルド
+  pre-push               プッシュ前ビルド+検証
+```
+
+---
+
+## 5. npm scripts 仕様
+
+### 開発
+- `dev` — `vite`（開発サーバー起動）
+
+### ビルド
+- `build` — `vite build && node scripts/after-build.mjs`（本番ビルド + HTML後処理）
+- `build:only` — `vite build`（後処理なし）
+
+### プレビュー
+- `preview` — `vite preview`
+- `build:preview` — `npm run build && npm run preview`
+
+### クリーン
+- `clean` — `dist` / `src/.vite` / `src/.img` を削除
+- `clean:all` — `clean` + `node_modules` + `package-lock.json` も削除
+- `reinstall` — `clean:all` → `npm install`
+
+### 検証
+- `validate:html` — `html-validate dist/`
+- `validate:build` — `build` → `validate:html`
+
+### Git hooks
+- `prepare` — `husky`
+
+---
+
+## 6. 拡張・変更ガイド
+
+- **ページ追加**: `src/` 配下に `xxx/index.html` を追加し、`config/site.config.js` の `pages` に同キーを追加
+- **メニュー除外制御**: `headerExcludePages` / `drawerExcludePages` を調整（`config/utils.js` のパターン仕様に従う）
+- **画像代替フォーマット**: `config/site.config.js` の `siteConfig.imageAltFormats` で none / webp / avif / both を切り替え
+- **画像最適化の品質調整**: `vite.config.js` の `imagemin*` / `makeWebp` / `makeAvif` 設定を変更
+- **`<picture>` 化の挙動調整**: `scripts/after-build.mjs` の対象条件・挿入順・整形方針を変更
+- **デプロイ先・方式変更**: `.github/workflows/deploy.yml` を編集（FTP → 別方式への置換など）
+
+---
+
+## 7. 関連ファイル一覧
+
+- Vite設定: `vite.config.js`
+- ページ設定: `config/site.config.js`
+- 除外判定: `config/utils.js`
+- HTML後処理: `scripts/after-build.mjs`
+- フォント圧縮: `scripts/font-compress.sh`, `scripts/font-compress-subset.sh`, `scripts/README-font-compress.md`
+- HTML検証: `.htmlvalidate.json`
+- Git hooks: `.husky/pre-commit`, `.husky/pre-push`
+- デプロイ: `.github/workflows/deploy.yml`

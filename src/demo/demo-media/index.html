@@ -1,0 +1,87 @@
+<%
+  const key = 'demoMedia';
+  const page = ty_getPage(key);
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy5.jpg', imageAlt: '' }) %>
+  <main class="p-demo">
+    <div class="p-demo__inner l-inner">
+      <p class="p-demo__desc"><%- pages[key].description %></p>
+
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">img（PC／SP共通）</h2>
+        <div class="p-demo__content">
+          <div class="p-demo__image-box">
+            <img src="<%- imagePath + 'demo/dummy1.jpg' %>" alt="" loading="lazy">
+          </div>
+        </div>
+      </section>
+
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">img（PC/SP出し分け）</h2>
+        <div class="p-demo__content">
+          <div class="p-demo__image-box">
+            <picture>
+              <source srcset="<%= imagePath %>demo/dummy2_sp.jpg" media="(max-width: 767px)" />
+              <img src="<%= imagePath %>demo/dummy2.jpg" loading="lazy" alt="">
+            </picture>
+          </div>
+        </div>
+      </section>
+
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">background-image</h2>
+        <div class="p-demo__content">
+          <div class="p-demo__image-box p-demo__image-box--bg"></div>
+        </div>
+      </section>
+
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">videoタグデフォルト</h2>
+        <p class="p-demo__desc"><code>controls</code> を付けると、ブラウザが音量・シーク・一時停止などの再生コントロールを表示する（<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video#controls" target="_blank" rel="noopener noreferrer">MDN: video</a>）。</p>
+        <div class="p-demo__content">
+          <div class="p-demo__image-box">
+            <video controls src="<%= videoPath %>demo/elephant.mp4">
+              動画を再生できません。
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">自動再生</h2>
+        <p class="p-demo__desc"><code>autoplay</code> は多くのブラウザで音声付きだとブロックされるため、<code>muted</code> を付与する。<code>playsinline</code> はモバイルでインライン再生するために推奨される（<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video#autoplay" target="_blank" rel="noopener noreferrer">MDN: video</a>）。</p>
+        <div class="p-demo__content">
+          <div class="p-demo__image-box">
+            <video autoplay muted playsinline loop src="<%= videoPath %>demo/elephant.mp4">
+              動画を再生できません。
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">画面サイズによる出し分け</h2>
+        <p class="p-demo__desc"><code>&lt;source&gt;</code> の <code>media</code> 属性にメディアクエリ（例: <code>(min-width: 800px)</code>）を指定し、画面幅に応じて読み込む動画を切り替える。MDNではブラウザが上から順に条件に合う source を選ぶとあるが、リサイズ時にソースが切り替わるかどうかはブラウザによって挙動が違う（<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video" target="_blank" rel="noopener noreferrer">MDN: video</a>）。</p>
+        <p class="p-demo__desc"><code>&lt;video&gt;</code> 内の <code>&lt;source&gt;</code> にある <code>media</code> 属性は、<code>&lt;picture&gt;</code> のようなレスポンシブ切替としては実質機能しない。Chrome や Safari では条件が無視されることが多く、画面幅による動画切替は期待通り動かない場合がある。本来の用途は <code>type</code> 属性と組み合わせ、webm や mp4 など動画フォーマットのフォールバックを指定することだ。</p>
+        <div class="p-demo__content">
+          <div class="p-demo__image-box">
+            <video controls>
+              <source src="<%= videoPath %>demo/elephant.mp4" media="(max-width: 767px)" />
+              <source src="<%= videoPath %>demo/forest.mp4" />
+              動画を再生できません。
+            </video>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+
+</html>

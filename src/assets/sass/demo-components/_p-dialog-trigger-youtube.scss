@@ -1,0 +1,51 @@
+@use "../global" as *;
+
+.p-dialog-trigger-youtube {
+  position: relative;
+}
+
+.p-dialog-trigger-youtube__thumbnail {
+  position: relative;
+}
+
+.p-dialog-trigger-youtube__thumbnail::after {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: 16 / 9;
+  background: rgba(#000, 0.7) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E") no-repeat center / rem(40);
+  content: "";
+  box-shadow: var(--shadow-inset);
+  transition: background-color 0.3s ease-in-out;
+  @include mq() {
+    inset: 0;
+    background-size: rem(60);
+  }
+}
+
+.p-dialog-trigger-youtube__thumbnail img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.p-dialog-trigger-youtube__title {
+
+}
+
+.p-dialog-trigger-youtube__desc {
+
+}
+
+
+
+
+
+
+@media (any-hover: hover) {
+  .p-dialog-trigger-youtube__thumbnail:hover::after {
+    background-color: rgba(#000, 0.5);
+  }
+}
+
+

@@ -1,0 +1,27 @@
+@use "../global" as *;
+
+/**
+ * 丸みのあるマーカー風の下線（蛍光ペン風）
+ * ※複数行非対応
+ * --marker-color, --marker-width でカスタマイズ可能
+ */
+.u-marker-round {
+  --marker-color: color-mix(in srgb, var(--color-accent), transparent 20%);
+  --marker-width: #{rem(15)};
+
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+}
+
+.u-marker-round::before {
+  position: absolute;
+  z-index: -1;
+  inset-block-end: 0;
+  inset-inline: rem(-4);
+  display: block;
+  height: var(--marker-width);
+  background-color: var(--marker-color);
+  border-radius: 100vh;
+  content: "";
+}
