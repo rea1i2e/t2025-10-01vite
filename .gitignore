@@ -13,6 +13,18 @@ dist-ssr
 *.local
 .env.deploy
 
+# src/videos の動画バイナリ（再現手順は src/videos/README.md。方針: asset-compression/compression-video.md）
+src/videos/*.mp4
+src/videos/*.webm
+src/videos/*.mov
+src/videos/*.avi
+
+# 動画圧縮: 素材バイナリ（方針: asset-compression/compression-video.md）
+raw/videos/*.mp4
+raw/videos/*.webm
+raw/videos/*.mov
+raw/videos/*.avi
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

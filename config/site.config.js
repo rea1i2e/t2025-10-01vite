@@ -53,6 +53,14 @@ const pages = {
     title: "フェードで切り替えるスライダー（Splide）",
     description: "フェードで切り替えるスライダー（Splide）デモページです。",
   },
+  demoFvVideo: {
+    label: "ファーストビュー動画（PC/SP・音声）",
+    root: "../../",
+    path: "demo/demo-fv-video/",
+    title: "ファーストビュー動画（PC/SP出し分け・音声トグル）",
+    description:
+      "ファーストビューに動画を表示し、768px境界でPC/SP用動画を切り替え、ミュートと音声ON/OFFを切り替えるデモです。",
+  },
   // demoSound: {
   //   label: "音声再生",
   //   root: "../../",

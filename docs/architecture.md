@@ -396,6 +396,24 @@ text: email('afmaar128', 'gmail.com', { link: false })
 | `--shadow-none` | 影なし（フォーム等のリセット用） | 0 0 0 0 transparent | 同上 |
 | `--shadow-inset` | 内側の影（オーバーレイ等） | inset 0 0 0.625rem rgba(0,0,0,0.3) | 同上 |
 
+### 3.17 ファーストビュー動画デモ（PC/SP 出し分け・音声トグル）
+
+#### 関連ファイル
+- `config/site.config.js` — ページキー `demoFvVideo`（`path`: `demo/demo-fv-video/`）
+- `src/demo/demo-fv-video/index.html` — ヒーロー用 `<video>`（`data-pc-src` / `data-sp-src`、`poster`、右下トグルボタン）
+- `src/assets/js/_demo-fv-video.js` — `main.js` から import。`[data-demo-fv-video]` があるページのみ初期化
+- `src/assets/sass/demo-components/_p-demo-fv-video.scss` — `100vh`、`object-fit: cover`、ボタン配置（テーマ変数使用）
+
+#### 動作仕様
+- **表示**: 動画エリアは高さ 100vh、`object-fit: cover`。`loop` なしのため終了後は最後のフレームで停止。
+- **ブレークポイント**: `matchMedia('(min-width: 768px)')` で判定。768px 以上は `data-pc-src`（`videoPath` + `demo/forest.mp4`）、767px 以下は `data-sp-src`（`demo/elephant.mp4`）。`<video>` の `src` は常に1本のみとし、不要な動画は読み込まない。
+- **切替**: メディアクエリの `change` で境界を跨いだときだけ `src` を差し替え。跨ぎ時は `muted` に戻し、ボタン表示もミュート側に同期してから `load()` → `loadedmetadata` 後に先頭からミュート再生を試行。
+- **自動再生**: 初期および上記の再読込後は `muted` のまま `play()`。`play()` の Promise は拒否時も `.catch(() => {})` で握りつぶし、未処理エラーにしない。
+- **音声トグル**: 初期はミュート。ボタンで `muted` を切替。オンにすると `currentTime = 0` から再生。オフにするとミュートのみ（再生位置は維持）。`aria-pressed` と `aria-label`・ボタン文言は状態に同期。
+
+#### 使用方法
+- デモ一覧から `demoFvVideo` のリンクで開く。動画ファイルは `public` 経由で `/assets/videos/demo/` に配置する（Vite の `root` が `src` のため `src/public/assets/videos/demo/`）。既存のメディアデモ（`demoMedia`）と同じパス規約。
+
 ---
 
 ## 4. ディレクトリ構成

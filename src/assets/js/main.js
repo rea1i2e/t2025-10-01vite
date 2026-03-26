@@ -7,6 +7,9 @@ import './_theme-toggle.js'; // Demo用。案件時は削除すること
 // import './_header.js';
 
 
+/* ファーストビュー動画デモ */
+import './_demo-fv-video.js';
+
 /* スライダー */
 import './_splide-fade.js';
 import './_splide-loop.js';
