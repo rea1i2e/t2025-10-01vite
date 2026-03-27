@@ -10,7 +10,7 @@
   "videos": [
     {
       "input": "demo/free-video1-sea-cafinet.mp4",
-      "output": "../../src/public/assets/videos/demo/free-video1-sea-cafinet.mp4",
+      "output": "../../src/assets/videos/demo/free-video1-sea-cafinet.mp4",
       "purpose": "hero",
       "sizeTarget": "3MB以下",
       "note": "ヒーロー・画面いっぱい。30秒・3MB目標のため ABR（noCrf + maxrate）",
@@ -24,7 +24,7 @@
     },
     {
       "input": "demo/elephant.mp4",
-      "output": "../../src/public/assets/videos/demo/elephant.mp4",
+      "output": "../../src/assets/videos/demo/elephant.mp4",
       "purpose": "content",
       "sizeTarget": "",
       "note": "ダイアログ・メディアデモ。元25fps維持・ABRで元サイズ以下を狙う",
@@ -38,7 +38,7 @@
     },
     {
       "input": "demo/forest.mp4",
-      "output": "../../src/public/assets/videos/demo/forest.mp4",
+      "output": "../../src/assets/videos/demo/forest.mp4",
       "purpose": "content",
       "sizeTarget": "",
       "note": "FV PC用・メディアデモ。アップスケールしない（元426幅）",
@@ -48,7 +48,7 @@
     },
     {
       "input": "demo/moon.mp4",
-      "output": "../../src/public/assets/videos/demo/moon.mp4",
+      "output": "../../src/assets/videos/demo/moon.mp4",
       "purpose": "content",
       "sizeTarget": "",
       "note": "ダイアログ内。元解像度維持・無音入力",

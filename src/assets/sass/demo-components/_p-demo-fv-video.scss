@@ -1,6 +1,6 @@
 @use "../global" as *;
 
-// ファーストビュー動画デモ（100vh・cover・右下トグル）
+// ファーストビュー動画デモ（100vh・cover・右下 ミュート／音声オンを横並びセグメント）
 .p-demo-fv-video {
   position: relative;
   height: 100vh;
@@ -17,26 +17,67 @@
   object-position: center;
 }
 
-.p-demo-fv-video__sound {
+// 1 本のピルに見えるセグメント（左右どちらかが選択状態）
+.p-demo-fv-video__sound-group {
   position: absolute;
-  right: 1rem;
-  bottom: 1rem;
+  inset-inline-end: 1rem;
+  inset-block-end: 1rem;
   z-index: 1;
-  padding: 0.5rem 1rem;
-  font: inherit;
-  cursor: pointer;
-  color: var(--color-text);
-  background-color: var(--color-bg-sub);
+  display: inline-flex;
+  overflow: hidden;
   border: var(--border);
-  border-radius: 0.25rem;
+  border-radius: rem(10);
+  background-color: var(--color-bg-sub);
   box-shadow: var(--shadow);
+  transition: box-shadow 0.15s ease;
 
   &:hover {
     box-shadow: var(--shadow-hover);
   }
+}
+
+.p-demo-fv-video__sound-btn {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: rem(8);
+  transition: background-color 0.22s ease;
+
+  &:not(:last-child) {
+    border-inline-end: 1px solid color-mix(in srgb, var(--color-text) 22%, transparent);
+  }
 
   &:focus-visible {
-    outline: 2px solid var(--color-text);
-    outline-offset: 2px;
+    z-index: 1;
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--color-theme);
   }
+
+  &[aria-pressed="true"] {
+    background-color: color-mix(in srgb, var(--color-text) 18%, var(--color-bg-sub));
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:disabled:focus-visible {
+    box-shadow: none;
+  }
+}
+
+.p-demo-fv-video__sound-icon {
+  display: block;
+  width: rem(40);
+  aspect-ratio: 1;
+  object-fit: contain;
+  opacity: 0.45;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.p-demo-fv-video__sound-btn[aria-pressed="true"] .p-demo-fv-video__sound-icon {
+  opacity: 1;
+  transform: scale(1.06);
 }

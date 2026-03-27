@@ -10,7 +10,7 @@
   "videos": [
     {
       "input": "demo/top-mv.mp4",
-      "output": "../../src/public/assets/videos/demo/top-mv.mp4",
+      "output": "../../src/assets/videos/demo/top-mv.mp4",
       "purpose": "hero",
       "sizeTarget": "3MB以下",
       "note": "input/output は raw/videos/ からの相対パス",
@@ -23,7 +23,7 @@
     },
     {
       "input": "demo/intro.mp4",
-      "output": "../../src/public/assets/videos/demo/intro.mp4",
+      "output": "../../src/assets/videos/demo/intro.mp4",
       "purpose": "content",
       "sizeTarget": "",
       "note": "",

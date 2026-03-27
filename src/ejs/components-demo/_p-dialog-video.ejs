@@ -11,12 +11,12 @@ videoPosts.forEach(function(post, index) {
       if (typeof post.videoSrc === 'object') {
         Object.keys(post.videoSrc).forEach(function(type) {
       %>
-        <source src="<%- imagePath + post.videoSrc[type] %>" type="video/<%- type %>">
+        <source src="<%- videoPath + post.videoSrc[type] %>" type="video/<%- type %>">
       <% 
         });
       } else {
       %>
-        <source src="<%- imagePath + post.videoSrc %>" type="video/mp4">
+        <source src="<%- videoPath + post.videoSrc %>" type="video/mp4">
       <% 
       }
       %>

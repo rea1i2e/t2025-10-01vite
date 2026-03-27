@@ -1,13 +1,14 @@
 /**
- * デモページ: ファーストビュー動画（PC/SP の src 切替・音声トグル）
+ * デモページ: ファーストビュー動画（PC/SP の src 切替・ミュート／音声オンを別ボタン）
  * 対象: [data-demo-fv-video]
  */
 const root = document.querySelector("[data-demo-fv-video]");
 if (root) {
   const video = root.querySelector("video");
-  const btn = root.querySelector(".p-demo-fv-video__sound");
+  const btnMute = root.querySelector(".p-demo-fv-video__sound-btn--mute");
+  const btnUnmute = root.querySelector(".p-demo-fv-video__sound-btn--unmute");
 
-  if (video && btn) {
+  if (video && btnMute && btnUnmute) {
     const pcSrc = video.dataset.pcSrc;
     const spSrc = video.dataset.spSrc;
     /** 768px 以上で PC 用動画 */
@@ -15,14 +16,20 @@ if (root) {
     /** 現在セット済みの URL（同一ブレークポイント内の再実行を防ぐ） */
     let appliedSrc = null;
 
-    /** ボタン文言・ARIA を video.muted に合わせる（状態表示） */
+    /** 選択中の側は disabled + aria-pressed、反対側のみ操作可能 */
     function syncButtonUi() {
-      const soundOn = !video.muted;
-      btn.setAttribute("aria-pressed", soundOn ? "true" : "false");
-      btn.textContent = soundOn ? "音声ON" : "音声OFF";
-      btn.setAttribute(
+      const muted = video.muted;
+      btnMute.setAttribute("aria-pressed", muted ? "true" : "false");
+      btnUnmute.setAttribute("aria-pressed", muted ? "false" : "true");
+      btnMute.disabled = muted;
+      btnUnmute.disabled = !muted;
+      btnMute.setAttribute(
         "aria-label",
-        soundOn ? "動画の音声をオフにする" : "動画の音声をオンにする",
+        muted ? "ミュート中" : "動画をミュートにする",
+      );
+      btnUnmute.setAttribute(
+        "aria-label",
+        muted ? "動画の音声をオンにする" : "音声オン中",
       );
     }
 
@@ -73,16 +80,15 @@ if (root) {
       applySource(true);
     });
 
-    btn.addEventListener("click", () => {
-      if (video.muted) {
-        // 音声 ON: 必ず先頭から
-        video.muted = false;
-        video.currentTime = 0;
-        video.play().catch(() => {});
-      } else {
-        // 音声 OFF: ミュートのみ（再生位置は維持）
-        video.muted = true;
-      }
+    btnMute.addEventListener("click", () => {
+      video.muted = true;
+      syncButtonUi();
+    });
+
+    btnUnmute.addEventListener("click", () => {
+      video.muted = false;
+      video.currentTime = 0;
+      video.play().catch(() => {});
       syncButtonUi();
     });
   }

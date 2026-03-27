@@ -20,17 +20,46 @@
       muted
       preload="metadata"
       poster="<%= imagePath %>demo/dummy5.jpg"
-      data-pc-src="<%= videoPath %>demo/forest.mp4"
+      data-pc-src="<%= videoPath %>demo/free-video1-sea-cafinet.mp4"
       data-sp-src="<%= videoPath %>demo/elephant.mp4"
     ></video>
-    <button
-      type="button"
-      class="p-demo-fv-video__sound"
-      aria-pressed="false"
-      aria-label="動画の音声をオンにする"
+    <div
+      class="p-demo-fv-video__sound-group"
+      role="group"
+      aria-label="動画の音声"
     >
-      音声OFF
-    </button>
+      <button
+        type="button"
+        class="p-demo-fv-video__sound-btn p-demo-fv-video__sound-btn--mute"
+        aria-pressed="true"
+        aria-label="ミュート中"
+        disabled
+      >
+        <img
+          class="p-demo-fv-video__sound-icon"
+          src="<%= imagePath %>common/icon_silence.svg"
+          alt=""
+          width="24"
+          height="24"
+          decoding="async"
+        />
+      </button>
+      <button
+        type="button"
+        class="p-demo-fv-video__sound-btn p-demo-fv-video__sound-btn--unmute"
+        aria-pressed="false"
+        aria-label="動画の音声をオンにする"
+      >
+        <img
+          class="p-demo-fv-video__sound-icon"
+          src="<%= imagePath %>common/icon_sound.svg"
+          alt=""
+          width="24"
+          height="24"
+          decoding="async"
+        />
+      </button>
+    </div>
   </section>
 
   <main class="p-demo">

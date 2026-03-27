@@ -25,7 +25,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `src/ejs/components/` | 毎回使う部品テンプレート |
 | `src/ejs/demo-components/` | よく使うの部品テンプレート |
 | `src/assets/js/main.js` | JSエントリファイル |
-| `src/assets/js/_demo-fv-video.js` | デモ用。ファーストビュー動画の PC/SP src 切替・音声トグル（`demo/demo-fv-video/`） |
+| `src/assets/js/_demo-fv-video.js` | デモ用。ファーストビュー動画の PC/SP src 切替・ミュート／音声オン別ボタン（`demo/demo-fv-video/`） |
 | `src/assets/js/_parallax.js` | 汎用パララックス（data-parallax でトリガー・移動量を指定） |
 | `src/assets/sass/style.scss` | Sassエントリファイル |
 | `src/assets/sass/base/_root.scss` | フォント・CSS変数（`:root`）。ライト/ダーク用の `--color-bg` / `--color-text` 等と `@media (prefers-color-scheme: dark)` による上書き |

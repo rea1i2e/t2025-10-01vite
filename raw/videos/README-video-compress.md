@@ -38,15 +38,15 @@ cp raw/videos/compress-config.sample.json raw/videos/compress-config.json
   },
   "videos": [
     {
-      "input": "raw/videos/top-mv.mp4",
-      "output": "src/assets/videos/top-mv.mp4",
+      "input": "demo/top-mv.mp4",
+      "output": "../../src/assets/videos/demo/top-mv.mp4",
       "purpose": "hero",
       "sizeTarget": "3MB以下",
       "note": ""
     },
     {
-      "input": "raw/videos/intro.mp4",
-      "output": "src/assets/videos/intro.mp4",
+      "input": "demo/intro.mp4",
+      "output": "../../src/assets/videos/demo/intro.mp4",
       "purpose": "content",
       "sizeTarget": "",
       "note": "",
@@ -59,7 +59,7 @@ cp raw/videos/compress-config.sample.json raw/videos/compress-config.json
 
 - `defaults` に標準設定を書く
 - `videos` の各動画に個別設定を書くと `defaults` を上書きできる
-- `input` / `output` のパスは **`raw/videos/` を基準とした相対パス**（`compress-video.mjs` が `resolve(__dirname, …)` で解決する）。例: 入力 `demo/foo.mp4`、出力を `src/public` 配下に出すときは `../../src/public/assets/videos/demo/foo.mp4`
+- `input` / `output` のパスは **`raw/videos/` を基準とした相対パス**（`compress-video.mjs` が `resolve(__dirname, …)` で解決する）。例: 入力 `demo/foo.mp4`、出力を `src/assets/videos` 配下に出すときは `../../src/assets/videos/demo/foo.mp4`
 
 #### 方針・目標フィールド（`compression-video.md` の用途分類に対応）
 

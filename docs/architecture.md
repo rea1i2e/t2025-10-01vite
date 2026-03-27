@@ -400,7 +400,7 @@ text: email('afmaar128', 'gmail.com', { link: false })
 
 #### 関連ファイル
 - `config/site.config.js` — ページキー `demoFvVideo`（`path`: `demo/demo-fv-video/`）
-- `src/demo/demo-fv-video/index.html` — ヒーロー用 `<video>`（`data-pc-src` / `data-sp-src`、`poster`、右下トグルボタン）
+- `src/demo/demo-fv-video/index.html` — ヒーロー用 `<video>`（`data-pc-src` / `data-sp-src`、`poster`、右下に一体型ピル状のセグメント（ミュート／音声オンの2ボタン・`role="group"`））
 - `src/assets/js/_demo-fv-video.js` — `main.js` から import。`[data-demo-fv-video]` があるページのみ初期化
 - `src/assets/sass/demo-components/_p-demo-fv-video.scss` — `100vh`、`object-fit: cover`、ボタン配置（テーマ変数使用）
 
@@ -409,10 +409,10 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - **ブレークポイント**: `matchMedia('(min-width: 768px)')` で判定。768px 以上は `data-pc-src`（`videoPath` + `demo/forest.mp4`）、767px 以下は `data-sp-src`（`demo/elephant.mp4`）。`<video>` の `src` は常に1本のみとし、不要な動画は読み込まない。
 - **切替**: メディアクエリの `change` で境界を跨いだときだけ `src` を差し替え。跨ぎ時は `muted` に戻し、ボタン表示もミュート側に同期してから `load()` → `loadedmetadata` 後に先頭からミュート再生を試行。
 - **自動再生**: 初期および上記の再読込後は `muted` のまま `play()`。`play()` の Promise は拒否時も `.catch(() => {})` で握りつぶし、未処理エラーにしない。
-- **音声トグル**: 初期はミュート。ボタンで `muted` を切替。オンにすると `currentTime = 0` から再生。オフにするとミュートのみ（再生位置は維持）。`aria-pressed` と `aria-label`・ボタン文言は状態に同期。
+- **音声**: 初期はミュート。**ミュートボタン**で `muted = true`（再生位置は維持）。**音声オンボタン**で `muted = false` かつ `currentTime = 0` から再生。選択中の側は `disabled` でクリック不可、反対側のみ操作可能。`aria-pressed` と `aria-label`（「ミュート中」「音声オン中」等）は `syncButtonUi` で同期。見た目は 1 本のピル型セグメント。グループに `aria-label="動画の音声"`。
 
 #### 使用方法
-- デモ一覧から `demoFvVideo` のリンクで開く。動画ファイルは `public` 経由で `/assets/videos/demo/` に配置する（Vite の `root` が `src` のため `src/public/assets/videos/demo/`）。既存のメディアデモ（`demoMedia`）と同じパス規約。
+- デモ一覧から `demoFvVideo` のリンクで開く。動画ファイルは `src/assets/videos/demo/` に置き、`config/site.config.js` の `videoPath`（`imagePath` と同様のルート相対 `/assets/videos/`）と `demo/ファイル名` を組み合わせて HTML に書く。Vite がビルド時にハッシュ付きファイル名へ書き換える。圧縮出力先は `raw/videos/compress-config.json` の `output` で同ディレクトリを指す。
 
 ---
 
@@ -433,8 +433,9 @@ src/                     開発ルート（Vite root）
     js/                  JSモジュール
     images/              画像（dummy / common）
     fonts/               フォント（woff2 等）
+    videos/              動画（例: demo/ 配下。HTML から相対参照し Vite がハッシュ付きで出力）
   public/                Vite public（root=src のため src/public）
-dist/                    本番出力（ビルド生成物。assets/css/, assets/js/, assets/images/, assets/fonts/ 等）
+dist/                    本番出力（ビルド生成物。assets/css/, assets/js/, assets/images/, assets/videos/, assets/fonts/ 等）
 config/
   site.config.js         ページ情報・共通設定
   utils.js               ユーティリティ（除外判定、email関数）
