@@ -30,7 +30,7 @@
   max-width: 60ch;
 }
 
-.p-demo__title {
+.p-demo__heading {
 }
 
 .p-demo__button {
@@ -48,7 +48,6 @@
 }
 
 .p-demo__desc {
-  line-height: 1.7;
 }
 
 .p-demo__desc code {
@@ -106,15 +105,6 @@
 }
 
 .p-demo__section p {
-  margin: 0;
-  line-height: 1.8;
-}
-
-.p-demo__section code {
-  padding-inline: rem(4);
-  font-size: 0.9em;
-  background-color: var(--color-bg-code);
-  border-radius: rem(4);
 }
 
 /* カレントセクションデモ用：セクションを縦長にしてスクロールでカレント切り替えを確認しやすくする */
