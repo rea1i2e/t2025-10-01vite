@@ -69,18 +69,33 @@
   @return max(math.div($pixels, 16) * 1rem, 10px);
 }
 
-@function fluid-size($min, $max, $min-vw: 768px, $max-vw: 1440px) {
-  // 単位チェック（可読性＋安全性）
+// ビューポート幅に応じて値を線形補間する関数：768px〜PC幅の間で min〜max に可変 vw
+@function fluid-vw($min, $max, $min-vw: 768px, $max-vw: $width-pc * 1px) {
   @if unit($min) != unit($max) {
     @error "minとmaxの単位を揃えてください";
   }
-
   $range: $max - $min;
   $vw-range: $max-vw - $min-vw;
-
   @return clamp(
     #{$min},
     calc(#{$min} + #{$range} * ((100vw - #{$min-vw}) / #{$vw-range})),
+    #{$max}
+    );
+  }
+  
+  // ビューポート幅に応じて値を線形補間する関数：768px〜PC幅の間で min〜max に可変 cqi
+@function fluid-cqi($min, $max, $min-cqi: 768px, $max-cqi: $width-pc * 1px) {
+  @if unit($min) != unit($max) {
+    @error "minとmaxの単位を揃えてください";
+  }
+  @if unit($min-cqi) != unit($max-cqi) {
+    @error "min-cqiとmax-cqiの単位を揃えてください";
+  }
+  $range: $max - $min;
+  $cqi-range: $max-cqi - $min-cqi;
+  @return clamp(
+    #{$min},
+    calc(#{$min} + #{$range} * ((100cqi - #{$min-cqi}) / #{$cqi-range})),
     #{$max}
   );
 }
