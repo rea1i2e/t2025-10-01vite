@@ -69,6 +69,23 @@
   @return max(math.div($pixels, 16) * 1rem, 10px);
 }
 
+@function fluid-size($min, $max, $min-vw: 768px, $max-vw: 1440px) {
+  // 単位チェック（可読性＋安全性）
+  @if unit($min) != unit($max) {
+    @error "minとmaxの単位を揃えてください";
+  }
+
+  $range: $max - $min;
+  $vw-range: $max-vw - $min-vw;
+
+  @return clamp(
+    #{$min},
+    calc(#{$min} + #{$range} * ((100vw - #{$min-vw}) / #{$vw-range})),
+    #{$max}
+  );
+}
+
+
 // ピクパ時は、remに変換しない
 // @function rem($pixels) {
 //   @return #{$pixels}px;
