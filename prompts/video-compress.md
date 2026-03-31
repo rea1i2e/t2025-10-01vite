@@ -2,6 +2,7 @@
 
 > このファイルはプロンプトのテンプレートです。
 > 案件で使う際は `prompts/video-compress.md`（テンプレートリポジトリ側）にコピー済みのファイルに案件情報を記入してください。
+> テンプレ固有の実行手順はこのリポジトリを参照し、汎用の圧縮方針は `/Users/yoshiaki/working/2026-03-20kn/asset-compression/compression-video.md` を参照してください。
 
 ## 使い方
 

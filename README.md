@@ -1,12 +1,42 @@
 # t2025-10-01vite
 
-Vite + EJS + Sass 構成の静的サイトテンプレート。ビルド時に画像圧縮と WebP/AVIF 生成、HTML の `<img>` を `<picture>` 最適化、width/height 自動付与を行います。画像の代替フォーマット（png,jpg のみ / +webp / +avif / 両方）は `config/site.config.js` の `imageAltFormats` で切り替えられます。
+Vite + EJS + Sass 構成の静的サイトテンプレートです。
 
-> 詳細な技術仕様は [docs/architecture.md](docs/architecture.md) を参照してください。
+この README は「入口ドキュメント」です。  
+セットアップ・日常作業・主要導線のみを扱い、詳細仕様は `docs/architecture.md` に集約します。
 
-## GitHub CLIを使った導入手順
+## このREADMEの責務
 
-### 新規リポジトリ作成＋クローンする場合は、コマンドを実行
+- テンプレート固有の使い方（導入、日常コマンド、基本作業）
+- どの情報をどのドキュメントで読むかの導線
+- 汎用ナレッジへの参照（詳細は外部リポジトリ）
+
+## 目次
+
+- [クイックスタート](#クイックスタート)
+- [日常作業コマンド](#日常作業コマンド)
+- [よくある作業](#よくある作業)
+- [ドキュメントの役割分担](#ドキュメントの役割分担)
+- [外部ナレッジへの導線](#外部ナレッジへの導線)
+- [プロンプト下書き](#プロンプト下書き)
+- [ライセンス](#ライセンス)
+
+## クイックスタート
+
+### 必要要件
+
+- Node.js 18.x 以上（推奨: 20.x LTS）
+- npm 9.x 以上
+
+### セットアップ
+
+```bash
+npm install
+npm run dev
+```
+
+### GitHub CLI で新規作成する場合
+
 ```bash
 gh repo create 新規リポジトリ名 \
   --template rea1i2e/t2025-10-01vite \
@@ -16,193 +46,80 @@ sleep 5 && \
 gh repo clone GitHubのユーザー名/新規リポジトリ名
 ```
 
-## 必要要件
+## 日常作業コマンド
 
-### システム要件
-- **Node.js**: 18.x 以上（推奨: 20.x LTS）
-- **npm**: 9.x 以上
+- 開発サーバー
 
-### プラットフォーム別追加要件
-- **macOS**: Xcode Command Line Tools
-  ```bash
-  xcode-select --install
-  ```
-- **Windows**: Visual Studio Build Tools または Visual Studio Community
-- **Linux**: build-essential
-  ```bash
-  sudo apt-get install build-essential
-  ```
-
-### 環境確認方法
-セットアップ前に、必要なツールがインストールされているか確認してください。
-
-- **Node.js のバージョン確認**
-  ```bash
-  node --version
-  ```
-  18.x 以上であることを確認
-
-- **npm のバージョン確認**
-  ```bash
-  npm --version
-  ```
-  9.x 以上であることを確認
-
-- **プラットフォーム別確認**
-  - **macOS**: Xcode Command Line Tools
-    ```bash
-    xcode-select -p
-    ```
-    `/Library/Developer/CommandLineTools` が表示されればOK
-
-  - **Windows**: Visual Studio Build Tools（未検証）
-    - コントロールパネル > プログラムと機能 で確認
-
-  - **Linux**: build-essential
-    ```bash
-    dpkg -l | grep build-essential
-    ```
-    build-essential が表示されればOK
-
-### セットアップ手順
-1. Node.js 18.x以上をインストール
-2. リポジトリをクローン
-3. 依存関係をインストール
-   ```bash
-   npm install
-   ```
-4. 開発サーバーを起動
-   ```bash
-   npm run dev
-   ```
-
-
-## プロンプト下書き
-
-AIへの作業依頼プロンプトの下書きは `prompts/` に置いています。
-ナレッジリポジトリのテンプレートをもとに、案件ごとの情報を記入して使います。
-
-| ファイル | 用途 |
-|---|---|
-| [prompts/video-compress.md](./prompts/video-compress.md) | 動画圧縮をAIに依頼するプロンプト |
-
----
-
-## スクリプト
-- 開発サーバー: EJS/HTML/Sass/JS を監視して自動反映
 ```bash
 npm run dev
 ```
 
-- 本番ビルド: `dist/` に出力 + ビルド後最適化（after-build）
-※ ビルド時に WebP/AVIF 生成（設定により切り替え可）、picture/source 挿入、width/height 自動付与
+- 本番ビルド（`dist/` 出力 + 後処理）
+
 ```bash
 npm run build
 ```
 
-- ビルド確認（簡易サーバー）
-※ビルド後のファイルをブラウザで確認
+- ビルド確認
+
 ```bash
 npm run preview
-# もしくは
+# または
 npm run build:preview
 ```
 
-- 不要なファイル削除
+- クリーンアップ
+
 ```bash
-npm run clean        # dist と一時生成を削除
-npm run clean:all    # + node_modules と lock も削除
-npm run reinstall    # クリーン後に再インストール
+npm run clean
+npm run clean:all
+npm run reinstall
 ```
 
-## 開発フロー
-1. `npm run dev` を実行
-2. `src/` 以下を編集（EJS/HTML/Sass/JS）
-3. ビルドは `npm run build`、出力は `dist/`
+## よくある作業
 
-## EJS の使い方
-- **サイト設定（`config/site.config.js`）**:
-  - `siteName`: サイト名（タイトル生成に使用）
-  - `baseUrl`: サイトのベースURL（OGP/canonical等に使用）
-  - `titleSeparator`: タイトル区切り文字（デフォルト: " | "）
-  - `headerExcludePages`: ヘッダーメニューから除外するページのキー配列
-  - `imageAltFormats`: 画像の代替フォーマット（`'none'` / `'webp'` / `'avif'` / `'both'`）。ビルド・after-build で使用
-  - `pages`: ページ情報のオブジェクト（キー: ページ識別子、値: ページ情報）
-    - `label`: メニュー表示名
-    - `path`: ページパス（または外部URL）
-    - `root`: そのページから見たルート相対（例: `"../"`）
-    - `title`: ページタイトル（省略時はサイト名のみ）
-    - `description`: メタディスクリプション
-    - `keywords`: メタキーワード
-    - `targetBlank`: 外部リンクで新しいタブで開く場合に`true`
-- htmlファイル
-  - `src/index.html` 等のHTMLから `ejs/common` や `ejs/components` を `include` して組み立てます。
-  - ページごとの `pageData`（`pages['top']` など）から `page` を組み立て、`_head.ejs` へ渡して title/description 等を出力します。
+### ページ追加
 
-## サイト設定（site.config.js）
+1. `config/site.config.js` の `ページのキーと値を設置`
+2. `src/` 配下に `xxx/index.html` を作成
+3. HTML 内で `ty_getPage('xxx')` を使い、「1.」で設定した情報を取得し,head.ejsなどに渡す
 
-### 基本設定
-```javascript
-export const siteConfig = {
-  siteName: "サイト名",
-  baseUrl: "https://example.com/",
-  titleSeparator: " | ", // タイトル区切り文字
-  headerExcludePages: ['privacy'], // ヘッダーから除外するページ
-  imageAltFormats: 'webp', // 'none' | 'webp' | 'avif' | 'both'（画像の代替フォーマット）
-  pages: {/* ページオブジェクト */} // 配列ではなくオブジェクト形式
-};
-```
+### 設定変更（よく触る項目）
 
-### ページ設定
-各ページは以下のプロパティを持ちます：
+- `config/site.config.js`
+  - `pages`（ページ情報）
+  - `imageAltFormats`（`none` / `webp` / `avif` / `both`）
+- `vite.config.js`
+  - ビルド出力先、画像最適化設定、`assetsInlineLimit` など
 
-- **必須プロパティ**:
-  - `label`: ヘッダーメニューの表示名
-  - `path`: ページパス（または外部URL）
-  - `root`: そのページから見たルート相対
+詳細仕様は [docs/architecture.md](docs/architecture.md) を参照してください。
 
-- **オプションプロパティ**:
-  - `title`: ページタイトル（省略時はサイト名のみ）
-  - `description`: メタディスクリプション
-  - `keywords`: メタキーワード
-  - `targetBlank`: `true`で新しいタブで開く（外部リンク用）
+## ドキュメントの役割分担
 
-#### 例: ページ設定
-```javascript
-pages: {
-  contact: {
-    label: "お問い合わせ",
-    root: "../",
-    path: "contact/",
-    title: "お問い合わせ",
-    description: "お問い合わせフォームページです。"
-  },
-  privacy: {
-    label: "個人情報保護方針",
-    root: "../",
-    path: "privacy/",
-    title: "個人情報保護方針",
-    description: "個人情報保護方針ページです。"
-  },
-  x: {
-    label: "X",
-    root: "",
-    path: "https://x.com/xxxxxxxx",
-    targetBlank: true
-  }
-}
-```
+- `README.md`（このファイル）  
+入口ガイド。導入・日常運用・参照導線を扱う。
+- `docs/architecture.md`  
+テンプレート固有仕様の正本。機能仕様・構成・処理フローを扱う。
+- `AGENTS.md`  
+AIエージェント作業ルール。更新対象ドキュメントの判断基準も扱う。
 
-## デプロイ（GitHub Actions）
+## 外部ナレッジへの導線
 
-FTP デプロイと Discord 通知に必要な GitHub Secrets は、ローカルの `.env.deploy` から一括登録できる。
+汎用ルール・分野別ナレッジは外部リポジトリ `2026-03-20kn` に集約します。  
+このリポジトリでは詳細を重複記載せず、必要時に参照します。
 
-1. `cp env.deploy.example .env.deploy` で `.env.deploy` を作成
-2. `.env.deploy` に FTP のサーバー・ユーザー・パスワード（と任意で Discord Webhook・テストURL）を記入
-3. [GitHub CLI](https://cli.github.com/) をインストールし `gh auth login` で認証
-4. `./scripts/setup-secrets.sh` を実行
+- 公開リポジトリ: [rea1i2e/2026-03-20kn](https://github.com/rea1i2e/2026-03-20kn)
 
-詳細は [docs/architecture.md](docs/architecture.md) の「3.8 CI/CD」を参照。
+## プロンプト下書き
+
+AIへの作業依頼プロンプト下書きは `prompts/` に置き、案件ごとに編集します。
+雛形・更新の正本は外部ナレッジの `/Users/yoshiaki/working/2026-03-20kn/prompts` にあり、必要に応じてこのリポジトリへコピーして案件向けに編集します。
+
+| ファイル                                                     | 用途                |
+| -------------------------------------------------------- | ----------------- |
+| [prompts/video-compress.md](./prompts/video-compress.md) | 動画圧縮をAIに依頼するプロンプト |
+
 
 ## ライセンス
+
 プロジェクトに合わせて追記してください。
