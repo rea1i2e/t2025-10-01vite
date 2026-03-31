@@ -91,7 +91,9 @@
 }
 
 .p-demo-sound__dialog {
-  padding: 0;
+  margin: auto;
+  block-size: fit-content;
+  inline-size: fit-content;
   border: var(--border);
   border-radius: rem(8);
   background-color: var(--color-bg-sub);
@@ -111,14 +113,10 @@
 }
 
 .p-demo-sound__title {
-  margin: 0;
   font-size: rem(20);
 }
 
 .p-demo-sound__lead {
-  margin: 0;
-  font-size: rem(14);
-  line-height: 1.6;
 }
 
 .p-demo-sound__actions {

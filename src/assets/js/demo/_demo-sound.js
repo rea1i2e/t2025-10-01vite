@@ -5,19 +5,18 @@
 
 import demoSoundUrl from '../../audio/demo-sound/M08_Piano_short_BPM65.mp3';
 
+// dialog本体
 const dialog = document.querySelector('[data-demo-sound-dialog]');
+
+// audio要素
 const audio = document.querySelector('[data-demo-sound-audio]');
+
+// ボタン要素
 const btnOn = document.querySelector('[data-demo-sound-on]');
 const btnOff = document.querySelector('[data-demo-sound-off]');
 
 if (dialog && audio && btnOn && btnOff) {
   audio.src = demoSoundUrl;
-
-  const openDialog = () => {
-    if (typeof dialog.showModal === 'function') {
-      dialog.showModal();
-    }
-  };
 
   btnOn.addEventListener('click', () => {
     dialog.close();
@@ -30,13 +29,11 @@ if (dialog && audio && btnOn && btnOff) {
     dialog.close();
   });
 
-  dialog.addEventListener('cancel', (event) => {
-    event.preventDefault();
-  });
-
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', openDialog, { once: true });
+    document.addEventListener('DOMContentLoaded', () => {
+      dialog.showModal();
+    }, { once: true });
   } else {
-    openDialog();
+    dialog.showModal();
   }
 }
