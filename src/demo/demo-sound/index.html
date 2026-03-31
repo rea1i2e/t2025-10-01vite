@@ -1,0 +1,36 @@
+<% 
+  const key = 'demoSound';
+  const page = ty_getPage(key);
+%>
+<!DOCTYPE html>
+<html lang="ja">
+<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+
+<body>
+  <%- include(ejsPath + 'common/_header.ejs', { page }) %>
+  <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy2.jpg', imageAlt: '' }) %>
+<main class="p-demo">
+  <div class="p-demo__inner l-inner">
+    <h2 class="p-demo__heading"><%= ty_stripTags(pages[key].label) %></h2>
+    <div class="p-demo__content">
+      <p class="p-demo__desc"><%= ty_stripTags(page.description) %></p>
+      <audio class="p-demo-sound__audio" data-demo-sound-audio preload="metadata" playsinline></audio>
+      <p class="p-demo-sound__credit">出典：<a href="https://bgmer.net/music/m08_pf" target="_blank" rel="noopener noreferrer">BGMer「秘密の森 – ピアノver.」</a></p>
+    </div>
+  </div>
+</main>
+  <dialog class="p-demo-sound__dialog" data-demo-sound-dialog aria-labelledby="demo-sound-dialog-title" closedby="none">
+    <div class="p-demo-sound__dialog-inner">
+      <h2 class="p-demo-sound__title" id="demo-sound-dialog-title"><%= ty_stripTags(pages[key].label) %></h2>
+      <p class="p-demo-sound__lead"><%= ty_stripTags(page.description) %></p>
+      <div class="p-demo-sound__actions">
+        <button type="button" class="p-demo-sound__btn p-demo-sound__btn--on" data-demo-sound-on>音声をオン</button>
+        <button type="button" class="p-demo-sound__btn p-demo-sound__btn--off" data-demo-sound-off>音声をオフ</button>
+      </div>
+    </div>
+  </dialog>
+  <%- include(ejsPath + 'common/_footer.ejs', { page }) %>
+</body>
+
+</html>
+
