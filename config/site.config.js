@@ -61,13 +61,13 @@ const pages = {
     description:
       "ファーストビューに動画を表示し、768px境界でPC/SP用動画を切り替え、ミュートと音声ON/OFFを切り替えるデモです。",
   },
-  // demoSound: {
-  //   label: "音声再生",
-  //   root: "../../",
-  //   path: "demo/demo-sound/",
-  //   title: "音声再生",
-  //   description: "音声再生のデモページです。",
-  // },
+  demoSound: {
+    label: "音声再生",
+    root: "../../",
+    path: "demo/demo-sound/",
+    title: "音声再生",
+    description: "音声再生のデモページです。",
+  },
   demoScrollAnimation: {
     label: "スクロールアニメーション",
     root: "../../",
@@ -152,6 +152,14 @@ const pages = {
     title: "メディアいろいろ",
     description:
       "画像（img・picture・background-image）と動画（video デフォルト・自動再生・画面サイズ出し分け）の設置例です。",
+  },
+  demoApi: {
+    label: "APIいろいろ",
+    root: "../../",
+    path: "demo/demo-api/",
+    title: "APIいろいろ",
+    description:
+      "APIの設置例です。",
   },
   contact: {
     label: "お問い合わせ",

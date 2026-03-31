@@ -54,3 +54,10 @@ import './_parallax.js';
 
 /* スクロール可能要素の調査（必要に応じてコメントアウトを外す） */
 // import './_debugScrollable.js';
+
+
+/* JSONPlaceholder API デモ */
+import './demo/_demo-api.js';
+
+/* 音声 ON/OFF dialog デモ */
+import './demo/_demo-sound.js';

@@ -57,6 +57,99 @@
   border-radius: rem(4);
 }
 
+.p-demo-api__status:empty {
+  display: none;
+}
+
+.p-demo-api__status {
+}
+
+.p-demo-api__list {
+  list-style-type: disc;
+}
+
+.p-demo-sound__audio {
+  inline-size: 100%;
+  max-inline-size: rem(400);
+}
+
+.p-demo-sound__credit {
+  margin: 0;
+  font-size: rem(13);
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+.p-demo-sound__credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: rem(2);
+}
+
+.p-demo-sound__credit a:hover {
+  opacity: 0.9;
+}
+
+.p-demo-sound__dialog {
+  padding: 0;
+  border: var(--border);
+  border-radius: rem(8);
+  background-color: var(--color-bg-sub);
+  color: var(--color-text);
+  box-shadow: var(--shadow-hover);
+}
+
+.p-demo-sound__dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.p-demo-sound__dialog-inner {
+  display: grid;
+  gap: rem(20);
+  padding: rem(24) rem(28);
+  max-inline-size: min(100vw - rem(32), rem(420));
+}
+
+.p-demo-sound__title {
+  margin: 0;
+  font-size: rem(20);
+}
+
+.p-demo-sound__lead {
+  margin: 0;
+  font-size: rem(14);
+  line-height: 1.6;
+}
+
+.p-demo-sound__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(12);
+}
+
+.p-demo-sound__btn {
+  flex: 1 1 rem(120);
+  min-block-size: rem(44);
+  padding-block: rem(10);
+  padding-inline: rem(16);
+  font-size: rem(14);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: var(--border);
+  border-radius: rem(6);
+  cursor: pointer;
+  box-shadow: var(--shadow-none);
+}
+
+.p-demo-sound__btn:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.p-demo-sound__btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: rem(2);
+}
+
 /* ページ内ナビ（カレントセクションデモなど） */
 .p-demo__nav {
   position: sticky;

@@ -414,6 +414,40 @@ text: email('afmaar128', 'gmail.com', { link: false })
 #### 使用方法
 - デモ一覧から `demoFvVideo` のリンクで開く。動画ファイルは `src/assets/videos/demo/` に置き、`config/site.config.js` の `videoPath`（`imagePath` と同様のルート相対 `/assets/videos/`）と `demo/ファイル名` を組み合わせて HTML に書く。Vite がビルド時にハッシュ付きファイル名へ書き換える。圧縮出力先は `raw/videos/compress-config.json` の `output` で同ディレクトリを指す。
 
+### 3.18 API デモ（JSONPlaceholder・users 名前一覧）
+
+#### 関連ファイル
+- `config/site.config.js` — ページキー `demoApi`（`path`: `demo/demo-api/`）
+- `src/demo/demo-api/index.html` — 説明文・`[data-demo-api-status]`（`aria-live`）・空の `<ul data-demo-api-users>`
+- `src/assets/js/demo/_demo-api.js` — `main.js` から import。`[data-demo-api-users]` と `[data-demo-api-status]` が揃うページのみ `fetch` して `li` を追加
+- `src/assets/sass/demo-components/_p-demo.scss` — `.p-demo-api__status`（空のとき非表示・テーマ色）・`.p-demo-api__list`
+
+#### 動作仕様
+- **クライアント取得**: ブラウザで `https://jsonplaceholder.typicode.com/users?_limit=10` を `fetch`。EJS 内では API を呼ばない（ビルド時と実行時の責務を分離）。
+- **マークアップ**: 一覧は空の `<ul>` に、JS が `document.createElement('li')` で `user.name` を `textContent` 代入して追加する。
+- **状態表示**: `[data-demo-api-status]` に読み込み完了またはエラーの短いメッセージを `textContent` で出す。
+
+#### 使用方法
+- デモ一覧から `demoApi` のリンクで開く。オフラインや CORS 制限環境では一覧が出ずステータスにエラーが表示される場合がある。
+
+### 3.19 音声デモ（読み込み時 dialog で ON/OFF）
+
+#### 関連ファイル
+- `config/site.config.js` — ページキー `demoSound`（`path`: `demo/demo-sound/`）
+- `src/demo/demo-sound/index.html` — `<dialog closedby="none">`（`[data-demo-sound-dialog]`）、`[data-demo-sound-on]` / `[data-demo-sound-off]`、`<audio data-demo-sound-audio>`、本文の `.p-demo-sound__credit`（BGMer 出典リンク）
+- `src/assets/js/demo/_demo-sound.js` — `main.js` から import。上記マーカーが揃うページのみ初期化。`../../audio/demo-sound/M08_Piano_short_BPM65.mp3` を import して `audio.src` に設定（ソースは `src/assets/audio/demo-sound/M08_Piano_short_BPM65.mp3`）
+- `src/assets/sass/demo-components/_p-demo.scss` — `.p-demo-sound__*`（dialog・ボタン・audio）
+- `vite.config.js` — `assetFileNames` で `mp3` / `ogg` / `wav` / `m4a` を `assets/audio/` に出力
+
+#### 動作仕様
+- **dialog**: `DOMContentLoaded` 後に `showModal()`。`closedby="none"` と `cancel` の `preventDefault` で、Esc・バックドロップ閉じを抑止し、ON/OFF ボタンでのみ閉じる。
+- **再生**: **音声をオン** クリックで `dialog.close()` 後、同一ユーザージェスチャ内で `audio.play()`。**音声をオフ** は閉じるのみ。
+- **フォールバック**: `play()` が拒否された場合は `console.warn` のみ（未処理の Promise 拒否にしない）。
+
+#### 使用方法
+- デモ一覧から `demoSound` のリンクで開く。差し替えは `src/assets/audio/demo-sound/` のファイルを置き換え、`_demo-sound.js` の import パスを合わせる。固定 URL で配管したい場合は `src/public/` 配下に置き、`src` を文字列で渡す方法にもできる。
+- **出典**: BGMer の楽曲利用時は [利用規約](https://bgmer.net/terms) に従い、ページ内にクレジットを記載する。現行デモは [秘密の森 – ピアノver.](https://bgmer.net/music/m08_pf) へのリンクを `.p-demo-sound__credit` に置いている。音源差し替え時は当該要素を新しい出典に合わせて更新する。
+
 ---
 
 ## 4. ディレクトリ構成

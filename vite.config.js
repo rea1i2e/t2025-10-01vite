@@ -64,6 +64,10 @@ export default defineConfig({
           if (/\.(woff2?|ttf|otf|eot)$/i.test(n)) {
             return "assets/fonts/[name]-[hash][extname]";
           }
+          // 音声ファイルを assets/audio/ に配置
+          if (/\.(mp3|ogg|wav|m4a)$/i.test(n)) {
+            return "assets/audio/[name]-[hash][extname]";
+          }
           if (/\.css$/i.test(n)) return "assets/css/[name]-[hash][extname]";
           return "assets/[name]-[hash][extname]";
         },
