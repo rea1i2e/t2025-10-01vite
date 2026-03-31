@@ -1,0 +1,27 @@
+<% const splidePosts = [
+   { text: "投稿テキストテキストテキストテキストテキストテキストテキスト" },
+   { text: "投稿テキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト" },
+   { text: "投稿テキスト" },
+   { text: "投稿テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト" },
+]; %>
+<section class="p-splide-posts l-splide-posts" id="splide-posts">
+  <div class="p-splide-posts__inner l-inner">
+    <h2 class="p-splide-posts__heading">
+        Splideを使用した投稿一覧
+    </h2>
+    <div class="p-splide-posts__content">
+      <div class="p-splide-posts__slider splide" id="js-splide-posts">
+        <div class="p-splide-posts__slider-track splide__track">
+          <ul class="p-splide-posts__slider-list splide__list">
+            <% splidePosts.forEach((post) => { %>
+            <li class="p-splide-posts__item splide__slide">
+              <p class="p-splide-posts__item-text"><%- post.text %></p>
+            </li>
+            <% }); %>
+          </ul>
+          <ul class="p-splide-posts__slider-pagination splide__pagination"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
