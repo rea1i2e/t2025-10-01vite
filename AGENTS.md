@@ -15,6 +15,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage()。画像代替フォーマット（`imageAltFormats`）もここで指定 |
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数、ty_stripTags） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、CSS image-set、整形）。config/site.config.js の imageAltFormats を参照 |
+| `scripts/init-project.sh` | 案件着手時にデモ用コードを一括削除するスクリプト（`npm run init` で実行） |
 | `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
 | `raw/videos/inspect-videos.mjs` | 動画情報サマリー出力（AI依頼時に使用） |
 | `raw/videos/compress-video.mjs` | 動画まとめ圧縮＋レポート生成 |
@@ -124,13 +125,32 @@ npm run build
 - `src/ejs/data/` — ダミーデータ等
 - テンプレートのインクルードには `ejsPath`（`config/site.config.js` で定義）を使用する
 
-## デモ削除時の手順（案件リポジトリ作成時）
+## デモ削除手順（案件リポジトリ作成時）
 
-demo ページ・コンポーネントを削除する際、**ライト/ダークモード（Demo用）** を外す場合は以下を実施する。
+テンプレートから複製した案件リポジトリで、以下のコマンドを実行する。
 
-1. `src/ejs/common/_footer.ejs` から `components-demo/_theme-toggle.ejs` の include 行を削除
-2. `src/ejs/components-demo/_theme-toggle.ejs` を削除（または components-demo ごと削除）
-3. `src/assets/js/_theme-toggle.js` を削除し、`main.js` の `import './_theme-toggle.js';` を削除
-4. `src/assets/sass/demo-components/` を丸ごと削除する場合は `_c-theme-toggle.scss` も一緒に削除される
-5. ライト/ダーク機能自体が不要な場合は、`_head.ejs` の theme 用インラインスクリプトと `_root.scss` の `html[data-theme]` / `:root:not([data-theme])` まわりを削除する
+```bash
+npm run init
+```
+
+以下が一括で削除・更新される。
+
+**削除されるディレクトリ**
+- `src/demo/` — デモページ群
+- `src/ejs/components-demo/` — デモ用EJSパーツ
+- `src/assets/js/demo/` — デモ用JSファイル
+- `src/assets/sass/demo-components/` — デモ用Sassファイル
+- `src/assets/images/demo/` — デモ用画像
+- `src/assets/videos/demo/` — デモ用動画
+- `src/assets/audio/demo-sound/` — デモ用音声
+
+**更新されるファイル**
+- `src/assets/js/main.js` — `./demo/` への import 行を削除
+- `src/assets/sass/style.scss` — `@use "./demo-components/**"` 行を削除
+- `src/ejs/common/_footer.ejs` — `_theme-toggle.ejs` の include 行を削除
+- `config/site.config.js` — デモページ定義（`demo` / `demoXxx` / `contact` / `thanks` / `privacy` / `x` キー）を削除
+
+**実行後の追加対応**
+- `config/site.config.js` の `siteName` / `baseUrl` を案件情報に更新する
+- ライト/ダーク機能自体が不要な場合は、`_head.ejs` の theme 用インラインスクリプトと `_root.scss` の `html[data-theme]` / `:root:not([data-theme])` まわりを削除する
 

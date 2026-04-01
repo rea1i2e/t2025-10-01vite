@@ -34,36 +34,39 @@ done
 # -------------------------------------------------------
 MAIN_JS="$ROOT/src/assets/js/main.js"
 if [ -f "$MAIN_JS" ]; then
-  sed -i '' '/import.*\.\/demo\//d' "$MAIN_JS"
-  # demo/ import に関するコメント行（「案件固有処理」ブロック見出し等）も削除
-  sed -i '' '/案件固有処理（必要に応じてdemoから移動して使用）/d' "$MAIN_JS"
-  # 各機能カテゴリのコメント行を削除（/* ... */ 形式の行）
-  sed -i '' '/^\/\* スライダー \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* アコーディオン・トグル \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* モーダル \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* タブ切り替え \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* スクロールに応じた表示制御 \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* スクロールヒント \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* フォーム関連 \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* メールアドレス保護 \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* ホバーエフェクト \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* ファーストビュー動画デモ \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* JSONPlaceholder API デモ \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* 音声 ON\/OFF dialog デモ \*\/$/d' "$MAIN_JS"
-  sed -i '' '/^\/\* ダークモード・ライトモード切り替え \*\/$/d' "$MAIN_JS"
-  # dialog-common のコメントアウト行も削除
-  sed -i '' '/\/\/ import.*_dialog-common/d' "$MAIN_JS"
-  # 「案件固有処理」ブロックの /** ... */ コメントブロックを削除
-  sed -i '' '/\/\*\*/d' "$MAIN_JS"
-  sed -i '' '/^ \* 案件固有処理/d' "$MAIN_JS"
-  sed -i '' '/^ \*\//d' "$MAIN_JS"
-  # 連続する空行を1行に圧縮
-  node -e "
-    const fs = require('fs');
-    const content = fs.readFileSync('$MAIN_JS', 'utf8');
-    const cleaned = content.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
-    fs.writeFileSync('$MAIN_JS', cleaned);
-  "
+  # Node.js で一括処理（マルチバイト文字・複数行コメントへの対応）
+  MAIN_JS_PATH="$MAIN_JS" node --input-type=module << 'JSEOF'
+import { readFileSync, writeFileSync } from 'fs';
+
+const filePath = process.env.MAIN_JS_PATH;
+let src = readFileSync(filePath, 'utf8');
+
+// ./demo/ への import 行（行末コメント含む）を削除
+src = src.replace(/^import ['"]\.\/demo\/[^\n]*\n?/gm, '');
+
+// コメントアウトされた demo/ import 行を削除
+src = src.replace(/^\/\/ import ['"][^'"]*['"][^\n]*\n?/gm, '');
+
+// 「案件固有処理」ブロックの /** ... */ コメントブロックを削除
+src = src.replace(/\/\*\*\n \* 案件固有処理[^\n]*\n \*\/\n?/g, '');
+
+// /* xxx */ 形式の1行コメント（デモ機能カテゴリ見出し）を削除
+const demoComments = [
+  'スライダー', 'アコーディオン・トグル', 'モーダル', 'タブ切り替え',
+  'スクロールに応じた表示制御', 'スクロールヒント', 'フォーム関連',
+  'メールアドレス保護', 'ホバーエフェクト', 'ファーストビュー動画デモ',
+  'JSONPlaceholder API デモ', '音声 ON/OFF dialog デモ',
+  'ダークモード・ライトモード切り替え',
+];
+for (const label of demoComments) {
+  src = src.replace(new RegExp(`^/\\* ${label} \\*/\\n?`, 'gm'), '');
+}
+
+// 連続する空行を1行に圧縮
+src = src.replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
+
+writeFileSync(filePath, src);
+JSEOF
   echo "  更新: src/assets/js/main.js"
 fi
 
@@ -91,13 +94,10 @@ fi
 # -------------------------------------------------------
 SITE_CONFIG="$ROOT/config/site.config.js"
 if [ -f "$SITE_CONFIG" ]; then
-  node --input-type=module << 'EOF'
+  SITE_CONFIG_PATH="$SITE_CONFIG" node --input-type=module << 'EOF'
 import { readFileSync, writeFileSync } from 'fs';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const filePath = resolve(process.env.SITE_CONFIG_PATH);
+const filePath = process.env.SITE_CONFIG_PATH;
 let src = readFileSync(filePath, 'utf8');
 
 // 削除対象キー（demo で始まるもの + contact/thanks/privacy/x）
@@ -112,13 +112,33 @@ const demoKeys = [
 ];
 
 for (const key of demoKeys) {
-  // キーから始まるオブジェクトブロック（コメント行含む）を削除
-  // パターン: 行頭の任意コメント行 + "  key: {" から "}," まで
-  const pattern = new RegExp(
-    `(\\n  // [^\\n]*)?\\n  ${key}: \\{[^}]*(?:\\{[^}]*\\}[^}]*)*\\},`,
-    'g'
-  );
-  src = src.replace(pattern, '');
+  // ネストした {} を含むオブジェクトブロックを削除
+  // "  key: {" から対応する "}," までを行単位で除去
+  const lines = src.split('\n');
+  const result = [];
+  let skip = false;
+  let depth = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!skip && new RegExp(`^  ${key}:\\s*\\{`).test(line)) {
+      // 直前の行がコメント行なら result から取り除く
+      if (result.length > 0 && /^\s*\/\//.test(result[result.length - 1])) {
+        result.pop();
+      }
+      skip = true;
+      depth = (line.match(/\{/g) || []).length - (line.match(/\}/g) || []).length;
+      if (depth <= 0) skip = false;
+      continue;
+    }
+    if (skip) {
+      depth += (line.match(/\{/g) || []).length - (line.match(/\}/g) || []).length;
+      if (depth <= 0) skip = false;
+      continue;
+    }
+    result.push(line);
+  }
+  src = result.join('\n');
 }
 
 // 「// 外部リンク設置例」コメント行も削除（x キー削除後に残る場合）

@@ -14,6 +14,7 @@
     "reinstall": "npm run clean:all && npm install",
     "validate:html": "html-validate dist/",
     "validate:build": "npm run build && npm run validate:html",
+    "init": "bash scripts/init-project.sh",
     "prepare": "husky",
     "inspect:video": "node raw/videos/inspect-videos.mjs",
     "compress:video": "node raw/videos/compress-video.mjs",
