@@ -226,16 +226,16 @@ export const siteConfig = {
    * - true  : ファイル名にハッシュを付与する（例: main-AbCdEfGh.js）
    * - false : ハッシュなし（例: main.js）
    */
-  // useFileHash: true,
-  useFileHash: false,
+  useFileHash: true,
+  // useFileHash: false,
 
   /**
    * CSS・JS を minify するか
    * - true  : minify する（本番向け・ファイルサイズ優先）
    * - false : minify しない（クライアント納品・可読性優先）
    */
-  // minify: true,
-  minify: false,
+  minify: true,
+  // minify: false,
 
   /**
    * ページ除外設定
