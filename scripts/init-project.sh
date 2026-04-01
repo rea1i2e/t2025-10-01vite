@@ -19,6 +19,8 @@ dirs=(
   "src/assets/images/demo"
   "src/assets/videos/demo"
   "src/assets/audio/demo-sound"
+  "raw/videos/demo"
+  "src/public/MailForm01_utf8"
 )
 
 for dir in "${dirs[@]}"; do
@@ -26,6 +28,18 @@ for dir in "${dirs[@]}"; do
   if [ -d "$target" ]; then
     rm -rf "$target"
     echo "  削除: $dir"
+  fi
+done
+
+files=(
+  "src/ejs/data/posts.js"
+)
+
+for file in "${files[@]}"; do
+  target="$ROOT/$file"
+  if [ -f "$target" ]; then
+    rm "$target"
+    echo "  削除: $file"
   fi
 done
 

@@ -143,6 +143,11 @@ npm run init
 - `src/assets/images/demo/` — デモ用画像
 - `src/assets/videos/demo/` — デモ用動画
 - `src/assets/audio/demo-sound/` — デモ用音声
+- `raw/videos/demo/` — デモ用動画素材
+- `src/public/MailForm01_utf8/` — デモ用メールフォームPHP
+
+**削除されるファイル**
+- `src/ejs/data/posts.js` — デモ用ダミーデータ
 
 **更新されるファイル**
 - `src/assets/js/main.js` — `./demo/` への import 行を削除
