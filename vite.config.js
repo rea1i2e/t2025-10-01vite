@@ -18,7 +18,7 @@ import { siteConfig } from "./config/site.config.js";
 import { posts } from "./src/ejs/data/posts.js";
 const imageminGif2webp = gif2webpCjs;
 
-const { imageAltFormats, useFileHash } = siteConfig;
+const { imageAltFormats, useFileHash, minify } = siteConfig;
 const makeWebpEnabled = imageAltFormats === 'webp' || imageAltFormats === 'both';
 const makeAvifEnabled = imageAltFormats === 'avif' || imageAltFormats === 'both';
 const hash = useFileHash ? '-[hash]' : '';
@@ -41,6 +41,7 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
+    minify,
     assetsInlineLimit: 0,
     rollupOptions: {
       input: Object.fromEntries(

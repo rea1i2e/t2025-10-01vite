@@ -98,6 +98,7 @@ npm run reinstall
   - `pages`（ページ情報）
   - `imageAltFormats`（`none` / `webp` / `avif` / `both`）
   - `useFileHash`（`true`: ビルド後ファイル名にハッシュを付与 / `false`: ハッシュなし）
+  - `minify`（`true`: CSS・JS を minify / `false`: minify しない）
 - `vite.config.js`
   - ビルド出力先、画像最適化設定、`assetsInlineLimit` など
 

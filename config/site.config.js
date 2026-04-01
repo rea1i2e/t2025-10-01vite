@@ -230,6 +230,14 @@ export const siteConfig = {
   useFileHash: false,
 
   /**
+   * CSS・JS を minify するか
+   * - true  : minify する（本番向け・ファイルサイズ優先）
+   * - false : minify しない（クライアント納品・可読性優先）
+   */
+  // minify: true,
+  minify: false,
+
+  /**
    * ページ除外設定
    * ヘッダー、ドロワー、フッターから除外するページの指定
    *
@@ -289,4 +297,7 @@ if (!siteConfig.drawerExcludePages) {
 }
 if (!siteConfig.footerExcludePages) {
   siteConfig.footerExcludePages = [];
+}
+if (siteConfig.minify === undefined) {
+  siteConfig.minify = true;
 }
