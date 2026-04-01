@@ -1,27 +1,29 @@
-<% const splidePosts = [
-   { text: "①投稿テキストテキストテキストテキストテキストテキスト" },
-   { text: "②投稿テキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト" },
-   { text: "③投稿テキスト" },
-   { text: "④投稿テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト" },
-]; %>
 <section class="p-splide-posts l-splide-posts" id="splide-posts">
-  <div class="p-splide-posts__inner l-inner">
+  <div class="p-splide-posts__wrap">
     <h2 class="p-splide-posts__heading">
-        Splideを使用した投稿一覧
+      Splideを使用した投稿一覧
     </h2>
     <div class="p-splide-posts__content">
       <div class="p-splide-posts__slider splide" id="js-splide-posts">
         <div class="p-splide-posts__slider-track splide__track">
           <ul class="p-splide-posts__slider-list splide__list">
-            <% splidePosts.forEach((post) => { %>
+            <% posts.slice(0, 5).forEach((post) => { %>
             <li class="p-splide-posts__item splide__slide">
-              <p class="p-splide-posts__item-text"><%- post.text %></p>
+              <p class="p-splide-posts__item-text"><%- post.description %></p>
             </li>
             <% }); %>
           </ul>
-          <ul class="p-splide-posts__slider-pagination splide__pagination"></ul>
+          <div class="p-splide-posts__controlls">
+            <ul class="p-splide-posts__slider-pagination splide__pagination"></ul>
+            <div class="p-splide-posts__slider-arrows splide__arrows">
+              <button class="p-splide-posts__slider-arrow-next splide__arrow splide__arrow--next"></button>
+              <button class="p-splide-posts__slider-arrow-prev splide__arrow splide__arrow--prev"></button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <p class="p-splide-posts__desc">※テキスト量に応じて、スライド表示時間とテキストの移動時間を調整。<br />
+      ※ホバーで、スライドとテキストの移動を停止。</p>
   </div>
 </section>

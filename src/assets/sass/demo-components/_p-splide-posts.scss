@@ -8,16 +8,18 @@
 }
 
 .p-splide-posts__inner {
+}
+
+.p-splide-posts__wrap {
   display: grid;
-  column-gap: rem(40);
+  gap: rem(20);
   align-items: center;
   @include mq() {
     grid-template-columns: auto 1fr;
-    --inner: #{rem(900)}
   }
 }
 
-.p-splide-posts__inner > * {
+.p-splide-posts__wrap > * {
   min-width: 0;
 }
 
@@ -32,11 +34,10 @@
 
 .p-splide-posts__slider-track.splide__track {
   display: grid;
-  column-gap: rem(20);
+  gap: rem(20);
   @include mq() {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr auto auto;
     align-items: center;
-    
   }
 }
 
@@ -51,23 +52,42 @@
   overflow-x: clip;
 }
 
+.p-splide-posts__controlls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: rem(16);
+}
+
 .p-splide-posts__slider-pagination {
   gap: rem(8);
 }
 
 .p-splide-posts__item-text {
-  width: rem(490);
-  background-color: orange;
+  width: fit-content;
   padding-block: 0.5em;
   padding-inline: 1em;
-  transition: translate 8s 1s linear;
+  translate: 0 0;
+  opacity: 0;
+  background-color: orange;
 }
 
 .p-splide-posts__item.splide__slide.is-active .p-splide-posts__item-text {
-  translate: -100% 0;
+  opacity: 1;
+  animation: splide-posts-text-scroll var(--text-scroll-duration, 8s) linear var(--text-scroll-delay, 2s) forwards;
 }
 
-.p-splide-posts__slider-pagination li {
+.p-splide-posts__slider:hover .p-splide-posts__item.splide__slide.is-active .p-splide-posts__item-text {
+  animation-play-state: paused;
+}
+
+@keyframes splide-posts-text-scroll {
+  from {
+    translate: 0 0;
+  }
+
+  to {
+    translate: -100% 0;
+  }
 }
 
 .p-splide-posts__slider-pagination .splide__pagination__page {
@@ -81,5 +101,19 @@
   background-color: var(--color-accent);
 }
 
-.p-splide-posts__item-text {
+.p-splide-posts__slider-arrows.splide__arrows {
+}
+
+.p-splide-posts__slider-arrow-next.splide__arrow.splide__arrow--next {
+  width: rem(24);
+  aspect-ratio: 24/8;
+  background: url(../images/common/arrow_right.svg) no-repeat center / contain;
+}
+
+.p-splide-posts__slider-arrow-prev.splide__arrow.splide__arrow--prev {
+  display: none;
+}
+
+.p-splide-posts__desc {
+  margin-block-start: rem(40);
 }
