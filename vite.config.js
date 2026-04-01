@@ -18,9 +18,10 @@ import { siteConfig } from "./config/site.config.js";
 import { posts } from "./src/ejs/data/posts.js";
 const imageminGif2webp = gif2webpCjs;
 
-const { imageAltFormats } = siteConfig;
+const { imageAltFormats, useFileHash } = siteConfig;
 const makeWebpEnabled = imageAltFormats === 'webp' || imageAltFormats === 'both';
 const makeAvifEnabled = imageAltFormats === 'avif' || imageAltFormats === 'both';
+const hash = useFileHash ? '-[hash]' : '';
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,7 +41,6 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
-    // 4KB未満のSVGをインライン化しない（デフォルトでは、ファイルとして出力されず data URI としてインライン化される）
     assetsInlineLimit: 0,
     rollupOptions: {
       input: Object.fromEntries(
@@ -54,25 +54,25 @@ export default defineConfig({
           const n = (info.name ?? "").replaceAll("\\", "/");
           // 動画ファイルを assets/videos/ に配置
           if (/\.(mp4|webm|mov|ogv)$/i.test(n)) {
-            return `assets/videos/[name]-[hash][extname]`;
+            return `assets/videos/[name]${hash}[extname]`;
           }
           // 画像ファイルを assets/images/ に配置
           if (/\.(png|jpe?g|gif|svg|webp|avif)$/i.test(n)) {
-            return `assets/images/[name]-[hash][extname]`;
+            return `assets/images/[name]${hash}[extname]`;
           }
           // フォントファイルを assets/fonts/ に配置
           if (/\.(woff2?|ttf|otf|eot)$/i.test(n)) {
-            return "assets/fonts/[name]-[hash][extname]";
+            return `assets/fonts/[name]${hash}[extname]`;
           }
           // 音声ファイルを assets/audio/ に配置
           if (/\.(mp3|ogg|wav|m4a)$/i.test(n)) {
-            return "assets/audio/[name]-[hash][extname]";
+            return `assets/audio/[name]${hash}[extname]`;
           }
-          if (/\.css$/i.test(n)) return "assets/css/[name]-[hash][extname]";
-          return "assets/[name]-[hash][extname]";
+          if (/\.css$/i.test(n)) return `assets/css/[name]${hash}[extname]`;
+          return `assets/[name]${hash}[extname]`;
         },
-        entryFileNames: "assets/js/[name]-[hash].js",
-        chunkFileNames: "assets/js/[name]-[hash].js"
+        entryFileNames: `assets/js/[name]${hash}.js`,
+        chunkFileNames: `assets/js/[name]${hash}.js`
       }
     }
   },

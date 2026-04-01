@@ -222,6 +222,14 @@ export const siteConfig = {
   imageAltFormats: "avif",
 
   /**
+   * ビルド後のファイル名(CSS・JS・画像・フォントなど)にハッシュを付与するか
+   * - true  : ファイル名にハッシュを付与する（例: main-AbCdEfGh.js）
+   * - false : ハッシュなし（例: main.js）
+   */
+  // useFileHash: true,
+  useFileHash: false,
+
+  /**
    * ページ除外設定
    * ヘッダー、ドロワー、フッターから除外するページの指定
    *

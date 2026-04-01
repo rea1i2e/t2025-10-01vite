@@ -89,6 +89,7 @@ npm run reinstall
 - `config/site.config.js`
   - `pages`（ページ情報）
   - `imageAltFormats`（`none` / `webp` / `avif` / `both`）
+  - `useFileHash`（`true`: ビルド後ファイル名にハッシュを付与 / `false`: ハッシュなし）
 - `vite.config.js`
   - ビルド出力先、画像最適化設定、`assetsInlineLimit` など
 
