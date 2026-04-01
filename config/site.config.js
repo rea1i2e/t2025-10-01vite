@@ -163,8 +163,8 @@ const pages = {
   },
   contact: {
     label: "お問い合わせ",
-    root: "../",
-    path: "contact/",
+    root: "../../",
+    path: "demo/contact/",
     title: "お問い合わせ",
     description:
       "お問い合わせフォームページです。お問い合わせを送信することができます。",
@@ -172,8 +172,8 @@ const pages = {
   },
   thanks: {
     label: "お問い合わせ完了",
-    root: "../",
-    path: "contact/thanks.html",
+    root: "../../",
+    path: "demo/contact/thanks.html",
     title: "お問い合わせ完了",
     description:
       "お問い合わせフォームページです。お問い合わせを送信することができます。",
@@ -181,8 +181,8 @@ const pages = {
   },
   privacy: {
     label: "個人情報保護方針",
-    root: "../",
-    path: "privacy/",
+    root: "../../",
+    path: "demo/privacy/",
     title: "個人情報保護方針",
     description: "個人情報保護方針ページです。",
     keywords: "",
