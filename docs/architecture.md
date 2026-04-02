@@ -527,7 +527,7 @@ env.deploy.example       デプロイ用変数テンプレート
 - **ページ追加**: `src/` 配下に `xxx/index.html` を追加し、`config/site.config.js` の `pages` に同キーを追加
 - **メニュー除外制御**: `headerExcludePages` / `drawerExcludePages` を調整（`config/utils.js` のパターン仕様に従う）
 - **画像代替フォーマット**: `config/site.config.js` の `siteConfig.imageAltFormats` で none / webp / avif / both を切り替え
-- **minify 制御**: `config/site.config.js` の `siteConfig.minify` で CSS・JS の minify を切り替え（`true`: 本番向け / `false`: クライアント納品・可読性優先）
+- **minify 制御**: `config/site.config.js` の `siteConfig.minify` で CSS の minify を切り替え（`true`: 本番向け / `false`: クライアント納品時など直接編集の可能性がある場合）。JS はバンドル済みのため minify の有無に関わらず直接編集は困難であり、常に minify される（`vite.config.js` の `build.minify: true` 固定）
 - **画像最適化の品質調整**: `vite.config.js` の `imagemin*` / `makeWebp` / `makeAvif` 設定を変更
 - **`<picture>` 化の挙動調整**: `scripts/after-build.mjs` の対象条件・挿入順・整形方針を変更
 - **デプロイ先・方式変更**: `.github/workflows/deploy.yml` を編集（FTP → 別方式への置換など）

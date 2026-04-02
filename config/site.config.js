@@ -230,9 +230,9 @@ export const siteConfig = {
   // useFileHash: false,
 
   /**
-   * CSS・JS を minify するか
+   * CSS を minify するか（JS はバンドル済みのため常に minify される）
    * - true  : minify する（本番向け・ファイルサイズ優先）
-   * - false : minify しない（クライアント納品・可読性優先）
+   * - false : minify しない（クライアント納品時など直接編集の可能性がある場合）
    */
   minify: true,
   // minify: false,

@@ -41,7 +41,8 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
-    minify,
+    minify: true,
+    cssMinify: minify,
     assetsInlineLimit: 0,
     rollupOptions: {
       input: Object.fromEntries(
