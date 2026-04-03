@@ -99,9 +99,8 @@
 .p-dialog__close {
   position: absolute;
   z-index: 1;
-  top: 0;
-  right: 0;
-  inset: 0 0 auto auto;
+  inset-block-start: 0;
+  inset-inline-end: 0;
   width: var(--close-button-size);
   aspect-ratio: 1;
   transition: opacity var(--hover-transition);
