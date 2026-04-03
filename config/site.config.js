@@ -103,6 +103,13 @@ const pages = {
     title: "グリッドレイアウト",
     description: "グリッドレイアウトデモページです。",
   },
+  demoVariants: {
+    label: "バリアント",
+    root: "../../",
+    path: "demo/demo-variants/",
+    title: "バリアント",
+    description: "汎用コンポーネントのバリアントデモページです。",
+  },
   demoHoverButton: {
     label: "ホバーエフェクト（ボタン）",
     root: "../../",

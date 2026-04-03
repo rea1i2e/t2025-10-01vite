@@ -51,11 +51,11 @@ $theme-dark: (
   --inner-padding: #{rem($padding-sp)};
   --hover-transition: 0.3s ease-in-out;
 
-  /* box-shadow（カード・ボタン・パネル用。差が小さいものは1つに統一） */
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.15);
-  --shadow-none: 0 0 0 0 transparent;
-  --shadow-inset: inset 0 0 0.625rem rgba(0, 0, 0, 0.3);
+  /* box-shadow（--color-text ベースで color-mix により自動でテーマ追従） */
+  --shadow:       0 2px 8px color-mix(in srgb, var(--color-text) 15%, transparent);
+  --shadow-hover: 0 8px 20px color-mix(in srgb, var(--color-text) 25%, transparent);
+  --shadow-inset: inset 0 0 0.625rem color-mix(in srgb, var(--color-text) 35%, transparent);
+  --shadow-none:  0 0 0 0 transparent;
   @include mq() {
     --desigh-width: 1440;
     --header-height: #{rem(90)};

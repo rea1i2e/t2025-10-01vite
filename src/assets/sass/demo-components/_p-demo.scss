@@ -33,6 +33,11 @@
 .p-demo__heading {
 }
 
+.p-demo__label {
+  font-size: maxrem(13);
+  opacity: 0.6;
+}
+
 .p-demo__button {
   margin-block-start: rem(80);
   text-align: center;

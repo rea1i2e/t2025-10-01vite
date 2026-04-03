@@ -1,0 +1,90 @@
+@use "../global" as *;
+// demoコンポーネント用ボタン（納品時にはファイルごと削除）
+//
+// バリアント一覧
+//   data-size  : "sm" | "lg"
+//   data-color : "primary" | "inverted"
+
+.c-button {
+  --button-bg: transparent;
+  --button-color: var(--color-text);
+  --button-border-color: var(--color-text);
+  --button-padding-block: #{rem(12)};
+  --button-padding-inline: #{rem(28)};
+  --button-font-size: #{maxrem(15)};
+  --button-radius: #{rem(4)};
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: var(--button-padding-block);
+  padding-inline: var(--button-padding-inline);
+  background-color: var(--button-bg);
+  border: 1px solid var(--button-border-color);
+  border-radius: var(--button-radius);
+  color: var(--button-color);
+  font-size: var(--button-font-size);
+  text-decoration: none;
+  transition:
+    background-color var(--hover-transition),
+    color var(--hover-transition),
+    border-color var(--hover-transition);
+}
+
+.c-button__text {
+  display: block;
+}
+
+/* サイズ */
+.c-button[data-size="sm"] {
+  --button-padding-block: #{rem(8)};
+  --button-padding-inline: #{rem(20)};
+  --button-font-size: #{maxrem(13)};
+}
+
+.c-button[data-size="lg"] {
+  --button-padding-block: #{rem(18)};
+  --button-padding-inline: #{rem(48)};
+  --button-font-size: #{maxrem(17)};
+}
+
+/* カラー */
+.c-button[data-color="primary"] {
+  --button-bg: var(--color-theme);
+  --button-color: var(--color-white);
+  --button-border-color: var(--color-theme);
+}
+
+.c-button[data-color="inverted"] {
+  --button-bg: var(--color-text);
+  --button-color: var(--color-bg);
+  --button-border-color: var(--color-text);
+}
+
+/* ホバー */
+@media (any-hover: hover) {
+  .c-button:hover {
+    opacity: 1;
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    border-color: var(--color-text);
+  }
+
+  .c-button[data-color="primary"]:hover {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .c-button[data-color="inverted"]:hover {
+    background-color: var(--color-bg-sub);
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+}
+
+/* 動きを抑えたい人への配慮 */
+@media (prefers-reduced-motion: reduce) {
+  .c-button {
+    transition: none !important;
+  }
+}

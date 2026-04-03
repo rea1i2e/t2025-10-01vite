@@ -1,0 +1,6 @@
+<a
+  href="<%= href %>"
+  class="c-button"
+  <% if (typeof locals['data-size'] !== 'undefined' && locals['data-size']) { %>data-size="<%= locals['data-size'] %>"<% } %>
+  <% if (typeof locals['data-color'] !== 'undefined' && locals['data-color']) { %>data-color="<%= locals['data-color'] %>"<% } %>
+><span class="c-button__text"><%- text %></span></a>
