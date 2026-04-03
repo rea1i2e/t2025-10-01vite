@@ -1,4 +1,10 @@
 /**
+ * フォームバリデーション連携
+ *
+ * - フォーム全体の有効/無効に応じて送信ボタンの disabled / aria-disabled を切り替える
+ * - 入力欄のフォーカス離脱時に aria-invalid を付与/削除し、エラー表示はCSSに委ねる
+ * - 送信時にも checkValidity を行い、無効なら preventDefault + reportValidity でネイティブエラー表示
+ *
  * このスクリプトが期待するHTML属性（最低限）
  *
  * - フォーム本体: id="js-form"
