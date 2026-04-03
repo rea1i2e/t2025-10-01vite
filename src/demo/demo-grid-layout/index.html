@@ -101,6 +101,46 @@
           </div>
         </div>
       </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">subgrid：カードの高さ揃え</h2>
+        <div class="p-demo__content">
+          <p class="p-demo__desc">
+            カード内のサムネイル・見出し・説明文が、カードをまたいで縦位置で揃う。<br />
+            親グリッドの行トラックを <code>subgrid</code> で子に継承させる。
+          </p>
+          <div class="p-demo-subgrid">
+            <% posts.slice(0, 3).forEach((post) => { %>
+            <a class="p-demo-subgrid__card" href="<%- post.link %>">
+              <div class="p-demo-subgrid__thumbnail">
+                <img src="<%- imagePath %>/<%- post.image.file %>" alt="<%= ty_stripTags(post.image.alt) %>" />
+              </div>
+              <div class="p-demo-subgrid__heading"><%- post.title %></div>
+              <div class="p-demo-subgrid__body"><%- post.description %></div>
+            </a>
+            <% }); %>
+          </div>
+        </div>
+      </section>
+      <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">subgrid：列を継承したネストグリッド</h2>
+        <div class="p-demo__content">
+          <p class="p-demo__desc">
+            子要素が親の列トラックを <code>subgrid</code> で引き継ぎ、<br />
+            孫要素が親グリッドの列に沿って配置される。
+          </p>
+          <div class="p-demo-subgrid-col">
+            <div class="p-demo-subgrid-col__child">
+              <div class="p-demo-subgrid-col__item"></div>
+              <div class="p-demo-subgrid-col__item"></div>
+            </div>
+            <div class="p-demo-subgrid-col__child">
+              <div class="p-demo-subgrid-col__item"></div>
+              <div class="p-demo-subgrid-col__item"></div>
+              <div class="p-demo-subgrid-col__item"></div>
+            </div>
+          </div>
+        </div>
+      </section>
       <%- include(ejsPath + 'components-demo/_p-grid-section.ejs') %>
     </div>
   </main>

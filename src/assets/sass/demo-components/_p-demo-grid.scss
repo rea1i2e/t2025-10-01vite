@@ -47,3 +47,75 @@
 .p-demo-grid--auto-fill {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
+
+/* subgrid：カードの高さ揃え */
+.p-demo-subgrid {
+  display: grid;
+  gap: rem(20);
+  @include mq(sm) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.p-demo-subgrid__card {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  gap: 0;
+  background-color: var(--color-bg-sub);
+  border: var(--border);
+  border-radius: rem(8);
+  overflow: hidden;
+  color: var(--color-text);
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  @media (any-hover: hover) {
+    &:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-4px);
+    }
+  }
+}
+
+.p-demo-subgrid__thumbnail {
+  img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+}
+
+.p-demo-subgrid__heading {
+  padding: rem(12) rem(16);
+  font-weight: bold;
+}
+
+.p-demo-subgrid__body {
+  padding: rem(8) rem(16) rem(16);
+  font-size: rem(14);
+}
+
+/* subgrid：列を継承したネストグリッド */
+.p-demo-subgrid-col {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: rem(8);
+}
+
+.p-demo-subgrid-col__child {
+  display: grid;
+  grid-column: span 6;
+  grid-template-columns: subgrid;
+  gap: rem(8);
+}
+
+.p-demo-subgrid-col__item {
+  padding: rem(20);
+  background-color: var(--color-bg-sub);
+  color: var(--color-text);
+  border-radius: rem(8);
+  text-align: center;
+}
