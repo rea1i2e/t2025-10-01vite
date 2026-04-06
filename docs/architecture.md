@@ -177,6 +177,7 @@ flowchart LR
 - `pages` オブジェクト: 各ページの `label` / `root` / `path` / `title` / `description` 等を集約
 - `headerExcludePages` / `drawerExcludePages`: メニューから除外するページのキー配列
 - `ejsPath` / `baseUrl` / `titleSeparator`: 共通設定
+- `siteUrlStyle` / `useAbsoluteSiteUrlsInDev`: 内部リンク・Vite `base` の相対／絶対（完全 URL）切り替え（詳細は「3.20 サイト内 URL 形式」）
 
 #### テンプレート側での利用
 - `src/ejs/common/_header.ejs` で `Object.entries(pages)` をループし、ヘッダ/ドロワーメニューを生成
@@ -454,6 +455,23 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - デモ一覧から `demoSound` のリンクで開く。差し替えは `src/assets/audio/demo-sound/` のファイルを置き換え、`_demo-sound.js` の import パスを合わせる。固定 URL で配管したい場合は `src/public/` 配下に置き、`src` を文字列で渡す方法にもできる。
 - **出典**: BGMer の楽曲利用時は [利用規約](https://bgmer.net/terms) に従い、ページ内にクレジットを記載する。現行デモは [秘密の森 – ピアノver.](https://bgmer.net/music/m08_pf) へのリンクを `.p-demo-sound__credit` に置いている。音源差し替え時は当該要素を新しい出典に合わせて更新する。
 
+### 3.20 サイト内 URL 形式（siteUrlStyle）
+
+#### 関連ファイル
+- `config/site.config.js` — `siteUrlStyle` / `useAbsoluteSiteUrlsInDev`、`baseUrl`、EJS 用ヘルパー `ty_navHref` / `ty_siteRootHref` / `ty_publicFileHref` / `ty_joinPublicUrl`
+- `vite.config.js` — `defineConfig(({ command }) => …)` で `base` を上記設定から決定（本番バンドル時の CSS/JS/画像などの URL 接頭辞に一致させる）
+- `src/ejs/common/_head.ejs` / `_header.ejs` / `_footer.ejs`、`src/ejs/components-demo/_p-demo.ejs` / `_p-form.ejs` — ナビ・ルート・favicon 等でヘルパーを使用
+- `scripts/after-build.mjs` — `siteUrlStyle === 'absolute'` のとき、`<img>` 等の `src` が `baseUrl` 始まりでも `dist` 上のファイルを解決できるよう正規化
+
+#### 動作仕様
+- **`siteUrlStyle: 'relative'`（既定）**: 従来どおり `pages.*.root` による相対パスで内部リンク・favicon を生成。Vite の `base` は `'./'`（開発・本番ビルド共通で相対基準）。
+- **`siteUrlStyle: 'absolute'`**: 内部リンク・favicon は `baseUrl` と `pages.*.path` を結合した絶対 URL（完全 URL）。`imagePath` / `videoPath` は **`/assets/...` のまま**にし、Vite のアセット解決を維持する。本番 `vite build` 時の Vite `base` は `baseUrl`（末尾スラッシュ正規化）に合わせる。
+- **`useAbsoluteSiteUrlsInDev`**: `absolute` かつ `true` のときのみ、開発サーバー（`command === 'serve'`）でも Vite `base` を `baseUrl` にする。`false`（推奨）のとき開発中は `base` は `'./'` のまま（origin と `baseUrl` が一致しない環境での欠損を避ける）。
+
+#### 使用方法
+- フル URL で配信したい案件: `siteUrlStyle: 'absolute'` にし、`baseUrl` を公開 URL（サブディレクトリ運用時は `https://例.com/subdir/` のようにパスまで含める）に合わせる。
+- EJS でページ間リンクを追加する場合は `page.root + path` ではなく **`ty_navHref(page, path)`**（外部 URL は引数がそのまま返る）を使う。トップ・ロゴは **`ty_siteRootHref(page)`**、公開ディレクトリのファイルは **`ty_publicFileHref(page, 'favicon.ico')`** のように指定する。
+
 ---
 
 ## 4. ディレクトリ構成
@@ -527,6 +545,7 @@ env.deploy.example       デプロイ用変数テンプレート
 - **ページ追加**: `src/` 配下に `xxx/index.html` を追加し、`config/site.config.js` の `pages` に同キーを追加
 - **メニュー除外制御**: `headerExcludePages` / `drawerExcludePages` を調整（`config/utils.js` のパターン仕様に従う）
 - **画像代替フォーマット**: `config/site.config.js` の `siteConfig.imageAltFormats` で none / webp / avif / both を切り替え
+- **サイト内 URL（相対／完全 URL）**: `config/site.config.js` の `siteUrlStyle`（`relative` / `absolute`）と `useAbsoluteSiteUrlsInDev`。詳細は「3.20 サイト内 URL 形式」
 - **minify 制御**: `config/site.config.js` の `siteConfig.minify` で CSS の minify を切り替え（`true`: 本番向け / `false`: クライアント納品時など直接編集の可能性がある場合）。JS はバンドル済みのため minify の有無に関わらず直接編集は困難であり、常に minify される（`vite.config.js` の `build.minify: true` 固定）
 - **画像最適化の品質調整**: `vite.config.js` の `imagemin*` / `makeWebp` / `makeAvif` 設定を変更
 - **`<picture>` 化の挙動調整**: `scripts/after-build.mjs` の対象条件・挿入順・整形方針を変更

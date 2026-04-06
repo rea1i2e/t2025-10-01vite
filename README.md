@@ -99,6 +99,8 @@ npm run reinstall
   - `imageAltFormats`（`none` / `webp` / `avif` / `both`）
   - `useFileHash`（`true`: ビルド後ファイル名にハッシュを付与 / `false`: ハッシュなし）
   - `minify`（`true`: CSS を minify / `false`: CSS を minify しない（クライアント納品時など直接編集の可能性がある場合）。JS は常に minify）
+  - `siteUrlStyle`（`relative`: 従来の階層相対リンク / `absolute`: `baseUrl` 基準の完全 URL・本番ビルドで Vite `base` も同期）
+  - `useAbsoluteSiteUrlsInDev`（`siteUrlStyle` が `absolute` のとき、開発サーバーでも `baseUrl` を Vite `base` に使うか。通常は `false`）
 - `vite.config.js`
   - ビルド出力先、画像最適化設定、`assetsInlineLimit` など
 

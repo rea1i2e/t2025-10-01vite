@@ -220,6 +220,22 @@ export const siteConfig = {
   titleSeparator: " | ",
 
   /**
+   * サイト内リンク・公開ディレクトリ由来の静的ファイル（favicon 等）の URL 形式
+   * - 'relative' : 従来どおり pages.*.root による相対パス（Vite の base は './'）
+   * - 'absolute': baseUrl 起点の絶対 URL（Vite の base も本番ビルドで baseUrl に合わせる）
+   * imagePath / videoPath は引き続き /assets/...（ルート相対）のままにし、Vite の解決を維持する。
+   */
+  siteUrlStyle: "relative",
+  // siteUrlStyle: "absolute",
+
+  /**
+   * siteUrlStyle が 'absolute' のとき、npm run dev でも baseUrl を Vite base に使うか
+   * - false（推奨）: 開発時は base './' のまま（ローカルでは相対で十分）
+   * - true       : 開発時もフル URL（baseUrl の origin と dev サーバーが一致しないとアセットが欠けるため注意）
+   */
+  useAbsoluteSiteUrlsInDev: false,
+
+  /**
    * 画像の代替フォーマット（ビルド・after-build で使用）
    * - 'avif'  : png, jpg + avif
    * - 'webp'  : png, jpg + webp
@@ -290,6 +306,58 @@ export const siteConfig = {
       root: pageData.root,
     };
   },
+
+  /**
+   * baseUrl とパスを結合（先頭スラッシュは吸収）。siteUrlStyle に依存しない内部用。
+   * @param {string} path - 例: demo/foo/ ・ favicon.ico
+   */
+  ty_joinPublicUrl(path) {
+    const p = String(path).replace(/^\//, "");
+    const base = String(this.baseUrl).replace(/\/?$/, "/");
+    return base + p;
+  },
+
+  /**
+   * トップ・ロゴなど「サイトルート」への href
+   * @param {{ root: string }} page - ty_getPage の戻り
+   */
+  ty_siteRootHref(page) {
+    if (this.siteUrlStyle === "absolute") {
+      return this.baseUrl;
+    }
+    return page.root;
+  },
+
+  /**
+   * サイト直下の静的ファイル（public コピー等）への URL。favicon / apple-touch-icon 用。
+   * @param {{ root: string }} page
+   * @param {string} filePath - 例: favicon.ico
+   */
+  ty_publicFileHref(page, filePath) {
+    const p = String(filePath).replace(/^\//, "");
+    if (this.siteUrlStyle === "absolute") {
+      return this.ty_joinPublicUrl(p);
+    }
+    return page.root + p;
+  },
+
+  /**
+   * ナビ・一覧・個人情報ページなど、pages の path または外部 URL への href
+   * @param {{ root: string }} page
+   * @param {string} path - pages.*.path または http(s)://
+   */
+  ty_navHref(page, path) {
+    if (path == null || path === "") {
+      return this.ty_siteRootHref(page);
+    }
+    if (/^https?:\/\//i.test(String(path))) {
+      return String(path);
+    }
+    if (this.siteUrlStyle === "absolute") {
+      return this.ty_joinPublicUrl(path);
+    }
+    return page.root + path;
+  },
 };
 
 /**
@@ -307,4 +375,23 @@ if (!siteConfig.footerExcludePages) {
 }
 if (siteConfig.minify === undefined) {
   siteConfig.minify = true;
+}
+if (!siteConfig.siteUrlStyle) {
+  siteConfig.siteUrlStyle = "relative";
+}
+if (siteConfig.useAbsoluteSiteUrlsInDev === undefined) {
+  siteConfig.useAbsoluteSiteUrlsInDev = false;
+}
+if (!["relative", "absolute"].includes(siteConfig.siteUrlStyle)) {
+  throw new Error(
+    `site.config.js: siteUrlStyle must be "relative" or "absolute" (got ${siteConfig.siteUrlStyle})`,
+  );
+}
+if (
+  siteConfig.siteUrlStyle === "absolute" &&
+  (!siteConfig.baseUrl || !String(siteConfig.baseUrl).trim())
+) {
+  throw new Error(
+    'site.config.js: siteUrlStyle is "absolute" but baseUrl is missing or empty',
+  );
 }

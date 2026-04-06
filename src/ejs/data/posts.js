@@ -51,6 +51,7 @@ export const posts = [
       "動画タイトル：【ボルネオヤマネコの雑学】#雑学 #cat #cat",
     image: {
       file: "demo/dummy5.jpg",
+      fileSp: "demo/dummy5.jpg",
       alt: "ダミー画像4",
     },
     videoId: "GnPuKV909sY", // YouTube動画ID
@@ -62,6 +63,7 @@ export const posts = [
       "動画タイトル：森のために闘う：ボルネオ島、ロング・イスンの先住民族コミュニティ",
     image: {
       file: "demo/dummy6.jpg",
+      fileSp: "demo/dummy6.jpg",
       alt: "ダミー画像4",
     },
     videoId: "GnPuKV909sY", // YouTube動画ID
@@ -111,6 +113,7 @@ export const posts = [
       "動画は夜の三日月",
     image: {
       file: "demo/moon.png",
+      fileSp: "demo/moon.png",
       alt: "写真：ヒマラヤスギと三日月",
     },
     videoSrc: "demo/moon.mp4", // 動画ファイルのパス

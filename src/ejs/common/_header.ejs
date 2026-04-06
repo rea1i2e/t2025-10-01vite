@@ -4,7 +4,7 @@ let tag = (page.path === '') ? 'h1' : 'div';
 <header class="p-header l-header">
   <div class="p-header__inner">
     <<%= tag %> class="p-header__logo">
-      <a href="<%- page.root %>" class="p-header__logo-link">
+      <a href="<%- ty_siteRootHref(page) %>" class="p-header__logo-link">
         <img src="<%- imagePath + 'common/logo.svg' %>" alt="vite">
       </a>
     </<%= tag %>>
@@ -16,7 +16,7 @@ let tag = (page.path === '') ? 'h1' : 'div';
         <% Object.entries(pages).forEach(([key, item]) => { %>
         <% if (!ty_isExcluded(key, headerExcludePages)) { %>
         <li class="p-header__nav-item">
-          <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" class="p-header__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
+          <a href="<%- ty_navHref(page, item.path) %>" class="p-header__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
             <span class="p-header__nav-item-text"><%- item.label %></span>
           </a>
         </li>
@@ -33,7 +33,7 @@ let tag = (page.path === '') ? 'h1' : 'div';
         <% Object.entries(pages).forEach(([key, item]) => {
           if (!ty_isExcluded(key, drawerExcludePages)) { %>
         <li class="p-drawer__nav-item">
-          <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" class="p-drawer__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
+          <a href="<%- ty_navHref(page, item.path) %>" class="p-drawer__nav-item-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>
             <span class="p-drawer__nav-item-text"><%- item.label %></span>
           </a>
         </li>

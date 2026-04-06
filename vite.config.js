@@ -18,7 +18,7 @@ import { siteConfig } from "./config/site.config.js";
 import { posts } from "./src/ejs/data/posts.js";
 const imageminGif2webp = gif2webpCjs;
 
-const { imageAltFormats, useFileHash, minify } = siteConfig;
+const { imageAltFormats, useFileHash, minify, siteUrlStyle, useAbsoluteSiteUrlsInDev, baseUrl } = siteConfig;
 const makeWebpEnabled = imageAltFormats === 'webp' || imageAltFormats === 'both';
 const makeAvifEnabled = imageAltFormats === 'avif' || imageAltFormats === 'both';
 const hash = useFileHash ? '-[hash]' : '';
@@ -31,9 +31,17 @@ const htmlFiles = globSync("src/**/*.html", {
   ignore: ["src/public/**/*.html"]
 });
 
-export default defineConfig({
+export default defineConfig(({ command }) => {
+  const useAbsolute =
+    siteUrlStyle === "absolute" &&
+    (command === "build" || useAbsoluteSiteUrlsInDev);
+  const viteBase = useAbsolute
+    ? String(baseUrl).replace(/\/?$/, "/")
+    : "./";
+
+  return {
   root: "src",
-  base: "./",
+  base: viteBase,
   server: {
     host: true,
     open: true
@@ -119,4 +127,5 @@ export default defineConfig({
       })
     })
   ]
+};
 });

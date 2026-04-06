@@ -27,8 +27,8 @@
   <meta name="twitter:description" content="<%- page.description %>">
   <meta name="twitter:image:src" content="<%- baseUrl %>ogp.png">
   <link rel="canonical" href="<%- baseUrl + page.path %>">
-  <link rel="shortcut icon" href="<%- page.root %>favicon.ico" type="image/vnd.microsoft.icon">
-  <link rel="apple-touch-icon" href="<%- page.root %>apple-touch-icon.png">
+  <link rel="shortcut icon" href="<%- ty_publicFileHref(page, 'favicon.ico') %>" type="image/vnd.microsoft.icon">
+  <link rel="apple-touch-icon" href="<%- ty_publicFileHref(page, 'apple-touch-icon.png') %>">
   <link rel="preload" href="/assets/fonts/NotoSansJP-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/sass/style.scss">
   <script type="module" src="/assets/js/main.js"></script>

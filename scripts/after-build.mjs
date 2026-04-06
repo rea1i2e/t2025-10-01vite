@@ -28,10 +28,29 @@ function listHtmlFiles(dir, out = []) {
   return out
 }
 
+function stripDeployOriginForLocalPath(src) {
+  if (
+    !src ||
+    siteConfig.siteUrlStyle !== 'absolute' ||
+    !siteConfig.baseUrl
+  ) {
+    return src
+  }
+  const bu = siteConfig.baseUrl.replace(/\/$/, '')
+  if (src.startsWith(bu + '/')) {
+    return src.slice(bu.length)
+  }
+  if (src === bu) {
+    return '/'
+  }
+  return src
+}
+
 function toDistAbsFromHtml(htmlPath, src) {
-  if (!src || /^https?:\/\//i.test(src) || /^data:/i.test(src)) return null
-  if (src.startsWith('/')) return resolve(DIST, src.slice(1))
-  return resolve(dirname(htmlPath), src)
+  const normalized = stripDeployOriginForLocalPath(src)
+  if (!normalized || /^https?:\/\//i.test(normalized) || /^data:/i.test(normalized)) return null
+  if (normalized.startsWith('/')) return resolve(DIST, normalized.slice(1))
+  return resolve(dirname(htmlPath), normalized)
 }
 
 function toDistRel(absPath) {

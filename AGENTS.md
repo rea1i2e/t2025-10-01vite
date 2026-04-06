@@ -12,7 +12,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | ファイル | 役割 |
 |----------|------|
 | `vite.config.js` | Vite設定（EJS注入、Sassグロブ、画像最適化、ビルド出力パス）。アセットのインライン化を無効にする場合は `assetsInlineLimit` のコメントを参照 |
-| `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage()。画像代替フォーマット（`imageAltFormats`）もここで指定 |
+| `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・`ty_getPage`。`imageAltFormats` / `siteUrlStyle`（内部リンクと Vite `base` の相対・完全 URL 切替）等はここで指定 |
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数、ty_stripTags） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、CSS image-set、整形）。config/site.config.js の imageAltFormats を参照 |
 | `scripts/init-project.sh` | 案件着手時にデモ用コードを一括削除するスクリプト（`npm run init` で実行） |
@@ -73,6 +73,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 ### このリポジトリ固有の実装ルール
 
 - **EJS の属性値出力**: `alt`・`title`・`aria-label` など HTML 属性にデータを出すときは、`config/utils.js` の `ty_stripTags` 関数を使ってタグを除去しつつエスケープする。`<%= ty_stripTags(value) %>` を使い、`<%- value %>` は使わない。表示用の要素（例: 見出しの `<h2>` 内で改行タグを活かす）では `<%- %>` のまま可。
+- **サイト内 URL（`siteUrlStyle`）**: ページ間リンク・ルート・favicon 等用に `page.root + path` を直接連結せず、`config/site.config.js` 注入の `ty_navHref(page, path)` / `ty_siteRootHref(page)` / `ty_publicFileHref(page, file)` を使う（外部 `http(s)` は `ty_navHref` がそのまま返す）。
 - **EJS内で使う自作関数の命名**: EJS から呼ぶ自作ヘルパーは `ty_` プレフィックスで統一する（標準 API や外部ライブラリのメソッドと区別しやすくするため）
 - **Sass構成**: `base/` / `components/` / `layouts/` / `utility/` のディレクトリ構成に従う
 - **JSモジュール**: 機能単位で `_xxx.js` としてファイルを分割し、`main.js` で `import` する
