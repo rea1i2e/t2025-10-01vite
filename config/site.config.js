@@ -160,6 +160,14 @@ const pages = {
     description:
       "画像（img・picture・background-image）と動画（video デフォルト・自動再生・画面サイズ出し分け）の設置例です。",
   },
+  demoJavaScript: {
+    label: "JavaScriptいろいろ",
+    root: "../../",
+    path: "demo/demo-javascript/",
+    title: "JavaScriptいろいろ",
+    description:
+      "JavaScriptを使った出力を試すページ",
+  },
   demoApi: {
     label: "APIいろいろ",
     root: "../../",
