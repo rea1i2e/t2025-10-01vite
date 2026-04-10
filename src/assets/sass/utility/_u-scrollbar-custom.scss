@@ -1,0 +1,28 @@
+@use "../global" as *;
+
+/**
+ * スクロールバー見た目（対象要素は overflow: auto などでスクロールコンテナにすること）
+ */
+.u-scrollbar-custom {
+  --sb-track-color: var(--color-bg-sub);
+  --sb-thumb-color: var(--color-theme);
+  --sb-size: #{rem(14)};
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+
+  &::-webkit-scrollbar {
+    width: var(--sb-size);
+    height: var(--sb-size);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: rem(3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: rem(3);
+  }
+}
