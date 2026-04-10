@@ -7,6 +7,31 @@
 Vite + EJS + Sass 構成の静的サイトテンプレート。  
 詳細な技術仕様は [docs/architecture.md](docs/architecture.md) を参照。
 
+## ローカル絶対パス（個人環境・Cursor 用）
+
+複製テンプレ運用で、エージェントが `@` 参照やファイル読み込みに使う。共有マシン・リモートではパスが一致しない。
+
+| 役割 | パス |
+|------|------|
+| 本リポジトリ（この静的 Vite テンプレ） | `/Users/yoshiaki/working/✈️制作テンプレート/t2025-10-01vite` |
+| 対になる WordPress テーマ（Local・対応案件の一例。実パスは各案件テーマの AGENTS を正とする） | `/Users/yoshiaki/Local Sites/t2025-12-24vite-wp/app/public/wp-content/themes/t2025-12-24vite-wp` |
+
+## インタラクション部品の型録（エージェント向け）
+
+案件リポジトリ（WordPress テーマ等）で **タブ・スライダー・モーダル** などの実装依頼が短く述べられただけのとき、エージェントは **本リポジトリを型録として読んでから** 相手先のスタックへ移植すること。案件側の `AGENTS.md` には本リポジトリの絶対パスと「型録参照（必須）」手順を書く（個人環境。複製後は案件の AGENTS を正とする）。
+
+**本リポジトリ内の相対パス対応（実装前に JS + EJS + Sass を揃えて読む）**
+
+| 機能 | JS | EJS | Sass | デモページ（どのパーツを載せているかの索引） |
+|------|----|-----|------|---------------------------------------------|
+| タブ切り替え | `src/assets/js/demo/_tab.js` | `src/ejs/components-demo/_p-tab.ejs` | `src/assets/sass/demo-components/_p-tab.scss` | `src/demo/demo-tab/index.html` |
+| アコーディオン | `src/assets/js/demo/_accordion.js` | `src/ejs/components-demo/_p-accordions.ejs` | `src/assets/sass/demo-components/_p-accordions.scss` | `src/demo/demo-accordion/index.html` |
+| モーダル（dialog） | `_dialog-general.js`、`_dialog-youtube.js`、`_dialog-video.js`（`src/assets/js/demo/`、共通 `_dialog-common.js`） | `src/ejs/components-demo/_p-dialog*.ejs` | `src/assets/sass/demo-components/_p-dialog*.scss` | `src/demo/demo-dialog/index.html` |
+| モーダル（dialog 非使用） | `src/assets/js/demo/_modal.js` | 用途に応じて `components-demo` を検索 | 上記 `demo-components` を検索 | `demo-dialog` を参考 |
+| Splide スライダー | `src/assets/js/demo/_splide-fade.js` 等（`_splide-loop`、`_splide-thumbnail`、`_splide-progress`、`_splide-posts`） | 同名 `_p-splide-*.ejs` | 同名 `_p-splide-*.scss` | `src/demo/demo-splide/index.html` |
+
+その他は `src/assets/js/main.js` の `./demo/` import と、`config/site.config.js` の `demo*` ページ定義・`src/demo/` 以下のフォルダを手がかりにする。
+
 ## 重要ファイルと役割
 
 | ファイル | 役割 |
