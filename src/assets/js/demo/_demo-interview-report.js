@@ -60,6 +60,7 @@ function markVisited(slug) {
 }
 
 /**
+ * デバッグ用関数
  * EJS で置いた `[data-interview-storage-out]` に、現在の sessionStorage 内容を人が読める形で出す。
  * @param {HTMLElement} root `[data-interview-report-nav]` 要素（配下に out ノードがある想定）
  */
@@ -153,7 +154,7 @@ function navigateToSlug(slug) {
 
 /**
  * インタビュー報告ブロックがあれば初期化。他ページでは何もしない。
- * 下層のみ表示直後に markVisited → ストレージ表示更新 → ボタンクリックで遷移。
+ * 下層のみ表示直後に markVisited → ストレージ表示更新 → root へのイベント委譲で遷移。
  */
 function initInterviewReportNav() {
   const root = document.querySelector("[data-interview-report-nav]");
@@ -165,6 +166,7 @@ function initInterviewReportNav() {
     if (slug) markVisited(slug);
   }
 
+  // デバッグ用の表示更新
   updateStorageDisplay(root);
 
   root.addEventListener("click", (e) => {

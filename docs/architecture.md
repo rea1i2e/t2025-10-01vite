@@ -459,7 +459,7 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - `src/demo/demo-interview-report/index.html` — トップ
 - `src/demo/demo-interview-report/{slug}/index.html` — 下層9ページ（スラッグは固定データと一致）
 - `src/ejs/components-demo/_p-interview-report.ejs` — トップ／下層共通。表示中の「部」「番号」「スラッグ」、`[data-interview-storage-out]`（sessionStorage の可視化）、ボタン、`data-*` マークアップ
-- `src/assets/js/demo/_demo-interview-report.js` — `main.js` から import。`[data-interview-report-nav]` があるページのみ初期化
+- `src/assets/js/demo/_demo-interview-report.js` — `main.js` から import。`[data-interview-report-nav]` があるページのみ初期化。`root` への `click` 委譲で `[data-interview-action]` を判別する
 - `src/assets/sass/demo-components/_p-interview-report.scss` — `.p-interview-report__*`（メタ表示・ボタン。色は `_root.scss` のカスタムプロパティ）
 
 #### 動作仕様
