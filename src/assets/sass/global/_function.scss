@@ -69,33 +69,52 @@
   @return max(math.div($pixels, 16) * 1rem, 10px);
 }
 
-// ビューポート幅に応じて値を線形補間する関数：768px〜PC幅の間で min〜max に可変 vw
-@function fluid-vw($min, $max, $min-vw: 768px, $max-vw: $width-pc * 1px) {
-  @if unit($min) != unit($max) {
-    @error "minとmaxの単位を揃えてください";
+// fluid-vw(10, 20); 768〜1440px の間で10px 〜 20px vwで変化
+@function fluid-vw($min, $max, $min-vw: 768, $max-vw: $width-pc) {
+  @if not math.is-unitless($min) or not math.is-unitless($max) {
+    @error "fluid-vw() の min と max は unitless の数値で渡してください。";
   }
-  $range: $max - $min;
-  $vw-range: $max-vw - $min-vw;
+  @if not math.is-unitless($min-vw) or not math.is-unitless($max-vw) {
+    @error "fluid-vw() の min-vw と max-vw は unitless の数値で渡してください。";
+  }
+  @if $min-vw == $max-vw {
+    @error "min-vw と max-vw は同じ値にできません。";
+  }
+
+  $min: $min * 1px;
+  $max: $max * 1px;
+  $min-vw: $min-vw * 1px;
+  $max-vw: $max-vw * 1px;
+  $slope: math.div($max - $min, $max-vw - $min-vw);
+
   @return clamp(
     #{$min},
-    calc(#{$min} + #{$range} * ((100vw - #{$min-vw}) / #{$vw-range})),
+    calc(#{$min} + #{$slope} * (100vw - #{$min-vw})),
     #{$max}
-    );
+  );
+}
+
+// fluid-cqi(10, 20); 768〜1440px の間で10px 〜 20px cqiで変化
+@function fluid-cqi($min, $max, $min-cqi: 768, $max-cqi: $width-pc) {
+  @if not math.is-unitless($min) or not math.is-unitless($max) {
+    @error "fluid-cqi() の min と max は unitless の数値で渡してください。";
   }
-  
-  // ビューポート幅に応じて値を線形補間する関数：768px〜PC幅の間で min〜max に可変 cqi
-@function fluid-cqi($min, $max, $min-cqi: 768px, $max-cqi: $width-pc * 1px) {
-  @if unit($min) != unit($max) {
-    @error "minとmaxの単位を揃えてください";
+  @if not math.is-unitless($min-cqi) or not math.is-unitless($max-cqi) {
+    @error "fluid-cqi() の min-cqi と max-cqi は unitless の数値で渡してください。";
   }
-  @if unit($min-cqi) != unit($max-cqi) {
-    @error "min-cqiとmax-cqiの単位を揃えてください";
+  @if $min-cqi == $max-cqi {
+    @error "min-cqi と max-cqi は同じ値にできません。";
   }
-  $range: $max - $min;
-  $cqi-range: $max-cqi - $min-cqi;
+
+  $min: $min * 1px;
+  $max: $max * 1px;
+  $min-cqi: $min-cqi * 1px;
+  $max-cqi: $max-cqi * 1px;
+  $slope: math.div($max - $min, $max-cqi - $min-cqi);
+
   @return clamp(
     #{$min},
-    calc(#{$min} + #{$range} * ((100cqi - #{$min-cqi}) / #{$cqi-range})),
+    calc(#{$min} + #{$slope} * (100cqi - #{$min-cqi})),
     #{$max}
   );
 }

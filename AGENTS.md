@@ -15,6 +15,13 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 |------|------|
 | 本リポジトリ（この静的 Vite テンプレ） | `/Users/yoshiaki/working/✈️制作テンプレート/t2025-10-01vite` |
 | 対になる WordPress テーマ（Local・対応案件の一例。実パスは各案件テーマの AGENTS を正とする） | `/Users/yoshiaki/Local Sites/t2025-12-24vite-wp/app/public/wp-content/themes/t2025-12-24vite-wp` |
+| ナレッジ用リポジトリ（コーディングルール・`stock/`） | `/Users/yoshiaki/working/2026-03-20kn` |
+
+### 案件ナレッジ（stock）
+
+- **実装・コミット**はこのリポジトリ（本テンプレ）で行う。
+- **案件ナレッジの md** はナレッジ用リポの `stock/` にだけ追加・更新する。書式は [`/Users/yoshiaki/working/2026-03-20kn/formats/stock-format.md`](/Users/yoshiaki/working/2026-03-20kn/formats/stock-format.md) に従う。**このテンプレ内に `stock/` や案件メモ専用の md を新設しない**。
+- Cursor では、必要に応じてナレッジ用リポをマルチルートで開くか、チャットにそのリポの `AGENTS.md` または `formats/stock-format.md` を添付する。
 
 ## インタラクション部品の型録（エージェント向け）
 
