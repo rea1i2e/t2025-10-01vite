@@ -5,9 +5,9 @@ html {
   font-size: 16px;
 
   @if $startFrom == sp {
-    @media (max-width: 375px) {
-      font-size: vw(375, 16);
-      font-size: cqi(375, 16);
+    @media (max-width: #{$width-sp}px) {
+      font-size: vw($width-sp, 16);
+      font-size: cqi($width-sp, 16);
     }
 
     @include mq() {
@@ -28,9 +28,9 @@ html {
       font-size: 16px;
     }
 
-    @media (max-width: 375px) {
-      font-size: vw(375, 16);
-      font-size: cqi(375, 16);
+    @media (max-width: #{$width-sp}px) {
+      font-size: vw($width-sp, 16);
+      font-size: cqi($width-sp, 16);
     }
   }
 }
@@ -55,12 +55,13 @@ body > * {
 }
 
 a {
-  transition: opacity var(--hover-transition);
+  @include hover-opacity();
 }
 
 a:not([class]) {
   text-decoration: underline;
 }
+
 
 /* pcの電話番号発信対応 */
 a[href^="tel:"] {
@@ -74,16 +75,6 @@ a[href^="tel:"] {
       pointer-events: initial;
     }
   }
-}
-
-@media (any-hover: hover) {
-  a:hover {
-    opacity: 0.7;
-  }
-}
-
-a:focus-visible {
-  opacity: 0.7;
 }
 
 iframe[src*="youtube.com"] {
