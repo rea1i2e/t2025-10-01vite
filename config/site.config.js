@@ -176,6 +176,77 @@ const pages = {
     description:
       "APIの設置例です。",
   },
+  demoInterviewReport: {
+    label: "インタビュー報告（デモ）",
+    root: "../../",
+    path: "demo/demo-interview-report/",
+    title: "インタビュー報告（デモ）",
+    description:
+      "sessionStorage で表示済みスラッグを避けつつランダム遷移するデモです。",
+  },
+  interviewReportK59qj3iv: {
+    label: "インタビュー報告",
+    root: "../../../",
+    path: "demo/demo-interview-report/k59qj3iv/",
+    title: "インタビュー報告",
+    description: "インタビュー報告デモ（下層ページ）です。",
+  },
+  interviewReportQ2g6cydv: {
+    label: "インタビュー報告",
+    root: "../../../",
+    path: "demo/demo-interview-report/q2g6cydv/",
+    title: "インタビュー報告",
+    description: "インタビュー報告デモ（下層ページ）です。",
+  },
+  interviewReportK62bfe8t: {
+    label: "インタビュー報告",
+    root: "../../../",
+    path: "demo/demo-interview-report/k62bfe8t/",
+    title: "インタビュー報告",
+    description: "インタビュー報告デモ（下層ページ）です。",
+  },
+  interviewReportD4unw7t6: {
+    label: "インタビュー報告",
+    root: "../../../",
+    path: "demo/demo-interview-report/d4unw7t6/",
+    title: "インタビュー報告",
+    description: "インタビュー報告デモ（下層ページ）です。",
+  },
+  interviewReportR7cs6mgi: {
+    label: "インタビュー報告",
+    root: "../../../",
+    path: "demo/demo-interview-report/r7cs6mgi/",
+    title: "インタビュー報告",
+    description: "インタビュー報告デモ（下層ページ）です。",
+  },
+  interviewReportN8ksfqv6: {
+    label: "インタビュー報告",
+    root: "../../../",
+    path: "demo/demo-interview-report/n8ksfqv6/",
+    title: "インタビュー報告",
+    description: "インタビュー報告デモ（下層ページ）です。",
+  },
+  interviewReportY2kezf3c: {
+    label: "インタビュー報告",
+    root: "../../../",
+    path: "demo/demo-interview-report/y2kezf3c/",
+    title: "インタビュー報告",
+    description: "インタビュー報告デモ（下層ページ）です。",
+  },
+  interviewReportM5ieujny: {
+    label: "インタビュー報告",
+    root: "../../../",
+    path: "demo/demo-interview-report/m5ieujny/",
+    title: "インタビュー報告",
+    description: "インタビュー報告デモ（下層ページ）です。",
+  },
+  interviewReportJ3d9gren: {
+    label: "インタビュー報告",
+    root: "../../../",
+    path: "demo/demo-interview-report/j3d9gren/",
+    title: "インタビュー報告",
+    description: "インタビュー報告デモ（下層ページ）です。",
+  },
   contact: {
     label: "お問い合わせ",
     root: "../../",
@@ -261,9 +332,9 @@ export const siteConfig = {
    * - "demo[A-Z]*" → demoの後に大文字が続くページのみ除外（demoは除外しない）
    * - "contact" → contactのみ除外
    */
-  headerExcludePages: ["demo[A-Z]*", "thanks"],
-  drawerExcludePages: ["demo[A-Z]*", "thanks"],
-  // footerExcludePages: ["demo[A-Z]*", "thanks"],
+  headerExcludePages: ["demo[A-Z]*", "thanks", "interviewReport*"],
+  drawerExcludePages: ["demo[A-Z]*", "thanks", "interviewReport*"],
+  footerExcludePages: ["interviewReport*"],
 
   // 除外ページチェック関数
   ty_isExcluded,

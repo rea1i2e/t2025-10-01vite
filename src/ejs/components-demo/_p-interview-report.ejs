@@ -1,0 +1,70 @@
+<%
+const _variant = typeof variant !== 'undefined' && variant === 'sub' ? 'sub' : 'top';
+%>
+<% if (_variant === 'top') { %>
+<section
+  class="p-demo__section p-interview-report"
+  data-interview-report-nav="top"
+  aria-label="インタビュー報告デモ"
+>
+  <div class="p-demo__section-inner p-interview-report__inner">
+    <p class="p-interview-report__meta">
+      <span class="p-interview-report__meta-term">部</span>
+      <span class="p-interview-report__meta-def">—</span>
+      <span class="p-interview-report__meta-term">番号</span>
+      <span class="p-interview-report__meta-def">—</span>
+      <span class="p-interview-report__meta-term">スラッグ</span>
+      <code class="p-interview-report__meta-code">—</code>
+    </p>
+    <div class="p-interview-report__storage-block">
+      <p class="p-interview-report__storage-label">sessionStorage</p>
+      <p class="p-interview-report__storage-key">
+        キー: <code>demoInterviewReportVisited</code>
+      </p>
+      <pre class="p-interview-report__storage-pre" data-interview-storage-out role="status" aria-live="polite"></pre>
+    </div>
+    <button type="button" class="p-interview-report__button" data-interview-action="random">
+      回答を見る
+    </button>
+  </div>
+</section>
+<% } else {
+  const _slug = typeof slug !== 'undefined' && slug != null ? String(slug) : '';
+  const _dept = typeof dept !== 'undefined' && dept != null ? String(dept) : '';
+  const _deptLabel = typeof deptLabel !== 'undefined' && deptLabel != null ? String(deptLabel) : '';
+  const _pageCode = typeof pageCode !== 'undefined' && pageCode != null ? String(pageCode) : '';
+%>
+<section
+  class="p-demo__section p-interview-report"
+  data-interview-report-nav="sub"
+  data-slug="<%= _slug %>"
+  data-dept="<%= _dept %>"
+  aria-label="インタビュー報告デモ"
+>
+  <div class="p-demo__section-inner p-interview-report__inner">
+    <p class="p-interview-report__meta">
+      <span class="p-interview-report__meta-term">部</span>
+      <span class="p-interview-report__meta-def"><%= ty_stripTags(_deptLabel) %></span>
+      <span class="p-interview-report__meta-term">番号</span>
+      <code class="p-interview-report__meta-code"><%= ty_stripTags(_pageCode) %></code>
+      <span class="p-interview-report__meta-term">スラッグ</span>
+      <code class="p-interview-report__meta-code"><%= _slug %></code>
+    </p>
+    <div class="p-interview-report__storage-block">
+      <p class="p-interview-report__storage-label">sessionStorage</p>
+      <p class="p-interview-report__storage-key">
+        キー: <code>demoInterviewReportVisited</code>
+      </p>
+      <pre class="p-interview-report__storage-pre" data-interview-storage-out role="status" aria-live="polite"></pre>
+    </div>
+    <div class="p-interview-report__actions">
+      <button type="button" class="p-interview-report__button" data-interview-action="same-dept">
+        <%= ty_stripTags(_deptLabel) %>の回答を見る
+      </button>
+      <button type="button" class="p-interview-report__button" data-interview-action="other">
+        他の回答を見る
+      </button>
+    </div>
+  </div>
+</section>
+<% } %>
