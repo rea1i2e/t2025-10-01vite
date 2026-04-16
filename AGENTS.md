@@ -141,8 +141,7 @@ npm run build
 
 ## Git hooks に関する注意
 
-- **pre-commit**: `npm run build:only` が実行される（ビルドが通らないとコミットできない）
-- **pre-push**: `npm run validate:build` が実行される（ビルド + HTML検証が通らないとプッシュできない）
+- **pre-commit**: `npm run validate:build`（`build` → `validate:html`）。`build` は `vite build` のあと `scripts/after-build.mjs` を含む。FTP 手動アップロードがプッシュより先に走る運用でも、コミット時点で本番相当の `dist/` と HTML 検証が通っていることを前提にする。`pre-push` では同じ検証は行わない（コミット時に担保済みのため）。
 
 ## ページ追加手順
 

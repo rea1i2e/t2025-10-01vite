@@ -41,7 +41,7 @@ npm run dev
 
 Git を使わない場合（ZIP のみ展開するなど、`.git` がない場合）、`npm install` の最後に `prepare` で husky が動き、**Git 前提の処理が失敗して `npm install` 全体が完了しない**ことがある。その結果、`vite: command not found` のように見えることがある。原因は「Vite が PATH にない」だけでなく、**`npm install` が途中で止まり `node_modules` が不完全**になっていることが多い（`husky` の失敗 → install 不完全 → `vite` が存在しない、という連鎖）。
 
-**husky** は Git の hooks を設定する仕組みで、本テーマでは `pre-commit` で `npm run build` が走るようにしている。これにより、コミット前に本番用の `dist/` がビルドされ、**FTP 手動アップロード時のビルド漏れ**を防ぐための安全装置として機能する。
+**husky** は Git の hooks を設定する仕組みで、本テーマでは **`pre-commit` で `npm run validate:build`**（`npm run build` → `validate:html`）が走る。`build` には **`vite build` のあと `scripts/after-build.mjs`** が含まれる。コミット時点で本番相当の `dist/` と HTML 検証が通っていることを前提にし、**プッシュ前に FTP で手動アップロードした場合でも、`after-build.mjs` 未実行の `dist/` をコミットしてしまうリスク**を抑える。プッシュ時に同じ検証は繰り返さない（`pre-commit` で十分なため）。
 
 #### Git を使わない場合の回避
 

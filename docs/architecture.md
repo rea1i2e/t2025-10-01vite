@@ -159,12 +159,10 @@ flowchart LR
 #### 関連ファイル
 - `package.json` — `validate:html`: `html-validate dist/`、`validate:build`: `npm run build && npm run validate:html`
 - `.htmlvalidate.json` — `extends: ["html-validate:recommended"]` + 独自ルール調整
-- `.husky/pre-commit` — `npm run build:only`（コミット前にビルドを実行）
-- `.husky/pre-push` — `npm run validate:build`（プッシュ前にビルド + HTML検証）
+- `.husky/pre-commit` — `npm run validate:build`（コミット前に本番ビルド + HTML検証）
 
 #### Git hooks の動作
-- **pre-commit**: `npm run build:only`（ビルドのみ実行し、通らなければコミット拒否）
-- **pre-push**: `npm run validate:build`（ビルド + HTML検証、通らなければプッシュ拒否）
+- **pre-commit**: `npm run validate:build`（`build` = `vite build` + `scripts/after-build.mjs` → `validate:html`）。通らなければコミットは拒否される。プッシュ時は同じ検証を繰り返さない。
 
 ### 3.7 ページ情報管理（site.config.js）
 
@@ -489,8 +487,7 @@ env.deploy.example       デプロイ用変数テンプレート
 .github/workflows/
   deploy.yml             CI/CD 定義
 .husky/
-  pre-commit             コミット前ビルド
-  pre-push               プッシュ前ビルド+検証
+  pre-commit             コミット前 validate:build
 ```
 
 ---
@@ -519,6 +516,7 @@ env.deploy.example       デプロイ用変数テンプレート
 
 ### Git hooks
 - `prepare` — `husky`
+- `.husky/pre-commit` — `npm run validate:build`（`build` に `after-build.mjs` が含まれる）
 
 ---
 
@@ -542,5 +540,5 @@ env.deploy.example       デプロイ用変数テンプレート
 - HTML後処理: `scripts/after-build.mjs`
 - フォント圧縮: `scripts/font-compress.sh`, `scripts/font-compress-subset.sh`, `scripts/README-font-compress.md`
 - HTML検証: `.htmlvalidate.json`
-- Git hooks: `.husky/pre-commit`, `.husky/pre-push`
+- Git hooks: `.husky/pre-commit`
 - デプロイ: `.github/workflows/deploy.yml`
