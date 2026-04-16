@@ -172,19 +172,20 @@ npm run init
 - `src/assets/js/demo/` — デモ用JSファイル
 - `src/assets/sass/demo-components/` — デモ用Sassファイル
 - `src/assets/images/demo/` — デモ用画像
+- `src/assets/images/common/` — テンプレ共通画像置き場の掃除（案件で差し替え前提）
 - `src/assets/videos/demo/` — デモ用動画
 - `src/assets/audio/demo-sound/` — デモ用音声
 - `raw/videos/demo/` — デモ用動画素材
-- `src/public/MailForm01_utf8/` — デモ用メールフォームPHP
 
 **削除されるファイル**
 - `src/ejs/data/posts.js` — デモ用ダミーデータ
+- `src/public/` 配下の**すべてのファイル**（`MailForm01_utf8/` などサブフォルダは空のまま残る）
 
 **更新されるファイル**
-- `src/assets/js/main.js` — `./demo/` への import 行を削除
+- `src/assets/js/main.js` — `./demo/` への import 行を削除。`// import './_debugScrollable.js';` は残す
 - `src/assets/sass/style.scss` — `@use "./demo-components/**"` 行を削除
 - `src/ejs/common/_footer.ejs` — `_theme-toggle.ejs` の include 行を削除
-- `config/site.config.js` — デモページ定義（`demo` / `demoXxx` / `contact` / `thanks` / `privacy` / `x` キー）を削除
+- `config/site.config.js` — デモページ定義（`demo` / `demoXxx` / `demoVariants` / `demoJavaScript` / `contact` / `thanks` / `privacy` / `x` キー）を削除
 
 **実行後の追加対応**
 - `config/site.config.js` の `siteName` / `baseUrl` を案件情報に更新する

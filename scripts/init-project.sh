@@ -17,10 +17,10 @@ dirs=(
   "src/assets/js/demo"
   "src/assets/sass/demo-components"
   "src/assets/images/demo"
+  "src/assets/images/common"
   "src/assets/videos/demo"
   "src/assets/audio/demo-sound"
   "raw/videos/demo"
-  "src/public/MailForm01_utf8"
 )
 
 for dir in "${dirs[@]}"; do
@@ -30,6 +30,14 @@ for dir in "${dirs[@]}"; do
     echo "  削除: $dir"
   fi
 done
+
+# src/public 内のファイルのみ削除（空のフォルダ構成は残す）
+PUBLIC_DIR="$ROOT/src/public"
+if [ -d "$PUBLIC_DIR" ]; then
+  file_count=$(find "$PUBLIC_DIR" -type f | wc -l | tr -d '[:space:]')
+  find "$PUBLIC_DIR" -type f -delete
+  echo "  削除: src/public 内のファイル（${file_count:-0} 件、フォルダは保持）"
+fi
 
 files=(
   "src/ejs/data/posts.js"
@@ -58,8 +66,10 @@ let src = readFileSync(filePath, 'utf8');
 // ./demo/ への import 行（行末コメント含む）を削除
 src = src.replace(/^import ['"]\.\/demo\/[^\n]*\n?/gm, '');
 
-// コメントアウトされた demo/ import 行を削除
-src = src.replace(/^\/\/ import ['"][^'"]*['"][^\n]*\n?/gm, '');
+// コメントアウトされた import 行を削除（_debugScrollable は残す）
+src = src.replace(/^\/\/ import ['"][^'"]*['"][^\n]*\n?/gm, (line) =>
+  /_debugScrollable/.test(line) ? line : ''
+);
 
 // 「案件固有処理」ブロックの /** ... */ コメントブロックを削除
 src = src.replace(/\/\*\*\n \* 案件固有処理[^\n]*\n \*\/\n?/g, '');
@@ -122,6 +132,7 @@ const demoKeys = [
   'demoHoverButton', 'demoHoverText', 'demoHoverCard',
   'demoCurrentSection', 'demoHoverChange', 'demoDocument',
   'demoMedia', 'demoApi',
+  'demoVariants', 'demoJavaScript',
   'contact', 'thanks', 'privacy', 'x',
 ];
 
