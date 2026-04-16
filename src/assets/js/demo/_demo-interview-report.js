@@ -1,11 +1,20 @@
 /**
  * インタビュー報告デモ — ランダム遷移と sessionStorage による「表示済み」管理
  *
- * - トップ: 「回答を見る」で 9 スラッグのいずれかへ遷移。
- * - 下層: 「同部の回答」「他の回答」で別スラッグへ。表示中ページは data-slug / data-dept で判別。
- * - sessionStorage に「一度表示したスラッグ」の一意リストを保存。抽選では原則ここに無い候補を優先し、
- *   候補が尽きたら visited を無視して再抽選（pickSlug）。
- * - トップページは訪問記録に含めない（下層ロード時のみ markVisited）。
+ * 【処理の流れ（このファイルの正本）】
+ * 1. 定数配列 PAGES で下層ページ一覧（slug / dept）を定義する。
+ * 2. sessionStorage に「一度表示したスラッグ」の配列を保存する（STORAGE_KEY）。トップは記録しない。
+ * 3. 下層ロード時のみ markVisited で現在スラッグを追加（重複なし）。
+ * 4. [data-interview-report-nav] への click 委譲で data-interview-action に応じ resolveNextSlug。
+ *    - random: 全 slug → pickSlug
+ *    - same-dept: 同一 dept かつ currentSlug 以外 → pickSlug
+ *    - other: currentSlug 以外の全 slug → pickSlug
+ * 5. pickSlug は「候補のうち未訪問が 1 つでもあれば未訪問だけから乱数」「未訪問が空なら候補全体に戻して乱数」。
+ *    「全件訪問済みだから表示中だけ除外」のような分岐はない。random では同一スラッグへの再遷移もあり得る。
+ * 6. navigateToSlug: getInterviewReportBaseUrl で demo-interview-report までを基準にし、
+ *    new URL('./{slug}/', base) を解決して window.location.assign(url.href) で遷移。
+ *
+ * UI 上の対応: トップは「回答を見る」、下層は「同部の回答」「他の回答」。表示中は data-slug / data-dept。
  */
 
 /** sessionStorage のキー。EJS の表示用ラベルと揃えること。 */
