@@ -48,6 +48,10 @@ $theme-dark: (
 
   --gradation-accent: linear-gradient(var(--color-accent), var(--color-bg-sub));
   --gradation-accent-hover: linear-gradient(to right, var(--color-bg-sub), var(--color-accent), var(--color-bg-sub));
+
+  --gradation-theme-accent: linear-gradient(var(--color-theme), var(--color-accent));
+  --gradation-theme-accent-hover: linear-gradient(to right, var(--color-accent), var(--color-theme), var(--color-accent));
+  
   --border: 1px solid var(--color-bg-sub);
 
   --header-height: #{rem(72)};

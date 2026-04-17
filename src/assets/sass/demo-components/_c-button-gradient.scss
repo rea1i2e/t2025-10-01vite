@@ -2,10 +2,11 @@
 
 /* グラデーションの変化 */
 .c-button-gradient {
-  --button-bg: var(--gradation-accent-hover);
-  --button-text-color: var(--color-text);
-  --button-text-color-hover: var(--color-bg-sub);
-  --button-border: 2px solid var(--color-black);
+  --button-bg: var(--gradation-theme-accent-hover);
+  --button-bg-hover: color-mix(var(--color-bg) 10%, transparent);
+  --button-text-color: var(--color-bg);
+  --button-text-color-hover: var(--color-bg);
+  --button-border: 2px solid var(--color-text);
   --button-border-radius: 100vh;
   position: relative;
   z-index: 0;
@@ -15,5 +16,13 @@
   background-image: var(--button-bg);
   border: var(--button-border);
   border-radius: var(--button-border-radius);
+  color: var(--button-text-color);
+}
+
+.c-button-gradient[data-hover="bg-position-slide"] {
   @include hover-bg-position-slide;
+}
+
+.c-button-gradient[data-hover="overlay"] {
+  @include hover-bg-slide-before;
 }
