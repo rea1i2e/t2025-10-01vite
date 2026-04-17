@@ -16,7 +16,7 @@
 }
 
 /* アイコン（種別ごとに $icon-image を渡す） */
-.c-button[data-icon="mail"] {
+.c-button[data-icon="arrow_right"] {
   @include button-icon-after(url("../images/common/icon_arrow_right.svg"));
   @include button-icon-after-nudge;
 }
