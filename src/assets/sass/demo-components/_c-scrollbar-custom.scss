@@ -1,0 +1,39 @@
+@use "../global" as *;
+
+/**
+ * スクロールバー見た目（対象要素は overflow: auto などでスクロールコンテナにすること）
+ * ・本体にscrollbar-colorやscrollbar-widthの指定をすると、Chromeで丸みがついてしまう
+ * ・Firefoxでカスタマイズするには、本体にscrollbar-colorやscrollbar-widthの指定が必要
+ * ・そのため、それぞれに指定が必要
+ * ・scrollbar-widthの初期値はautoで他に、thinとnoneの指定が可能
+ */
+.c-scrollbar-custom {
+  --scrollbar-track-color: var(--color-bg-sub);
+  --scrollbar-thumb-color: var(--color-theme);
+  --scrollbar-size: #{rem(14)};
+  --scrollbar-border-radius: #{rem(10)};
+  overflow-y: auto;
+}
+
+.c-scrollbar-custom::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  // height: var(--scrollbar-size); // 横スクロールバーの指定
+}
+
+.c-scrollbar-custom::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+  border-radius: var(--scrollbar-border-radius);
+}
+
+.c-scrollbar-custom::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: var(--scrollbar-border-radius);
+}
+
+/* Firefox向けのスタイル */
+@-moz-document url-prefix() {
+  .c-scrollbar-custom {
+    scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+    // scrollbar-width: auto; 
+  }
+}
