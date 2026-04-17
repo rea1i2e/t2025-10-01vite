@@ -1,0 +1,20 @@
+/* 背景色・文字色（--button-bg-hover / --button-text-color-hover）。::before / ::after は使用しない */
+@mixin hover-bg {
+  transition:
+    background-color var(--hover-transition),
+    color var(--hover-transition);
+
+  @media (any-hover: hover) {
+    &:hover {
+      opacity: 1;
+      background-color: var(--button-bg-hover);
+      color: var(--button-text-color-hover);
+    }
+  }
+  
+  &:focus-visible {
+    opacity: 1;
+    background-color: var(--button-bg-hover);
+    color: var(--button-text-color-hover);
+  }
+}

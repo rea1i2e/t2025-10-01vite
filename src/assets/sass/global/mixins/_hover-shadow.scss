@@ -1,0 +1,21 @@
+/* --shadow → --shadow-hover と軽い translateY（既定 -2px） */
+@mixin hover-shadow($translate-y: -2px) {
+  box-shadow: var(--shadow);
+  transition:
+    box-shadow var(--hover-transition),
+    transform var(--hover-transition);
+
+  @media (any-hover: hover) {
+    &:hover {
+      box-shadow: var(--shadow-hover);
+      opacity: 1;
+      transform: translateY($translate-y);
+    }
+  }
+  
+  &:focus-visible {
+    box-shadow: var(--shadow-hover);
+    opacity: 1;
+    transform: translateY($translate-y);
+  }
+}

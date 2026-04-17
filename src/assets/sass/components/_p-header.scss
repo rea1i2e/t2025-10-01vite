@@ -60,7 +60,7 @@
   gap: rem(8);
   height: 100%;
   padding-inline: rem(16);
-  @include hover-text-underline-slide;
+  @include hover-text-underline-span-before;
 }
 
 .p-header__nav-item-link[target="_blank"]::after {

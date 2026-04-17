@@ -1,0 +1,56 @@
+@use "../function" as *;
+
+/*
+ * アイコンを mask で表示（要素自身の ::after を使用）
+ * 同一セレクタでは ::after を他用途に使わないこと（上書き・競合のため）。
+ * ホバーで横に動かす場合は button-icon-after-nudge と併用。
+ * base/_base.scss の a { hover-opacity } を打ち消すため、:hover / :focus-visible で opacity: 1 を付与。
+ */
+@mixin button-icon-after(
+  $icon-image,
+  $gap: rem(16),
+  $size: rem(24)
+) {
+  align-items: center;
+  column-gap: $gap;
+  --button-icon-image: #{$icon-image};
+
+  &::after {
+    display: block;
+    width: $size;
+    aspect-ratio: 1;
+    background-color: currentColor;
+    mask: var(--button-icon-image) no-repeat center / contain;
+    content: "";
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible {
+    opacity: 1;
+  }
+}
+
+/*
+ * button-icon-after と併用（::after はそちらで定義済みであること）
+ * 同一要素の ::after に transition と hover / focus-visible 時の translate を追加する。
+ */
+@mixin button-icon-after-nudge($nudge: rem(5)) {
+  &::after {
+    transition: translate var(--hover-transition);
+  }
+
+  @media (any-hover: hover) {
+    &:hover::after {
+      translate: $nudge 0;
+    }
+  }
+
+  &:focus-visible::after {
+    translate: $nudge 0;
+  }
+}

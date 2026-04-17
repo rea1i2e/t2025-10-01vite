@@ -1,0 +1,19 @@
+@use '../global' as *;
+
+/* グラデーションの変化 */
+.c-button-gradient {
+  --button-bg: var(--gradation-accent-hover);
+  --button-text-color: var(--color-text);
+  --button-text-color-hover: var(--color-bg-sub);
+  --button-border: 2px solid var(--color-black);
+  --button-border-radius: 100vh;
+  position: relative;
+  z-index: 0;
+  display: inline-flex;
+  padding-block: 1em;
+  padding-inline: 1em;
+  background-image: var(--button-bg);
+  border: var(--button-border);
+  border-radius: var(--button-border-radius);
+  @include hover-bg-position-slide;
+}

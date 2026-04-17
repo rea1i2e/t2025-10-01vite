@@ -1,10 +1,12 @@
+@use "sass:map";
+
 /* デザインカンプ */
 $width-pc: 1440;
 $width-sp: 375;
 
 /* FVサイズ
 PC 1440 * 768
-SP 375 * 700 
+SP 375 * 700
 */
 
 /* インナー幅設定 */
@@ -19,3 +21,53 @@ $padding-sp: 20;
 $inner-pc + $padding-pc * 2 = 1200
  → 1200 〜 768px
 */
+
+/* ----- ブレークポイント（@include mq） ----- */
+
+$startFrom: sp;
+
+// デフォルト値を設定
+$mediaquerys: (
+  sm: "screen",
+  md: "screen",
+  lg: "screen",
+  xl: "screen",
+);
+
+@if $startFrom == sp {
+  //スマホファースト
+  $breakpoints: (
+    sm: 480, // gridレイアウト 1 or 2カラムの切り替え
+    md: 768,
+    lg: 1024,
+    xl: 1440,
+  );
+
+  //メディアクエリー
+  $mediaquerys: (
+    sm: "screen and (min-width: #{map.get($breakpoints, 'sm')}px)",
+    md: "screen and (min-width: #{map.get($breakpoints, 'md')}px)",
+    lg: "screen and (min-width: #{map.get($breakpoints, 'lg')}px)",
+    xl: "screen and (min-width: #{map.get($breakpoints, 'xl')}px)",
+  );
+} @else {
+  $breakpoints: (
+    xl: 1440,
+    lg: 1023,
+    md: 767,
+    sm: 599,
+  );
+  $mediaquerys: (
+    sm: "screen and (max-width: #{map.get($breakpoints, 'sm')}px)",
+    md: "screen and (max-width: #{map.get($breakpoints, 'md')}px)",
+    lg: "screen and (max-width: #{map.get($breakpoints, 'lg')}px)",
+    xl: "screen and (max-width: #{map.get($breakpoints, 'xl')}px)",
+  );
+}
+
+// @include mq(){}で書くとブレークポイントが反映される（初期値はmd）
+@mixin mq($mediaquery: md) {
+  @media #{map.get($mediaquerys, $mediaquery)} {
+    @content;
+  }
+}

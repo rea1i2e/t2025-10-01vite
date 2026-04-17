@@ -43,7 +43,11 @@ $theme-dark: (
   /* ライトモード用の役割変数（テーマ切り替え対象） */
   @include apply-theme($theme-light);
 
-  --gradation-theme: linear-gradient(var(--color-theme), var(--color-accent));
+  --gradation-theme: linear-gradient(var(--color-theme), var(--color-bg-sub));
+  --gradation-theme-hover: linear-gradient(to right, var(--color-bg-sub), var(--color-theme));
+
+  --gradation-accent: linear-gradient(var(--color-accent), var(--color-bg-sub));
+  --gradation-accent-hover: linear-gradient(to right, var(--color-bg-sub), var(--color-accent), var(--color-bg-sub));
   --border: 1px solid var(--color-bg-sub);
 
   --header-height: #{rem(72)};
