@@ -20,7 +20,7 @@
   inset-block-start: calc((1lh - var(--list-marker-size)) / 2 );
   inset-inline-start: 0;
   block-size: var(--list-marker-size);
-  aspect-ratio: 1;
+  aspect-ratio: 1; // 正方形の場合はOKだけど、そうでない場合余白管理の調整が必要
   background-color: var(--list-marker-color);
   border-radius: 50%;
   content: "";
