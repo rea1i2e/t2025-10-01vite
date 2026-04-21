@@ -25,6 +25,14 @@ const pages = {
     title: "デモ一覧",
     description: "デモの一覧ページです。",
   },
+  demoToolkit: {
+    label: "デモ製作用パーツ索引",
+    root: "../../",
+    path: "demo/demo-toolkit/",
+    title: "デモ製作用パーツ索引",
+    description:
+      "デモページ組み立て向けに既存の EJS 断片・Sass・シェル構造を索引するページです。",
+  },
   demoAccordion: {
     label: "アコーディオン",
     root: "../../",

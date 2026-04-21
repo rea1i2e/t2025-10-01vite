@@ -1,7 +1,7 @@
 @use "../global" as *;
 
 // 定義リスト（dl, dt, dd）
-.p-demo-dl {
+.p-dl {
   --dl-padding-block: #{rem(16)};
   
   display: grid;

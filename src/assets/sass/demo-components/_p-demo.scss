@@ -6,22 +6,19 @@
 }
 
 .p-demo__inner {
-  display: grid;
-  gap: rem(60);
 }
 
-.p-demo__inner > * {
+/* 1カラム section間余白80px */
+.p-demo__sections {
+  display: grid;
+  gap: rem(80)
+}
+
+.p-demo__sections > * {
   min-width: 0;
 }
 
 .p-demo__section {
-  min-width: 0;
-  display: grid;
-  gap: rem(20);
-}
-
-.p-demo__section > * {
-  min-width: 0;
 }
 
 .p-demo__heading {
@@ -37,24 +34,32 @@
   // text-align: center;
 }
 
-.p-demo__content {
-  display: grid;
-  gap: rem(40);
-}
-
-.p-demo__content > * {
-  min-width: 0;
-}
-
 .p-demo__desc {
 }
 
-.p-demo__desc code {
+.p-demo__box {
+  padding-block: 0.5em;
+  padding-inline: 1em;
+  background-color: var(--color-bg-sub);
+}
+
+
+/* UAスタイルシートをそのまま採用 */
+.p-demo :is(h2, h3, h4, h5, h6, p) {
+  margin: revert;
+}
+
+/* クラス付与せずに使うタグ */
+.p-demo code {
   padding-inline: rem(4);
   font-size: 0.9em;
   background-color: var(--color-bg-code);
   border-radius: rem(4);
 }
+
+
+
+/* ページ固有のスタイル */
 
 .p-demo-api__status:empty {
   display: none;

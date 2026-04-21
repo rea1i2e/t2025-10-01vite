@@ -130,7 +130,7 @@ const demoKeys = [
   'demoFvVideo', 'demoSound', 'demoScrollAnimation', 'demoParallax',
   'demoTextDecoration', 'demoCssAnime', 'demoGridLayout',
   'demoHoverButton', 'demoHoverText', 'demoHoverCard',
-  'demoCurrentSection', 'demoHoverChange', 'demoDocument',
+  'demoCurrentSection', 'demoHoverChange', 'demoDocument', 'demoToolkit',
   'demoMedia', 'demoApi',
   'demoVariants', 'demoJavaScript',
   'contact', 'thanks', 'privacy', 'x',

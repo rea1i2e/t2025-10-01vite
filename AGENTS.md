@@ -37,6 +37,8 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | モーダル（dialog 非使用） | `src/assets/js/demo/_modal.js` | 用途に応じて `components-demo` を検索 | 上記 `demo-components` を検索 | `demo-dialog` を参考 |
 | Splide スライダー | `src/assets/js/demo/_splide-fade.js` 等（`_splide-loop`、`_splide-thumbnail`、`_splide-progress`、`_splide-posts`） | 同名 `_p-splide-*.ejs` | 同名 `_p-splide-*.scss` | `src/demo/demo-splide/index.html` |
 
+デモページ新規作成時に既存の `components-demo`／`demo-components`／シェル構造を再利用するための索引は `src/demo/demo-toolkit/index.html` を参照する。
+
 その他は `src/assets/js/main.js` の `./demo/` import と、`config/site.config.js` の `demo*` ページ定義・`src/demo/` 以下のフォルダを手がかりにする。
 
 ## 重要ファイルと役割
@@ -57,6 +59,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `env.deploy.example` | デプロイ用環境変数テンプレート（`.env.deploy` の雛形） |
 | `src/ejs/components/` | 毎回使う部品テンプレート |
 | `src/ejs/demo-components/` | よく使うの部品テンプレート |
+| `src/demo/demo-toolkit/index.html` | デモ製作用。既存 EJS・Sass・シェルを組み合わせるための索引ページ |
 | `src/assets/js/main.js` | JSエントリファイル |
 | `src/assets/js/_demo-fv-video.js` | デモ用。ファーストビュー動画の PC/SP src 切替・ミュート／音声オン別ボタン（`demo/demo-fv-video/`） |
 | `src/assets/js/demo/_demo-api.js` | デモ用。JSONPlaceholder users の `fetch` と `li` による名前一覧（`demo/demo-api/`） |

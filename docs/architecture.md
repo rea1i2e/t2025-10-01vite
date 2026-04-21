@@ -61,6 +61,7 @@ flowchart LR
 - `src/**/*.html` — HTML側でEJSの `include()` により共通パーツを組み立てる
 - `src/ejs/components/` — 毎回使う部品テンプレート
 - `src/ejs/demo-components/` — よく使うデモ用の部品テンプレート
+- `src/demo/demo-toolkit/index.html` — デモページ組み立て向けの索引（`components-demo` と `demo-components` の対応、`p-demo` シェル例、`utility/` の参照先、関連デモへの導線）
 
 #### 動作仕様
 - 各ページHTMLでは `config/site.config.js` の `getPage(pageKey)` でページ情報を取得し、`page` オブジェクト（title / description / keywords / path / root）を得る。存在しないキーを渡すとエラーを投げる。
@@ -253,7 +254,7 @@ const documentItems = [
 
 2. 表示部分は `<%- item.text %>` だけで完結する（条件分岐不要）:
 ```ejs
-<dl class="p-demo-dl">
+<dl class="p-dl">
   <% documentItems.forEach((item) => { %>
     <dt class="p-dl__dt"><%- item.heading %></dt>
     <dd class="p-dl__dd"><%- item.text %></dd>
