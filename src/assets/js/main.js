@@ -80,8 +80,8 @@ import './demo/_demo-fv-video.js';
 /* JSONPlaceholder API デモ */
 import './demo/_demo-api.js';
 
-/* インタビュー報告デモ（ランダム遷移） */
-import './demo/_demo-interview-report.js';
+/* ランダムページ遷移（訪問済み除外）デモ */
+import './demo/_demo-random-page-nav.js';
 
 
 /* 音声 ON/OFF dialog デモ */

@@ -452,27 +452,27 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - デモ一覧から `demoSound` のリンクで開く。差し替えは `src/assets/audio/demo-sound/` のファイルを置き換え、`_demo-sound.js` の import パスを合わせる。固定 URL で配管したい場合は `src/public/` 配下に置き、`src` を文字列で渡す方法にもできる。
 - **出典**: BGMer の楽曲利用時は [利用規約](https://bgmer.net/terms) に従い、ページ内にクレジットを記載する。現行デモは [秘密の森 – ピアノver.](https://bgmer.net/music/m08_pf) へのリンクを `.p-demo-sound__credit` に置いている。音源差し替え時は当該要素を新しい出典に合わせて更新する。
 
-### 3.20 インタビュー報告デモ（ランダム遷移・sessionStorage）
+### 3.20 ランダムページ遷移（訪問済み除外）デモ（sessionStorage）
 
 #### 関連ファイル
-- `config/site.config.js` — ページキー `demoInterviewReport`（トップ）、下層は `interviewReport{Slug}`（キャメルケース・先頭一致 `interviewReport*` でヘッダー／ドロワー／フッターナビから除外）
-- `src/demo/demo-interview-report/index.html` — トップ
-- `src/demo/demo-interview-report/{slug}/index.html` — 下層9ページ（スラッグは固定データと一致）
-- `src/ejs/components-demo/_p-interview-report.ejs` — トップ／下層共通。表示中の「部」「番号」「スラッグ」、`[data-interview-storage-out]`（sessionStorage の可視化）、ボタン、`data-*` マークアップ
-- `src/assets/js/demo/_demo-interview-report.js` — `main.js` から import。`[data-interview-report-nav]` があるページのみ初期化。`root` への `click` 委譲で `[data-interview-action]` を判別する
-- `src/assets/sass/demo-components/_p-interview-report.scss` — `.p-interview-report__*`（メタ表示・ボタン。色は `_root.scss` のカスタムプロパティ）
+- `config/site.config.js` — ページキー `demoRandomPageNav`（トップ）、下層は `randomPageNav{Slug}`（キャメルケース・先頭一致 `randomPageNav*` でヘッダー／ドロワー／フッターナビから除外）
+- `src/demo/demo-random-page-nav/index.html` — トップ
+- `src/demo/demo-random-page-nav/{slug}/index.html` — 下層9ページ（デモ用スラッグ `page-01` … `page-09`、`PAGES` と一致）
+- `src/ejs/components-demo/_p-random-page-nav.ejs` — トップ／下層共通。表示中の「部」「番号」「スラッグ」、`[data-random-page-nav-storage-out]`（sessionStorage の可視化）、ボタン、`data-*` マークアップ
+- `src/assets/js/demo/_demo-random-page-nav.js` — `main.js` から import。`[data-random-page-nav]` があるページのみ初期化。`root` への `click` 委譲で `[data-random-page-nav-action]` を判別する
+- `src/assets/sass/demo-components/_p-random-page-nav.scss` — `.p-random-page-nav__*`（メタ表示・ボタン。色は `_root.scss` のカスタムプロパティ）
 
 #### 動作仕様
-- **表示中の識別**: トップは「部」「番号」「スラッグ」に `—` を表示。下層は `deptLabel`（例: 本部）、人間可読の `pageCode`（例: `1-1`〜`3-3` で部番号・通し）、URL スラッグを `.p-interview-report__meta` に表示する。`pageCode` は各 `index.html` の `include` 引数で渡す。
-- **sessionStorage の可視化**: `[data-interview-storage-out]` に、キー `demoInterviewReportVisited` の値を JSON 整形して表示する（未設定時は「（未設定）」）。下層では `markVisited` 実行後に更新する。
-- **訪問記録**: `sessionStorage` キー `demoInterviewReportVisited` に、表示済みスラッグの配列（JSON）を保存する。下層ページの `DOMContentLoaded` 時に、当該ページの `data-slug` を未登録なら追加する。
-- **トップ「回答を見る」**: 9スラッグから抽選。原則 `visited` に含まれないスラッグのみ候補とし、候補が空なら `visited` を無視して再候補化する。
-- **下層「{部名}の回答を見る」**: `data-dept` が同じ部の別スラッグから同様に抽選（自分・`visited` 優先・空なら緩和）。
-- **下層「他の回答を見る」**: 自分以外のいずれかのスラッグから同様に抽選。
-- **遷移**: パス上の `demo-interview-report` セグメントまでをベースにした URL に対し `new URL('./{slug}/', base)` で解決し `location.assign` する（下層同士の遷移で `./slug/` を現在のスラッグ直下に誤解決しないため）。
+- **表示中の識別**: トップは「部」「番号」「スラッグ」に `—` を表示。下層は `deptLabel`（例: グループ1）、人間可読の `pageCode`（例: `1-1`〜`3-3` でグループ内番号・通し）、URL スラッグを `.p-random-page-nav__meta` に表示する。`pageCode` は各 `index.html` の `include` 引数で渡す。
+- **sessionStorage の可視化**: `[data-random-page-nav-storage-out]` に、キー `demoRandomPageNavVisited` の値を JSON 整形して表示する（未設定時は「（未設定）」）。下層では `markVisited` 実行後に更新する。
+- **訪問記録**: `sessionStorage` キー `demoRandomPageNavVisited` に、表示済みスラッグの配列（JSON）を保存する。下層ページの `DOMContentLoaded` 時に、当該ページの `data-slug` を未登録なら追加する。
+- **トップ「ページを見る」**: 9スラッグから抽選。原則 `visited` に含まれないスラッグのみ候補とし、候補が空なら `visited` を無視して再候補化する。
+- **下層「{部名}のページを見る」**: `data-dept` が同じ部の別スラッグから同様に抽選（自分・`visited` 優先・空なら緩和）。
+- **下層「他のページを見る」**: 自分以外のいずれかのスラッグから同様に抽選。
+- **遷移**: パス上の `demo-random-page-nav` セグメントまでをベースにした URL に対し `new URL('./{slug}/', base)` で解決し `location.assign` する（下層同士の遷移で `./slug/` を現在のスラッグ直下に誤解決しないため）。
 
 #### 使用方法
-- デモ一覧から「インタビュー報告（デモ）」のリンクでトップを開く。スラッグ・部・`pageCode` の対応を変える場合は `_demo-interview-report.js` の `PAGES` と各 `index.html` の `include` 引数（`slug` / `dept` / `deptLabel` / `pageCode`）、`site.config.js` のページ定義を揃えて更新する。
+- デモ一覧から「ランダムページ遷移（訪問済み除外）デモ」のリンクでトップを開く。スラッグ・部・`pageCode` の対応を変える場合は `_demo-random-page-nav.js` の `PAGES` と各 `index.html` の `include` 引数（`slug` / `dept` / `deptLabel` / `pageCode`）、`site.config.js` のページ定義を揃えて更新する。
 
 ---
 

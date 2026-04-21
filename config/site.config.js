@@ -176,76 +176,76 @@ const pages = {
     description:
       "APIの設置例です。",
   },
-  demoInterviewReport: {
-    label: "インタビュー報告（デモ）",
+  demoRandomPageNav: {
+    label: "ランダムページ遷移（訪問済み除外）デモ",
     root: "../../",
-    path: "demo/demo-interview-report/",
-    title: "インタビュー報告（デモ）",
+    path: "demo/demo-random-page-nav/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
     description:
       "sessionStorage で表示済みスラッグを避けつつランダム遷移するデモです。",
   },
-  interviewReportK59qj3iv: {
-    label: "インタビュー報告",
+  randomPageNavPage01: {
+    label: "ランダムページ遷移",
     root: "../../../",
-    path: "demo/demo-interview-report/k59qj3iv/",
-    title: "インタビュー報告",
-    description: "インタビュー報告デモ（下層ページ）です。",
+    path: "demo/demo-random-page-nav/page-01/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
+    description: "ランダムページ遷移デモの下層ページです。",
   },
-  interviewReportQ2g6cydv: {
-    label: "インタビュー報告",
+  randomPageNavPage02: {
+    label: "ランダムページ遷移",
     root: "../../../",
-    path: "demo/demo-interview-report/q2g6cydv/",
-    title: "インタビュー報告",
-    description: "インタビュー報告デモ（下層ページ）です。",
+    path: "demo/demo-random-page-nav/page-02/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
+    description: "ランダムページ遷移デモの下層ページです。",
   },
-  interviewReportK62bfe8t: {
-    label: "インタビュー報告",
+  randomPageNavPage03: {
+    label: "ランダムページ遷移",
     root: "../../../",
-    path: "demo/demo-interview-report/k62bfe8t/",
-    title: "インタビュー報告",
-    description: "インタビュー報告デモ（下層ページ）です。",
+    path: "demo/demo-random-page-nav/page-03/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
+    description: "ランダムページ遷移デモの下層ページです。",
   },
-  interviewReportD4unw7t6: {
-    label: "インタビュー報告",
+  randomPageNavPage04: {
+    label: "ランダムページ遷移",
     root: "../../../",
-    path: "demo/demo-interview-report/d4unw7t6/",
-    title: "インタビュー報告",
-    description: "インタビュー報告デモ（下層ページ）です。",
+    path: "demo/demo-random-page-nav/page-04/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
+    description: "ランダムページ遷移デモの下層ページです。",
   },
-  interviewReportR7cs6mgi: {
-    label: "インタビュー報告",
+  randomPageNavPage05: {
+    label: "ランダムページ遷移",
     root: "../../../",
-    path: "demo/demo-interview-report/r7cs6mgi/",
-    title: "インタビュー報告",
-    description: "インタビュー報告デモ（下層ページ）です。",
+    path: "demo/demo-random-page-nav/page-05/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
+    description: "ランダムページ遷移デモの下層ページです。",
   },
-  interviewReportN8ksfqv6: {
-    label: "インタビュー報告",
+  randomPageNavPage06: {
+    label: "ランダムページ遷移",
     root: "../../../",
-    path: "demo/demo-interview-report/n8ksfqv6/",
-    title: "インタビュー報告",
-    description: "インタビュー報告デモ（下層ページ）です。",
+    path: "demo/demo-random-page-nav/page-06/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
+    description: "ランダムページ遷移デモの下層ページです。",
   },
-  interviewReportY2kezf3c: {
-    label: "インタビュー報告",
+  randomPageNavPage07: {
+    label: "ランダムページ遷移",
     root: "../../../",
-    path: "demo/demo-interview-report/y2kezf3c/",
-    title: "インタビュー報告",
-    description: "インタビュー報告デモ（下層ページ）です。",
+    path: "demo/demo-random-page-nav/page-07/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
+    description: "ランダムページ遷移デモの下層ページです。",
   },
-  interviewReportM5ieujny: {
-    label: "インタビュー報告",
+  randomPageNavPage08: {
+    label: "ランダムページ遷移",
     root: "../../../",
-    path: "demo/demo-interview-report/m5ieujny/",
-    title: "インタビュー報告",
-    description: "インタビュー報告デモ（下層ページ）です。",
+    path: "demo/demo-random-page-nav/page-08/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
+    description: "ランダムページ遷移デモの下層ページです。",
   },
-  interviewReportJ3d9gren: {
-    label: "インタビュー報告",
+  randomPageNavPage09: {
+    label: "ランダムページ遷移",
     root: "../../../",
-    path: "demo/demo-interview-report/j3d9gren/",
-    title: "インタビュー報告",
-    description: "インタビュー報告デモ（下層ページ）です。",
+    path: "demo/demo-random-page-nav/page-09/",
+    title: "ランダムページ遷移（訪問済み除外）デモ",
+    description: "ランダムページ遷移デモの下層ページです。",
   },
   contact: {
     label: "お問い合わせ",
@@ -332,9 +332,9 @@ export const siteConfig = {
    * - "demo[A-Z]*" → demoの後に大文字が続くページのみ除外（demoは除外しない）
    * - "contact" → contactのみ除外
    */
-  headerExcludePages: ["demo[A-Z]*", "thanks", "interviewReport*"],
-  drawerExcludePages: ["demo[A-Z]*", "thanks", "interviewReport*"],
-  footerExcludePages: ["interviewReport*"],
+  headerExcludePages: ["demo[A-Z]*", "thanks", "randomPageNav*"],
+  drawerExcludePages: ["demo[A-Z]*", "thanks", "randomPageNav*"],
+  footerExcludePages: ["randomPageNav*"],
 
   // 除外ページチェック関数
   ty_isExcluded,

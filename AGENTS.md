@@ -61,8 +61,8 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `src/assets/js/_demo-fv-video.js` | デモ用。ファーストビュー動画の PC/SP src 切替・ミュート／音声オン別ボタン（`demo/demo-fv-video/`） |
 | `src/assets/js/demo/_demo-api.js` | デモ用。JSONPlaceholder users の `fetch` と `li` による名前一覧（`demo/demo-api/`） |
 | `src/assets/js/demo/_demo-sound.js` | デモ用。読み込み時 `<dialog>` で音声 ON/OFF を選び、ON 時のみ再生（`demo/demo-sound/`） |
-| `src/assets/js/demo/_demo-interview-report.js` | デモ用。`sessionStorage` で表示済みスラッグを避けつつトップ／下層間をランダム遷移（`demo/demo-interview-report/`） |
-| `src/ejs/components-demo/_p-interview-report.ejs` | デモ用。インタビュー報告デモの共通マークアップ（ボタン・`data-*`） |
+| `src/assets/js/demo/_demo-random-page-nav.js` | デモ用。`sessionStorage` で表示済みスラッグを避けつつトップ／下層間をランダム遷移（`demo/demo-random-page-nav/`） |
+| `src/ejs/components-demo/_p-random-page-nav.ejs` | デモ用。ランダムページ遷移（訪問済み除外）デモの共通マークアップ（ボタン・`data-*`） |
 | `src/assets/js/_parallax.js` | 汎用パララックス（data-parallax でトリガー・移動量を指定） |
 | `src/assets/sass/style.scss` | Sassエントリファイル |
 | `src/assets/sass/base/_root.scss` | フォント・CSS変数（`:root`）。ライト/ダーク用の `--color-bg` / `--color-text` 等と `@media (prefers-color-scheme: dark)` による上書き |

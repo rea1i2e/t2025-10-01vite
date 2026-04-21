@@ -1,12 +1,12 @@
 @use "../global" as *;
 
-.p-interview-report__inner {
+.p-random-page-nav__inner {
   max-width: min(100%, rem(480));
   display: grid;
   gap: rem(20);
 }
 
-.p-interview-report__meta {
+.p-random-page-nav__meta {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: rem(6) rem(12);
@@ -20,16 +20,16 @@
   font-size: maxrem(14);
 }
 
-.p-interview-report__meta-term {
+.p-random-page-nav__meta-term {
   opacity: 0.75;
   font-size: maxrem(12);
 }
 
-.p-interview-report__meta-def {
+.p-random-page-nav__meta-def {
   font-weight: 600;
 }
 
-.p-interview-report__meta-code {
+.p-random-page-nav__meta-code {
   margin: 0;
   padding: rem(2) rem(6);
   border-radius: rem(2);
@@ -37,7 +37,7 @@
   font-size: maxrem(13);
 }
 
-.p-interview-report__storage-block {
+.p-random-page-nav__storage-block {
   display: grid;
   gap: rem(8);
   padding: rem(12) rem(16);
@@ -47,27 +47,27 @@
   color: var(--color-text);
 }
 
-.p-interview-report__storage-label {
+.p-random-page-nav__storage-label {
   margin: 0;
   font-size: maxrem(12);
   font-weight: 600;
   opacity: 0.85;
 }
 
-.p-interview-report__storage-key {
+.p-random-page-nav__storage-key {
   margin: 0;
   font-size: maxrem(12);
   opacity: 0.85;
 }
 
-.p-interview-report__storage-key code {
+.p-random-page-nav__storage-key code {
   padding: rem(1) rem(4);
   border-radius: rem(2);
   background-color: var(--color-bg-code);
   font-size: maxrem(12);
 }
 
-.p-interview-report__storage-pre {
+.p-random-page-nav__storage-pre {
   margin: 0;
   max-height: rem(200);
   overflow: auto;
@@ -82,13 +82,13 @@
   word-break: break-all;
 }
 
-.p-interview-report__actions {
+.p-random-page-nav__actions {
   display: flex;
   flex-wrap: wrap;
   gap: rem(12);
 }
 
-.p-interview-report__button {
+.p-random-page-nav__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -102,11 +102,11 @@
   cursor: pointer;
 }
 
-.p-interview-report__button:hover {
+.p-random-page-nav__button:hover {
   box-shadow: var(--shadow-hover);
 }
 
-.p-interview-report__button:focus-visible {
+.p-random-page-nav__button:focus-visible {
   outline: rem(2) solid currentColor;
   outline-offset: rem(2);
 }

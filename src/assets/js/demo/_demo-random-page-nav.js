@@ -1,42 +1,40 @@
 /**
- * インタビュー報告デモ — ランダム遷移と sessionStorage による「表示済み」管理
+ * ランダムページ遷移（訪問済み除外）デモ — sessionStorage による「表示済み」管理とランダム遷移
  *
  * 【処理の流れ（このファイルの正本）】
  * 1. 定数配列 PAGES で下層ページ一覧（slug / dept）を定義する。
  * 2. sessionStorage に「一度表示したスラッグ」の配列を保存する（STORAGE_KEY）。トップは記録しない。
  * 3. 下層ロード時のみ markVisited で現在スラッグを追加（重複なし）。
- * 4. [data-interview-report-nav] への click 委譲で data-interview-action に応じ resolveNextSlug。
+ * 4. [data-random-page-nav] への click 委譲で data-random-page-nav-action に応じ resolveNextSlug。
  *    - random: 全 slug → pickSlug
  *    - same-dept: 同一 dept かつ currentSlug 以外 → pickSlug
  *    - other: currentSlug 以外の全 slug → pickSlug
  * 5. pickSlug は「候補のうち未訪問が 1 つでもあれば未訪問だけから乱数」「未訪問が空なら候補全体に戻して乱数」。
  *    「全件訪問済みだから表示中だけ除外」のような分岐はない。random では同一スラッグへの再遷移もあり得る。
- * 6. navigateToSlug: getInterviewReportBaseUrl で demo-interview-report までを基準にし、
+ * 6. navigateToSlug: getRandomPageNavBaseUrl で demo-random-page-nav までを基準にし、
  *    new URL('./{slug}/', base) を解決して window.location.assign(url.href) で遷移。
  *
- * UI 上の対応: トップは「回答を見る」、下層は「同部の回答」「他の回答」。表示中は data-slug / data-dept。
+ * UI 上の対応: トップは「ページを見る」、下層は「同グループのページ」「他のページ」。表示中は data-slug / data-dept。
  */
 
 /** sessionStorage のキー。EJS の表示用ラベルと揃えること。 */
-const STORAGE_KEY = "demoInterviewReportVisited";
+const STORAGE_KEY = "demoRandomPageNavVisited";
 
 /**
  * 全下層ページ。遷移先の決定にのみ使用（表示用 pageCode は HTML 側の include と一致させる）。
  * @type {Array<{ slug: string; dept: string }>}
  */
 const PAGES = [
-  // 本部 1-1 … 1-3
-  { slug: "k59qj3iv", dept: "hq" },
-  { slug: "q2g6cydv", dept: "hq" },
-  { slug: "k62bfe8t", dept: "hq" },
-  // 交際部 2-1 … 2-3
-  { slug: "d4unw7t6", dept: "social" },
-  { slug: "r7cs6mgi", dept: "social" },
-  { slug: "n8ksfqv6", dept: "social" },
-  // 強行部 3-1 … 3-3
-  { slug: "y2kezf3c", dept: "force" },
-  { slug: "m5ieujny", dept: "force" },
-  { slug: "j3d9gren", dept: "force" },
+  // デモ用連番スラッグ。dept は d1〜d3 のグループキー。
+  { slug: "page-01", dept: "d1" },
+  { slug: "page-02", dept: "d1" },
+  { slug: "page-03", dept: "d1" },
+  { slug: "page-04", dept: "d2" },
+  { slug: "page-05", dept: "d2" },
+  { slug: "page-06", dept: "d2" },
+  { slug: "page-07", dept: "d3" },
+  { slug: "page-08", dept: "d3" },
+  { slug: "page-09", dept: "d3" },
 ];
 
 /** 保存済みの「表示済みスラッグ」配列を読む。不正 JSON や型不正時は空配列。 */
@@ -70,11 +68,11 @@ function markVisited(slug) {
 
 /**
  * デバッグ用関数
- * EJS で置いた `[data-interview-storage-out]` に、現在の sessionStorage 内容を人が読める形で出す。
- * @param {HTMLElement} root `[data-interview-report-nav]` 要素（配下に out ノードがある想定）
+ * EJS で置いた `[data-random-page-nav-storage-out]` に、現在の sessionStorage 内容を人が読める形で出す。
+ * @param {HTMLElement} root `[data-random-page-nav]` 要素（配下に out ノードがある想定）
  */
 function updateStorageDisplay(root) {
-  const out = root.querySelector("[data-interview-storage-out]");
+  const out = root.querySelector("[data-random-page-nav-storage-out]");
   if (!out) return;
 
   const raw = sessionStorage.getItem(STORAGE_KEY);
@@ -137,14 +135,14 @@ function resolveNextSlug(opts) {
 }
 
 /**
- * 現在の URL から `demo-interview-report` ディレクトリ相当のベース URL（末尾 `/`）を得る。
- * 下層 URL が `…/demo-interview-report/d4unw7t6/` のとき、`new URL('./別slug/', location)` だと
- * `…/d4unw7t6/別slug/` と誤解決するため、常に `…/demo-interview-report/` を基準にする。
+ * 現在の URL から `demo-random-page-nav` ディレクトリ相当のベース URL（末尾 `/`）を得る。
+ * 下層 URL が `…/demo-random-page-nav/page-01/` のとき、`new URL('./別slug/', location)` だと
+ * `…/page-01/別slug/` と誤解決するため、常に `…/demo-random-page-nav/` を基準にする。
  */
-function getInterviewReportBaseUrl() {
+function getRandomPageNavBaseUrl() {
   const u = new URL(window.location.href);
   const parts = u.pathname.split("/").filter(Boolean);
-  const idx = parts.lastIndexOf("demo-interview-report");
+  const idx = parts.lastIndexOf("demo-random-page-nav");
   if (idx !== -1) {
     u.pathname = `/${parts.slice(0, idx + 1).join("/")}/`;
     u.search = "";
@@ -156,20 +154,20 @@ function getInterviewReportBaseUrl() {
 
 /** デモルート基準で `./{slug}/` に遷移する。 */
 function navigateToSlug(slug) {
-  const base = getInterviewReportBaseUrl();
+  const base = getRandomPageNavBaseUrl();
   const url = new URL(`./${slug}/`, base);
   window.location.assign(url.href);
 }
 
 /**
- * インタビュー報告ブロックがあれば初期化。他ページでは何もしない。
+ * ランダムページ遷移デモブロックがあれば初期化。他ページでは何もしない。
  * 下層のみ表示直後に markVisited → ストレージ表示更新 → root へのイベント委譲で遷移。
  */
-function initInterviewReportNav() {
-  const root = document.querySelector("[data-interview-report-nav]");
+function initRandomPageNav() {
+  const root = document.querySelector("[data-random-page-nav]");
   if (!root) return;
 
-  const nav = root.getAttribute("data-interview-report-nav");
+  const nav = root.getAttribute("data-random-page-nav");
   if (nav === "sub") {
     const slug = root.getAttribute("data-slug");
     if (slug) markVisited(slug);
@@ -179,10 +177,10 @@ function initInterviewReportNav() {
   updateStorageDisplay(root);
 
   root.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-interview-action]");
+    const btn = e.target.closest("[data-random-page-nav-action]");
     if (!btn || !root.contains(btn)) return;
 
-    const action = btn.getAttribute("data-interview-action");
+    const action = btn.getAttribute("data-random-page-nav-action");
     const currentSlug = root.getAttribute("data-slug") || "";
     const deptAttr = root.getAttribute("data-dept") || "";
 
@@ -203,4 +201,4 @@ function initInterviewReportNav() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", initInterviewReportNav);
+document.addEventListener("DOMContentLoaded", initRandomPageNav);

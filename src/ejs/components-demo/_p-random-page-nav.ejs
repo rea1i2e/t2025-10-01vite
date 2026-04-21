@@ -1,0 +1,70 @@
+<%
+const _variant = typeof variant !== 'undefined' && variant === 'sub' ? 'sub' : 'top';
+%>
+<% if (_variant === 'top') { %>
+<section
+  class="p-demo__section p-random-page-nav"
+  data-random-page-nav="top"
+  aria-label="ランダムページ遷移（訪問済み除外）デモ"
+>
+  <div class="p-demo__inner p-random-page-nav__inner">
+    <p class="p-random-page-nav__meta">
+      <span class="p-random-page-nav__meta-term">部</span>
+      <span class="p-random-page-nav__meta-def">—</span>
+      <span class="p-random-page-nav__meta-term">番号</span>
+      <span class="p-random-page-nav__meta-def">—</span>
+      <span class="p-random-page-nav__meta-term">スラッグ</span>
+      <code class="p-random-page-nav__meta-code">—</code>
+    </p>
+    <div class="p-random-page-nav__storage-block">
+      <p class="p-random-page-nav__storage-label">sessionStorage</p>
+      <p class="p-random-page-nav__storage-key">
+        キー: <code>demoRandomPageNavVisited</code>
+      </p>
+      <pre class="p-random-page-nav__storage-pre" data-random-page-nav-storage-out role="status" aria-live="polite"></pre>
+    </div>
+    <button type="button" class="p-random-page-nav__button" data-random-page-nav-action="random">
+      ページを見る
+    </button>
+  </div>
+</section>
+<% } else {
+  const _slug = typeof slug !== 'undefined' && slug != null ? String(slug) : '';
+  const _dept = typeof dept !== 'undefined' && dept != null ? String(dept) : '';
+  const _deptLabel = typeof deptLabel !== 'undefined' && deptLabel != null ? String(deptLabel) : '';
+  const _pageCode = typeof pageCode !== 'undefined' && pageCode != null ? String(pageCode) : '';
+%>
+<section
+  class="p-demo__section p-random-page-nav"
+  data-random-page-nav="sub"
+  data-slug="<%= _slug %>"
+  data-dept="<%= _dept %>"
+  aria-label="ランダムページ遷移（訪問済み除外）デモ"
+>
+  <div class="p-demo__inner p-random-page-nav__inner">
+    <p class="p-random-page-nav__meta">
+      <span class="p-random-page-nav__meta-term">部</span>
+      <span class="p-random-page-nav__meta-def"><%= ty_stripTags(_deptLabel) %></span>
+      <span class="p-random-page-nav__meta-term">番号</span>
+      <code class="p-random-page-nav__meta-code"><%= ty_stripTags(_pageCode) %></code>
+      <span class="p-random-page-nav__meta-term">スラッグ</span>
+      <code class="p-random-page-nav__meta-code"><%= _slug %></code>
+    </p>
+    <div class="p-random-page-nav__storage-block">
+      <p class="p-random-page-nav__storage-label">sessionStorage</p>
+      <p class="p-random-page-nav__storage-key">
+        キー: <code>demoRandomPageNavVisited</code>
+      </p>
+      <pre class="p-random-page-nav__storage-pre" data-random-page-nav-storage-out role="status" aria-live="polite"></pre>
+    </div>
+    <div class="p-random-page-nav__actions">
+      <button type="button" class="p-random-page-nav__button" data-random-page-nav-action="same-dept">
+        <%= ty_stripTags(_deptLabel) %>のページを見る
+      </button>
+      <button type="button" class="p-random-page-nav__button" data-random-page-nav-action="other">
+        他のページを見る
+      </button>
+    </div>
+  </div>
+</section>
+<% } %>
