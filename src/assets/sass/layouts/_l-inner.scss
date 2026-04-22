@@ -2,7 +2,8 @@
 
 .l-inner {
 	margin-inline: auto;
-	max-width: calc(var(--inner) + var(--inner-padding) * 2);
+	box-sizing: content-box;
+	max-width: var(--inner);
 	width: 100%;
 	padding-inline: var(--inner-padding);
 }

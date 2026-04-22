@@ -21,20 +21,16 @@
   <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy1.jpg', imageAlt: '' }) %>
   <main class="p-demo">
     <div class="p-demo__inner l-inner">
-      <% demoHoverButtonSections.forEach((item) => { %>
-      <section class="p-demo__section">
-        <h2 class="p-demo__subtitle"><%= item.subtitle %></h2>
-        <div class="p-demo__content">
+      <div class="p-demo__sections">
+        <% demoHoverButtonSections.forEach((item) => { %>
+        <section class="p-demo__section">
+          <h2><%= item.subtitle %></h2>
           <div class="p-demo__button">
-            <a href="#"
-              class="<%= item.anchorClass %>"
-              <% if (item.dataHover) { %>data-hover="<%= item.dataHover %>"<% } %>
-              <% if (item.dataIcon) { %>data-icon="<%= item.dataIcon %>"<% } %>
-            ><span class="c-button__text"><%= item.label %></span></a>
+            <a href="#" class="<%= item.anchorClass %>" <% if (item.dataHover) { %>data-hover="<%= item.dataHover %>" <% } %> <% if (item.dataIcon) { %>data-icon="<%= item.dataIcon %>" <% } %>><span class="c-button__text"><%= item.label %></span></a>
           </div>
-        </div>
-      </section>
-      <% }); %>
+        </section>
+        <% }); %>
+      </div>
     </div>
   </main>
   <%- include(ejsPath + 'common/_footer.ejs', { page }) %>

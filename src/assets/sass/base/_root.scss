@@ -57,6 +57,7 @@ $theme-dark: (
   --header-height: #{rem(72)};
   --inner: #{rem($inner-sp)};
   --inner-padding: #{rem($padding-sp)};
+  
   --hover-transition: 0.3s ease-in-out;
 
   /* box-shadow（--color-text ベースで color-mix により自動でテーマ追従） */
