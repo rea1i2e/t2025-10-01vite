@@ -1,0 +1,12 @@
+@use '../global' as *;
+
+.u-bg {
+  background-color: var(--color-bg-sub);
+}
+
+.u-bg[data-size="full"] {
+  margin-inline: calc(50% - 50vw);
+  margin-inline: calc(50% - 50cqi);
+  padding-inline: calc(50vw - 50%);
+  padding-inline: calc(50cqi - 50%);
+}

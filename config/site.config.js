@@ -33,6 +33,13 @@ const pages = {
     description:
       "デモページ組み立て向けに既存の EJS 断片・Sass・シェル構造を索引するページです。",
   },
+  demoInner: {
+    label: "インナー",
+    root: "../../",
+    path: "demo/demo-inner/",
+    title: "インナー",
+    description: "インナーデモページです。",
+  },
   demoAccordion: {
     label: "アコーディオン",
     root: "../../",
