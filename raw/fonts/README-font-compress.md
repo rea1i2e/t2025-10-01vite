@@ -3,7 +3,7 @@
 フォントファイルをwoff2形式に圧縮するためのスクリプトです。
 
 > このドキュメントは **このテンプレート内の運用手順（テンプレ固有）** を扱います。  
-> フォント最適化の汎用ナレッジは `/Users/yoshiaki/working/2026-03-20kn/asset-compression/` を参照してください。
+> 導線の索引は第二の脳 `wiki/asset-compression-notes.md`（`/Users/yoshiaki/working/2026-04-23kn/wiki/asset-compression-notes.md`）を参照してください。手順の詳細は**本テンプレ**の `scripts/README-font-compress.md` 等を正本とします。
 
 ## 初回セットアップ（1回だけ実行）
 
