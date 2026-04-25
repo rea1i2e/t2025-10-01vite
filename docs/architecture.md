@@ -175,7 +175,7 @@ flowchart LR
 #### 設定構造
 - `pages` オブジェクト: 各ページの `label` / `root` / `path` / `title` / `description` 等を集約
 - `siteExternalLinks` オブジェクト: X / Instagram 等の**絶対 URL**導線。`pages` と同形状（`label` / `root` / `path` / `targetBlank`）で、`path` が `http` で始まるときヘッダー・フッターではそのまま `href` に使う。`ty_getPage` の対象外
-- `shareIntentUrls` オブジェクト: X / Facebook / LINE / LinkedIn の共有 Intent URL 一覧。ビルド時 EJS と実行時 JS の参照先を統一する
+- `shareIntentUrls` オブジェクト: X / Facebook / LINE の共有用ベース URL 一覧（LINE は `line.me/R/msg/text/`）。ビルド時 EJS と実行時 JS の参照先を統一する
 - `headerExcludePages` / `drawerExcludePages`: メニューから除外するページのキー配列
 - `ejsPath` / `baseUrl` / `titleSeparator`: 共通設定
 
@@ -482,17 +482,17 @@ text: email('afmaar128', 'gmail.com', { link: false })
 #### 関連ファイル
 - `config/utils.js` — `ty_appendQuery`（`URLSearchParams` でクエリを付与。値は百分率エンコード）
 - `config/site.config.js` — `ty_appendQuery` と `shareIntentUrls` を EJS へ引き渡し。ページキー `demoShare`（`path`: `demo/demo-share/`）
-- `src/demo/demo-share/index.html` — `shareTextStatic` を `_p-demo-share` に引き渡し
-- `src/ejs/components-demo/_p-demo-share.ejs` — ビルド時に確定する共有 URL ブロック（X / Facebook / LINE / LinkedIn）と、`.js-ty-share-current` 用のマーカー
-- `src/assets/js/demo/_demo-share.js` — `main.js` から import。`.p-demo-share` 内の `a.js-ty-share-current` に `location.href` と `document.title`（または `data-ty-share-text`）を反映して `href` を設定
+- `src/demo/demo-share/index.html` — `_p-demo-share` を include（共有文言・ハッシュタグはコンポーネント内の定数）
+- `src/ejs/components-demo/_p-demo-share.ejs` — ビルド時に確定する共有 URL ブロック（X / Facebook / LINE）と、`.js-ty-share-current` 用のマーカー（`data-ty-share-static-text` に **URL より前の本文** `encodeURIComponent(shareTextForClientBody)` を載せる）
+- `src/assets/js/demo/_demo-share.js` — `main.js` から import。`.p-demo-share` 内の `a.js-ty-share-current` に `location.href` を反映。X / LINE は **`（復元本文／data-ty-share-text／document.title）+ 改行 + location.href`** を1本にする（**URL は末尾**。`url` パラメータは付けない）。Facebook の `u` は **URL のみ**（文面は OGP 等）
 - `src/assets/sass/demo-components/_p-demo.scss` — `.p-demo__list` / `.p-demo__list--sub` および `p-demo__box` 等（共有デモと共通）
 
 #### 動作仕様
-- **ビルド時**: `baseUrl` と `pages[sharePageKey].path` から本ページ想定の絶対 URL を組み、`shareIntentUrls` の各サービス URL へ `ty_appendQuery` で `url` / `text` / `u` を渡す。二重にエンコードしない（`URLSearchParams` 由来）。
-- **クライアント**: 同一画面に「表示中の URL」で開く例を出す。`shareIntentUrls` を EJS から `data-ty-share-intent-*` で DOM に載せ、`_demo-share.js` はその値を参照して `href` を組み立てる。`data-ty-share-service` は `x` / `facebook` / `line` / `linkedin` のいずれかを受け付ける。
+- **ビルド時**: `baseUrl` と `page.path` から `staticPageUrl` を組み、`shareTextStatic` に **`${staticPageUrl}` を埋め込んだ1本**（例: テキスト → URL → #タグ）を X / LINE の本文に使う。X は `ty_appendQuery` で **`text` のみ**（`url` は付けない）。Facebook は `u` に **URL のみ**。LINE は `encodeURIComponent(shareTextStatic)` を `line.me/R/msg/text/` に連結。二重エンコードに注意。
+- **クライアント**: `data-ty-share-static-text` には **ビルド時 URL を含まない本文**（`shareTextForClientBody`）を `encodeURIComponent` して渡す。`_demo-share.js` は復元した本文の **末尾に `location.href`** を付けて X / LINE の `href` を組み立てる。`data-ty-share-service` は `x` / `facebook` / `line` のいずれか。
 
 #### 使用方法
-- デモ一覧から `demoShare`（表示ラベル「SNSシェア（URLエンコード）」）のリンクを開く。`shareTextStatic` は `demo-share/index.html` 側の定数。`npm run init` ではデモ用 `src` 配下とデモ用 import が主に除去される。`ty_appendQuery` は `config/utils.js` なので、案件に残す場合は `init` 後も参照できる。
+- デモ一覧から `demoShare`（表示ラベル「SNSシェア（URLエンコード）」）のリンクを開く。共有の固定文・ハッシュタグは `_p-demo-share.ejs` 内の定数で調整する。`npm run init` ではデモ用 `src` 配下とデモ用 import が主に除去される。`ty_appendQuery` は `config/utils.js` なので、案件に残す場合は `init` 後も参照できる。
 
 ### 3.22 アクセシビリティ仮基準
 

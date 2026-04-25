@@ -114,7 +114,7 @@ npm run reinstall
 - `config/site.config.js`
   - `pages`（ページ情報）
   - `siteExternalLinks`（X・Instagram 等の絶対 URL。`npm run init` 後は空オブジェクト）
-  - `shareIntentUrls`（X・Facebook・LINE・LinkedIn の共有 Intent URL）
+  - `shareIntentUrls`（X・Facebook・LINE の共有 URL）
   - `imageAltFormats`（`none` / `webp` / `avif` / `both`）
   - `useFileHash`（`true`: ビルド後ファイル名にハッシュを付与 / `false`: ハッシュなし）
   - `minify`（`true`: CSS を minify / `false`: CSS を minify しない（クライアント納品時など直接編集の可能性がある場合）。JS は常に minify）

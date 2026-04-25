@@ -336,8 +336,8 @@ const siteExternalLinks = {
 const shareIntentUrls = {
   x: "https://twitter.com/intent/tweet",
   facebook: "https://www.facebook.com/sharer/sharer.php",
-  line: "https://social-plugins.line.me/lineit/share",
-  linkedin: "https://www.linkedin.com/sharing/share-offsite/",
+  /** 末尾まで含めたベース。本文は `encodeURIComponent(テキスト + "\\n" + URL)` を連結（LINE it の `?url=` とは別系統） */
+  line: "https://line.me/R/msg/text/",
 };
 
 export const siteConfig = {

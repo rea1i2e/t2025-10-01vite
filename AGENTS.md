@@ -64,7 +64,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `src/assets/js/main.js` | JSエントリファイル |
 | `src/assets/js/_demo-fv-video.js` | デモ用。ファーストビュー動画の PC/SP src 切替・ミュート／音声オン別ボタン（`demo/demo-fv-video/`） |
 | `src/assets/js/demo/_demo-api.js` | デモ用。JSONPlaceholder users の `fetch` と `li` による名前一覧（`demo/demo-api/`） |
-| `src/assets/js/demo/_demo-share.js` | デモ用。SNS 共有 `href` に `location`／`ty_appendQuery` 想定（`demo/demo-share/`） |
+| `src/assets/js/demo/_demo-share.js` | デモ用。SNS 共有 `href`（ビルド時は `shareTextStatic` に `staticPageUrl` 埋め込み、表示中は本文+改行+`location.href` を末尾に、Facebook は `u` のみ）（`demo/demo-share/`） |
 | `src/assets/js/demo/_demo-sound.js` | デモ用。読み込み時 `<dialog>` で音声 ON/OFF を選び、ON 時のみ再生（`demo/demo-sound/`） |
 | `src/assets/js/demo/_demo-random-page-nav.js` | デモ用。`sessionStorage` で表示済みスラッグを避けつつトップ／下層間をランダム遷移（`demo/demo-random-page-nav/`） |
 | `src/ejs/components-demo/_p-random-page-nav.ejs` | デモ用。ランダムページ遷移（訪問済み除外）デモの共通マークアップ（ボタン・`data-*`） |

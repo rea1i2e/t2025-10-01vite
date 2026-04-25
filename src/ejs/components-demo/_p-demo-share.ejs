@@ -1,77 +1,68 @@
 <%
-  const sharePage = pages[sharePageKey];
+  /** ビルド時: shareTextStatic に staticPageUrl を埋め込む。Facebook の u は URL のみ（文面は OGP 等）。表示中 URL 用は data に「URL より前の本文」のみ載せ、JS で末尾に location.href を付与 */
   const normalizedBaseUrl = String(baseUrl).replace(/\/$/, '');
-  const staticPageUrl = `${normalizedBaseUrl}/${String(sharePage.path).replace(/^\//, '')}`;
+  const staticPageUrl = `${normalizedBaseUrl}/${String(page.path).replace(/^\//, '')}`;
+  const shareTextPrefix = 'テスト\n共有テキスト';
+  const shareTextSuffix = '#デモ #SNSシェア';
+  const shareTextStatic = `${shareTextPrefix}\n${staticPageUrl}\n${shareTextSuffix}`;
+  const shareTextForClientBody = `${shareTextPrefix}\n${shareTextSuffix}`;
 
   const buildShareHref = (intentBaseUrl, query) => ty_appendQuery(intentBaseUrl, query);
 
-  const shareHrefTwitter = buildShareHref(shareIntentUrls.x, { url: staticPageUrl, text: shareTextStatic });
+  const shareHrefTwitter = buildShareHref(shareIntentUrls.x, { text: shareTextStatic });
   const shareHrefFacebook = buildShareHref(shareIntentUrls.facebook, { u: staticPageUrl });
-  const shareHrefLine = buildShareHref(shareIntentUrls.line, { url: staticPageUrl });
-  const shareHrefLinkedin = buildShareHref(shareIntentUrls.linkedin, { url: staticPageUrl });
+  const shareHrefLine = `${shareIntentUrls.line}${encodeURIComponent(shareTextStatic)}`;
 %>
 
-<div class="p-demo__sections" data-ty-demo-share data-ty-share-intent-x="<%= shareIntentUrls.x %>" data-ty-share-intent-facebook="<%= shareIntentUrls.facebook %>" data-ty-share-intent-line="<%= shareIntentUrls.line %>" data-ty-share-intent-linkedin="<%= shareIntentUrls.linkedin %>">
+<div class="p-demo__sections" data-ty-demo-share data-ty-share-intent-x="<%= shareIntentUrls.x %>" data-ty-share-intent-facebook="<%= shareIntentUrls.facebook %>" data-ty-share-intent-line="<%= shareIntentUrls.line %>" data-ty-share-static-text="<%- encodeURIComponent(shareTextForClientBody) %>">
   <section class="p-demo__section">
-    <div class="p-demo__box">
-      <h2 class="p-demo__heading">ビルド時（<code>ty_appendQuery</code> ＋ <code>baseUrl</code>）</h2>
-      <p class="p-demo__desc">
-        共有テキストは <code>shareTextStatic</code>（<code>index.html</code> から渡す）で可変。本文は EJS 側の変数のためタグは入れない想定。属性値表示時は <code>ty_stripTags</code> を併用してください。
-      </p>
-      <ul class="p-demo__list">
-        <li>
-          <a href="<%- shareHrefTwitter %>" target="_blank" rel="noopener noreferrer">X（ポスト画面）</a>
-        </li>
-        <li>
-          <a href="<%- shareHrefFacebook %>" target="_blank" rel="noopener noreferrer">Facebook シェア</a>
-        </li>
-        <li>
-          <a href="<%- shareHrefLine %>" target="_blank" rel="noopener noreferrer">LINE（LINE it）</a>
-        </li>
-        <li>
-          <a href="<%- shareHrefLinkedin %>" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </li>
-      </ul>
-    </div>
+    <h2 class="p-demo__heading">ビルド時（<code>ty_appendQuery</code> ＋ <code>baseUrl</code>）</h2>
+    <p class="p-demo__desc">
+      ビルド時は <code>shareTextStatic</code> に <code>${staticPageUrl}</code> を埋め込み、<strong>テキスト → URL → #タグ</strong> の1本を X / LINE の本文に使う（X は <code>text</code> のみ）。Facebook の <code>u</code> は URL のみ。表示中 URL 用は <code>data-ty-share-static-text</code> に <strong>URL より前の本文のみ</strong>（<code>encodeURIComponent(shareTextForClientBody)</code>）を載せ、JS で末尾に <code>location.href</code> を付ける。本文は EJS 側の変数のため HTML タグは入れない想定。
+    </p>
+    <ul class="p-demo__list">
+      <li>
+        <a href="<%- shareHrefTwitter %>" target="_blank" rel="noopener noreferrer">X（ポスト画面）</a>
+      </li>
+      <li>
+        <a href="<%- shareHrefFacebook %>" target="_blank" rel="noopener noreferrer">Facebook シェア</a>
+      </li>
+      <li>
+        <a href="<%- shareHrefLine %>" target="_blank" rel="noopener noreferrer">LINE（テキスト＋URL）</a>
+      </li>
+    </ul>
   </section>
 
   <section class="p-demo__section">
-    <div class="p-demo__box">
-      <h2 class="p-demo__heading">表示中のURLを使う（<code>main.js</code> → <code>demo/_demo-share.js</code>）</h2>
-      <p class="p-demo__desc">
-        <code>location.href</code> と <code>document.title</code>（または <code>data-ty-share-text</code>）で <code>URLSearchParams</code> によりエンコード。ローカルでは <code>http</code> 起点のURLになります。
-      </p>
-      <ul class="p-demo__list">
-        <li>
-          <a class="js-ty-share-current" href="#" data-ty-share-service="x" data-ty-share-text="">X</a>
-        </li>
-        <li>
-          <a class="js-ty-share-current" href="#" data-ty-share-service="facebook" data-ty-share-text="">Facebook</a>
-        </li>
-        <li>
-          <a class="js-ty-share-current" href="#" data-ty-share-service="line" data-ty-share-text="">LINE</a>
-        </li>
-        <li>
-          <a class="js-ty-share-current" href="#" data-ty-share-service="linkedin" data-ty-share-text="">LinkedIn</a>
-        </li>
-      </ul>
-    </div>
+    <h2 class="p-demo__heading">表示中のURLを使う（<code>main.js</code> → <code>demo/_demo-share.js</code>）</h2>
+    <p class="p-demo__desc">
+      X / LINE は <code>（data から復元した本文／data-ty-share-text／document.title）+ "\\n" + location.href</code> を1本にする（<strong>URL は末尾</strong>）。Facebook は <code>u</code> に <code>location.href</code> のみ。ローカルでは <code>http</code> 起点の URL になります。
+    </p>
+    <ul class="p-demo__list">
+      <li>
+        <a class="js-ty-share-current" href="#" data-ty-share-service="x" data-ty-share-text="">X</a>
+      </li>
+      <li>
+        <a class="js-ty-share-current" href="#" data-ty-share-service="facebook" data-ty-share-text="">Facebook</a>
+      </li>
+      <li>
+        <a class="js-ty-share-current" href="#" data-ty-share-service="line" data-ty-share-text="">LINE</a>
+      </li>
+    </ul>
   </section>
 
   <section class="p-demo__section">
-    <div class="p-demo__box">
-      <h2 class="p-demo__heading">同種の「URL共有」ではない導線</h2>
-      <p class="p-demo__desc">
-        Instagram は一般 Web 向けの任意URLポスト用 Intent は使えない想定。YouTube も自サイトの記事URLを「投稿」する用途とは別です。下記は各サービス先頭へのリンク例です。実案件では自チャンネル・自プロフィールのURLに差し替えてください。
-      </p>
-      <ul class="p-demo__list p-demo__list--sub">
-        <li>
-          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
-        </li>
-        <li>
-          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
-        </li>
-      </ul>
-    </div>
+    <h2 class="p-demo__heading">同種の「URL共有」ではない導線</h2>
+    <p class="p-demo__desc">
+      Instagram は一般 Web 向けの任意URLポスト用 Intent は使えない想定。YouTube も自サイトの記事URLを「投稿」する用途とは別です。下記は各サービス先頭へのリンク例です。実案件では自チャンネル・自プロフィールのURLに差し替えてください。
+    </p>
+    <ul class="p-demo__list p-demo__list--sub">
+      <li>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </li>
+    </ul>
   </section>
 </div>

@@ -2,22 +2,28 @@
  * デモ: SNS 共有リンクに表示中ページの URL / タイトルを差し込む
  */
 
-const buildShareCurrentHref = (service, pageUrl, text, intentUrls) => {
-  const shareText = text ?? "";
-  const paramsX = { url: pageUrl, text: shareText };
-  const paramsFacebook = { u: pageUrl };
-  const paramsLine = { url: pageUrl };
-  const paramsLinkedin = { url: pageUrl };
+const decodeShareStaticText = (encoded) => {
+  if (!encoded || String(encoded).trim() === "") {
+    return "";
+  }
+  try {
+    return decodeURIComponent(encoded);
+  } catch {
+    return "";
+  }
+};
 
+const buildShareCurrentHref = (service, pageUrl, textBody, intentUrls) => {
+  const fullText = `${textBody}\n${pageUrl}`;
+  const paramsX = { text: fullText };
+  const paramsFacebook = { u: pageUrl };
   switch (service) {
     case "x":
       return `${intentUrls.x}?${new URLSearchParams(paramsX).toString()}`;
     case "facebook":
       return `${intentUrls.facebook}?${new URLSearchParams(paramsFacebook).toString()}`;
     case "line":
-      return `${intentUrls.line}?${new URLSearchParams(paramsLine).toString()}`;
-    case "linkedin":
-      return `${intentUrls.linkedin}?${new URLSearchParams(paramsLinkedin).toString()}`;
+      return `${intentUrls.line}${encodeURIComponent(fullText)}`;
     default:
       return "#";
   }
@@ -33,9 +39,9 @@ const run = () => {
     x: rootElement.dataset.tyShareIntentX ?? "",
     facebook: rootElement.dataset.tyShareIntentFacebook ?? "",
     line: rootElement.dataset.tyShareIntentLine ?? "",
-    linkedin: rootElement.dataset.tyShareIntentLinkedin ?? "",
   };
-  if (!intentUrls.x || !intentUrls.facebook || !intentUrls.line || !intentUrls.linkedin) {
+  const shareStaticBody = decodeShareStaticText(rootElement.dataset.tyShareStaticText ?? "");
+  if (!intentUrls.x || !intentUrls.facebook || !intentUrls.line) {
     return;
   }
 
@@ -51,8 +57,13 @@ const run = () => {
       return;
     }
     const override = el.getAttribute("data-ty-share-text");
-    const text = override && override.length > 0 ? override : title;
-    const next = buildShareCurrentHref(service, hrefNow, text, intentUrls);
+    const textBody =
+      override && override.length > 0
+        ? override
+        : shareStaticBody && shareStaticBody.trim() !== ""
+          ? shareStaticBody
+          : title;
+    const next = buildShareCurrentHref(service, hrefNow, textBody, intentUrls);
     el.setAttribute("href", next);
     el.setAttribute("rel", "noopener noreferrer");
     el.setAttribute("target", "_blank");
