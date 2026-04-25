@@ -483,7 +483,7 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - `src/demo/demo-share/index.html` — `shareTextStatic` を `_p-demo-share` に引き渡し
 - `src/ejs/components-demo/_p-demo-share.ejs` — ビルド時に確定する共有 URL ブロック（X / Facebook / LINE / LinkedIn）と、`.js-ty-share-current` 用のマーカー
 - `src/assets/js/demo/_demo-share.js` — `main.js` から import。`.p-demo-share` 内の `a.js-ty-share-current` に `location.href` と `document.title`（または `data-ty-share-text`）を反映して `href` を設定
-- `src/assets/sass/demo-components/_p-demo-share.scss` — セクション枠・一覧リンク
+- `src/assets/sass/demo-components/_p-demo.scss` — `.p-demo__list` / `.p-demo__list--sub` および `p-demo__box` 等（共有デモと共通）
 
 #### 動作仕様
 - **ビルド時**: `baseUrl` と `pages[sharePageKey].path` から本ページ想定の絶対 URL を組み、各サービス向け `intent` / 共有 URL へ `ty_appendQuery` で `url` / `text` / `u` を渡す。二重にエンコードしない（`URLSearchParams` 由来）。
@@ -491,6 +491,21 @@ text: email('afmaar128', 'gmail.com', { link: false })
 
 #### 使用方法
 - デモ一覧から `demoShare`（表示ラベル「SNSシェア（URLエンコード）」）のリンクを開く。`shareTextStatic` は `demo-share/index.html` 側の定数。`npm run init` ではデモ用 `src` 配下とデモ用 import が主に除去される。`ty_appendQuery` は `config/utils.js` なので、案件に残す場合は `init` 後も参照できる。
+
+### 3.22 アクセシビリティ仮基準
+
+#### 関連ファイル
+- **正本（共通）:** ナレッジベースの `wiki/a11y-baseline.md`（例: `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md`）。**版・Must/Should/非目標・段階的運用・チェックリスト**はここに集約する。**適用範囲は静的サイトに限らない**（マークアップ・CSS・クライアントJS を扱う制作全般）。
+- `docs/a11y-baseline.md` — **本リポジトリ向け案内（stub）**。正本へのパスと、EJS・型録・トークンなど**このテンプレ固有**の補足のみ。
+
+#### 動作仕様
+- **「どこまでアクセシビリティに手を入れるか」の内部ライン**を文書化する。WCAG 適合の**宣言**や**監査の代替**は目的としない。
+- **新規追加**のページ・EJS パーツ・JS・Sass は、**Wiki 正本**の **Must** を当該範囲で満たす。
+- **既存**は一括改修せず、**修正のたび**に、変更が触れる範囲で同 Must に**徐々に**合わせる。
+
+#### 使用方法
+- 作業前に **Wiki 正本**を開き、**Must** と**チェックリスト**を参照する。本リポ固有の実装メモは `docs/a11y-baseline.md`（stub）を併読する。
+- **基準の改訂**は **Wiki `/wiki/a11y-baseline.md`** で行い、stub の版メモがあれば揃える（本セクションの「例」パスは環境に合わせてよい）。
 
 ---
 
@@ -576,6 +591,7 @@ env.deploy.example       デプロイ用変数テンプレート
 
 - Vite設定: `vite.config.js`
 - ページ設定: `config/site.config.js`
+- アクセシビリティ仮基準（正本）: ナレッジ `wiki/a11y-baseline.md`／本リポ案内: `docs/a11y-baseline.md`
 - 除外判定: `config/utils.js`
 - HTML後処理: `scripts/after-build.mjs`
 - フォント圧縮: `scripts/font-compress.sh`, `scripts/font-compress-subset.sh`, `scripts/README-font-compress.md`

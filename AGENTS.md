@@ -16,6 +16,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | 本リポジトリ（この静的 Vite テンプレ） | `/Users/yoshiaki/working/t2025-10-01vite` |
 | 対になる WordPress テーマ（Local・対応案件の一例。実パスは各案件テーマの AGENTS を正とする） | `/Users/yoshiaki/Local Sites/t2025-12-24vite-wp/app/public/wp-content/themes/t2025-12-24vite-wp` |
 | ナレッジ用リポジトリ（コーディングルール・`stock/`） | `/Users/yoshiaki/working/2026-03-20kn` |
+| ナレッジベース（第二の脳・`wiki`・本リポと別） | `/Users/yoshiaki/working/2026-04-23kn` |
 
 ### 案件ナレッジ（stock）
 
@@ -73,7 +74,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `src/assets/sass/base/_root.scss` | フォント・CSS変数（`:root`）。ライト/ダーク用の `--color-bg` / `--color-text` 等と `@media (prefers-color-scheme: dark)` による上書き |
 | `src/assets/js/_theme-toggle.js` | **Demo用**。ライト/ダーク切り替えボタンのクリック処理。案件時は本ファイル削除と main.js の import 削除が必要 |
 | `.github/workflows/deploy.yml` | CI/CD（FTPデプロイ + Discord通知） |
-| `docs/a11y-baseline.md` | アクセシビリティ仮基準（Must/Should・非目標・段階的適用・短いチェックリストの**正本**。適用範囲は静的サイトに**限らない**） |
+| `docs/a11y-baseline.md` | アクセシビリティ仮基準の**案内（stub）**。**正本**はナレッジ `wiki/a11y-baseline.md`（`/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md`）。本リポ固有の補足のみ |
 
 ## ドキュメント更新ルール
 
@@ -83,6 +84,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 - セクション3「機能仕様」に新しいサブセクション（3.x）として追記する
 - 記載すべき内容: 関連ファイル、動作仕様、使用方法
 - 既存機能の変更の場合は、該当セクションを更新する
+- **アクセシビリティ仮基準の本文（Must/Should 等）**を改訂した場合は、**ナレッジ** `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md` を更新し、本リポの `docs/a11y-baseline.md`（stub）の版メモを必要に応じて揃える
 
 ### AGENTS.md
 - 重要ファイルが増えた場合 →「重要ファイルと役割」テーブルに追加
@@ -137,10 +139,10 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 
 ### アクセシビリティ仮基準（段階的適用）
 
-- **正本:** [docs/a11y-baseline.md](docs/a11y-baseline.md)（**ファイルの置き場**は本リポジトリの `docs/`。**基準の内容**は WordPress テーマ等、他のフロント制作にも参照しうる）。概要は [docs/architecture.md](docs/architecture.md) の「3.22 アクセシビリティ仮基準」。
-- **新規**（ページ・EJS・JS・Sass・デモ）: 同文書の **Must** を当該範囲で満たす。
+- **正本（共通）:** ナレッジベース `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md`（**Must / Should / 運用 / チェックリスト**）。**基準の改訂はこの Wiki で行う**。
+- **本リポの案内:** [docs/a11y-baseline.md](docs/a11y-baseline.md)（stub、EJS・型録・トークン等の**テンプレ固有**の補足のみ）。概要は [docs/architecture.md](docs/architecture.md) の「3.22 アクセシビリティ仮基準」。
+- **新規**（ページ・EJS・JS・Sass・デモ）: Wiki 正本の **Must** を当該範囲で満たす。
 - **既存の修正**: 一括改修は求めない。**手を入れた範囲**で Must の違反を直し、無関係なファイルは触らない。
-- **基準の改訂**: `docs/a11y-baseline.md` の版・変更履歴と、`docs/architecture.md` の 3.22 を揃えて更新する。
 
 ## ビルドフロー
 

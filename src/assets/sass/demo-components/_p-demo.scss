@@ -60,6 +60,30 @@
   border-radius: rem(4);
 }
 
+/* 縦積み箇条書き＋下線リンク（SNS共有デモ等） */
+.p-demo__list {
+  margin-top: rem(16);
+  list-style-type: disc;
+  padding-left: 1.25em;
+  display: flex;
+  flex-direction: column;
+  gap: rem(8);
+}
+
+.p-demo__list--sub {
+  list-style-type: circle;
+}
+
+.p-demo__list a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.p-demo__list a:hover {
+  text-decoration: none;
+}
+
 /* ページ固有のスタイル */
 
 .p-demo-api__status:empty {

@@ -12,61 +12,67 @@
   const liStatic = buildStatic('https://www.linkedin.com/sharing/share-offsite/', { url: staticPageUrl });
 %>
 
-<div class="p-demo-share">
-  <section class="p-demo-share__section" aria-labelledby="p-demo-share-heading-static">
-    <h2 id="p-demo-share-heading-static" class="p-demo-share__heading">ビルド時（<code>ty_appendQuery</code> ＋ <code>baseUrl</code>）</h2>
-    <p class="p-demo-share__lead">
-      共有テキストは <code>shareTextStatic</code>（<code>index.html</code> から渡す）で可変。本文は EJS 側の変数のためタグは入れない想定。属性値表示時は <code>ty_stripTags</code> を併用してください。
-    </p>
-    <ul class="p-demo-share__list">
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link" href="<%- xStatic %>" target="_blank" rel="noopener noreferrer">X（ポスト画面）</a>
-      </li>
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link" href="<%- fbStatic %>" target="_blank" rel="noopener noreferrer">Facebook シェア</a>
-      </li>
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link" href="<%- lineStatic %>" target="_blank" rel="noopener noreferrer">LINE（LINE it）</a>
-      </li>
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link" href="<%- liStatic %>" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      </li>
-    </ul>
+<div class="p-demo__sections" data-ty-demo-share>
+  <section class="p-demo__section">
+    <div class="p-demo__box">
+      <h2 class="p-demo__heading">ビルド時（<code>ty_appendQuery</code> ＋ <code>baseUrl</code>）</h2>
+      <p class="p-demo__desc">
+        共有テキストは <code>shareTextStatic</code>（<code>index.html</code> から渡す）で可変。本文は EJS 側の変数のためタグは入れない想定。属性値表示時は <code>ty_stripTags</code> を併用してください。
+      </p>
+      <ul class="p-demo__list">
+        <li>
+          <a href="<%- xStatic %>" target="_blank" rel="noopener noreferrer">X（ポスト画面）</a>
+        </li>
+        <li>
+          <a href="<%- fbStatic %>" target="_blank" rel="noopener noreferrer">Facebook シェア</a>
+        </li>
+        <li>
+          <a href="<%- lineStatic %>" target="_blank" rel="noopener noreferrer">LINE（LINE it）</a>
+        </li>
+        <li>
+          <a href="<%- liStatic %>" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </li>
+      </ul>
+    </div>
   </section>
 
-  <section class="p-demo-share__section" aria-labelledby="p-demo-share-heading-dynamic">
-    <h2 id="p-demo-share-heading-dynamic" class="p-demo-share__heading">表示中のURLを使う（<code>main.js</code> → <code>demo/_demo-share.js</code>）</h2>
-    <p class="p-demo-share__lead">
-      <code>location.href</code> と <code>document.title</code>（または <code>data-ty-share-text</code>）で <code>URLSearchParams</code> によりエンコード。ローカルでは <code>http</code> 起点のURLになります。
-    </p>
-    <ul class="p-demo-share__list">
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link js-ty-share-current" href="#" data-ty-share-service="x" data-ty-share-text="">X</a>
-      </li>
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link js-ty-share-current" href="#" data-ty-share-service="facebook" data-ty-share-text="">Facebook</a>
-      </li>
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link js-ty-share-current" href="#" data-ty-share-service="line" data-ty-share-text="">LINE</a>
-      </li>
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link js-ty-share-current" href="#" data-ty-share-service="linkedin" data-ty-share-text="">LinkedIn</a>
-      </li>
-    </ul>
+  <section class="p-demo__section">
+    <div class="p-demo__box">
+      <h2 class="p-demo__heading">表示中のURLを使う（<code>main.js</code> → <code>demo/_demo-share.js</code>）</h2>
+      <p class="p-demo__desc">
+        <code>location.href</code> と <code>document.title</code>（または <code>data-ty-share-text</code>）で <code>URLSearchParams</code> によりエンコード。ローカルでは <code>http</code> 起点のURLになります。
+      </p>
+      <ul class="p-demo__list">
+        <li>
+          <a class="js-ty-share-current" href="#" data-ty-share-service="x" data-ty-share-text="">X</a>
+        </li>
+        <li>
+          <a class="js-ty-share-current" href="#" data-ty-share-service="facebook" data-ty-share-text="">Facebook</a>
+        </li>
+        <li>
+          <a class="js-ty-share-current" href="#" data-ty-share-service="line" data-ty-share-text="">LINE</a>
+        </li>
+        <li>
+          <a class="js-ty-share-current" href="#" data-ty-share-service="linkedin" data-ty-share-text="">LinkedIn</a>
+        </li>
+      </ul>
+    </div>
   </section>
 
-  <section class="p-demo-share__section" aria-labelledby="p-demo-share-heading-other">
-    <h2 id="p-demo-share-heading-other" class="p-demo-share__heading">同種の「URL共有」ではない導線</h2>
-    <p class="p-demo-share__note">
-      Instagram は一般 Web 向けの任意URLポスト用 Intent は使えない想定。YouTube も自サイトの記事URLを「投稿」する用途とは別です。下記は各サービス先頭へのリンク例です。実案件では自チャンネル・自プロフィールのURLに差し替えてください。
-    </p>
-    <ul class="p-demo-share__list p-demo-share__list--sub">
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
-      </li>
-      <li class="p-demo-share__item">
-        <a class="p-demo-share__link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
-      </li>
-    </ul>
+  <section class="p-demo__section">
+    <div class="p-demo__box">
+      <h2 class="p-demo__heading">同種の「URL共有」ではない導線</h2>
+      <p class="p-demo__desc">
+        Instagram は一般 Web 向けの任意URLポスト用 Intent は使えない想定。YouTube も自サイトの記事URLを「投稿」する用途とは別です。下記は各サービス先頭へのリンク例です。実案件では自チャンネル・自プロフィールのURLに差し替えてください。
+      </p>
+      <ul class="p-demo__list p-demo__list--sub">
+        <li>
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </li>
+        <li>
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">YouTube</a>
+        </li>
+      </ul>
+    </div>
   </section>
 </div>

@@ -31,7 +31,7 @@ const buildShareCurrentHref = (service, pageUrl, text) => {
 };
 
 const run = () => {
-  if (!document.querySelector('.p-demo-share')) {
+  if (!document.querySelector('[data-ty-demo-share]')) {
     return;
   }
 
