@@ -113,6 +113,8 @@ npm run reinstall
 
 - `config/site.config.js`
   - `pages`（ページ情報）
+  - `siteExternalLinks`（X・Instagram 等の絶対 URL。`npm run init` 後は空オブジェクト）
+  - `shareIntentUrls`（X・Facebook・LINE・LinkedIn の共有 Intent URL）
   - `imageAltFormats`（`none` / `webp` / `avif` / `both`）
   - `useFileHash`（`true`: ビルド後ファイル名にハッシュを付与 / `false`: ハッシュなし）
   - `minify`（`true`: CSS を minify / `false`: CSS を minify しない（クライアント納品時など直接編集の可能性がある場合）。JS は常に minify）
@@ -132,17 +134,14 @@ npm run reinstall
 - `AGENTS.md`  
 AIエージェント作業ルール。更新対象ドキュメントの判断基準も扱う。
 
-## 外部ナレッジへの導線
+## 第二の脳（汎用コーディング・ナレッジ）への導線
 
-汎用ルール・分野別ナレッジは外部リポジトリ `2026-03-20kn` に集約します。  
-このリポジトリでは詳細を重複記載せず、必要時に参照します。
-
-- 公開リポジトリ: [rea1i2e/2026-03-20kn](https://github.com/rea1i2e/2026-03-20kn)
+汎用のコーディング規約・分野横断のメモは、**第二の脳**リポジトリー `2026-04-23kn` の `wiki/`（入口: `wiki/coding-conventions.md`。ローカル例: `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md`）に集約する。  
+このテンプレでは詳細を重複記載せず、必要時に上記 `wiki` を参照する。旧 `2026-03-20kn` リポジトリは**廃止**とする。
 
 ## プロンプト下書き
 
-AIへの作業依頼プロンプト下書きは `prompts/` に置き、案件ごとに編集します。
-雛形・更新の正本は外部ナレッジの `/Users/yoshiaki/working/2026-03-20kn/prompts` にあり、必要に応じてこのリポジトリへコピーして案件向けに編集します。
+AI への作業依頼プロンプト下書きは **このリポジトリの** `prompts/` に置き、案件ごとに編集する。雛形の更新方針は `AGENTS.md` に従う。
 
 | ファイル                                                     | 用途                |
 | -------------------------------------------------------- | ----------------- |

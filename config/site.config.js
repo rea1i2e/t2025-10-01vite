@@ -297,13 +297,47 @@ const pages = {
     description: "個人情報保護方針ページです。",
     keywords: "",
   },
-  // 外部リンク設置例
+};
+
+/**
+ * 外部プロフィール・関連サイト（ヘッダー／フッターと同一形状で `pages` とマージして表示）
+ * `ty_getPage` の対象外。`path` は絶対 URL（http で始まる）、`targetBlank` で別タブを付与。
+ */
+const siteExternalLinks = {
   x: {
     label: "X",
     root: "",
     path: "https://x.com/yoshiaki_12",
     targetBlank: true,
   },
+  instagram: {
+    label: "Instagram",
+    root: "",
+    path: "https://www.instagram.com/rea1i2e/",
+    targetBlank: true,
+  },
+  facebook: {
+    label: "Facebook",
+    root: "",
+    path: "https://www.facebook.com/ynumajiri/",
+    targetBlank: true,
+  },
+  personalBlog: {
+    label: "個人ブログ",
+    root: "",
+    path: "https://2026-04-06as.vercel.app/",
+    targetBlank: true,
+  },
+};
+
+/**
+ * SNS 共有導線の Intent URL（ビルド時 EJS／実行時 JS で共通利用）
+ */
+const shareIntentUrls = {
+  x: "https://twitter.com/intent/tweet",
+  facebook: "https://www.facebook.com/sharer/sharer.php",
+  line: "https://social-plugins.line.me/lineit/share",
+  linkedin: "https://www.linkedin.com/sharing/share-offsite/",
 };
 
 export const siteConfig = {
@@ -375,6 +409,12 @@ export const siteConfig = {
 
   // ページ設定
   pages,
+
+  // 外部リンク（ヘッダー／フッターで pages の後に続けて表示）
+  siteExternalLinks,
+
+  // SNS 共有の Intent URL 一覧
+  shareIntentUrls,
 
   /**
    * ページ情報を取得する関数

@@ -19,16 +19,16 @@ export const ty_stripTags = (value = "") => {
  * ty_appendQuery("https://twitter.com/intent/tweet", { url: "https://example.com/", text: "見出し" });
  */
 export const ty_appendQuery = (base, query = {}) => {
-  const usp = new URLSearchParams();
-  for (const [k, v] of Object.entries(query)) {
-    if (v === undefined || v === null) continue;
-    usp.set(k, String(v));
+  const urlSearchParams = new URLSearchParams();
+  for (const [queryKey, queryValue] of Object.entries(query)) {
+    if (queryValue === undefined || queryValue === null) continue;
+    urlSearchParams.set(queryKey, String(queryValue));
   }
-  const s = usp.toString();
-  if (!s) {
+  const serializedQuery = urlSearchParams.toString();
+  if (!serializedQuery) {
     return base;
   }
-  return base + (base.includes("?") ? "&" : "?") + s;
+  return base + (base.includes("?") ? "&" : "?") + serializedQuery;
 };
 
 /**

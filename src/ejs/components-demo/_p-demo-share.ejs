@@ -1,18 +1,17 @@
 <%
-  const spKey = sharePageKey;
-  const sp = pages[spKey];
-  const baseNorm = String(baseUrl).replace(/\/$/, '');
-  const staticPageUrl = `${baseNorm}/${String(sp.path).replace(/^\//, '')}`;
+  const sharePage = pages[sharePageKey];
+  const normalizedBaseUrl = String(baseUrl).replace(/\/$/, '');
+  const staticPageUrl = `${normalizedBaseUrl}/${String(sharePage.path).replace(/^\//, '')}`;
 
-  const buildStatic = (baseIntent, q) => ty_appendQuery(baseIntent, q);
+  const buildShareHref = (intentBaseUrl, query) => ty_appendQuery(intentBaseUrl, query);
 
-  const xStatic = buildStatic('https://twitter.com/intent/tweet', { url: staticPageUrl, text: shareTextStatic });
-  const fbStatic = buildStatic('https://www.facebook.com/sharer/sharer.php', { u: staticPageUrl });
-  const lineStatic = buildStatic('https://social-plugins.line.me/lineit/share', { url: staticPageUrl });
-  const liStatic = buildStatic('https://www.linkedin.com/sharing/share-offsite/', { url: staticPageUrl });
+  const shareHrefTwitter = buildShareHref(shareIntentUrls.x, { url: staticPageUrl, text: shareTextStatic });
+  const shareHrefFacebook = buildShareHref(shareIntentUrls.facebook, { u: staticPageUrl });
+  const shareHrefLine = buildShareHref(shareIntentUrls.line, { url: staticPageUrl });
+  const shareHrefLinkedin = buildShareHref(shareIntentUrls.linkedin, { url: staticPageUrl });
 %>
 
-<div class="p-demo__sections" data-ty-demo-share>
+<div class="p-demo__sections" data-ty-demo-share data-ty-share-intent-x="<%= shareIntentUrls.x %>" data-ty-share-intent-facebook="<%= shareIntentUrls.facebook %>" data-ty-share-intent-line="<%= shareIntentUrls.line %>" data-ty-share-intent-linkedin="<%= shareIntentUrls.linkedin %>">
   <section class="p-demo__section">
     <div class="p-demo__box">
       <h2 class="p-demo__heading">ビルド時（<code>ty_appendQuery</code> ＋ <code>baseUrl</code>）</h2>
@@ -21,16 +20,16 @@
       </p>
       <ul class="p-demo__list">
         <li>
-          <a href="<%- xStatic %>" target="_blank" rel="noopener noreferrer">X（ポスト画面）</a>
+          <a href="<%- shareHrefTwitter %>" target="_blank" rel="noopener noreferrer">X（ポスト画面）</a>
         </li>
         <li>
-          <a href="<%- fbStatic %>" target="_blank" rel="noopener noreferrer">Facebook シェア</a>
+          <a href="<%- shareHrefFacebook %>" target="_blank" rel="noopener noreferrer">Facebook シェア</a>
         </li>
         <li>
-          <a href="<%- lineStatic %>" target="_blank" rel="noopener noreferrer">LINE（LINE it）</a>
+          <a href="<%- shareHrefLine %>" target="_blank" rel="noopener noreferrer">LINE（LINE it）</a>
         </li>
         <li>
-          <a href="<%- liStatic %>" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="<%- shareHrefLinkedin %>" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </li>
       </ul>
     </div>

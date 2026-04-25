@@ -6,7 +6,7 @@
 
 - このドキュメントは、**テンプレート固有の技術仕様の正本**です。
 - 導入手順・日常運用の入口は `README.md` を参照してください。
-- 汎用コーディングルールや分野横断ナレッジは `/Users/yoshiaki/working/2026-03-20kn/README.md` 側を参照し、本書では重複記載しません。
+- 汎用コーディングルールや分野横断ナレッジは、第二の脳の `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md` および子ページを参照し、本書では重複記載しません。旧 `2026-03-20kn` リポジトリは廃止とする。
 
 ---
 
@@ -174,11 +174,13 @@ flowchart LR
 
 #### 設定構造
 - `pages` オブジェクト: 各ページの `label` / `root` / `path` / `title` / `description` 等を集約
+- `siteExternalLinks` オブジェクト: X / Instagram 等の**絶対 URL**導線。`pages` と同形状（`label` / `root` / `path` / `targetBlank`）で、`path` が `http` で始まるときヘッダー・フッターではそのまま `href` に使う。`ty_getPage` の対象外
+- `shareIntentUrls` オブジェクト: X / Facebook / LINE / LinkedIn の共有 Intent URL 一覧。ビルド時 EJS と実行時 JS の参照先を統一する
 - `headerExcludePages` / `drawerExcludePages`: メニューから除外するページのキー配列
 - `ejsPath` / `baseUrl` / `titleSeparator`: 共通設定
 
 #### テンプレート側での利用
-- `src/ejs/common/_header.ejs` で `Object.entries(pages)` をループし、ヘッダ/ドロワーメニューを生成
+- `src/ejs/common/_header.ejs` / `_footer.ejs` で `{ ...pages, ...siteExternalLinks }` をマージし、`Object.entries` でヘッダ／ドロワー／フッターメニューを生成（外部リンクは `pages` の後に続く）
 - `ty_isExcluded(key, headerExcludePages)` 等で除外制御（`demo*` や `demo[A-Z]*` のパターンに対応）
 
 ### 3.8 CI/CD（GitHub Actions）
@@ -479,15 +481,15 @@ text: email('afmaar128', 'gmail.com', { link: false })
 
 #### 関連ファイル
 - `config/utils.js` — `ty_appendQuery`（`URLSearchParams` でクエリを付与。値は百分率エンコード）
-- `config/site.config.js` — `ty_appendQuery` を EJS へ引き渡し。ページキー `demoShare`（`path`: `demo/demo-share/`）
+- `config/site.config.js` — `ty_appendQuery` と `shareIntentUrls` を EJS へ引き渡し。ページキー `demoShare`（`path`: `demo/demo-share/`）
 - `src/demo/demo-share/index.html` — `shareTextStatic` を `_p-demo-share` に引き渡し
 - `src/ejs/components-demo/_p-demo-share.ejs` — ビルド時に確定する共有 URL ブロック（X / Facebook / LINE / LinkedIn）と、`.js-ty-share-current` 用のマーカー
 - `src/assets/js/demo/_demo-share.js` — `main.js` から import。`.p-demo-share` 内の `a.js-ty-share-current` に `location.href` と `document.title`（または `data-ty-share-text`）を反映して `href` を設定
 - `src/assets/sass/demo-components/_p-demo.scss` — `.p-demo__list` / `.p-demo__list--sub` および `p-demo__box` 等（共有デモと共通）
 
 #### 動作仕様
-- **ビルド時**: `baseUrl` と `pages[sharePageKey].path` から本ページ想定の絶対 URL を組み、各サービス向け `intent` / 共有 URL へ `ty_appendQuery` で `url` / `text` / `u` を渡す。二重にエンコードしない（`URLSearchParams` 由来）。
-- **クライアント**: 同一画面に「表示中の URL」で開く例を出す。`data-ty-share-service` が `x` / `facebook` / `line` / `linkedin` のいずれか。未対応の場合は `href` を `#` のままにしない（スクリプトで上書き）。Facebook は `u` キーにページ URL、他は当該公式ドキュメントに沿ったパラメータ名に合わせる。
+- **ビルド時**: `baseUrl` と `pages[sharePageKey].path` から本ページ想定の絶対 URL を組み、`shareIntentUrls` の各サービス URL へ `ty_appendQuery` で `url` / `text` / `u` を渡す。二重にエンコードしない（`URLSearchParams` 由来）。
+- **クライアント**: 同一画面に「表示中の URL」で開く例を出す。`shareIntentUrls` を EJS から `data-ty-share-intent-*` で DOM に載せ、`_demo-share.js` はその値を参照して `href` を組み立てる。`data-ty-share-service` は `x` / `facebook` / `line` / `linkedin` のいずれかを受け付ける。
 
 #### 使用方法
 - デモ一覧から `demoShare`（表示ラベル「SNSシェア（URLエンコード）」）のリンクを開く。`shareTextStatic` は `demo-share/index.html` 側の定数。`npm run init` ではデモ用 `src` 配下とデモ用 import が主に除去される。`ty_appendQuery` は `config/utils.js` なので、案件に残す場合は `init` 後も参照できる。
@@ -530,7 +532,7 @@ src/                     開発ルート（Vite root）
   public/                Vite public（root=src のため src/public）
 dist/                    本番出力（ビルド生成物。assets/css/, assets/js/, assets/images/, assets/videos/, assets/fonts/ 等）
 config/
-  site.config.js         ページ情報・共通設定
+  site.config.js         ページ情報・共通設定・siteExternalLinks（外部導線）
   utils.js               ユーティリティ（除外判定、email関数）
 scripts/
   after-build.mjs        HTML後処理スクリプト

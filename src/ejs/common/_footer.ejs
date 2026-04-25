@@ -3,7 +3,8 @@
     <div class="p-footer__nav">
       <ul class="p-footer__nav-list">
         <%
-          Object.entries(pages)
+          const footerNavPages = { ...pages, ...siteExternalLinks };
+          Object.entries(footerNavPages)
             .filter(([key]) => !ty_isExcluded(key, footerExcludePages))
             .forEach(([key, item]) => {
         %>

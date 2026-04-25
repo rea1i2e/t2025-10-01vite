@@ -15,14 +15,13 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 |------|------|
 | 本リポジトリ（この静的 Vite テンプレ） | `/Users/yoshiaki/working/t2025-10-01vite` |
 | 対になる WordPress テーマ（Local・対応案件の一例。実パスは各案件テーマの AGENTS を正とする） | `/Users/yoshiaki/Local Sites/t2025-12-24vite-wp/app/public/wp-content/themes/t2025-12-24vite-wp` |
-| ナレッジ用リポジトリ（コーディングルール・`stock/`） | `/Users/yoshiaki/working/2026-03-20kn` |
-| ナレッジベース（第二の脳・`wiki`・本リポと別） | `/Users/yoshiaki/working/2026-04-23kn` |
+| ナレッジベース（第二の脳・コーディング規約の汎用正本・`wiki`） | `/Users/yoshiaki/working/2026-04-23kn` |
 
 ### 案件ナレッジ（stock）
 
 - **実装・コミット**はこのリポジトリ（本テンプレ）で行う。
-- **案件ナレッジの md** はナレッジ用リポの `stock/` にだけ追加・更新する。書式は [`/Users/yoshiaki/working/2026-03-20kn/formats/stock-format.md`](/Users/yoshiaki/working/2026-03-20kn/formats/stock-format.md) に従う。**このテンプレ内に `stock/` や案件メモ専用の md を新設しない**。
-- Cursor では、必要に応じてナレッジ用リポをマルチルートで開くか、チャットにそのリポの `AGENTS.md` または `formats/stock-format.md` を添付する。
+- **案件ナレッジの md** の置き方・書式の目安は、第二の脳の [`/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md`](/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md) に従う（`wiki` 上に案件用ページを切る、または `raw/`・案件リポ等）。**このテンプレ内に `stock/` や案件メモ専用の md を新設しない**。
+- Cursor では、必要に応じて第二の脳をマルチルートで開くか、チャットにその `AGENTS.md` または `wiki/stock-format.md` を添付する。
 
 ## インタラクション部品の型録（エージェント向け）
 
@@ -99,9 +98,9 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 
 ## コーディング規約
 
-コーディング全般のルール・作業手順・判断基準は、ナレッジリポジトリ `/Users/yoshiaki/working/2026-03-20kn/AGENTS.md` を正本として参照すること。
-このリポジトリには、テンプレート固有の実装ルールのみを記載する。
-実装中に迷ったときは、ナレッジ側 AGENTS の「実装時の参照先」から該当ファイルを `@` で指定して質問する。
+コーディング全般のルール・作業手順・判断基準は、**第二の脳**（ナレッジベース）の `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md` を入口に参照すること（子ページ: `wiki/coding-*.md`）。旧ナレッジ用リポ `2026-03-20kn` は**廃止**した。  
+このリポジトリには、**テンプレート固有**の実装ルールのみを記載する。  
+実装中に迷ったときは、上記 `wiki` の該当トピックを `@` で指定して質問する。
 
 ## ファイル操作（Git）
 
@@ -202,7 +201,7 @@ npm run init
 - `src/assets/js/main.js` — `./demo/` への import 行を削除。`// import './_debugScrollable.js';` は残す
 - `src/assets/sass/style.scss` — `@use "./demo-components/**"` 行を削除
 - `src/ejs/common/_footer.ejs` — `_theme-toggle.ejs` の include 行を削除
-- `config/site.config.js` — デモページ定義（`demo` / `demoXxx` / `demoVariants` / `demoJavaScript` / `contact` / `thanks` / `privacy` / `x` キー）を削除
+- `config/site.config.js` — デモページ定義（`demo` / `demoXxx` / `demoVariants` / `demoJavaScript` / `contact` / `thanks` / `privacy` キー）を削除し、`siteExternalLinks` を空オブジェクトに置換
 
 **実行後の追加対応**
 - `config/site.config.js` の `siteName` / `baseUrl` を案件情報に更新する

@@ -114,7 +114,8 @@ fi
 
 # -------------------------------------------------------
 # 5. site.config.js: デモページ定義を削除
-#    demo / demoXxx / contact / thanks / privacy / x キーを削除
+#    demo / demoXxx / contact / thanks / privacy キーを削除
+#    siteExternalLinks は空オブジェクトに置き換え
 # -------------------------------------------------------
 SITE_CONFIG="$ROOT/config/site.config.js"
 if [ -f "$SITE_CONFIG" ]; then
@@ -124,7 +125,7 @@ import { readFileSync, writeFileSync } from 'fs';
 const filePath = process.env.SITE_CONFIG_PATH;
 let src = readFileSync(filePath, 'utf8');
 
-// 削除対象キー（demo で始まるもの + contact/thanks/privacy/x）
+// 削除対象キー（demo で始まるもの + contact/thanks/privacy）
 const demoKeys = [
   'demo', 'demoAccordion', 'demoDialog', 'demoTab', 'demoSplide',
   'demoFvVideo', 'demoSound', 'demoScrollAnimation', 'demoParallax',
@@ -133,7 +134,7 @@ const demoKeys = [
   'demoCurrentSection', 'demoHoverChange', 'demoDocument', 'demoToolkit',
   'demoMedia', 'demoApi', 'demoShare',
   'demoVariants', 'demoJavaScript',
-  'contact', 'thanks', 'privacy', 'x',
+  'contact', 'thanks', 'privacy',
 ];
 
 for (const key of demoKeys) {
@@ -166,8 +167,11 @@ for (const key of demoKeys) {
   src = result.join('\n');
 }
 
-// 「// 外部リンク設置例」コメント行も削除（x キー削除後に残る場合）
+// 「// 外部リンク設置例」コメント行も削除（旧テンプレに残る場合）
 src = src.replace(/\n  \/\/ 外部リンク設置例\n/g, '\n');
+
+// siteExternalLinks の中身を空に（ヘッダー／フッター用マージは維持）
+src = src.replace(/const siteExternalLinks = \{[\s\S]*?\n\};/m, 'const siteExternalLinks = {};');
 
 // 連続する空行を1行に圧縮
 src = src.replace(/\n{3,}/g, '\n\n');
