@@ -35,6 +35,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | アコーディオン | `src/assets/js/demo/_accordion.js` | `src/ejs/components-demo/_p-accordions.ejs` | `src/assets/sass/demo-components/_p-accordions.scss` | `src/demo/demo-accordion/index.html` |
 | モーダル（dialog） | `_dialog-general.js`、`_dialog-youtube.js`、`_dialog-video.js`（`src/assets/js/demo/`、共通 `_dialog-common.js`） | `src/ejs/components-demo/_p-dialog*.ejs` | `src/assets/sass/demo-components/_p-dialog*.scss` | `src/demo/demo-dialog/index.html` |
 | モーダル（dialog 非使用） | `src/assets/js/demo/_modal.js` | 用途に応じて `components-demo` を検索 | 上記 `demo-components` を検索 | `demo-dialog` を参考 |
+| SNS 共有（ty_appendQuery ／ 表示中 URL） | `src/assets/js/demo/_demo-share.js` | `src/ejs/components-demo/_p-demo-share.ejs` | `src/assets/sass/demo-components/_p-demo-share.scss` | `src/demo/demo-share/index.html` |
 | Splide スライダー | `src/assets/js/demo/_splide-fade.js` 等（`_splide-loop`、`_splide-thumbnail`、`_splide-progress`、`_splide-posts`） | 同名 `_p-splide-*.ejs` | 同名 `_p-splide-*.scss` | `src/demo/demo-splide/index.html` |
 
 デモページ新規作成時に既存の `components-demo`／`demo-components`／シェル構造を再利用するための索引は `src/demo/demo-toolkit/index.html` を参照する。
@@ -47,7 +48,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 |----------|------|
 | `vite.config.js` | Vite設定（EJS注入、Sassグロブ、画像最適化、ビルド出力パス）。アセットのインライン化を無効にする場合は `assetsInlineLimit` のコメントを参照 |
 | `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage()。画像代替フォーマット（`imageAltFormats`）もここで指定 |
-| `config/utils.js` | ユーティリティ関数（除外判定、email関数、ty_stripTags） |
+| `config/utils.js` | ユーティリティ関数（除外判定、email関数、ty_stripTags、ty_appendQuery） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、CSS image-set、整形）。config/site.config.js の imageAltFormats を参照 |
 | `scripts/init-project.sh` | 案件着手時にデモ用コードを一括削除するスクリプト（`npm run init` で実行） |
 | `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
@@ -63,6 +64,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `src/assets/js/main.js` | JSエントリファイル |
 | `src/assets/js/_demo-fv-video.js` | デモ用。ファーストビュー動画の PC/SP src 切替・ミュート／音声オン別ボタン（`demo/demo-fv-video/`） |
 | `src/assets/js/demo/_demo-api.js` | デモ用。JSONPlaceholder users の `fetch` と `li` による名前一覧（`demo/demo-api/`） |
+| `src/assets/js/demo/_demo-share.js` | デモ用。SNS 共有 `href` に `location`／`ty_appendQuery` 想定（`demo/demo-share/`） |
 | `src/assets/js/demo/_demo-sound.js` | デモ用。読み込み時 `<dialog>` で音声 ON/OFF を選び、ON 時のみ再生（`demo/demo-sound/`） |
 | `src/assets/js/demo/_demo-random-page-nav.js` | デモ用。`sessionStorage` で表示済みスラッグを避けつつトップ／下層間をランダム遷移（`demo/demo-random-page-nav/`） |
 | `src/ejs/components-demo/_p-random-page-nav.ejs` | デモ用。ランダムページ遷移（訪問済み除外）デモの共通マークアップ（ボタン・`data-*`） |

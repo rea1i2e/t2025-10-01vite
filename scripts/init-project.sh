@@ -131,7 +131,7 @@ const demoKeys = [
   'demoTextDecoration', 'demoCssAnime', 'demoGridLayout',
   'demoHoverButton', 'demoHoverText', 'demoHoverCard',
   'demoCurrentSection', 'demoHoverChange', 'demoDocument', 'demoToolkit',
-  'demoMedia', 'demoApi',
+  'demoMedia', 'demoApi', 'demoShare',
   'demoVariants', 'demoJavaScript',
   'contact', 'thanks', 'privacy', 'x',
 ];

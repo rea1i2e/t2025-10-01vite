@@ -475,6 +475,23 @@ text: email('afmaar128', 'gmail.com', { link: false })
 #### 使用方法
 - デモ一覧から「ランダムページ遷移（訪問済み除外）デモ」のリンクでトップを開く。スラッグ・部・`pageCode` の対応を変える場合は `_demo-random-page-nav.js` の `PAGES` と各 `index.html` の `include` 引数（`slug` / `dept` / `deptLabel` / `pageCode`）、`site.config.js` のページ定義を揃えて更新する。
 
+### 3.21 SNS シェア（ty_appendQuery ／ 表示中 URL 差し替え）
+
+#### 関連ファイル
+- `config/utils.js` — `ty_appendQuery`（`URLSearchParams` でクエリを付与。値は百分率エンコード）
+- `config/site.config.js` — `ty_appendQuery` を EJS へ引き渡し。ページキー `demoShare`（`path`: `demo/demo-share/`）
+- `src/demo/demo-share/index.html` — `shareTextStatic` を `_p-demo-share` に引き渡し
+- `src/ejs/components-demo/_p-demo-share.ejs` — ビルド時に確定する共有 URL ブロック（X / Facebook / LINE / LinkedIn）と、`.js-ty-share-current` 用のマーカー
+- `src/assets/js/demo/_demo-share.js` — `main.js` から import。`.p-demo-share` 内の `a.js-ty-share-current` に `location.href` と `document.title`（または `data-ty-share-text`）を反映して `href` を設定
+- `src/assets/sass/demo-components/_p-demo-share.scss` — セクション枠・一覧リンク
+
+#### 動作仕様
+- **ビルド時**: `baseUrl` と `pages[sharePageKey].path` から本ページ想定の絶対 URL を組み、各サービス向け `intent` / 共有 URL へ `ty_appendQuery` で `url` / `text` / `u` を渡す。二重にエンコードしない（`URLSearchParams` 由来）。
+- **クライアント**: 同一画面に「表示中の URL」で開く例を出す。`data-ty-share-service` が `x` / `facebook` / `line` / `linkedin` のいずれか。未対応の場合は `href` を `#` のままにしない（スクリプトで上書き）。Facebook は `u` キーにページ URL、他は当該公式ドキュメントに沿ったパラメータ名に合わせる。
+
+#### 使用方法
+- デモ一覧から `demoShare`（表示ラベル「SNSシェア（URLエンコード）」）のリンクを開く。`shareTextStatic` は `demo-share/index.html` 側の定数。`npm run init` ではデモ用 `src` 配下とデモ用 import が主に除去される。`ty_appendQuery` は `config/utils.js` なので、案件に残す場合は `init` 後も参照できる。
+
 ---
 
 ## 4. ディレクトリ構成

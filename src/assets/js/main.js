@@ -80,6 +80,9 @@ import './demo/_demo-fv-video.js';
 /* JSONPlaceholder API デモ */
 import './demo/_demo-api.js';
 
+/* SNS シェア（ty_appendQuery ／ 表示中 URL 差し替え） */
+import './demo/_demo-share.js';
+
 /* ランダムページ遷移（訪問済み除外）デモ */
 import './demo/_demo-random-page-nav.js';
 

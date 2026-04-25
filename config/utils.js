@@ -10,6 +10,28 @@ export const ty_stripTags = (value = "") => {
 };
 
 /**
+ * 共有・外部API用: ベースURLにクエリを付与（値は URLSearchParams で百分率エンコード）
+ *
+ * @param {string} base - 例: "https://twitter.com/intent/tweet"
+ * @param {Record<string, string | number | undefined | null>} [query] - キー例: url, text, u（Facebook）
+ * @returns {string}
+ * @example
+ * ty_appendQuery("https://twitter.com/intent/tweet", { url: "https://example.com/", text: "見出し" });
+ */
+export const ty_appendQuery = (base, query = {}) => {
+  const usp = new URLSearchParams();
+  for (const [k, v] of Object.entries(query)) {
+    if (v === undefined || v === null) continue;
+    usp.set(k, String(v));
+  }
+  const s = usp.toString();
+  if (!s) {
+    return base;
+  }
+  return base + (base.includes("?") ? "&" : "?") + s;
+};
+
+/**
  * 除外ページチェック
  * プレフィックスマッチング・正規表現ライクパターン・完全一致に対応
  *

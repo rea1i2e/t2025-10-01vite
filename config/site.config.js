@@ -3,6 +3,7 @@ import {
   ty_email,
   ty_email_protection,
   ty_stripTags,
+  ty_appendQuery,
 } from "./utils.js";
 
 /**
@@ -191,6 +192,14 @@ const pages = {
     description:
       "APIの設置例です。",
   },
+  demoShare: {
+    label: "SNSシェア（URLエンコード）",
+    root: "../../",
+    path: "demo/demo-share/",
+    title: "SNSシェア",
+    description:
+      "X・Facebook 等の共有用 URL 組み立て。ty_appendQuery によるエンコードと、表示中 URL への差し替え例です。",
+  },
   demoRandomPageNav: {
     label: "ランダムページ遷移（訪問済み除外）デモ",
     root: "../../",
@@ -360,6 +369,9 @@ export const siteConfig = {
 
   // HTMLタグ除去関数（alt・aria-label など属性値に使用）
   ty_stripTags,
+
+  // 共有用 URL クエリ付与（URLSearchParams でエンコード）
+  ty_appendQuery,
 
   // ページ設定
   pages,
