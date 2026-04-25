@@ -14,11 +14,11 @@
   const shareHrefLine = `${shareIntentUrls.line}${encodeURIComponent(shareTextStatic)}`;
 %>
 
-<div class="p-demo__sections" data-ty-demo-share data-ty-share-intent-x="<%= shareIntentUrls.x %>" data-ty-share-intent-facebook="<%= shareIntentUrls.facebook %>" data-ty-share-intent-line="<%= shareIntentUrls.line %>" data-ty-share-static-text="<%- encodeURIComponent(shareTextForClientBody) %>">
+<div class="p-demo__sections" data-share-root data-share-intent-x="<%= shareIntentUrls.x %>" data-share-intent-facebook="<%= shareIntentUrls.facebook %>" data-share-intent-line="<%= shareIntentUrls.line %>" data-share-static-text="<%- encodeURIComponent(shareTextForClientBody) %>">
   <section class="p-demo__section">
     <h2 class="p-demo__heading">ビルド時（<code>ty_appendQuery</code> ＋ <code>baseUrl</code>）</h2>
     <p class="p-demo__desc">
-      ビルド時は <code>shareTextStatic</code> に <code>${staticPageUrl}</code> を埋め込み、<strong>テキスト → URL → #タグ</strong> の1本を X / LINE の本文に使う（X は <code>text</code> のみ）。Facebook の <code>u</code> は URL のみ。表示中 URL 用は <code>data-ty-share-static-text</code> に <strong>URL より前の本文のみ</strong>（<code>encodeURIComponent(shareTextForClientBody)</code>）を載せ、JS で末尾に <code>location.href</code> を付ける。本文は EJS 側の変数のため HTML タグは入れない想定。
+      ビルド時は <code>shareTextStatic</code> に <code>${staticPageUrl}</code> を埋め込み、<strong>テキスト → URL → #タグ</strong> の1本を X / LINE の本文に使う（X は <code>text</code> のみ）。Facebook の <code>u</code> は URL のみ。表示中 URL 用は <code>data-share-static-text</code> に <strong>URL より前の本文のみ</strong>（<code>encodeURIComponent(shareTextForClientBody)</code>）を載せ、JS で末尾に <code>location.href</code> を付ける。本文は EJS 側の変数のため HTML タグは入れない想定。
     </p>
     <ul class="p-demo__list">
       <li>
@@ -36,17 +36,17 @@
   <section class="p-demo__section">
     <h2 class="p-demo__heading">表示中のURLを使う（<code>main.js</code> → <code>demo/_demo-share.js</code>）</h2>
     <p class="p-demo__desc">
-      X / LINE は <code>（data から復元した本文／data-ty-share-text／document.title）+ "\\n" + location.href</code> を1本にする（<strong>URL は末尾</strong>）。Facebook は <code>u</code> に <code>location.href</code> のみ。ローカルでは <code>http</code> 起点の URL になります。
+      X / LINE は <code>（data から復元した本文／data-share-text／document.title）+ "\\n" + location.href</code> を1本にする（<strong>URL は末尾</strong>）。Facebook は <code>u</code> に <code>location.href</code> のみ。ローカルでは <code>http</code> 起点の URL になります。
     </p>
     <ul class="p-demo__list">
       <li>
-        <a class="js-ty-share-current" href="#" data-ty-share-service="x" data-ty-share-text="">X</a>
+        <a class="js-share-current" href="#" data-share-service="x" data-share-text="">X</a>
       </li>
       <li>
-        <a class="js-ty-share-current" href="#" data-ty-share-service="facebook" data-ty-share-text="">Facebook</a>
+        <a class="js-share-current" href="#" data-share-service="facebook" data-share-text="">Facebook</a>
       </li>
       <li>
-        <a class="js-ty-share-current" href="#" data-ty-share-service="line" data-ty-share-text="">LINE</a>
+        <a class="js-share-current" href="#" data-share-service="line" data-share-text="">LINE</a>
       </li>
     </ul>
   </section>
