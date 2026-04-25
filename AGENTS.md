@@ -35,7 +35,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | アコーディオン | `src/assets/js/demo/_accordion.js` | `src/ejs/components-demo/_p-accordions.ejs` | `src/assets/sass/demo-components/_p-accordions.scss` | `src/demo/demo-accordion/index.html` |
 | モーダル（dialog） | `_dialog-general.js`、`_dialog-youtube.js`、`_dialog-video.js`（`src/assets/js/demo/`、共通 `_dialog-common.js`） | `src/ejs/components-demo/_p-dialog*.ejs` | `src/assets/sass/demo-components/_p-dialog*.scss` | `src/demo/demo-dialog/index.html` |
 | モーダル（dialog 非使用） | `src/assets/js/demo/_modal.js` | 用途に応じて `components-demo` を検索 | 上記 `demo-components` を検索 | `demo-dialog` を参考 |
-| SNS 共有（ty_appendQuery ／ 表示中 URL） | `src/assets/js/demo/_demo-share.js` | `src/ejs/components-demo/_p-demo-share.ejs` | `src/assets/sass/demo-components/_p-demo-share.scss` | `src/demo/demo-share/index.html` |
+| SNS 共有（ty_appendQuery ／ 表示中 URL） | `src/assets/js/demo/_demo-share.js` | `src/ejs/components-demo/_p-demo-share.ejs` | `src/assets/sass/demo-components/_p-demo.scss`（`.p-demo__list` 等） | `src/demo/demo-share/index.html` |
 | Splide スライダー | `src/assets/js/demo/_splide-fade.js` 等（`_splide-loop`、`_splide-thumbnail`、`_splide-progress`、`_splide-posts`） | 同名 `_p-splide-*.ejs` | 同名 `_p-splide-*.scss` | `src/demo/demo-splide/index.html` |
 
 デモページ新規作成時に既存の `components-demo`／`demo-components`／シェル構造を再利用するための索引は `src/demo/demo-toolkit/index.html` を参照する。
@@ -73,6 +73,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | `src/assets/sass/base/_root.scss` | フォント・CSS変数（`:root`）。ライト/ダーク用の `--color-bg` / `--color-text` 等と `@media (prefers-color-scheme: dark)` による上書き |
 | `src/assets/js/_theme-toggle.js` | **Demo用**。ライト/ダーク切り替えボタンのクリック処理。案件時は本ファイル削除と main.js の import 削除が必要 |
 | `.github/workflows/deploy.yml` | CI/CD（FTPデプロイ + Discord通知） |
+| `docs/a11y-baseline.md` | アクセシビリティ仮基準（Must/Should・非目標・段階的適用・短いチェックリストの**正本**。適用範囲は静的サイトに**限らない**） |
 
 ## ドキュメント更新ルール
 
@@ -133,6 +134,13 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 | 内側の影 | `--shadow-inset` | オーバーレイ等 |
 
 新規パーツで「面」を持つ場合は `background-color: var(--color-bg-sub); color: var(--color-text);`、枠線は `border: var(--border);` を指定する。これにより追加対応なしでライト/ダークに連動する。
+
+### アクセシビリティ仮基準（段階的適用）
+
+- **正本:** [docs/a11y-baseline.md](docs/a11y-baseline.md)（**ファイルの置き場**は本リポジトリの `docs/`。**基準の内容**は WordPress テーマ等、他のフロント制作にも参照しうる）。概要は [docs/architecture.md](docs/architecture.md) の「3.22 アクセシビリティ仮基準」。
+- **新規**（ページ・EJS・JS・Sass・デモ）: 同文書の **Must** を当該範囲で満たす。
+- **既存の修正**: 一括改修は求めない。**手を入れた範囲**で Must の違反を直し、無関係なファイルは触らない。
+- **基準の改訂**: `docs/a11y-baseline.md` の版・変更履歴と、`docs/architecture.md` の 3.22 を揃えて更新する。
 
 ## ビルドフロー
 
