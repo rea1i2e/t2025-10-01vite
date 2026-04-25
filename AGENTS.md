@@ -13,7 +13,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 
 | 役割 | パス |
 |------|------|
-| 本リポジトリ（この静的 Vite テンプレ） | `/Users/yoshiaki/working/✈️制作テンプレート/t2025-10-01vite` |
+| 本リポジトリ（この静的 Vite テンプレ） | `/Users/yoshiaki/working/t2025-10-01vite` |
 | 対になる WordPress テーマ（Local・対応案件の一例。実パスは各案件テーマの AGENTS を正とする） | `/Users/yoshiaki/Local Sites/t2025-12-24vite-wp/app/public/wp-content/themes/t2025-12-24vite-wp` |
 | ナレッジ用リポジトリ（コーディングルール・`stock/`） | `/Users/yoshiaki/working/2026-03-20kn` |
 
