@@ -80,6 +80,7 @@ export default defineConfig({
   },
   plugins: [
     ViteEjsPlugin({
+      config: siteConfig,
       ...siteConfig,
       posts,
     }),

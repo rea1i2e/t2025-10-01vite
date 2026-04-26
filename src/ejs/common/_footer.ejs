@@ -3,10 +3,14 @@
     <div class="p-footer__nav">
       <ul class="p-footer__nav-list">
         <%
-          const footerNavPages = { ...pages, ...siteExternalLinks };
-          Object.entries(footerNavPages)
-            .filter(([key]) => !ty_isExcluded(key, footerExcludePages))
-            .forEach(([key, item]) => {
+          const footerNavItems = [
+            ...Object.entries(config.pages)
+              .filter(([key]) => !config.ty_isExcluded(key, ["randomPageNav*"]))
+              .map(([, item]) => item),
+            ...Object.values(config.externalLinks),
+          ];
+
+          footerNavItems.forEach((item) => {
         %>
           <li class="p-footer__nav-item">
             <a href="<%- item.path.startsWith('http') ? item.path : page.root + item.path %>" class="p-footer__nav-link" <%- item.targetBlank ? 'target="_blank" rel="noopener noreferrer"' : '' %>>

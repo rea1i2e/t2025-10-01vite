@@ -300,8 +300,8 @@ const pages = {
 };
 
 /**
- * 外部プロフィール・関連サイト（ヘッダー／フッターと同一形状で `pages` とマージして表示）
- * `ty_getPage` の対象外。`path` は絶対 URL（http で始まる）、`targetBlank` で別タブを付与。
+ * 外部プロフィール・関連サイト
+ * `ty_getPage` の対象外。メニューに載せるものは各 EJS で選択する。
  */
 const siteExternalLinks = {
   x: {
@@ -381,19 +381,6 @@ export const siteConfig = {
   minify: true,
   // minify: false,
 
-  /**
-   * ページ除外設定
-   * ヘッダー、ドロワー、フッターから除外するページの指定
-   *
-   * パターン指定方法:
-   * - "demo*" → demoで始まるすべてのページを除外
-   * - "demo[A-Z]*" → demoの後に大文字が続くページのみ除外（demoは除外しない）
-   * - "contact" → contactのみ除外
-   */
-  headerExcludePages: ["demo[A-Z]*", "thanks", "randomPageNav*"],
-  drawerExcludePages: ["demo[A-Z]*", "thanks", "randomPageNav*"],
-  footerExcludePages: ["randomPageNav*"],
-
   // 除外ページチェック関数
   ty_isExcluded,
 
@@ -410,8 +397,8 @@ export const siteConfig = {
   // ページ設定
   pages,
 
-  // 外部リンク（ヘッダー／フッターで pages の後に続けて表示）
-  siteExternalLinks,
+  // 外部リンク
+  externalLinks: siteExternalLinks,
 
   // SNS 共有の Intent URL 一覧
   shareIntentUrls,
@@ -438,19 +425,6 @@ export const siteConfig = {
   },
 };
 
-/**
- * 未定義の場合にデフォルト値を設定
- * コメントアウトしてもエラーを出さないため
- */
-if (!siteConfig.headerExcludePages) {
-  siteConfig.headerExcludePages = [];
-}
-if (!siteConfig.drawerExcludePages) {
-  siteConfig.drawerExcludePages = [];
-}
-if (!siteConfig.footerExcludePages) {
-  siteConfig.footerExcludePages = [];
-}
 if (siteConfig.minify === undefined) {
   siteConfig.minify = true;
 }

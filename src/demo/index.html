@@ -5,11 +5,11 @@
 
 <body>
     <%- include(ejsPath + 'common/_header.ejs', { page }) %>
-    <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages['demo'].label, imageSrc: 'demo/dummy1.jpg', imageAlt: '' }) %>
+    <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: config.pages.demo.label, imageSrc: 'demo/dummy1.jpg', imageAlt: '' }) %>
     <main class="p-demo">
       <div class="p-demo__inner l-inner">
         <p class="p-demo__desc">
-          <a href="<%- page.root + pages.demoToolkit.path %>"><%- pages.demoToolkit.label %></a>
+          <a href="<%- page.root + config.pages.demoToolkit.path %>"><%- config.pages.demoToolkit.label %></a>
         </p>
         <div class="p-demo__content">
           <%- include(ejsPath + 'components-demo/_p-demo.ejs', { page }) %>
