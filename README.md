@@ -1,15 +1,16 @@
 # t2025-10-01vite
 
-Vite + EJS + Sass 構成の静的サイトテンプレートです。
+**静的サイト制作用テンプレート**（略称 **静的テンプレ**）。GitHub テンプレート名は `t2025-10-01vite`。Vite + EJS + Sass 構成。  
+3 リポジトリ間の呼称の正本はナレッジベースの [wiki/operated-repositories.md](/Users/yoshiaki/working/2026-04-23kn/wiki/operated-repositories.md#表記ルール3-リポジトリと型録) を参照。
 
 この README は「入口ドキュメント」です。  
 セットアップ・日常作業・主要導線のみを扱い、詳細仕様は `docs/architecture.md` に集約します。
 
 ## このREADMEの責務
 
-- テンプレート固有の使い方（導入、日常コマンド、基本作業）
+- 静的テンプレ固有の使い方（導入、日常コマンド、基本作業）
 - どの情報をどのドキュメントで読むかの導線
-- 汎用ナレッジへの参照（詳細は外部リポジトリ）
+- ナレッジベースへの参照（汎用ルールの詳細は `wiki/`）
 
 ## 目次
 
@@ -17,7 +18,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレートです。
 - [日常作業コマンド](#日常作業コマンド)
 - [よくある作業](#よくある作業)
 - [ドキュメントの役割分担](#ドキュメントの役割分担)
-- [外部ナレッジへの導線](#外部ナレッジへの導線)
+- [ナレッジベース（第二の脳）への導線](#ナレッジベース第二の脳への導線)
 - [プロンプト下書き](#プロンプト下書き)
 - [ライセンス](#ライセンス)
 
@@ -41,7 +42,7 @@ npm run dev
 
 Git を使わない場合（ZIP のみ展開するなど、`.git` がない場合）、`npm install` の最後に `prepare` で husky が動き、**Git 前提の処理が失敗して `npm install` 全体が完了しない**ことがある。その結果、`vite: command not found` のように見えることがある。原因は「Vite が PATH にない」だけでなく、**`npm install` が途中で止まり `node_modules` が不完全**になっていることが多い（`husky` の失敗 → install 不完全 → `vite` が存在しない、という連鎖）。
 
-**husky** は Git の hooks を設定する仕組みで、本テーマでは **`pre-commit` で `npm run validate:build`**（`npm run build` → `validate:html`）が走る。`build` には **`vite build` のあと `scripts/after-build.mjs`** が含まれる。コミット時点で本番相当の `dist/` と HTML 検証が通っていることを前提にし、**プッシュ前に FTP で手動アップロードした場合でも、`after-build.mjs` 未実行の `dist/` をコミットしてしまうリスク**を抑える。プッシュ時に同じ検証は繰り返さない（`pre-commit` で十分なため）。
+**husky** は Git の hooks を設定する仕組みで、本リポジトリ（静的テンプレ）では **`pre-commit` で `npm run validate:build`**（`npm run build` → `validate:html`）が走る。`build` には **`vite build` のあと `scripts/after-build.mjs`** が含まれる。コミット時点で本番相当の `dist/` と HTML 検証が通っていることを前提にし、**プッシュ前に FTP で手動アップロードした場合でも、`after-build.mjs` 未実行の `dist/` をコミットしてしまうリスク**を抑える。プッシュ時に同じ検証は繰り返さない（`pre-commit` で十分なため）。
 
 #### Git を使わない場合の回避
 
@@ -130,14 +131,14 @@ npm run reinstall
 - `docs/architecture.md`  
 テンプレート固有仕様の正本。機能仕様・構成・処理フローを扱う。
 - `docs/a11y-baseline.md`  
-アクセシビリティ仮基準の**案内（stub）**。**正本**はナレッジベースの `wiki/a11y-baseline.md`（第二の脳リポジトリ）。ここには EJS・型録など**本テンプレ固有**の補足のみ。
+アクセシビリティ仮基準の**案内（stub）**。**正本**はナレッジベースの `wiki/a11y-baseline.md`。ここには EJS・型録など**静的テンプレ固有**の補足のみ。
 - `AGENTS.md`  
 AIエージェント作業ルール。更新対象ドキュメントの判断基準も扱う。
 
-## 第二の脳（汎用コーディング・ナレッジ）への導線
+## ナレッジベース（第二の脳）への導線
 
-汎用のコーディング規約・分野横断のメモは、**第二の脳**リポジトリー `2026-04-23kn` の `wiki/`（入口: `wiki/coding-conventions.md`。ローカル例: `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md`）に集約する。  
-このテンプレでは詳細を重複記載せず、必要時に上記 `wiki` を参照する。旧 `2026-03-20kn` リポジトリは**廃止**とする。
+汎用のコーディング規約・分野横断のメモは、**ナレッジベース**（別名 **第二の脳**）リポジトリー `2026-04-23kn` の `wiki/`（入口: `wiki/coding-conventions.md`。ローカル例: `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md`）に集約する。  
+このリポジトリ（静的テンプレ）では詳細を重複記載せず、必要時に上記 `wiki` を参照する。旧 `2026-03-20kn` リポジトリは**廃止**とする。
 
 ## プロンプト下書き
 

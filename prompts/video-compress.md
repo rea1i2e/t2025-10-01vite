@@ -2,7 +2,7 @@
 
 > このファイルはプロンプトのテンプレートです。
 > 案件で使う際は `prompts/video-compress.md`（テンプレートリポジトリ側）にコピー済みのファイルに案件情報を記入してください。
-> テンプレ固有の実行手順はこのリポジトリを参照し、導線の索引は第二の脳 `wiki/asset-compression-notes.md`、手順の詳細は本リポ `raw/videos/README-video-compress.md` を参照してください。旧 `2026-03-20kn` の圧縮文書は廃止に伴い参照しません。
+> 実行手順はこのリポジトリ（静的テンプレ）を参照し、導線の索引はナレッジベース `wiki/asset-compression-notes.md`、手順の詳細は本リポ `raw/videos/README-video-compress.md` を参照してください。旧 `2026-03-20kn` の圧縮文書は廃止に伴い参照しません。
 
 ## 使い方
 
@@ -33,7 +33,7 @@
 
 以下のファイルを @ で渡してください。
 - `raw/videos/README-video-compress.md`（圧縮手順・方針）
-- 必要なら `wiki/asset-compression-notes.md`（第二の脳リポ: `/Users/yoshiaki/working/2026-04-23kn/wiki/asset-compression-notes.md`、索引）
+- 必要なら `wiki/asset-compression-notes.md`（ナレッジベース: `/Users/yoshiaki/working/2026-04-23kn/wiki/asset-compression-notes.md`、索引）
 - `raw/videos/compress-config.sample.json`（設定ファイルのサンプル）
 
 ## 【動画ごとの用途・表示サイズ】

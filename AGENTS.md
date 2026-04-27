@@ -4,7 +4,8 @@
 
 ## プロジェクト概要
 
-Vite + EJS + Sass 構成の静的サイトテンプレート。  
+**静的サイト制作用テンプレート**（略称 **静的テンプレ**）。Vite + EJS + Sass 構成。  
+呼称の正本はナレッジベースの [wiki/operated-repositories.md](/Users/yoshiaki/working/2026-04-23kn/wiki/operated-repositories.md#表記ルール3-リポジトリと型録)（表記ルール）。  
 詳細な技術仕様は [docs/architecture.md](docs/architecture.md) を参照。
 
 ## ローカル絶対パス（個人環境・Cursor 用）
@@ -13,21 +14,23 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 
 | 役割 | パス |
 |------|------|
-| 本リポジトリ（この静的 Vite テンプレ） | `/Users/yoshiaki/working/t2025-10-01vite` |
-| 対になる WordPress テーマ（Local・対応案件の一例。実パスは各案件テーマの AGENTS を正とする） | `/Users/yoshiaki/Local Sites/t2025-12-24vite-wp/app/public/wp-content/themes/t2025-12-24vite-wp` |
+| 静的テンプレ（本リポジトリ） | `/Users/yoshiaki/working/t2025-10-01vite` |
+| WP テンプレ（Local・対応案件の一例。実パスは各案件テーマの AGENTS を正とする） | `/Users/yoshiaki/Local Sites/t2025-12-24vite-wp/app/public/wp-content/themes/t2025-12-24vite-wp` |
 | ナレッジベース（第二の脳・コーディング規約の汎用正本・`wiki`） | `/Users/yoshiaki/working/2026-04-23kn` |
 
 ### 案件ナレッジ（stock）
 
-- **実装・コミット**はこのリポジトリ（本テンプレ）で行う。
-- **案件ナレッジの md** の置き方・書式の目安は、第二の脳の [`/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md`](/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md) に従う（`wiki` 上に案件用ページを切る、または `raw/`・案件リポ等）。**このテンプレ内に `stock/` や案件メモ専用の md を新設しない**。
-- Cursor では、必要に応じて第二の脳をマルチルートで開くか、チャットにその `AGENTS.md` または `wiki/stock-format.md` を添付する。
+- **実装・コミット**はこのリポジトリ（静的テンプレ）で行う。
+- **案件ナレッジの md** の置き方・書式の目安は、ナレッジベース（第二の脳）の [`/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md`](/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md) に従う（`wiki` 上に案件用ページを切る、または `raw/`・案件リポ等）。**このリポジトリ内に `stock/` や案件メモ専用の md を新設しない**。
+- Cursor では、必要に応じてナレッジベースをマルチルートで開くか、チャットにその `AGENTS.md` または `wiki/stock-format.md` を添付する。
 
 ## インタラクション部品の型録（エージェント向け）
 
-案件リポジトリ（WordPress テーマ等）で **タブ・スライダー・モーダル** などの実装依頼が短く述べられただけのとき、エージェントは **本リポジトリを型録として読んでから** 相手先のスタックへ移植すること。案件側の `AGENTS.md` には本リポジトリの絶対パスと「型録参照（必須）」手順を書く（個人環境。複製後は案件の AGENTS を正とする）。
+**型録**はリポジトリ名ではなく、**静的テンプレ（本リポ）** が WP 案件などでインタラクション実装の参照元として果たす役割を指す（定義はナレッジ [operated-repositories.md](/Users/yoshiaki/working/2026-04-23kn/wiki/operated-repositories.md)）。
 
-**本リポジトリ内の相対パス対応（実装前に JS + EJS + Sass を揃えて読む）**
+案件リポジトリ（WP テーマ等）で **タブ・スライダー・モーダル** などの実装依頼が短く述べられただけのとき、エージェントは **型録として静的テンプレ（本リポ）を読んでから** 相手先のスタックへ移植すること。案件側の `AGENTS.md` には静的テンプレのルート絶対パスと「型録参照（必須）」手順を書く（個人環境。複製後は案件の AGENTS を正とする）。
+
+**静的テンプレ内の相対パス対応（実装前に JS + EJS + Sass を揃えて読む）**
 
 | 機能 | JS | EJS | Sass | デモページ（どのパーツを載せているかの索引） |
 |------|----|-----|------|---------------------------------------------|
@@ -98,7 +101,7 @@ Vite + EJS + Sass 構成の静的サイトテンプレート。
 
 ## コーディング規約
 
-コーディング全般のルール・作業手順・判断基準は、**第二の脳**（ナレッジベース）の `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md` を入口に参照すること（子ページ: `wiki/coding-*.md`）。旧ナレッジ用リポ `2026-03-20kn` は**廃止**した。  
+コーディング全般のルール・作業手順・判断基準は、**ナレッジベース（第二の脳）** の `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md` を入口に参照すること（子ページ: `wiki/coding-*.md`）。旧ナレッジ用リポ `2026-03-20kn` は**廃止**した。  
 このリポジトリには、**テンプレート固有**の実装ルールのみを記載する。  
 実装中に迷ったときは、上記 `wiki` の該当トピックを `@` で指定して質問する。
 

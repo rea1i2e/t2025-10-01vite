@@ -3,7 +3,7 @@
 動画ファイルをWeb向けに圧縮するためのスクリプトです。
 
 > このドキュメントは **このテンプレート内の運用手順（テンプレ固有）** を扱います。  
-> 導線の索引は第二の脳 `wiki/asset-compression-notes.md`（ローカル: `/Users/yoshiaki/working/2026-04-23kn/wiki/asset-compression-notes.md`）を参照してください。手順の詳細は**本テンプレ内**の本 README および下記を正本とします。
+> 導線の索引はナレッジベース `wiki/asset-compression-notes.md`（ローカル: `/Users/yoshiaki/working/2026-04-23kn/wiki/asset-compression-notes.md`）を参照してください。手順の詳細は**静的テンプレ内**の本 README および下記を正本とします。
 
 ## 前提条件
 
