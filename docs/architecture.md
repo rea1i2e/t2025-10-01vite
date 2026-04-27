@@ -1,12 +1,14 @@
 # アーキテクチャ仕様（t2025-10-01vite）
 
+人間向けの読み方: **ルート `README.md` → 本書**。文書化の基準（いつ ADR にするか等）はナレッジ [`wiki/template-repository-docs.md`](/Users/yoshiaki/working/2026-04-23kn/wiki/template-repository-docs.md)。
+
 本ドキュメントは、**静的サイト制作用テンプレート**（略称 **静的テンプレ**。リポジトリ名 `t2025-10-01vite`）の設計・構成・各機能の仕様を定義する。呼称の正本はナレッジベースの `wiki/operated-repositories.md`（表記ルール）。
 
 ## 本ドキュメントの責務
 
 - このドキュメントは、**テンプレート固有の技術仕様の正本**です。
 - 導入手順・日常運用の入口は `README.md` を参照してください。
-- 汎用コーディングルールや分野横断ナレッジは、ナレッジベース（第二の脳）の `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md` および子ページを参照し、本書では重複記載しません。旧 `2026-03-20kn` リポジトリは廃止とする。
+- 汎用コーディングルールや分野横断ナレッジは、ナレッジベースの `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md` および子ページを参照し、本書では重複記載しません。旧 `2026-03-20kn` リポジトリは廃止とする。
 
 ---
 
@@ -289,18 +291,18 @@ text: email('afmaar128', 'gmail.com', { link: false })
 ### 3.11 フォント圧縮ツール
 
 #### 関連ファイル
-- `scripts/font-compress.sh` — 全グリフを維持したまま TTF 等を WOFF2 に変換
-- `scripts/font-compress-subset.sh` — 指定文字列のみをサブセット化して WOFF2 に変換
-- `scripts/README-font-compress.md` — 前提条件・使い方
+- `raw/fonts/font-compress.sh` — 全グリフを維持したまま TTF 等を WOFF2 に変換
+- `raw/fonts/font-compress-subset.sh` — 指定文字列のみをサブセット化して WOFF2 に変換
+- `raw/fonts/README-font-compress.md` — 前提条件・使い方
 
 #### 動作仕様
 - **前提**: Python 3.x と `fonttools[woff]`（`pip install fonttools[woff]`）が必要。内部で `pyftsubset` を使用
-- **全グリフ圧縮**: `font-compress.sh 入力.ttf 出力.woff2` で全グリフを WOFF2 に変換
-- **サブセット化**: `font-compress-subset.sh 入力.ttf 出力.woff2 "使用する文字列"` で指定文字のみの WOFF2 を生成し、ファイルサイズを削減
+- **全グリフ圧縮**: `raw/fonts/font-compress.sh` で全グリフを WOFF2 に変換
+- **サブセット化**: `raw/fonts/font-compress-subset.sh` で指定文字のみの WOFF2 を生成し、ファイルサイズを削減
 - 可変フォント（Variable Font）にも対応
 
 #### 使用方法
-- 詳細は `scripts/README-font-compress.md` を参照
+- 詳細は `raw/fonts/README-font-compress.md` を参照
 - 圧縮したフォントは `src/assets/fonts/` に配置する想定
 
 ### 3.12 パララックス機能
@@ -498,7 +500,14 @@ text: email('afmaar128', 'gmail.com', { link: false })
 
 #### 関連ファイル
 - **正本（共通）:** ナレッジベースの `wiki/a11y-baseline.md`（例: `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md`）。**版・Must/Should/非目標・段階的運用・チェックリスト**はここに集約する。**適用範囲は静的サイトに限らない**（マークアップ・CSS・クライアントJS を扱う制作全般）。
-- `docs/a11y-baseline.md` — **本リポジトリ向け案内（stub）**。正本へのパスと、EJS・型録・トークンなど**静的テンプレ固有**の補足のみ。
+
+#### 本リポジトリ（Vite + EJS + Sass）固有の補足
+
+- **属性値（`alt` / `aria-label` 等）:** EJS では `config/utils.js` の `ty_stripTags` 方針に従う（[AGENTS.md](../AGENTS.md) の「EJS の属性値出力」）。
+- **カラー / 面:** デモ・新規パーツは `src/assets/sass/base/_root.scss` の CSS 変数（`:root`）を使う。ライト/ダークは [AGENTS.md](../AGENTS.md) の「デモページ・コンポーネント追加時のカラー指定」。
+- **`<dialog>` 等の部品例:** 型録として `src/demo/demo-dialog/index.html` および `src/ejs/components-demo/_p-dialog*.ejs` を参照。
+
+上記を除く **Must / Should / 段階的運用 / チェックリスト**は **Wiki 正本**に従う。
 
 #### 動作仕様
 - **「どこまでアクセシビリティに手を入れるか」の内部ライン**を文書化する。WCAG 適合の**宣言**や**監査の代替**は目的としない。
@@ -506,8 +515,8 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - **既存**は一括改修せず、**修正のたび**に、変更が触れる範囲で同 Must に**徐々に**合わせる。
 
 #### 使用方法
-- 作業前に **Wiki 正本**を開き、**Must** と**チェックリスト**を参照する。本リポ固有の実装メモは `docs/a11y-baseline.md`（stub）を併読する。
-- **基準の改訂**は **Wiki `/wiki/a11y-baseline.md`** で行い、stub の版メモがあれば揃える（本セクションの「例」パスは環境に合わせてよい）。
+- 作業前に **Wiki 正本**を開き、**Must** と**チェックリスト**を参照する。本リポ固有の実装メモは **本節（3.22）の「固有の補足」** と [AGENTS.md](../AGENTS.md) を併読する。
+- **基準の改訂**は **Wiki `/wiki/a11y-baseline.md`** のみで行う（本 `architecture` の短い導線は必要に応じて同じ改訂に合わせる）。
 
 ---
 
@@ -530,6 +539,9 @@ src/                     開発ルート（Vite root）
     fonts/               フォント（woff2 等）
     videos/              動画（例: demo/ 配下。HTML から相対参照し Vite がハッシュ付きで出力）
   public/                Vite public（root=src のため src/public）
+raw/
+  fonts/                 フォント圧縮スクリプト・README（WOFF2）
+  videos/                動画圧縮スクリプト・README・設定サンプル
 dist/                    本番出力（ビルド生成物。assets/css/, assets/js/, assets/images/, assets/videos/, assets/fonts/ 等）
 config/
   site.config.js         ページ情報・共通設定・siteExternalLinks（外部導線）
@@ -537,9 +549,7 @@ config/
 scripts/
   after-build.mjs        HTML後処理スクリプト
   setup-secrets.sh       GitHub Secrets 一括登録（gh + .env.deploy）
-  font-compress.sh       フォント全グリフ → WOFF2 圧縮
-  font-compress-subset.sh フォントサブセット → WOFF2 圧縮
-  README-font-compress.md フォント圧縮ツールの使い方
+  init-project.sh        案件着手時デモ一括削除（npm run init）
 env.deploy.example       デプロイ用変数テンプレート
 .github/workflows/
   deploy.yml             CI/CD 定義
@@ -593,10 +603,10 @@ env.deploy.example       デプロイ用変数テンプレート
 
 - Vite設定: `vite.config.js`
 - ページ設定: `config/site.config.js`
-- アクセシビリティ仮基準（正本）: ナレッジ `wiki/a11y-baseline.md`／本リポ案内: `docs/a11y-baseline.md`
+- アクセシビリティ仮基準（正本）: ナレッジ `wiki/a11y-baseline.md`／本リポの手がかり: セクション 3.22
 - 除外判定: `config/utils.js`
 - HTML後処理: `scripts/after-build.mjs`
-- フォント圧縮: `scripts/font-compress.sh`, `scripts/font-compress-subset.sh`, `scripts/README-font-compress.md`
+- フォント圧縮: `raw/fonts/font-compress.sh`, `raw/fonts/font-compress-subset.sh`, `raw/fonts/README-font-compress.md`
 - HTML検証: `.htmlvalidate.json`
 - Git hooks: `.husky/pre-commit`
 - デプロイ: `.github/workflows/deploy.yml`

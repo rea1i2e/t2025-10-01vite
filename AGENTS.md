@@ -16,12 +16,12 @@
 |------|------|
 | 静的テンプレ（本リポジトリ） | `/Users/yoshiaki/working/t2025-10-01vite` |
 | WP テンプレ（Local・対応案件の一例。実パスは各案件テーマの AGENTS を正とする） | `/Users/yoshiaki/Local Sites/t2025-12-24vite-wp/app/public/wp-content/themes/t2025-12-24vite-wp` |
-| ナレッジベース（第二の脳・コーディング規約の汎用正本・`wiki`） | `/Users/yoshiaki/working/2026-04-23kn` |
+| ナレッジベース（コーディング規約の汎用正本・`wiki`） | `/Users/yoshiaki/working/2026-04-23kn` |
 
 ### 案件ナレッジ（stock）
 
 - **実装・コミット**はこのリポジトリ（静的テンプレ）で行う。
-- **案件ナレッジの md** の置き方・書式の目安は、ナレッジベース（第二の脳）の [`/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md`](/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md) に従う（`wiki` 上に案件用ページを切る、または `raw/`・案件リポ等）。**このリポジトリ内に `stock/` や案件メモ専用の md を新設しない**。
+- **案件ナレッジの md** の置き方・書式の目安は、ナレッジベースの [`/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md`](/Users/yoshiaki/working/2026-04-23kn/wiki/stock-format.md) に従う（`wiki` 上に案件用ページを切る、または `raw/`・案件リポ等）。**このリポジトリ内に `stock/` や案件メモ専用の md を新設しない**。
 - Cursor では、必要に応じてナレッジベースをマルチルートで開くか、チャットにその `AGENTS.md` または `wiki/stock-format.md` を添付する。
 
 ## インタラクション部品の型録（エージェント向け）
@@ -57,9 +57,9 @@
 | `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
 | `raw/videos/inspect-videos.mjs` | 動画情報サマリー出力（AI依頼時に使用） |
 | `raw/videos/compress-video.mjs` | 動画まとめ圧縮＋レポート生成 |
-| `scripts/font-compress.sh` | フォントを全グリフのまま WOFF2 に圧縮（pyftsubset） |
-| `scripts/font-compress-subset.sh` | フォントを指定文字のみサブセット化して WOFF2 に圧縮 |
-| `scripts/README-font-compress.md` | フォント圧縮ツールの前提条件・使い方 |
+| `raw/fonts/font-compress.sh` | フォントを全グリフのまま WOFF2 に圧縮（pyftsubset） |
+| `raw/fonts/font-compress-subset.sh` | フォントを指定文字のみサブセット化して WOFF2 に圧縮 |
+| `raw/fonts/README-font-compress.md` | フォント圧縮ツールの前提条件・使い方 |
 | `env.deploy.example` | デプロイ用環境変数テンプレート（`.env.deploy` の雛形） |
 | `src/ejs/components/` | 毎回使う部品テンプレート |
 | `src/ejs/demo-components/` | よく使うの部品テンプレート |
@@ -76,9 +76,16 @@
 | `src/assets/sass/base/_root.scss` | フォント・CSS変数（`:root`）。ライト/ダーク用の `--color-bg` / `--color-text` 等と `@media (prefers-color-scheme: dark)` による上書き |
 | `src/assets/js/_theme-toggle.js` | **Demo用**。ライト/ダーク切り替えボタンのクリック処理。案件時は本ファイル削除と main.js の import 削除が必要 |
 | `.github/workflows/deploy.yml` | CI/CD（FTPデプロイ + Discord通知） |
-| `docs/a11y-baseline.md` | アクセシビリティ仮基準の**案内（stub）**。**正本**はナレッジ `wiki/a11y-baseline.md`（`/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md`）。本リポ固有の補足のみ |
+
+## 動画の Web 向け圧縮（エージェント）
+
+- **手順の Skill（正本）**: `/Users/yoshiaki/working/2026-04-23kn/.cursor/skills/video-compress-web/SKILL.md`（ナレッジをマルチルートに含めない場合は `~/.cursor/skills/` へ同内容を置いてもよい）
+- **技術手順の正本**: 本リポ `raw/videos/README-video-compress.md`／チャット依頼は README「動画圧縮を AI に依頼するとき」を参照
+- **索引**: ナレッジ `wiki/asset-compression-notes.md`
 
 ## ドキュメント更新ルール
+
+**いつ・何を文書化するか、ADR の基準**はナレッジ [`wiki/template-repository-docs.md`](/Users/yoshiaki/working/2026-04-23kn/wiki/template-repository-docs.md) を参照。以下は**このリポジトリで触るファイルのチェックリスト**である。
 
 機能の追加・変更を行った場合、以下のドキュメントを必ず更新すること。
 
@@ -86,7 +93,7 @@
 - セクション3「機能仕様」に新しいサブセクション（3.x）として追記する
 - 記載すべき内容: 関連ファイル、動作仕様、使用方法
 - 既存機能の変更の場合は、該当セクションを更新する
-- **アクセシビリティ仮基準の本文（Must/Should 等）**を改訂した場合は、**ナレッジ** `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md` を更新し、本リポの `docs/a11y-baseline.md`（stub）の版メモを必要に応じて揃える
+- **アクセシビリティ仮基準の本文（Must/Should 等）**を改訂した場合は、**ナレッジ** `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md` のみを更新する。必要に応じて本リポの `docs/architecture.md`（3.22 節）やルート `README.md` の短い導線を同じ改訂に合わせる
 
 ### AGENTS.md
 - 重要ファイルが増えた場合 →「重要ファイルと役割」テーブルに追加
@@ -101,7 +108,7 @@
 
 ## コーディング規約
 
-コーディング全般のルール・作業手順・判断基準は、**ナレッジベース（第二の脳）** の `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md` を入口に参照すること（子ページ: `wiki/coding-*.md`）。旧ナレッジ用リポ `2026-03-20kn` は**廃止**した。  
+コーディング全般のルール・作業手順・判断基準は、**ナレッジベース** の `/Users/yoshiaki/working/2026-04-23kn/wiki/coding-conventions.md` を入口に参照すること（子ページ: `wiki/coding-*.md`）。旧ナレッジ用リポ `2026-03-20kn` は**廃止**した。  
 このリポジトリには、**テンプレート固有**の実装ルールのみを記載する。  
 実装中に迷ったときは、上記 `wiki` の該当トピックを `@` で指定して質問する。
 
@@ -142,7 +149,7 @@
 ### アクセシビリティ仮基準（段階的適用）
 
 - **正本（共通）:** ナレッジベース `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md`（**Must / Should / 運用 / チェックリスト**）。**基準の改訂はこの Wiki で行う**。
-- **本リポの案内:** [docs/a11y-baseline.md](docs/a11y-baseline.md)（stub、EJS・型録・トークン等の**テンプレ固有**の補足のみ）。概要は [docs/architecture.md](docs/architecture.md) の「3.22 アクセシビリティ仮基準」。
+- **本リポの実装上の手がかり:** ルート [README.md](README.md) の「アクセシビリティ仮基準」、[docs/architecture.md](docs/architecture.md) の「3.22 アクセシビリティ仮基準」（stub ファイルは置かない）。
 - **新規**（ページ・EJS・JS・Sass・デモ）: Wiki 正本の **Must** を当該範囲で満たす。
 - **既存の修正**: 一括改修は求めない。**手を入れた範囲**で Must の違反を直し、無関係なファイルは触らない。
 
