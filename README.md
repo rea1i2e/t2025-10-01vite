@@ -15,6 +15,7 @@
 ## 目次
 
 - [クイックスタート](#クイックスタート)
+  - [案件リポの作成順（テンプレから）](#案件リポの作成順テンプレから)
 - [日常作業コマンド](#日常作業コマンド)
 - [よくある作業](#よくある作業)
 - [ドキュメントの役割分担](#ドキュメントの役割分担)
@@ -43,7 +44,18 @@ npm run dev
 
 **概要（Git を使わない場合）**: [package.json](package.json) から `"prepare": "husky"` と `husky` の devDependency を削除してから `npm install` をやり直す。
 
-### GitHub CLI で新規作成する場合
+### 案件リポの作成順（テンプレから）
+
+テンプレートから **案件用リポジトリ**を用意し、FTP デプロイ（GitHub Actions）まで繋ぐときの **推奨順序**は次のとおりです。**宛先となる GitHub リポジトリが先にあってから** `.env.deploy` と `setup-secrets.sh` が意味を持ちます。サーバー側の命名やレイヤー分割の全体像はナレッジ [shin-rental-deployment-automation-plan.md](/Users/yoshiaki/working/2026-04-23kn/wiki/shin-rental-deployment-automation-plan.md) を参照。
+
+1. **`gh repo create` でリモートを作成**（下記コマンド）。テンプレート反映を待つ **`sleep 5`** のあと **`gh repo clone`** でローカルに取る。
+2. **クローンしたディレクトリに移動**する（以降、このリポジトリルートで作業）。
+3. **`npm install`**（開発・ビルド・hooks 用。FTP の Secrets だけ先に載せたい場合でも、後からでもよい）。
+4. **`env.deploy.example` を `.env.deploy` にコピー**し、`FTP_SERVER`・`FTP_USERNAME`・`FTP_PASSWORD` などを記入する（`.env.deploy` は git 管理外）。任意で `DISCORD_WEBHOOK`・`TEST_URL`。
+5. **`gh auth login` 済み**を確認し、**`./scripts/setup-secrets.sh`** を実行して GitHub Actions の secrets に反映する。
+6. ビルド成果物を載せたうえで **`git push`** し、GitHub Actions のデプロイが想定どおり動くか確認する（ワークフローは [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)）。
+
+#### GitHub CLI で新規作成する場合
 
 ```bash
 gh repo create 新規リポジトリ名 \
