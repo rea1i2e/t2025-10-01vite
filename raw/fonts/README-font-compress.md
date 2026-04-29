@@ -51,9 +51,12 @@ bash raw/fonts/font-compress-subset.sh ./raw/fonts/Inter-VariableFont_opsz,wght.
 圧縮したフォントファイルは `src/assets/fonts/` に配置してください。
 
 ## プロジェクト側への反映（必要に応じて追記・修正）
+
 フォント圧縮の出力を `src/assets/fonts/` に配置したら、フォント名・ファイル名が一致するようにプロジェクト側の指定を合わせてください。
 
 このテンプレート内の `NotoSansJP...` はあくまでサンプルです（あなたの実フォントに置き換え前提）。
+
+### 静的テンプレ（Vite + EJS）の場合
 
 - `src/assets/sass/base/_root.scss`
   - `@font-face` の `font-family` / `src: url("../fonts/...")` を、実際に配置した `*.woff2` に合わせて変更
@@ -61,7 +64,13 @@ bash raw/fonts/font-compress-subset.sh ./raw/fonts/Inter-VariableFont_opsz,wght.
 - `src/ejs/common/_head.ejs`
   - `<link rel="preload" href="/assets/fonts/...">` の `href` を、実際に配置した `*.woff2` に合わせて変更
 
-（記述例）
+### WordPress テンプレの場合
+
+- `src/assets/sass/base/_root.scss`（上記と同様）
+- `header.php`
+  - `<link rel="preload" ...>` の `href` に **`<?php echo ty_vite_asset_url('src/assets/fonts/実ファイル名.woff2'); ?>`** を使う（開発／本番で URL が一致する。`functions-lib/func-vite.php` のコメント例参照）
+
+（記述例・静的）
 ```scss
 /* src/assets/sass/base/_root.scss（サンプル） */
 @font-face {
@@ -74,11 +83,16 @@ bash raw/fonts/font-compress-subset.sh ./raw/fonts/Inter-VariableFont_opsz,wght.
 ```
 
 ```html
-<!-- src/ejs/common/_head.ejs（サンプル） -->
+<!-- src/ejs/common/_head.ejs（サンプル・静的） -->
 <link rel="preload" href="/assets/fonts/NotoSansJP-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
 ```
 
-（例）実フォントを `MyFont-VF.woff2` にする場合は、上記2箇所の `NotoSansJP...woff2` 部分を `MyFont-VF.woff2` に置き換えてください。
+（記述例・WordPress `header.php` の preload）
+```php
+<link rel="preload" href="<?php echo ty_vite_asset_url('src/assets/fonts/NotoSansJP-VF.woff2'); ?>" as="font" type="font/woff2" crossorigin>
+```
+
+（例）実フォントを `MyFont-VF.woff2` にする場合は、`@font-face` の `url` と preload のファイル名をそれぞれ揃えて置き換えてください。
 
 ## 注意事項
 

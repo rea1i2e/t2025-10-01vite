@@ -85,6 +85,12 @@
 - **`compress-config.json`** は Git に含めず、`compress-config.sample.json` を `raw/videos/` にコピーして作成する
 - **索引**: ナレッジ `wiki/asset-compression-notes.md`
 
+## Web フォントの設置・圧縮（エージェント）
+
+- **手順の Skill（正本）**: `/Users/yoshiaki/working/2026-04-23kn/.cursor/skills/font-setup-web/SKILL.md`
+- **方針の正本**: ナレッジ `wiki/web-fonts-guidelines.md`
+- **圧縮コマンドの正本**: 本リポ **`raw/fonts/README-font-compress.md`**（WP テンプレと**同じディレクトリ構成**）
+
 ## ドキュメント更新ルール
 
 **いつ・何を文書化するか、ADR の基準**はナレッジ [`wiki/template-repository-docs.md`](/Users/yoshiaki/working/2026-04-23kn/wiki/template-repository-docs.md) を参照。以下は**このリポジトリで触るファイルのチェックリスト**である。
