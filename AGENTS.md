@@ -81,6 +81,8 @@
 
 - **手順の Skill（正本）**: `/Users/yoshiaki/working/2026-04-23kn/.cursor/skills/video-compress-web/SKILL.md`（ナレッジをマルチルートに含めない場合は `~/.cursor/skills/` へ同内容を置いてもよい）
 - **技術手順の正本**: 本リポ `raw/videos/README-video-compress.md`／チャット依頼は README「動画圧縮を AI に依頼するとき」を参照
+- **`raw/videos/` の正本は本リポのみ**（WP テンプレ・案件リポでは必要時にここから**手動複製**。README 内「WordPress・案件リポで使う場合」参照）
+- **`compress-config.json`** は Git に含めず、`compress-config.sample.json` を `raw/videos/` にコピーして作成する
 - **索引**: ナレッジ `wiki/asset-compression-notes.md`
 
 ## ドキュメント更新ルール

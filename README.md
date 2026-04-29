@@ -149,7 +149,7 @@ AI エージェント作業ルール。更新対象ファイルの指針。**「
 
 ## 動画圧縮を AI に依頼するとき
 
-方針・コマンド・設定の正本は **`raw/videos/README-video-compress.md`**（`npm run inspect:video` → `compress-config.json` → `npm run compress:video`）。
+方針・コマンド・設定の正本は **`raw/videos/README-video-compress.md`**（`npm run inspect:video` → **`compress-config.sample.json` をコピーした** `compress-config.json` → `npm run compress:video`）。**`raw/videos/` の正本は本リポのみ**とし、WordPress 等では必要に応じて本フォルダを手動複製して使う（README の「WordPress・案件リポで使う場合」）。
 
 - **Cursor Agent に任せる場合**の手順チェックリスト: ナレッジベースの **`/Users/yoshiaki/working/2026-04-23kn/.cursor/skills/video-compress-web/SKILL.md`**（ワークスペースにナレッジを含めるか、`~/.cursor/skills/` に同ファイルを置いてもよい）
 - **チャットに文章で依頼する場合**は、上記 README を `@` で添付しつつ、対象動画のパス・用途（hero / loop 等）・表示サイズ・音声の要否を書けば足りる

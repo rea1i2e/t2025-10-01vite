@@ -5,6 +5,24 @@
 > このドキュメントは **このテンプレート内の運用手順（テンプレ固有）** を扱います。  
 > 導線の索引はナレッジベース `wiki/asset-compression-notes.md`（ローカル: `/Users/yoshiaki/working/2026-04-23kn/wiki/asset-compression-notes.md`）を参照してください。手順の詳細は**静的テンプレ内**の本 README および下記を正本とします。
 
+**運用（テンプレ vs 案件）:** テンプレート／型録の Git には **`compress-config.json` と `compress-report.md` を含めない**（どちらも案件・作業ごとのローカル生成物）。`compress-config.json` は **`compress-config.sample.json` をコピー**してリポジトリルート（または複製先）の `raw/videos/` に作る。初回・クローン直後も同様。
+
+## WordPress・案件リポで使う場合
+
+**動画圧縮用の `raw/videos/`（スクリプト・本 README・サンプル JSON・シェル等）の正本は、この静的テンプレ（型録）にのみ置く。** WordPress テーマや案件リポで同じフローが必要なときだけ、**型録から `raw/videos/` を手動で丸ごとコピー**して先方リポのルートへ置く。
+
+1. コピー先の **`package.json` の `scripts` に、型録と同じ**次の 2 行を追加する。
+
+```json
+"inspect:video": "node raw/videos/inspect-videos.mjs",
+"compress:video": "node raw/videos/compress-video.mjs",
+```
+
+2. **`compress-config.json`** は **`compress-config.sample.json` をコピー**してから、コピー先のディレクトリ構造に合わせて編集する。`input` / `output` の基準は引き続き **`raw/videos/` からの相対パス**（テーマでは出力を `../../src/assets/videos/...` のように書くことが多い）。
+3. コピー先の **`.gitignore`** に、動画バイナリや `compress-config.json` / `compress-report.md` を静的テンプレと同様に除外してよい（本リポ `.gitignore` の `raw/videos/` 関連を参照）。
+
+**複製しない運用**では、このリポのルートでだけ `npm run inspect:video` / `compress:video` を実行し、生成ファイルだけを WP 側の `src/assets/videos/` 等へ取り込む。
+
 ## 前提条件
 
 - `ffmpeg` がインストールされていること
@@ -136,6 +154,8 @@ bash raw/videos/video-compress.sh ./raw/videos/top-mv.mp4 ./src/assets/videos/to
 - `raw/videos/compress-report.md`（自動生成）
 
 管理対象のファイル（テンプレートとして git に含める）:
+
+※ **`compress-config.json` と `compress-report.md` はコミット対象に含めない**（各環境・案件で生成。上記 `.gitignore` と本文冒頭の運用参照）。
 
 - `compress-video.mjs`
 - `compress-config.sample.json`

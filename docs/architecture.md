@@ -421,7 +421,7 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - **音声**: 初期はミュート。**ミュートボタン**で `muted = true`（再生位置は維持）。**音声オンボタン**で `muted = false` かつ `currentTime = 0` から再生。選択中の側は `disabled` でクリック不可、反対側のみ操作可能。`aria-pressed` と `aria-label`（「ミュート中」「音声オン中」等）は `syncButtonUi` で同期。見た目は 1 本のピル型セグメント。グループに `aria-label="動画の音声"`。
 
 #### 使用方法
-- デモ一覧から `demoFvVideo` のリンクで開く。動画ファイルは `src/assets/videos/demo/` に置き、`config/site.config.js` の `videoPath`（`imagePath` と同様のルート相対 `/assets/videos/`）と `demo/ファイル名` を組み合わせて HTML に書く。Vite がビルド時にハッシュ付きファイル名へ書き換える。圧縮出力先は `raw/videos/compress-config.json` の `output` で同ディレクトリを指す。
+- デモ一覧から `demoFvVideo` のリンクで開く。動画ファイルは `src/assets/videos/demo/` に置き、`config/site.config.js` の `videoPath`（`imagePath` と同様のルート相対 `/assets/videos/`）と `demo/ファイル名` を組み合わせて HTML に書く。Vite がビルド時にハッシュ付きファイル名へ書き換える。圧縮出力先は、`raw/videos/compress-config.sample.json` を元に各環境で作成した `compress-config.json` の `output` で同ディレクトリを指す。
 
 ### 3.18 API デモ（JSONPlaceholder・users 名前一覧）
 
