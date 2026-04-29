@@ -17,6 +17,7 @@
 - [クイックスタート](#クイックスタート)
   - [案件リポの作成順（テンプレから）](#案件リポの作成順テンプレから)
 - [日常作業コマンド](#日常作業コマンド)
+- [ESLint（静的解析）](#eslint静的解析)
 - [よくある作業](#よくある作業)
 - [ドキュメントの役割分担](#ドキュメントの役割分担)
 - [ナレッジベースへの導線](#ナレッジベースへの導線)
@@ -103,6 +104,40 @@ npm run clean
 npm run clean:all
 npm run reinstall
 ```
+
+- 静的解析（概要は下記 [ESLint](#eslint静的解析)）
+
+```bash
+npm run lint
+npm run lint:fix
+```
+
+## ESLint（静的解析）
+
+**方針:** **JavaScript（`.js` / `.mjs`）だけ**を対象にしている。**HTML／EJS テンプレ内の `<% %>` はチェックしない**（運用・依存を小さく試す段階）。理由と今後の広げ方はナレッジ **[eslint-phased-approach-static-template.md](/Users/yoshiaki/working/2026-04-23kn/wiki/eslint-phased-approach-static-template.md)** を参照。
+
+### コマンド（リポジトリルートで実行）
+
+| コマンド | 説明 |
+|---------|------|
+| `npm run lint` | 対象ファイルを検査。問題があれば exit code が非ゼロになる。 |
+| `npm run lint:fix` | 自動修正できるルールのみ適用したうえで検査する。 |
+
+### 対象になるファイルの例
+
+- `src/assets/**/*.js`（ブラウザ向けバンドル）
+- `scripts/`・`raw/` の `.js` / `.mjs`（Node スクリプト）
+- `config/**/*.js`・`vite.config.js`・`eslint.config.js`
+
+設定の正本はルートの **`eslint.config.js`**。処理の詳細は **`docs/architecture.md`** の「3.23 ESLint」。
+
+### エディタ（VS Code / Cursor）
+
+ESLint 拡張を入れていれば、編集中の JS にリアルタイムで問題が表示される。保存時に自動修正したい場合は、ユーザー設定の `editor.codeActionsOnSave` に `source.fixAll.eslint` を追加する方法が一般的（プロジェクト固有の設定ファイルは置いていない）。
+
+### Git フックとの関係
+
+コミット前の **`validate:build`**（ビルド + HTML 検証）には **ESLint は含まれない**。必要ならコミット前に手で `npm run lint` を実行する。
 
 ## よくある作業
 

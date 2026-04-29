@@ -50,6 +50,7 @@
 | ファイル | 役割 |
 |----------|------|
 | `vite.config.js` | Vite設定（EJS注入、Sassグロブ、画像最適化、ビルド出力パス）。アセットのインライン化を無効にする場合は `assetsInlineLimit` のコメントを参照 |
+| `eslint.config.js` | ESLint フラット設定（`.js` / `.mjs` のみ。`npm run lint`） |
 | `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage()。画像代替フォーマット（`imageAltFormats`）もここで指定 |
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数、ty_stripTags、ty_appendQuery） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、CSS image-set、整形）。config/site.config.js の imageAltFormats を参照 |

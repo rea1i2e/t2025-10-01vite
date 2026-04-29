@@ -518,6 +518,18 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - 作業前に **Wiki 正本**を開き、**Must** と**チェックリスト**を参照する。本リポ固有の実装メモは **本節（3.22）の「固有の補足」** と [AGENTS.md](../AGENTS.md) を併読する。
 - **基準の改訂**は **Wiki `/wiki/a11y-baseline.md`** のみで行う（本 `architecture` の短い導線は必要に応じて同じ改訂に合わせる）。
 
+### 3.23 ESLint（JavaScript のみ）
+
+#### 関連ファイル
+- `eslint.config.js` — フラット設定。`@eslint/js` の recommended に、`eqeqeq`・`no-unused-vars`（warn）などを追加。対象は **`src/assets/**/*.js`**・**`scripts/`・`raw/`・`config/`・`vite.config.js`**。HTML／`.ejs` は **`ignores`** で除外（テンプレ内 JS は検査しない）。
+
+#### 動作仕様
+- **バニラ JS（バグ寄り）**: `eqeqeq`（`null` の緩い比較は `null: "ignore"` で許容）、`no-unused-vars`（warn）など。
+- **CLI**: `npm run lint`（`eslint .`。`dist/`・`*.html`・`*.ejs` は無視）。
+
+#### 使用方法
+- JS を編集したあと `npm run lint`。自動修正が効く範囲は `npm run lint:fix`。
+
 ---
 
 ## 4. ディレクトリ構成
@@ -581,6 +593,10 @@ env.deploy.example       デプロイ用変数テンプレート
 - `validate:html` — `html-validate dist/`
 - `validate:build` — `build` → `validate:html`
 
+### 静的解析
+- `lint` — `eslint .`（`.js` / `.mjs` のみ。`eslint.config.js` を参照）
+- `lint:fix` — `eslint . --fix`
+
 ### Git hooks
 - `prepare` — `husky`
 - `.husky/pre-commit` — `npm run validate:build`（`build` に `after-build.mjs` が含まれる）
@@ -608,5 +624,6 @@ env.deploy.example       デプロイ用変数テンプレート
 - HTML後処理: `scripts/after-build.mjs`
 - フォント圧縮: `raw/fonts/font-compress.sh`, `raw/fonts/font-compress-subset.sh`, `raw/fonts/README-font-compress.md`
 - HTML検証: `.htmlvalidate.json`
+- ESLint: `eslint.config.js`（セクション 3.23・**HTML／EJS は対象外**）
 - Git hooks: `.husky/pre-commit`
 - デプロイ: `.github/workflows/deploy.yml`
