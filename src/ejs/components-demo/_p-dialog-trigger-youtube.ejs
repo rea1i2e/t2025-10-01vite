@@ -1,6 +1,6 @@
-<div class="p-demo-grid p-demo-grid--basic">
+<div class="p-grid">
   <% posts.filter(post => post.videoId).forEach((post) => { %>
-  <article class="p-demo-grid__item p-dialog-trigger-youtube">
+  <article class="p-grid__item p-dialog-trigger-youtube">
     <button class="p-dialog-trigger-youtube__thumbnail" type="button" data-modal-open="youtube-modal" data-video-id="<%- post.videoId %>" aria-label="<%- post.title %>を開く">
       <img src="<%- imagePath + post.image.file %>" alt="<%= ty_stripTags(post.image.alt) %>">
     </button>

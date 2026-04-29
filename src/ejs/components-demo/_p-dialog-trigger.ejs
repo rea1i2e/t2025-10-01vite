@@ -1,6 +1,6 @@
-<div class="p-demo-grid p-demo-grid--basic">
+<div class="p-grid">
   <% posts.slice(0, 3).forEach((post, index) => { %>
-  <article class="p-demo-grid__item p-dialog-trigger">
+  <article class="p-grid__item p-dialog-trigger">
     <figure class="p-dialog-trigger__thumbnail">
       <img src="<%- imagePath + post.image.file %>" alt="<%= ty_stripTags(post.image.alt) %>">
     </figure>
