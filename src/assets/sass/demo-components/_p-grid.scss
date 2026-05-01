@@ -9,7 +9,7 @@
   @include mq() {
     grid-template-columns: repeat(3, 1fr);
   }
-  background-color: var(--color-accent);
+  background-color: var(--color-accent); // 表示確認用
 }
 
 .p-grid > * {
@@ -20,14 +20,15 @@
   display: grid;
   place-content: center;
   padding: rem(20);
-  color: var(--color-bg-sub);
-  border-radius: rem(8);
   background-color: var(--color-text);
+  border-radius: rem(8);
+  color: var(--color-bg-sub);
 }
 
 /* 最小値・最大値設定 */
 .p-grid[data-grid="minmax"] {
   grid-template-columns: repeat(3, minmax(340px, 350px));
+  overflow-x: auto;
 }
 
 /* 不等間隔グリッド */
@@ -46,7 +47,6 @@
 
 /* 常に幅300px */
 .p-grid[data-grid="auto-fit"] {
-  grid-template-columns: repeat(auto-fit, 210px);
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 }
 

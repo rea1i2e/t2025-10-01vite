@@ -9,13 +9,14 @@
 <body>
   <%- include(ejsPath + 'common/_header.ejs', { page }) %>
   <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/nagasaki3.jpg', imageAlt: '' }) %>
-  <main class="p-demo" style="outline: 1px solid red;">
+  <main class="p-demo">
     <div class="p-demo__inner l-inner u-bg">
       <div class="p-demo__sections">
-        <section class="p-demo__section">
+        <section class="p-demo__section" id="grid-template-columns">
           <h2>grid-template-columns</h2>
           <h3>repeat(3, 1fr)</h3>
-          <p>grid-containerの幅によらず、カラム数は3つに固定。</p>
+          <p>grid-containerの幅によらず、カラム数は3つに固定。<br />
+            画面幅が狭くなった場合に備えて、ブレイクポイントを設けてカラム数指定が必要。</p>
           <ul class="p-grid">
             <% for (let i = 1; i <= 6; i++) { %>
             <li class="p-grid__item">
@@ -26,7 +27,9 @@
           <hr>
           <h3>repeat(3, minmax(340px, 350px))</h3>
           <p>最小値340px、最大値350px。grid-containerの幅によらず、カラム数は3つに固定。<br />
-          grid-itemの幅の和がgrid-containerの幅を超える場合があるので注意。</p>
+            grid-itemの幅の和がgrid-containerの幅を超える場合があるので注意。<br />
+            <code>overflow-x: auto;</code> で横スクロールバーを表示するなどして対応。
+          </p>
           <ul class="p-grid" data-grid="minmax">
             <% for (let i = 1; i <= 6; i++) { %>
             <li class="p-grid__item">
@@ -35,10 +38,10 @@
             <% } %>
           </ul>
         </section>
-        <section class="p-demo__section">
+        <section class="p-demo__section" id="auto-fit">
           <h2>auto-fit</h2>
-          <h3>repeat(auto-fit, 210px)</h3>
-          <p class="p-demo__desc">grid-itemの幅は常に210px。grid-containerの幅が広くなるとカラム数が増える。</p>
+          <h3>repeat(auto-fit, minmax(210px, 1fr))</h3>
+          <p class="p-demo__desc">grid-itemの幅は210px以上。余った分は幅を広げて埋める。</p>
           <ul class="p-grid" data-grid="auto-fit">
             <% for (let i = 1; i <= 8; i++) { %>
             <li class="p-grid__item">
@@ -47,7 +50,7 @@
             <% } %>
           </ul>
           <p class="p-demo__desc">
-            grid-itemが1つでも、大きな違和感にはならない。
+            grid-itemの数がある程度ある場合はいい感じ。
           </p>
           <ul class="p-grid" data-grid="auto-fit">
             <% for (let i = 1; i <= 3; i++) { %>
@@ -57,7 +60,7 @@
             <% } %>
           </ul>
           <p class="p-demo__desc">
-            grid-itemが1つでも、大きな違和感にはならない。
+            grid-itemが1つだと広がりすぎて、違和感が出る。動的なコンテンツの場合で、grid-itemの数が少なくなるケースもある場合には向かない。
           </p>
           <ul class="p-grid" data-grid="auto-fit">
             <% for (let i = 1; i <= 1; i++) { %>
@@ -67,12 +70,12 @@
             <% } %>
           </ul>
         </section>
-        <section class="p-demo__section">
+        <section class="p-demo__section" id="auto-fill">
           <h2>auto-fill</h2>
           <h3>repeat(auto-fill, 210px)</h3>
           <p class="p-demo__desc">
-            grid-itemの幅の基本は210px<br />
-            grid-containerの幅の余裕がある場合は、grid-itemの幅が増える。
+            grid-itemの数が1行目分以上になる場合には、auto-fitの場合と差が出ない。<br />
+            grid-itemの幅は210px以上。余った分も幅を広げて埋める。
           </p>
           <ul class="p-grid" data-grid="auto-fill">
             <% for (let i = 1; i <= 8; i++) { %>
@@ -82,8 +85,7 @@
             <% } %>
           </ul>
           <p class="p-demo__desc">
-            grid-itemの数が少ない場合を想定する必要があるときには、幅いっぱいになってしまうので向かない。<br />
-            → ブレイクポイントごとにカラム数を指定する用法がよさそう。
+            grid-itemの数が1行分に満たない場合、auto-fitの場合のように幅いっぱいに広がることがない。
           </p>
           <ul class="p-grid" data-grid="auto-fill">
             <% for (let i = 1; i <= 3; i++) { %>
@@ -93,8 +95,7 @@
             <% } %>
           </ul>
           <p class="p-demo__desc">
-            grid-itemの数が少ない場合を想定する必要があるときには、幅いっぱいになってしまうので向かない。<br />
-            → ブレイクポイントごとにカラム数を指定する用法がよさそう。
+            grid-itemが1つの場合。
           </p>
           <ul class="p-grid" data-grid="auto-fill">
             <% for (let i = 1; i <= 1; i++) { %>
@@ -103,6 +104,8 @@
             </li>
             <% } %>
           </ul>
+          <p>auto-fitもauto-fillも、ブレイクポイントごとにカラム数を指定する必要がないのが利点。
+          </p>
         </section>
         <section class="p-demo__section">
           <h2>1つ目のアイテムを2行分</h2>
