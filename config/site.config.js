@@ -41,6 +41,13 @@ const pages = {
     title: "インナー",
     description: "インナーデモページです。",
   },
+  demoGridLayout: {
+    label: "グリッドレイアウト",
+    root: "../../",
+    path: "demo/demo-grid-layout/",
+    title: "グリッドレイアウト",
+    description: "グリッドレイアウトデモページです。",
+  },
   demoAccordion: {
     label: "アコーディオン",
     root: "../../",
@@ -111,13 +118,6 @@ const pages = {
     path: "demo/demo-css-animation/",
     title: "CSSアニメーションデモ",
     description: "CSSアニメーションデモページです。",
-  },
-  demoGridLayout: {
-    label: "グリッドレイアウト",
-    root: "../../",
-    path: "demo/demo-grid-layout/",
-    title: "グリッドレイアウト",
-    description: "グリッドレイアウトデモページです。",
   },
   demoVariants: {
     label: "バリアント",

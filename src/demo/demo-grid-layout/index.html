@@ -10,11 +10,24 @@
   <%- include(ejsPath + 'common/_header.ejs', { page }) %>
   <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/nagasaki3.jpg', imageAlt: '' }) %>
   <main class="p-demo" style="outline: 1px solid red;">
-    <div class="p-demo__inner l-inner">
+    <div class="p-demo__inner l-inner u-bg">
       <div class="p-demo__sections">
         <section class="p-demo__section">
-          <h2>画面幅に応じて1〜3カラム</h2>
+          <h2>grid-template-columns</h2>
+          <h3>repeat(3, 1fr)</h3>
+          <p>grid-containerの幅によらず、カラム数は3つに固定。</p>
           <ul class="p-grid">
+            <% for (let i = 1; i <= 6; i++) { %>
+            <li class="p-grid__item">
+              <div class="p-grid__content">アイテム<%- i %></div>
+            </li>
+            <% } %>
+          </ul>
+          <hr>
+          <h3>repeat(3, minmax(340px, 350px))</h3>
+          <p>最小値340px、最大値350px。grid-containerの幅によらず、カラム数は3つに固定。<br />
+          grid-itemの幅の和がgrid-containerの幅を超える場合があるので注意。</p>
+          <ul class="p-grid" data-grid="minmax">
             <% for (let i = 1; i <= 6; i++) { %>
             <li class="p-grid__item">
               <div class="p-grid__content">アイテム<%- i %></div>
@@ -23,19 +36,9 @@
           </ul>
         </section>
         <section class="p-demo__section">
-          <h2>1つ目のアイテムを2行分</h2>
-          <ul class="p-grid" data-grid="uneven">
-            <% for (let i = 1; i <= 5; i++) { %>
-            <li class="p-grid__item">
-              <div class="p-grid__content">アイテム<%- i %></div>
-            </li>
-            <% } %>
-          </ul>
-        </section>
-        <section class="p-demo__section">
           <h2>auto-fit</h2>
-          <p class="p-demo__desc">子要素の幅は常に300px<br />
-            右側に中途半端な余白ができてしまうのが気になるところ。</p>
+          <h3>repeat(auto-fit, 210px)</h3>
+          <p class="p-demo__desc">grid-itemの幅は常に210px。grid-containerの幅が広くなるとカラム数が増える。</p>
           <ul class="p-grid" data-grid="auto-fit">
             <% for (let i = 1; i <= 8; i++) { %>
             <li class="p-grid__item">
@@ -44,7 +47,17 @@
             <% } %>
           </ul>
           <p class="p-demo__desc">
-            子要素が1つでも、大きな違和感にはならない。
+            grid-itemが1つでも、大きな違和感にはならない。
+          </p>
+          <ul class="p-grid" data-grid="auto-fit">
+            <% for (let i = 1; i <= 3; i++) { %>
+            <li class="p-grid__item">
+              <div class="p-grid__content">アイテム<%- i %></div>
+            </li>
+            <% } %>
+          </ul>
+          <p class="p-demo__desc">
+            grid-itemが1つでも、大きな違和感にはならない。
           </p>
           <ul class="p-grid" data-grid="auto-fit">
             <% for (let i = 1; i <= 1; i++) { %>
@@ -56,9 +69,10 @@
         </section>
         <section class="p-demo__section">
           <h2>auto-fill</h2>
+          <h3>repeat(auto-fill, 210px)</h3>
           <p class="p-demo__desc">
-            子要素の幅が最小で300px。最大で1fr。<br />
-            子要素の数がカラム数を超える場合には少ない指定でいい感じに配置されて便利。
+            grid-itemの幅の基本は210px<br />
+            grid-containerの幅の余裕がある場合は、grid-itemの幅が増える。
           </p>
           <ul class="p-grid" data-grid="auto-fill">
             <% for (let i = 1; i <= 8; i++) { %>
@@ -68,11 +82,32 @@
             <% } %>
           </ul>
           <p class="p-demo__desc">
-            子要素の数が少ない場合を想定する必要があるときには、幅いっぱいになってしまうので向かない。<br />
+            grid-itemの数が少ない場合を想定する必要があるときには、幅いっぱいになってしまうので向かない。<br />
+            → ブレイクポイントごとにカラム数を指定する用法がよさそう。
+          </p>
+          <ul class="p-grid" data-grid="auto-fill">
+            <% for (let i = 1; i <= 3; i++) { %>
+            <li class="p-grid__item">
+              <div class="p-grid__content">アイテム<%- i %></div>
+            </li>
+            <% } %>
+          </ul>
+          <p class="p-demo__desc">
+            grid-itemの数が少ない場合を想定する必要があるときには、幅いっぱいになってしまうので向かない。<br />
             → ブレイクポイントごとにカラム数を指定する用法がよさそう。
           </p>
           <ul class="p-grid" data-grid="auto-fill">
             <% for (let i = 1; i <= 1; i++) { %>
+            <li class="p-grid__item">
+              <div class="p-grid__content">アイテム<%- i %></div>
+            </li>
+            <% } %>
+          </ul>
+        </section>
+        <section class="p-demo__section">
+          <h2>1つ目のアイテムを2行分</h2>
+          <ul class="p-grid" data-grid="uneven">
+            <% for (let i = 1; i <= 5; i++) { %>
             <li class="p-grid__item">
               <div class="p-grid__content">アイテム<%- i %></div>
             </li>
@@ -100,7 +135,7 @@
         <section class="p-demo__section">
           <h2>subgrid：列を継承したネストグリッド</h2>
           <p class="p-demo__desc">
-            子要素が親の列トラックを <code>subgrid</code> で引き継ぎ、<br />
+            grid-itemが親の列トラックを <code>subgrid</code> で引き継ぎ、<br />
             孫要素が親グリッドの列に沿って配置される。
           </p>
           <div class="p-grid-subgrid-col">
@@ -116,7 +151,7 @@
           </div>
         </section>
       </div>
-      <%- include(ejsPath + 'components-demo/_p-grid-section.ejs') %>
+      <%-// include(ejsPath + 'components-demo/_p-grid-section.ejs') %>
     </div>
   </main>
   <%- include(ejsPath + 'common/_footer.ejs', { page }) %>

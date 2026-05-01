@@ -8,6 +8,9 @@
 .p-demo__inner {
 }
 
+.p-demo__inner {
+}
+
 .p-demo__inner[data-size="large"] {
   max-width: rem(1200);
 }
@@ -32,7 +35,6 @@
 
 .p-demo__button {
   margin-block-start: rem(20);
-  // text-align: center;
 }
 
 .p-demo__desc {
@@ -57,6 +59,11 @@
   border-radius: rem(4);
 }
 
+.p-demo hr {
+  margin-block: rem(32);
+  border-color: var(--color-bg-sub);
+}
+
 /* 縦積み箇条書き＋下線リンク（SNS共有デモ等） */
 .p-demo__list {
   margin-top: rem(16);
@@ -71,17 +78,9 @@
   list-style-type: circle;
 }
 
-.p-demo__list a {
-  color: var(--color-text);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-}
-
-.p-demo__list a:hover {
-  text-decoration: none;
-}
-
-/* ページ固有のスタイル */
+/* 
+* ページ固有のスタイル（できるだけ減らす)
+*/
 
 .p-demo-api__status:empty {
   display: none;

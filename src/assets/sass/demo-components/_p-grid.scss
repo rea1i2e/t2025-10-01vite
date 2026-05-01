@@ -1,14 +1,5 @@
 @use "../global" as *;
 
-/*
- * グリッド（デモ・型録）
- * - .p-grid … デフォルト：1→2→3 カラム + gap（data なし）。マークアップは ul > li.p-grid__item を推奨
- * - data-grid="uneven" … 不等幅（先頭セルが 2 行スパン）
- * - data-grid="auto-fit" … repeat(auto-fit, 300px)
- * - data-grid="auto-fill" … repeat(auto-fill, minmax(300px, 1fr))
- * - p-grid-subgrid / p-grid-subgrid-col … subgrid 用（別 BEM ブロック）
- */
-
 .p-grid {
   display: grid;
   gap: rem(20);
@@ -16,8 +7,9 @@
   margin: 0;
   padding: 0;
   @include mq() {
-    // grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
+  background-color: var(--color-accent);
 }
 
 .p-grid > * {
@@ -28,9 +20,14 @@
   display: grid;
   place-content: center;
   padding: rem(20);
-  background-color: var(--color-bg-sub);
+  color: var(--color-bg-sub);
   border-radius: rem(8);
-  color: var(--color-text);
+  background-color: var(--color-text);
+}
+
+/* 最小値・最大値設定 */
+.p-grid[data-grid="minmax"] {
+  grid-template-columns: repeat(3, minmax(340px, 350px));
 }
 
 /* 不等間隔グリッド */
@@ -49,13 +46,14 @@
 
 /* 常に幅300px */
 .p-grid[data-grid="auto-fit"] {
-  grid-template-columns: repeat(auto-fit, 300px);
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, 210px);
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 }
 
 /* auto-fill + minmax（H2「auto-fill」と一致） */
 .p-grid[data-grid="auto-fill"] {
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, 210px);
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
 }
 
 /* subgrid：カードの高さ揃え */

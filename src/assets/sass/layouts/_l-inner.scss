@@ -5,4 +5,15 @@
 	box-sizing: content-box;
 	max-width: var(--inner);
 	padding-inline: var(--inner-padding);
+
 }
+
+// 20px 1000px 20px
+// contentbox 1000px
+// border-box 1040px
+
+// section 1200px
+// inner 100%
+// inner-padding 20px
+
+// inner 20px 1200px 20px → 1240px 
