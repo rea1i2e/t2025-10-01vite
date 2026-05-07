@@ -35,7 +35,6 @@ $theme-dark: (
 }
 
 :root {
-  --desigh-width: 375;
   --base-font-family: "Noto Sans JP VF", sans-serif;
   --color-black: #000;
   --color-white: #fff;
@@ -66,7 +65,6 @@ $theme-dark: (
   --shadow-inset: inset 0 0 0.625rem color-mix(in srgb, var(--color-text) 35%, transparent);
   --shadow-none:  0 0 0 0 transparent;
   @include mq() {
-    --desigh-width: 1440;
     --header-height: #{rem(90)};
     --inner-padding: #{rem($padding-pc)};
     --inner: #{rem($inner-pc)};
