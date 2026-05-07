@@ -306,7 +306,9 @@ for (const htmlPath of htmlFiles) {
     max_preserve_newlines: 0, // 空行をなくす
     preserve_newlines: true,
     end_with_newline: true,
-    wrap_line_length: 0
+    wrap_line_length: 0,
+    // script / style 内は JS/CSS として再整形しない（analytics インライン等）
+    content_unformatted: ['pre', 'textarea', 'script', 'style'],
   })
 
   writeFileSync(htmlPath, out)

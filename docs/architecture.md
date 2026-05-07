@@ -150,7 +150,7 @@ flowchart LR
    - 既に `<picture>` の場合は破壊せず、不足する `<source>` のみ補完（art-direction 用の `media` も維持）
    - 各 `<source>` にも参照ファイルの実寸を付与
 3. CSS の `background-image` / `background` で参照した jpg/png について、有効なフォーマットが dist に存在すれば `image-set(...)` を追加（avif → webp → jpg の順）
-4. `js-beautify` でHTML全体を整形
+4. `js-beautify` で HTML 全体を整形（`<script>` / `<style>` および `pre` / `textarea` 内は `content_unformatted` によりテキストを触れない）
 
 #### スキップ条件
 - `http(s)://` の外部URL
