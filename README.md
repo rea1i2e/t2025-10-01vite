@@ -155,7 +155,8 @@ ESLint 拡張を入れていれば、編集中の JS にリアルタイムで問
 - **比較の片側:** `BASE_REF`（既定: `main`。未取り込みなら `git fetch` のうえ `BASE_REF=origin/main` など）
 - **比較のもう片側:** いまの作業ツリーで `npm run build` した `dist/`（`vite build` に加え **`scripts/after-build.mjs` まで実行される**のが `npm run build`）
 - **zip に入るもの（通常）:** `main..HEAD` の Git 差分が **`src/**/*.html` と `src/public/**` だけ**のときは、対応する **dist 上のパス**と、その HTML が参照する **`assets/` 配下のうち dist で実際に差分があるファイル**だけに絞る（`MailForm01_utf8/` は **`src/public/MailForm01_utf8/` が Git 差分に無い限り zip に含めない**。main に `mail.php` が無いときの誤検知防止）。**Sass / JS / 設定など他パスに差分がある**ときは **フルの dist 差分**（従来の挙動）。
-- **Git にコミット差分が無い**（`main` と同じコミット）ときは警告のうえ **フル dist 差分**（未コミットのビルド差を逃がすため）。
+- **作業ツリーはクリーン必須:** `git status` に**何も出ない**こと（未コミット・ステージ済み・未追跡のいずれも不可）。違反時は **警告のうえ exit 1 で中止**（続行したい特殊時のみ `DELIVERY_ALLOW_DIRTY=1`）。
+- **Git にコミット差分が無い**（`main` と同一コミット）かつクリーンなときは **フル dist 差分**モード（ビルド結果が完全一致なら zip は作られないことが多い）。
 - **常にフル dist 差分にしたい**とき: `FORCE_WIDE=1 npm run zip:delivery`
 - **削除パス:** main 側にだけあるファイル＝作業で消したパスは zip に含めない（必要なら別途サーバーで削除運用する）
 

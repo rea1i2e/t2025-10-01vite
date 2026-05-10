@@ -15,6 +15,7 @@
 #   OUT_DIR=/path/to/out ./scripts/zip-delivery-dist-diff.sh
 #   BASE_REF=origin/main ./scripts/zip-delivery-dist-diff.sh
 #   FORCE_WIDE=1 ./scripts/zip-delivery-dist-diff.sh   # 常にフル dist 差分
+#   DELIVERY_ALLOW_DIRTY=1 ...  # 未コミットがあっても続行（非推奨）
 #
 set -euo pipefail
 
@@ -23,6 +24,12 @@ cd "$REPO_ROOT"
 
 BASE_REF="${BASE_REF:-main}"
 OUT_DIR="${OUT_DIR:-$(dirname "$REPO_ROOT")}"
+
+if [[ "${DELIVERY_ALLOW_DIRTY:-}" != "1" ]] && [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
+  echo "zip-delivery-dist-diff: 警告: 未コミットの変更があります（変更・ステージ・未追跡のいずれか）。納品 zip は作成せず中止します。コミットまたは不要な変更の破棄のうえで再実行してください。" >&2
+  echo "zip-delivery-dist-diff: 意図的に続行する場合のみ DELIVERY_ALLOW_DIRTY=1 を付与してください（ナローモードで zip 漏れのリスクあり）。" >&2
+  exit 1
+fi
 
 RESOLVED_REF="$(git rev-parse --verify "${BASE_REF}^{commit}" 2>/dev/null || true)"
 if [[ -z "$RESOLVED_REF" ]]; then
