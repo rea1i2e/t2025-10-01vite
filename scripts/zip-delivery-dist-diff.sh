@@ -194,7 +194,20 @@ if [[ ! -s "$ZIPLIST" ]]; then
 fi
 
 COUNT="$(grep -c . "$ZIPLIST" || true)"
-echo "==> zip (${COUNT} files) → ${OUT_ZIP}"
-(cd "$WORK_DIST" && zip -r "$OUT_ZIP" -@ <"$ZIPLIST")
+ROOT_NAME="$(basename "$OUT_ZIP" .zip)"
+STAGE_ROOT="${AUX}/zip-staging/${ROOT_NAME}"
+mkdir -p "$STAGE_ROOT"
+
+while IFS= read -r rel; do
+  [[ -z "$rel" ]] && continue
+  parent="$(dirname "$rel")"
+  if [[ "$parent" != "." ]]; then
+    mkdir -p "${STAGE_ROOT}/${parent}"
+  fi
+  cp -p "${WORK_DIST}/${rel}" "${STAGE_ROOT}/${rel}"
+done <"$ZIPLIST"
+
+echo "==> zip (${COUNT} files) → ${OUT_ZIP}（トップ: ${ROOT_NAME}/）"
+(cd "${AUX}/zip-staging" && zip -r "$OUT_ZIP" "$ROOT_NAME")
 
 echo "$OUT_ZIP"

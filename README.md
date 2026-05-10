@@ -170,7 +170,7 @@ OUT_DIR="$HOME/Downloads" npm run zip:delivery
 BASE_REF=origin/main npm run zip:delivery
 ```
 
-スクリプト正本: [`scripts/zip-delivery-dist-diff.sh`](scripts/zip-delivery-dist-diff.sh)
+スクリプト正本: [`scripts/zip-delivery-dist-diff.sh`](scripts/zip-delivery-dist-diff.sh)。zip を展開すると **アーカイブ名（拡張子 `.zip` を除く）と同じ1ディレクトリ**の下に `dist` 相当の木が入る（ルートにファイルが直置きにならない）。
 
 ### 設定変更（よく触る項目）
 
