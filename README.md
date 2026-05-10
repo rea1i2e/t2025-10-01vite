@@ -19,6 +19,7 @@
 - [日常作業コマンド](#日常作業コマンド)
 - [ESLint（静的解析）](#eslint静的解析)
 - [よくある作業](#よくある作業)
+- [納品用 zip（dist の差分）](#納品用-zipdist-の差分)
 - [ドキュメントの役割分担](#ドキュメントの役割分担)
 - [ナレッジベースへの導線](#ナレッジベースへの導線)
 - [アクセシビリティ仮基準](#アクセシビリティ仮基準)
@@ -146,6 +147,24 @@ ESLint 拡張を入れていれば、編集中の JS にリアルタイムで問
 1. `config/site.config.js` の `ページのキーと値を設置`
 2. `src/` 配下に `xxx/index.html` を作成
 3. HTML 内で `ty_getPage('xxx')` を使い、「1.」で設定した情報を取得し,head.ejsなどに渡す
+
+### 納品用 zip（dist の差分）
+
+`dist/` は `.gitignore` 対象のため、**Git の差分ではなく「ビルド結果同士」を比較**して zip する。
+
+- **比較の片側:** `BASE_REF`（既定: `main`。未取り込みなら `git fetch` のうえ `BASE_REF=origin/main` など）
+- **比較のもう片側:** いまの作業ツリーで `npm run build` した `dist/`（`vite build` に加え **`scripts/after-build.mjs` まで実行される**のが `npm run build`）
+- **zip に入るもの:** 作業側の `dist` で、baseline と**内容が異なるファイル**および**baseline に無いファイル**（main 側にだけあるファイル＝作業で削除したパスは zip には含めない。必要なら別途サーバーで削除運用する）
+
+**必須:** 環境変数 **`OUT_DIR`**（zip を置くディレクトリ）。baseline 用に一時的な **git worktree** を切り、そこで **別の `npm ci`（または `npm install`）** が走るため、**初回は時間とネットワーク**がかかる。
+
+```bash
+OUT_DIR="$HOME/Downloads" npm run zip:delivery
+# 比較基準をリモートの main にしたい例
+BASE_REF=origin/main OUT_DIR="$HOME/Downloads" npm run zip:delivery
+```
+
+スクリプト正本: [`scripts/zip-delivery-dist-diff.sh`](scripts/zip-delivery-dist-diff.sh)
 
 ### 設定変更（よく触る項目）
 
