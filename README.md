@@ -154,14 +154,19 @@ ESLint 拡張を入れていれば、編集中の JS にリアルタイムで問
 
 - **比較の片側:** `BASE_REF`（既定: `main`。未取り込みなら `git fetch` のうえ `BASE_REF=origin/main` など）
 - **比較のもう片側:** いまの作業ツリーで `npm run build` した `dist/`（`vite build` に加え **`scripts/after-build.mjs` まで実行される**のが `npm run build`）
-- **zip に入るもの:** 作業側の `dist` で、baseline と**内容が異なるファイル**および**baseline に無いファイル**（main 側にだけあるファイル＝作業で削除したパスは zip には含めない。必要なら別途サーバーで削除運用する）
+- **zip に入るもの（通常）:** `main..HEAD` の Git 差分が **`src/**/*.html` と `src/public/**` だけ**のときは、対応する **dist 上のパス**と、その HTML が参照する **`assets/` 配下のうち dist で実際に差分があるファイル**だけに絞る（`MailForm01_utf8/` は **`src/public/MailForm01_utf8/` が Git 差分に無い限り zip に含めない**。main に `mail.php` が無いときの誤検知防止）。**Sass / JS / 設定など他パスに差分がある**ときは **フルの dist 差分**（従来の挙動）。
+- **Git にコミット差分が無い**（`main` と同じコミット）ときは警告のうえ **フル dist 差分**（未コミットのビルド差を逃がすため）。
+- **常にフル dist 差分にしたい**とき: `FORCE_WIDE=1 npm run zip:delivery`
+- **削除パス:** main 側にだけあるファイル＝作業で消したパスは zip に含めない（必要なら別途サーバーで削除運用する）
 
-**必須:** 環境変数 **`OUT_DIR`**（zip を置くディレクトリ）。baseline 用に一時的な **git worktree** を切り、そこで **別の `npm ci`（または `npm install`）** が走るため、**初回は時間とネットワーク**がかかる。
+**出力先:** 省略時は **リポジトリの親ディレクトリ**（`basename` ひとつ上。例: リポが `~/working/t2025-10-01vite` なら `~/working`）。別の場所にしたいときだけ環境変数 **`OUT_DIR`** を付ける。baseline 用に一時的な **git worktree** を切り、そこで **別の `npm ci`（または `npm install`）** が走るため、**初回は時間とネットワーク**がかかる。
 
 ```bash
+npm run zip:delivery
+# 出力先を変える例
 OUT_DIR="$HOME/Downloads" npm run zip:delivery
 # 比較基準をリモートの main にしたい例
-BASE_REF=origin/main OUT_DIR="$HOME/Downloads" npm run zip:delivery
+BASE_REF=origin/main npm run zip:delivery
 ```
 
 スクリプト正本: [`scripts/zip-delivery-dist-diff.sh`](scripts/zip-delivery-dist-diff.sh)
