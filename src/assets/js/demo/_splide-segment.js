@@ -26,19 +26,21 @@ if (splideSegmentElement) {
     resetProgress: false,
     classes: {
       pagination: "splide__pagination p-splide-segment__pagination",
-      page: "splide__pagination__page p-splide-segment__page",
+      page: "splide__pagination__page p-splide-segment__page js-splide-segment-page",
     },
   });
 
-  const animateClass = "p-splide-segment__page--animate";
+  /* 見た目は p-splide-segment__page、DOM クエリは js-（ナレッジ coding-javascript / coding-ejs-html） */
+  const pageSelector = ".js-splide-segment-page";
+  const animateClass = "js-splide-segment-page-animate";
 
   const restartActiveSegmentFill = () => {
-    const pages = splideSegment.root.querySelectorAll(".p-splide-segment__page");
+    const pages = splideSegment.root.querySelectorAll(pageSelector);
     pages.forEach((btn) => {
       btn.classList.remove(animateClass);
     });
     void splideSegment.root.offsetWidth;
-    const active = splideSegment.root.querySelector(".p-splide-segment__page.is-active");
+    const active = splideSegment.root.querySelector(`${pageSelector}.is-active`);
     if (active) {
       active.classList.add(animateClass);
     }

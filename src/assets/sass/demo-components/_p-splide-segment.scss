@@ -76,7 +76,7 @@
   // transform: none;
 }
 
-/* 進行塗り（アクティブかつ --animate のみ keyframes） */
+/* 進行塗り（アクティブかつ js-splide-segment-page-animate のみ keyframes。クラス付与は _splide-segment.js） */
 .p-splide-segment__page.splide__pagination__page::after {
   content: "";
   position: absolute;
@@ -105,7 +105,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   /* --segment-duration は _splide-segment.js の AUTOPLAY_INTERVAL_MS が正本。未設定時のみ 2 番目の値を使う */
-  .p-splide-segment__page.splide__pagination__page.p-splide-segment__page--animate::after {
+  .p-splide-segment__page.splide__pagination__page.js-splide-segment-page-animate::after {
     animation: segment-fill var(--segment-duration, 5000ms) linear forwards;
   }
 }
