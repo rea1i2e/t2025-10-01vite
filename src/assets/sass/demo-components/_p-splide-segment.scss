@@ -1,0 +1,117 @@
+@use "../global" as *;
+
+.p-demo:has(.p-splide-segment) {
+  overflow-x: clip;
+}
+
+.p-splide-segment__track.splide__track {
+  overflow: visible;
+}
+
+/* 枚数はマークアップ任せ。幅のみ CSS で指定（autoWidth 用） */
+.p-splide-segment__item.splide__slide {
+  width: rem(260);
+  @include mq() {
+    width: rem(360);
+  }
+}
+
+.p-splide-segment__item.splide__slide img {
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+}
+
+.p-splide-segment__controls {
+  margin-block-start: rem(15);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  column-gap: rem(15);
+}
+
+.p-splide-segment__arrows.splide__arrows {
+}
+
+.p-splide-segment__arrow.splide__arrow {
+  background-color: currentColor;
+  width: rem(40);
+  aspect-ratio: 1;
+  mask: url(../images/common/icon_arrow_right.svg) no-repeat center / contain;
+}
+
+.p-splide-segment__arrow.splide__arrow--prev {
+  rotate: 180deg;
+}
+
+.p-splide-segment__arrow.splide__arrow:disabled {
+}
+
+/* Splide がルート末尾に出力するページネーションをセグメント横線に見せる */
+.p-splide-segment__pagination.splide__pagination {
+  margin-block-start: rem(20);
+  display: flex;
+  gap: rem(8);
+  align-items: center;
+  justify-content: stretch;
+}
+
+.p-splide-segment__pagination.splide__pagination li {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+}
+
+.p-splide-segment__page.splide__pagination__page {
+  position: relative;
+  display: block;
+  // overflow: hidden;
+  width: 100%;
+  height: rem(10);
+  // margin: 0;
+  // padding: 0;
+  // border: none;
+  border-radius: rem(2);
+  background-color: var(--color-bg-sub);
+  // opacity: 1;
+  // transform: none;
+}
+
+/* 進行塗り（アクティブかつ --animate のみ keyframes） */
+.p-splide-segment__page.splide__pagination__page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: scaleX(0);
+  // border-radius: inherit;
+  background-color: var(--color-accent);
+  pointer-events: none;
+}
+
+.p-splide-segment__page.splide__pagination__page:not(.is-active)::after {
+  transform: scaleX(0);
+  animation: none;
+}
+
+@keyframes segment-fill {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* --segment-duration は _splide-segment.js の AUTOPLAY_INTERVAL_MS が正本。未設定時のみ 2 番目の値を使う */
+  .p-splide-segment__page.splide__pagination__page.p-splide-segment__page--animate::after {
+    animation: segment-fill var(--segment-duration, 5000ms) linear forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p-splide-segment__page.splide__pagination__page.is-active::after {
+    transform: scaleX(1);
+  }
+}

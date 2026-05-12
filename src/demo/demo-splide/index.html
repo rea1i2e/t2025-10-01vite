@@ -25,11 +25,18 @@
           <%- include(ejsPath + 'components-demo/_p-splide-thumbnail.ejs') %>
         </section>
         <section class="p-demo__section">
+          <h2>セグメント型インジケータ（検証）</h2>
+          <p>スライド幅は CSS のみ指定（<code>autoWidth</code>）。カードは画像のみ・2:1。ページネーションを横線にスタイルしています。</p>
+          <%- include(ejsPath + 'components-demo/_p-splide-segment.ejs') %>
+        </section>
+        <section class="p-demo__section">
           <h2>プログレスバー付きスライダー</h2>
           <%- include(ejsPath + 'components-demo/_p-splide-progress.ejs') %>
-          <section class="p-demo__section">
-            <%- include(ejsPath + 'components-demo/_p-splide-posts.ejs') %>
-          </section>
+        </section>
+        <section class="p-demo__section">
+          <h2>投稿スライダー</h2>
+          <%- include(ejsPath + 'components-demo/_p-splide-posts.ejs') %>
+        </section>
       </div>
     </div>
   </main>
