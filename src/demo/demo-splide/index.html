@@ -12,19 +12,19 @@
   <main class="p-demo">
     <div class="p-demo__inner l-inner">
       <div class="p-demo__sections">
-        <section class="p-demo__section">
+        <section id="splide-fade" class="p-demo__section">
           <h2>フェードで切り替え</h2>
          <p>demoは<a href="<%- page.root + config.pages.top.path %>">トップページ</a>参照</p>
         </section>
-        <section class="p-demo__section">
+        <section id="splide-loop" class="p-demo__section">
           <h2>無限ループ</h2>
           <%- include(ejsPath + 'components-demo/_p-splide-loop.ejs') %>
         </section>
-        <section class="p-demo__section">
+        <section id="splide-thumbnail" class="p-demo__section">
           <h2>サムネイル</h2>
           <%- include(ejsPath + 'components-demo/_p-splide-thumbnail.ejs') %>
         </section>
-        <section class="p-demo__section">
+        <section id="splide-segment" class="p-demo__section">
           <h2>セグメント型インジケータ（検証）</h2>
           <p>スライド幅は CSS のみ指定（<code>autoWidth</code>）。カードは画像のみ・2:1。ページネーションを横線にスタイルしています。</p>
           <%- include(ejsPath + 'components-demo/_p-splide-segment.ejs') %>
@@ -33,7 +33,7 @@
           <h2>プログレスバー付きスライダー</h2>
           <%- include(ejsPath + 'components-demo/_p-splide-progress.ejs') %>
         </section>
-        <section class="p-demo__section">
+        <section id="splide-posts" class="p-demo__section">
           <h2>投稿スライダー</h2>
           <%- include(ejsPath + 'components-demo/_p-splide-posts.ejs') %>
         </section>
