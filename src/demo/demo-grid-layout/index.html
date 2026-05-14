@@ -41,7 +41,7 @@
         <section class="p-demo__section" id="auto-fit">
           <h2>auto-fit</h2>
           <h3>repeat(auto-fit, minmax(210px, 1fr))</h3>
-          <p class="p-demo__desc">grid-itemの幅は210px以上。余った分は幅を広げて埋める。</p>
+          <p>grid-itemの幅は210px以上。余った分は幅を広げて埋める。</p>
           <ul class="p-grid" data-grid="auto-fit">
             <% for (let i = 1; i <= 8; i++) { %>
             <li class="p-grid__item">
@@ -49,7 +49,7 @@
             </li>
             <% } %>
           </ul>
-          <p class="p-demo__desc">
+          <p>
             grid-itemの数がある程度ある場合はいい感じ。
           </p>
           <ul class="p-grid" data-grid="auto-fit">
@@ -59,7 +59,7 @@
             </li>
             <% } %>
           </ul>
-          <p class="p-demo__desc">
+          <p>
             grid-itemが1つだと広がりすぎて、違和感が出る。動的なコンテンツの場合で、grid-itemの数が少なくなるケースもある場合には向かない。
           </p>
           <ul class="p-grid" data-grid="auto-fit">
@@ -73,7 +73,7 @@
         <section class="p-demo__section" id="auto-fill">
           <h2>auto-fill</h2>
           <h3>repeat(auto-fill, 210px)</h3>
-          <p class="p-demo__desc">
+          <p>
             grid-itemの数が1行目分以上になる場合には、auto-fitの場合と差が出ない。<br />
             grid-itemの幅は210px以上。余った分も幅を広げて埋める。
           </p>
@@ -84,7 +84,7 @@
             </li>
             <% } %>
           </ul>
-          <p class="p-demo__desc">
+          <p>
             grid-itemの数が1行分に満たない場合、auto-fitの場合のように幅いっぱいに広がることがない。
           </p>
           <ul class="p-grid" data-grid="auto-fill">
@@ -94,7 +94,7 @@
             </li>
             <% } %>
           </ul>
-          <p class="p-demo__desc">
+          <p>
             grid-itemが1つの場合。
           </p>
           <ul class="p-grid" data-grid="auto-fill">
@@ -119,7 +119,7 @@
         </section>
         <section class="p-demo__section">
           <h2>subgrid：カードの高さ揃え</h2>
-          <p class="p-demo__desc">
+          <p>
             カード内のサムネイル・見出し・説明文が、カードをまたいで縦位置で揃う。<br />
             親グリッドの行トラックを <code>subgrid</code> で子に継承させる。
           </p>
@@ -137,7 +137,7 @@
         </section>
         <section class="p-demo__section">
           <h2>subgrid：列を継承したネストグリッド</h2>
-          <p class="p-demo__desc">
+          <p>
             grid-itemが親の列トラックを <code>subgrid</code> で引き継ぎ、<br />
             孫要素が親グリッドの列に沿って配置される。
           </p>
