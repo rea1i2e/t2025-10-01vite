@@ -3,10 +3,11 @@
 .c-menu-button {
   --menu-line-width: #{rem(30)};
   --menu-line-height: 2px;
+  --menu-line-color: var(--color-text);
   --menu-line-gap: #{rem(8)};
   position: relative;
   width: rem(48);
-  background-color: #fff; // test
+  background-color: var(--color-bg)
 }
 
 .c-menu-button span {
@@ -17,7 +18,7 @@
   display: block;
   width: var(--menu-line-width);
   height: var(--menu-line-height);
-  background-color: var(--color-black);
+  background-color: var(--menu-line-color);
   transition: background-color 0.3s ease-in-out;
 }
 
@@ -27,7 +28,7 @@
   display: block;
   width: 100%;
   height: var(--menu-line-height);
-  background-color: var(--color-black);
+  background-color: var(--menu-line-color);
   border-radius: 100vw;
   content: "";
   transition: transform 0.3s ease-in-out;
