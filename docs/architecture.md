@@ -561,7 +561,7 @@ config/
 scripts/
   after-build.mjs        HTML後処理スクリプト
   setup-secrets.sh       GitHub Secrets 一括登録（gh + .env.deploy）
-  init-project.sh        案件着手時デモ一括削除（npm run init）
+  init-project.sh        案件着手時デモ一括削除（npm run init）。`src/public` は `MailForm01_utf8/` のみ削除しそれ以外は保持
 env.deploy.example       デプロイ用変数テンプレート
 .github/workflows/
   deploy.yml             CI/CD 定義

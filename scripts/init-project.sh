@@ -31,12 +31,11 @@ for dir in "${dirs[@]}"; do
   fi
 done
 
-# src/public 内のファイルのみ削除（空のフォルダ構成は残す）
-PUBLIC_DIR="$ROOT/src/public"
-if [ -d "$PUBLIC_DIR" ]; then
-  file_count=$(find "$PUBLIC_DIR" -type f | wc -l | tr -d '[:space:]')
-  find "$PUBLIC_DIR" -type f -delete
-  echo "  削除: src/public 内のファイル（${file_count:-0} 件、フォルダは保持）"
+# src/public はデモ用メールフォームのみ削除（Basic 認証など他ファイルは保持）
+MAILFORM_DIR="$ROOT/src/public/MailForm01_utf8"
+if [ -d "$MAILFORM_DIR" ]; then
+  rm -rf "$MAILFORM_DIR"
+  echo "  削除: src/public/MailForm01_utf8（フォルダごと）"
 fi
 
 files=(

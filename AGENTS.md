@@ -211,10 +211,10 @@ npm run init
 - `src/assets/videos/demo/` — デモ用動画
 - `src/assets/audio/demo-sound/` — デモ用音声
 - `raw/videos/demo/` — デモ用動画素材
+- `src/public/MailForm01_utf8/` — デモ用メールフォーム一式（存在する場合のみ、フォルダごと削除。`src/public` のそれ以外〈Basic 認証 `.htaccess` 等〉は削除しない）
 
 **削除されるファイル**
 - `src/ejs/data/posts.js` — デモ用ダミーデータ
-- `src/public/` 配下の**すべてのファイル**（`MailForm01_utf8/` などサブフォルダは空のまま残る）
 
 **更新されるファイル**
 - `src/assets/js/main.js` — `./demo/` への import 行を削除。`// import './_debugScrollable.js';` は残す
