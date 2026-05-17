@@ -100,7 +100,7 @@
 
 .p-demo-sound__credit {
   margin: 0;
-  font-size: rem(13);
+  font-size: maxrem(13);
   line-height: 1.6;
   opacity: 0.85;
 }
@@ -138,7 +138,7 @@
 }
 
 .p-demo-sound__title {
-  font-size: rem(20);
+  font-size: maxrem(20);
 }
 
 .p-demo-sound__lead {
@@ -155,7 +155,7 @@
   min-block-size: rem(44);
   padding-block: rem(10);
   padding-inline: rem(16);
-  font-size: rem(14);
+  font-size: maxrem(14);
   color: var(--color-text);
   background-color: var(--color-bg);
   border: var(--border);

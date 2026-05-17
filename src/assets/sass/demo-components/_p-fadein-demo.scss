@@ -19,7 +19,7 @@
 }
 
 .p-fadein-demo__eyebrow {
-  font-size: rem(14);
+  font-size: maxrem(14);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-theme);
@@ -45,7 +45,7 @@
 .p-fadein-demo__lead {
   margin-top: rem(24);
   max-width: 720px;
-  font-size: rem(16);
+  font-size: maxrem(16);
 }
 
 .p-fadein-demo__guide {
@@ -86,7 +86,7 @@
   border-radius: 50%;
   background-color: var(--color-theme);
   color: var(--color-white);
-  font-size: rem(14);
+  font-size: maxrem(14);
   display: grid;
   place-items: center;
 }
@@ -106,13 +106,13 @@
 }
 
 .p-fadein-demo__card-title {
-  font-size: rem(18);
+  font-size: maxrem(18);
   font-weight: 600;
   margin-bottom: rem(12);
 }
 
 .p-fadein-demo__card-body {
-  font-size: rem(14);
+  font-size: maxrem(14);
 }
 
 .p-fadein-demo__notes {
@@ -152,7 +152,7 @@
 }
 
 .p-fadein-demo__counter-label {
-  font-size: rem(16);
+  font-size: maxrem(16);
   color: var(--color-text);
   opacity: 0.8;
 }
