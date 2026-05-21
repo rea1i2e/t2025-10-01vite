@@ -1,0 +1,86 @@
+@use "../global" as *;
+
+/* 列間（Splide gap）と __stack 内の行間で共通。変更時は _splide-variable-size.js の読み取りも同値になる */
+.p-splide-variable-size.splide {
+  --splide-variable-size-gap: calc(24 / 16 * 1rem);
+}
+
+.p-demo:has(.p-splide-variable-size) {
+  overflow-x: clip;
+}
+
+.p-splide-variable-size__track.splide__track {
+  overflow: visible;
+}
+
+.p-splide-variable-size__list.splide__list {
+}
+
+/* 1スライド = 1列。幅は data-size と CSS（autoWidth 用） */
+.p-splide-variable-size__item.splide__slide {
+  --slide-width: #{rem(200)};
+  display: flex;
+  flex-direction: column;
+  width: var(--slide-width);
+}
+
+.p-splide-variable-size__item.splide__slide[data-size="large"] {
+  width: rem(280);
+  width: calc(var(--slide-width) * 2 + var(--splide-variable-size-gap));
+}
+
+.p-splide-variable-size__stack {
+  // display: flex;
+  // flex-direction: column;
+  // gap: var(--splide-variable-size-gap);
+  // flex: 1 1 auto;
+  // min-height: 100%;
+  // height: 100%;
+  display: grid;
+  gap: var(--splide-variable-size-gap);
+}
+
+.p-splide-variable-size__stack img {
+  // display: block;
+  // width: 100%;
+  // flex: 1 1 0;
+  // min-height: 0;
+  object-fit: cover;
+  aspect-ratio: 2 / 1;
+}
+
+.p-splide-variable-size__item.splide__slide[data-size="large"] img {
+  // display: block;
+  // width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+}
+
+.p-splide-variable-size__controls {
+  margin-block-start: rem(15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: rem(15);
+}
+
+.p-splide-variable-size__arrow.splide__arrow {
+  background-color: currentColor;
+  width: rem(40);
+  aspect-ratio: 1;
+  mask: url(../images/common/icon_arrow_right.svg) no-repeat center / contain;
+}
+
+.p-splide-variable-size__arrow.splide__arrow--prev {
+  rotate: 180deg;
+}
+
+// @include mq() {
+//   .p-splide-variable-size__item.splide__slide {
+//     width: rem(200);
+//   }
+
+//   .p-splide-variable-size__item.splide__slide[data-size="large"] {
+//     width: rem(400);
+//   }
+// }

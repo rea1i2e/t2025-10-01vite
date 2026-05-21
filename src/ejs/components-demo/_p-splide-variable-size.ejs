@@ -1,0 +1,50 @@
+<%
+  const splideVariableSizeImages = [
+    { file: "demo/dummy1.jpg", alt: "" },
+    { file: "demo/dummy2.jpg", alt: "" },
+    { file: "demo/dummy3.jpg", alt: "", size: "large" },
+    { file: "demo/dummy4.jpg", alt: "" },
+    { file: "demo/dummy5.jpg", alt: "" },
+    { file: "demo/dummy1.jpg", alt: "", size: "large" },
+    { file: "demo/dummy2.jpg", alt: "" },
+    { file: "demo/dummy3.jpg", alt: "" },
+  ];
+
+  /* size: "large" → 1列1枚。未指定 → 連続2件で1列（__stack）。map は1:1のため flatMap + 走査位置 */
+  let slideIndex = 0;
+  const splideVariableSizeColumns = splideVariableSizeImages.flatMap((item, index) => {
+    if (index !== slideIndex) return [];
+    if (item.size === "large") {
+      slideIndex += 1;
+      return [{ size: "large", images: [item] }];
+    }
+    const column = { images: [item, splideVariableSizeImages[index + 1]] };
+    slideIndex += 2;
+    return [column];
+  });
+%>
+<div class="p-splide-variable-size splide" id="js-splide-variable-size">
+  <div class="p-splide-variable-size__track splide__track">
+    <ul class="p-splide-variable-size__list splide__list">
+      <% splideVariableSizeColumns.forEach((column) => { %>
+      <li class="p-splide-variable-size__item splide__slide"<% if (column.size === "large") { %> data-size="large"<% } %>>
+        <% if (column.size === "large") { %>
+        <img src="<%- imagePath %><%- column.images[0].file %>" alt="<%= ty_stripTags(column.images[0].alt) %>" width="800" height="400" loading="lazy" decoding="async">
+        <% } else { %>
+        <div class="p-splide-variable-size__stack">
+          <% column.images.forEach((item) => { %>
+          <img src="<%- imagePath %><%- item.file %>" alt="<%= ty_stripTags(item.alt) %>" width="800" height="400" loading="lazy" decoding="async">
+          <% }); %>
+        </div>
+        <% } %>
+      </li>
+      <% }); %>
+    </ul>
+  </div>
+  <div class="p-splide-variable-size__controls">
+    <div class="p-splide-variable-size__arrows splide__arrows">
+      <button class="p-splide-variable-size__arrow splide__arrow splide__arrow--prev" type="button" aria-label="前へ"></button>
+      <button class="p-splide-variable-size__arrow splide__arrow splide__arrow--next" type="button" aria-label="次へ"></button>
+    </div>
+  </div>
+</div>

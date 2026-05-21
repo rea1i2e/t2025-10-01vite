@@ -29,6 +29,11 @@
           <p>スライド幅は CSS のみ指定（<code>autoWidth</code>）。カードは画像のみ・2:1。ページネーションを横線にスタイルしています。</p>
           <%- include(ejsPath + 'components-demo/_p-splide-segment.ejs') %>
         </section>
+        <section id="splide-variable-size" class="p-demo__section">
+          <h2>可変サイズ（data-size）</h2>
+          <p>データは画像ごとにパスと任意の <code>size: "large"</code>（→ <code>data-size="large"</code>）。<code>large</code> は1列1枚、未指定は連続2件で1列・縦積み（<code>__stack</code>）。幅は CSS のみ（<code>autoWidth</code>）。</p>
+          <%- include(ejsPath + 'components-demo/_p-splide-variable-size.ejs') %>
+        </section>
         <section class="p-demo__section">
           <h2>プログレスバー付きスライダー</h2>
           <%- include(ejsPath + 'components-demo/_p-splide-progress.ejs') %>

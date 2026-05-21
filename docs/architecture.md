@@ -123,13 +123,17 @@ flowchart LR
 
 #### WebP 生成仕様
 - `imageAltFormats` が `'webp'` または `'both'` のとき `makeWebp` が有効
-- jpg / png / gif から WebP を生成
+- jpg / png / gif から WebP を生成（`imagemin-webp` / gif は `imagemin-gif2webp`）
+- **quality: 75**（`vite.config.js` の `makeWebp.plugins`）
 - `skipIfLargerThan: "optimized"` — 元画像より大きくなる場合は生成しない
 
 #### AVIF 生成仕様
 - `imageAltFormats` が `'avif'` または `'both'` のとき `makeAvif` が有効
 - jpg / png から AVIF を生成（`imagemin-avif` 使用。sharp ベースでネイティブバイナリ不要）
+- **quality: 75**（JPEG/WebP と同じ目安。旧 50 はイラスト PNG で劣化・色ずれが出やすかったため引き上げ — 案件 `2026-03-06ik` の FB を契機）
 - `skipIfLargerThan: "optimized"` で元より大きい場合は生成しない
+
+**イラスト・ロゴ・高彩度 PNG:** lossy の AVIF/WebP は **色ずれが残る**ことがある。案件では `imageAltFormats: 'webp'` と WebP の高品質設定、または `'none'`（PNG のみ）を選ぶ。事例: ナレッジベース `raw/2026-05-21ik-client-feedback-avif.md`（案件 `2026-03-06ik`）。
 
 #### ビルド出力
 - `assets/images/[name]-[hash][extname]`（`vite.config.js` の `assetFileNames` で定義）
@@ -496,7 +500,25 @@ text: email('afmaar128', 'gmail.com', { link: false })
 #### 使用方法
 - デモ一覧から `demoShare`（表示ラベル「SNSシェア（URLエンコード）」）のリンクを開く。共有の固定文・ハッシュタグは `_p-demo-share.ejs` 内の定数で調整する。`npm run init` ではデモ用 `src` 配下とデモ用 import が主に除去される。`ty_appendQuery` は `config/utils.js` なので、案件に残す場合は `init` 後も参照できる。
 
-### 3.22 アクセシビリティ仮基準
+### 3.22 Google マップ embed デモ（Place / My Maps・東京タワー）
+
+#### 関連ファイル
+- `config/site.config.js` — ページキー `demoMapEmbed`（`path`: `demo/demo-map-embed/`）、`demoMapEmbedSources`（`placeEmbedSrc` / `placeViewerHref` / `myMapsMid` / My Maps URL ベース）
+- `src/demo/demo-map-embed/index.html` — `_p-demo-map.ejs` を include
+- `src/ejs/components-demo/_p-access-map.ejs` — iframe ラッパー（`aspectRatio`: `4-3` | `16-9`）
+- `src/ejs/components-demo/_p-demo-map.ejs` — Place 1地点（比較用）と My Maps 複数ピンの2セクション
+- `src/assets/sass/demo-components/_p-access-map.scss` — `.p-access-map__*` / `.p-access-map-layout__*`
+
+#### 動作仕様
+- **Place 埋め込み**: Google マップ「共有 → 地図を埋め込む」の URL を `demoMapEmbedSources.placeEmbedSrc` に置く。テンプレ既定は**東京タワー**（案件固有地点は使わない）。
+- **My Maps**: `myMapsMid` が空のときは手順と URL パターンのみ表示。値があるとき `myMapsEmbedBase + mid`（+ 任意の `myMapsEmbedExtraQuery`）で iframe を出力。テンプレ既定は東京タワー周辺のデモ用 `mid`。
+- **JS 不要**: `main.js` への import は追加しない。
+- **規約**: 地図スクショ `<img>` は不可。詳細はナレッジ `wiki/google-maps-website-embed.md`。
+
+#### 使用方法
+- デモ一覧から `demoMapEmbed`（表示ラベル「Google マップ埋め込み」）のリンクを開く。案件化時は `placeEmbedSrc` / `myMapsMid` を差し替え、必要なら `_p-access-map.ejs` / `_p-access-map.scss` を `components/` 側へコピーして本番アクセスページに載せる。
+
+### 3.23 アクセシビリティ仮基準
 
 #### 関連ファイル
 - **正本（共通）:** ナレッジベースの `wiki/a11y-baseline.md`（例: `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md`）。**版・Must/Should/非目標・段階的運用・チェックリスト**はここに集約する。**適用範囲は静的サイトに限らない**（マークアップ・CSS・クライアントJS を扱う制作全般）。

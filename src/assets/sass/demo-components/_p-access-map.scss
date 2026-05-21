@@ -1,0 +1,71 @@
+@use "../global" as *;
+
+.p-access-map__embed {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--color-bg-sub);
+}
+
+.p-access-map__embed[data-aspect="4-3"] {
+  aspect-ratio: 4 / 3;
+}
+
+.p-access-map__embed[data-aspect="16-9"] {
+  aspect-ratio: 16 / 9;
+}
+
+.p-access-map__embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.p-access-map__link {
+  margin-block-start: rem(12);
+  font-size: maxrem(14);
+}
+
+.p-access-map__link a {
+  color: var(--color-theme);
+}
+
+.p-access-map-layout {
+  display: grid;
+  gap: rem(24);
+}
+
+.p-access-map-layout__list {
+  margin: 0;
+}
+
+.p-access-map-layout__list div {
+  margin-block-end: rem(16);
+}
+
+.p-access-map-layout__list div:last-child {
+  margin-block-end: 0;
+}
+
+.p-access-map-layout__list dt {
+  font-weight: 700;
+}
+
+.p-access-map-layout__list dd {
+  margin-block-start: rem(4);
+  margin-inline-start: 0;
+}
+
+@include mq("md") {
+  .p-access-map-layout {
+    grid-template-columns: minmax(0, rem(240)) minmax(0, 1fr);
+    gap: rem(32);
+    align-items: start;
+  }
+
+  .p-access-map-layout__list {
+    margin: 0;
+  }
+}

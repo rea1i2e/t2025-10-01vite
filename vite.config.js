@@ -111,8 +111,8 @@ export default defineConfig({
       ...(makeAvifEnabled && {
         makeAvif: {
           plugins: {
-            jpg: imageminAvif({ quality: 50 }),
-            png: imageminAvif({ quality: 50 }),
+            jpg: imageminAvif({ quality: 75 }),
+            png: imageminAvif({ quality: 75 }),
           },
           formatFilePath: (file) => file.replace(/\.(jpe?g|png)$/i, ".avif"),
           skipIfLargerThan: "optimized"

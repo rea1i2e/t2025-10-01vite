@@ -39,7 +39,8 @@
 | モーダル（dialog） | `_dialog-general.js`、`_dialog-youtube.js`、`_dialog-video.js`（`src/assets/js/demo/`、共通 `_dialog-common.js`） | `src/ejs/components-demo/_p-dialog*.ejs` | `src/assets/sass/demo-components/_p-dialog*.scss` | `src/demo/demo-dialog/index.html` |
 | モーダル（dialog 非使用） | `src/assets/js/demo/_modal.js` | 用途に応じて `components-demo` を検索 | 上記 `demo-components` を検索 | `demo-dialog` を参考 |
 | SNS 共有（ty_appendQuery ／ 表示中 URL） | `src/assets/js/demo/_demo-share.js` | `src/ejs/components-demo/_p-demo-share.ejs` | `src/assets/sass/demo-components/_p-demo.scss`（`.p-demo__list` 等） | `src/demo/demo-share/index.html` |
-| Splide スライダー | `src/assets/js/demo/_splide-fade.js` 等（`_splide-loop`、`_splide-thumbnail`、`_splide-progress`、`_splide-segment`、`_splide-posts`） | 同名 `_p-splide-*.ejs` | 同名 `_p-splide-*.scss` | `src/demo/demo-splide/index.html` |
+| Google マップ embed（Place / My Maps） | なし | `src/ejs/components-demo/_p-access-map.ejs`、`_p-demo-map.ejs` | `src/assets/sass/demo-components/_p-access-map.scss` | `src/demo/demo-map-embed/index.html`（デモ地点: 東京タワー。`config/site.config.js` の `demoMapEmbedSources`） |
+| Splide スライダー | `src/assets/js/demo/_splide-fade.js` 等（`_splide-loop`、`_splide-thumbnail`、`_splide-progress`、`_splide-segment`、`_splide-variable-size`、`_splide-posts`） | 同名 `_p-splide-*.ejs` | 同名 `_p-splide-*.scss` | `src/demo/demo-splide/index.html` |
 
 デモページ新規作成時に既存の `components-demo`／`demo-components`／シェル構造を再利用するための索引は `src/demo/demo-toolkit/index.html` を参照する。
 

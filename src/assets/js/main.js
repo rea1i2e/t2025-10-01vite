@@ -28,6 +28,7 @@ import './demo/_splide-loop.js';
 import './demo/_splide-thumbnail.js';
 import './demo/_splide-progress.js';
 import './demo/_splide-segment.js';
+import './demo/_splide-variable-size.js';
 import './demo/_splide-posts.js';
 
 /* アコーディオン・トグル */
