@@ -15,6 +15,7 @@ if (splideVariableSizeElement) {
 
   new Splide(splideVariableSizeElement, {
     type: "loop",
+    autoplay: true,
     autoWidth: true,
     perMove: 1,
     gap,
