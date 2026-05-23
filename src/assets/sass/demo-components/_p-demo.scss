@@ -8,9 +8,6 @@
 .p-demo__inner {
 }
 
-.p-demo__inner {
-}
-
 .p-demo__inner[data-size="large"] {
   max-width: rem(1200);
 }
@@ -35,9 +32,6 @@
 
 .p-demo__button {
   margin-block-start: rem(20);
-}
-
-.p-demo__desc {
 }
 
 .p-demo__box {
@@ -76,6 +70,14 @@
 
 .p-demo__list--sub {
   list-style-type: circle;
+}
+
+.p-demo__map {
+}
+
+.p-demo__map iframe {
+  aspect-ratio: 16/9;
+  object-fit: cover;
 }
 
 /* 

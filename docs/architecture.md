@@ -368,7 +368,7 @@ text: email('afmaar128', 'gmail.com', { link: false })
 
 #### 動作仕様
 - **画像セクション**: img（PC/SP共通）、img（PC/SP出し分け・picture）、background-image の3パターンを設置。既存の demo-images と同様のマークアップ。
-- **動画セクション**: 3つのサブセクションで、それぞれ説明文（`p.p-demo__desc`）を添える。
+- **動画セクション**: 3つのサブセクションで、それぞれ説明文（クラスなしの `p`）を添える。
   1. **videoタグデフォルト** — `<video controls>` でユーザー操作による再生。
   2. **自動再生** — `autoplay muted playsinline loop` の例（多くのブラウザでは muted 必須）。
   3. **画面サイズによる出し分け** — `<source media="(min-width: 800px)" />` で大画面用、続けてデフォルト用の `<source>` を配置。`srcLarge` を持つ動画データのみ large 用 source を出力。
@@ -503,20 +503,19 @@ text: email('afmaar128', 'gmail.com', { link: false })
 ### 3.22 Google マップ embed デモ（Place / My Maps・東京タワー）
 
 #### 関連ファイル
-- `config/site.config.js` — ページキー `demoMapEmbed`（`path`: `demo/demo-map-embed/`）、`demoMapEmbedSources`（`placeEmbedSrc` / `placeViewerHref` / `myMapsMid` / My Maps URL ベース）
+- `config/site.config.js` — ページキー `demoMapEmbed`（`path`: `demo/demo-map-embed/`）
 - `src/demo/demo-map-embed/index.html` — `_p-demo-map.ejs` を include
-- `src/ejs/components-demo/_p-access-map.ejs` — iframe ラッパー（`aspectRatio`: `4-3` | `16-9`）
-- `src/ejs/components-demo/_p-demo-map.ejs` — Place 1地点（比較用）と My Maps 複数ピンの2セクション
-- `src/assets/sass/demo-components/_p-access-map.scss` — `.p-access-map__*` / `.p-access-map-layout__*`
+- `src/ejs/components-demo/_p-demo-map.ejs` — Place / My Maps それぞれ「共有 → 埋め込み」で得た `<iframe>` を**そのまま**貼った2セクション（デモ地点: 東京タワー）
+- `src/assets/sass/demo-components/_p-demo.scss` — `.p-demo__map`（デモ用の最小ラップ。`iframe` に `aspect-ratio` の例）
 
 #### 動作仕様
-- **Place 埋め込み**: Google マップ「共有 → 地図を埋め込む」の URL を `demoMapEmbedSources.placeEmbedSrc` に置く。テンプレ既定は**東京タワー**（案件固有地点は使わない）。
-- **My Maps**: `myMapsMid` が空のときは手順と URL パターンのみ表示。値があるとき `myMapsEmbedBase + mid`（+ 任意の `myMapsEmbedExtraQuery`）で iframe を出力。テンプレ既定は東京タワー周辺のデモ用 `mid`。
+- **デモ**: Google が出力する `<iframe>` を `_p-demo-map.ejs` に直貼り。`site.config.js` への URL 定数は置かない。
+- **本番**: 同様に埋め込みコードを HTML / EJS に貼る。レスポンシブ用ラッパーは案件側で HTML / CSS を足す。
 - **JS 不要**: `main.js` への import は追加しない。
 - **規約**: 地図スクショ `<img>` は不可。詳細はナレッジ `wiki/google-maps-website-embed.md`。
 
 #### 使用方法
-- デモ一覧から `demoMapEmbed`（表示ラベル「Google マップ埋め込み」）のリンクを開く。案件化時は `placeEmbedSrc` / `myMapsMid` を差し替え、必要なら `_p-access-map.ejs` / `_p-access-map.scss` を `components/` 側へコピーして本番アクセスページに載せる。
+- デモ一覧から `demoMapEmbed`（表示ラベル「Google マップ埋め込み」）のリンクを開く。案件化時は `_p-demo-map.ejs` の `<iframe src="…">` を案件用に差し替える。
 
 ### 3.23 アクセシビリティ仮基準
 

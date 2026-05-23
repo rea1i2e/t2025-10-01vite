@@ -1,48 +1,23 @@
-<%
-  const mapSources = demoMapEmbedSources;
-  const myMapsEmbedSrc = mapSources.myMapsMid
-    ? `${mapSources.myMapsEmbedBase}${mapSources.myMapsMid}${mapSources.myMapsEmbedExtraQuery ? `&${mapSources.myMapsEmbedExtraQuery}` : ''}`
-    : '';
-  const myMapsViewerHref = mapSources.myMapsMid
-    ? `${mapSources.myMapsViewerBase}${mapSources.myMapsMid}`
-    : '';
-%>
 <div class="p-demo__sections">
   <section class="p-demo__section" id="place-embed">
-    <h2 class="p-demo__heading">Place 埋め込み（1地点・4:3）</h2>
-    <p class="p-demo__desc">
-      ピンが<strong>1地点だけ</strong>のときの比較用。Google マップの<strong>共有 → 地図を埋め込む</strong>で取得した URL を <code>iframe</code> に載せる最小構成。デモ地点は<strong>東京タワー</strong>。<code>config/site.config.js</code> の <code>demoMapEmbedSources.placeEmbedSrc</code> を案件用 URL に差し替える。
+    <h2 class="p-demo__heading">Place 埋め込み（1地点）</h2>
+    <p>
+      ピンが<strong>1地点だけ</strong>のとき。
     </p>
-    <%- include(ejsPath + 'components-demo/_p-access-map.ejs', {
-      mapEmbedSrc: mapSources.placeEmbedSrc,
-      mapTitle: '東京タワーの地図',
-      mapViewerHref: mapSources.placeViewerHref,
-      aspectRatio: '4-3',
-    }) %>
+    <div class="p-demo__map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.7479757770916!2d139.74285797578673!3d35.658580472594515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188bbd9009ec09%3A0x481a93f0d2a409dd!2z5p2x5Lqs44K_44Ov44O8!5e0!3m2!1sja!2sjp!4v1779497398947!5m2!1sja!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
   </section>
 
   <section class="p-demo__section" id="mymaps-embed">
-    <h2 class="p-demo__heading">My Maps 埋め込み（複数ピン・4:3）</h2>
-    <p class="p-demo__desc">
-      集合場所と店舗など<strong>ピンが複数</strong>ある場合は My Maps で地図を作り、<strong>共有 → 自分のサイトに埋め込む</strong>の <code>mid</code> を <code>demoMapEmbedSources.myMapsMid</code> に設定する。iframe 上部の地図名・作成者名は My Maps 側の表示（非表示オプションなし）。規約・手順の詳細はナレッジ <code>wiki/google-maps-website-embed.md</code> を参照。
+    <h2 class="p-demo__heading">My Maps 埋め込み（複数ピン）</h2>
+    <p>
+      集合場所と店舗など<strong>ピンが複数</strong>ある場合。My Maps の<strong>自分のサイトに埋め込む</strong>で表示された <code>&lt;iframe&gt;</code> を<strong>そのまま</strong>貼る。<br />
+      iframe 上部の地図名・作成者名は My Maps 側の表示（非表示オプションなし）。
     </p>
-    <% if (myMapsEmbedSrc) { %>
-      <%- include(ejsPath + 'components-demo/_p-access-map.ejs', {
-        mapEmbedSrc: myMapsEmbedSrc,
-        mapTitle: '東京タワー周辺（My Maps デモ）',
-        mapViewerHref: myMapsViewerHref,
-        aspectRatio: '4-3',
-      }) %>
-    <% } else { %>
-      <div class="p-demo__box">
-        <p>
-          テンプレ既定では <code>myMapsMid</code> は空。案件で My Maps を用意したら <code>config/site.config.js</code> に <code>mid</code> を入れると、このブロックに iframe が出力される。
-        </p>
-        <p>
-          埋め込み URL 例:
-          <code><%- mapSources.myMapsEmbedBase %>{mid}</code>
-        </p>
-      </div>
-    <% } %>
+    <div class="p-demo__map">
+      <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1AiZeMEsYQ1wxl11mztLKU99X_UR3bAM&ehbc=2E312F" width="640" height="480"></iframe>
+    </div>
   </section>
 </div>

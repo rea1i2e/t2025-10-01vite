@@ -339,23 +339,6 @@ const siteExternalLinks = {
 };
 
 /**
- * 地図 embed デモ用（東京タワー・案件では差し替え）
- * - placeEmbedSrc: Google マップ「共有 → 地図を埋め込む」の URL（1地点）
- * - myMapsMid: My Maps の mid（複数ピン用）。空なら My Maps セクションは手順のみ表示
- */
-const demoMapEmbedSources = {
-  placeEmbedSrc:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.747975976!2d139.74380287531682!3d35.6585815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188bbd9009e001%3A0x9450da83410a736!2z5p2x5Lqs5Yyy!5e0!3m2!1sja!2sjp!4v1710000000000!5m2!1sja!2sjp",
-  placeViewerHref:
-    "https://www.google.com/maps/place/%E6%9D%B1%E4%BA%AC%E3%82%BF%E3%83%AF%E3%83%BC/@35.6585815,139.7454144,17z",
-  myMapsMid: "1AiZeMEsYQ1wxl11mztLKU99X_UR3bAM",
-  /** My Maps embed の追加クエリ（任意）。例: ヘッダー帯の色 `ehbc=2E312F` */
-  myMapsEmbedExtraQuery: "ehbc=2E312F",
-  myMapsEmbedBase: "https://www.google.com/maps/d/embed?mid=",
-  myMapsViewerBase: "https://www.google.com/maps/d/viewer?mid=",
-};
-
-/**
  * SNS 共有導線の Intent URL（ビルド時 EJS／実行時 JS で共通利用）
  */
 const shareIntentUrls = {
@@ -424,9 +407,6 @@ export const siteConfig = {
 
   // 外部リンク
   externalLinks: siteExternalLinks,
-
-  // 地図 embed デモ（東京タワー）
-  demoMapEmbedSources,
 
   // SNS 共有の Intent URL 一覧
   shareIntentUrls,
