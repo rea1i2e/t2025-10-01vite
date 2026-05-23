@@ -8,7 +8,7 @@
     : '';
 %>
 <div class="p-demo__sections">
-  <section class="p-demo__section">
+  <section class="p-demo__section" id="place-embed">
     <h2 class="p-demo__heading">Place 埋め込み（1地点・4:3）</h2>
     <p class="p-demo__desc">
       ピンが<strong>1地点だけ</strong>のときの比較用。Google マップの<strong>共有 → 地図を埋め込む</strong>で取得した URL を <code>iframe</code> に載せる最小構成。デモ地点は<strong>東京タワー</strong>。<code>config/site.config.js</code> の <code>demoMapEmbedSources.placeEmbedSrc</code> を案件用 URL に差し替える。
@@ -21,7 +21,7 @@
     }) %>
   </section>
 
-  <section class="p-demo__section">
+  <section class="p-demo__section" id="mymaps-embed">
     <h2 class="p-demo__heading">My Maps 埋め込み（複数ピン・4:3）</h2>
     <p class="p-demo__desc">
       集合場所と店舗など<strong>ピンが複数</strong>ある場合は My Maps で地図を作り、<strong>共有 → 自分のサイトに埋め込む</strong>の <code>mid</code> を <code>demoMapEmbedSources.myMapsMid</code> に設定する。iframe 上部の地図名・作成者名は My Maps 側の表示（非表示オプションなし）。規約・手順の詳細はナレッジ <code>wiki/google-maps-website-embed.md</code> を参照。
