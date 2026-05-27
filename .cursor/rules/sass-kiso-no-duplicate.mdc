@@ -1,0 +1,42 @@
+---
+description: Sass 追記時に kiso / _reset / _base と同値の宣言を書かない（コンポーネント SCSS）
+globs: src/assets/sass/**/*.scss
+alwaysApply: false
+---
+
+# Sass — kiso / reset 重複禁止
+
+`src/assets/sass/**` を**新規・変更**するとき、次を**先に読むか把握してから**書く。
+
+1. `node_modules/kiso.css/kiso.css`（`_reset.scss` で `@import`）
+2. `src/assets/sass/base/_reset.scss`
+3. `src/assets/sass/base/_base.scss`
+
+汎用の長文正本: ナレッジ [`wiki/coding-sass.md`](file:///Users/yoshiaki/working/2026-04-23kn/wiki/coding-sass.md)「kiso を読んだうえでの追記とレビュー」。
+
+## 書かない（土台と同値・継承で足りる）
+
+| 避ける宣言 | 根拠 |
+|-----------|------|
+| `margin: 0` / `margin-block: 0` on **h2–h6, p, figure, blockquote, ul, ol** | kiso `:where(...)` で `margin-block: unset` |
+| `margin: 0` on **h1** | `_reset.scss` の `h1 { margin-block: unset; }` |
+| `line-height: 1.5` | `:root`（kiso）と `body`（`_base.scss`） |
+| `color: var(--color-black)` | `body` で指定済み（別色の上書きは可） |
+| `width: 100%` on **img** | `_reset.scss` の `img { width: 100%; }` |
+| `list-style: none` on **ul, ol** | kiso `list-style-type: ""`（マーカー非表示＋a11y） |
+| `padding: 0` on **ul, ol**（リセット目的のみ） | kiso `padding-inline-start: unset` |
+| `text-decoration: none` on **a**（打消しのみ） | kiso `a:any-link { text-decoration-line: unset; }` |
+| `border: none` on **button**（枠消しのみ） | `_reset.scss` `button { border-width: 0; }` |
+| `font-weight: 400` on **p** | 初期値の明示は不要 |
+
+## 書いてよい
+
+- Figma / デザインと**異なる値**（例: `line-height: 1.8` / `2`、固有の `color`）
+- **レイアウト意図**の余白（例: `margin-block-start: rem(20)`）
+- kiso でリセットされない要素（例: 目次ラッパーの `div` に必要な `margin`）
+- **意図的な上書き** — コメントで「kiso 上書き」と分かるようにする
+
+## 作業後チェック
+
+- 追加したブロックに、上表と**同じプロパティ・同じ値**が無いか確認する。
+- Figma MCP / AI 生成 CSS を取り込むときも同様（[yoshiaki-collaboration-style-notes — チェックリスト](file:///Users/yoshiaki/working/2026-04-23kn/wiki/yoshiaki-collaboration-style-notes.md)）。

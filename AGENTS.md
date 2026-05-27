@@ -136,6 +136,7 @@
 - **EJS の属性値出力**: `alt`・`title`・`aria-label` など HTML 属性にデータを出すときは、`config/utils.js` の `ty_stripTags` 関数を使ってタグを除去しつつエスケープする。`<%= ty_stripTags(value) %>` を使い、`<%- value %>` は使わない。表示用の要素（例: 見出しの `<h2>` 内で改行タグを活かす）では `<%- %>` のまま可。
 - **EJS内で使う自作関数の命名**: EJS から呼ぶ自作ヘルパーは `ty_` プレフィックスで統一する（標準 API や外部ライブラリのメソッドと区別しやすくするため）
 - **Sass構成**: `base/` / `components/` / `layouts/` / `utility/` のディレクトリ構成に従う
+- **Sass と kiso / reset**: コンポーネント SCSS では `_reset.scss`・`_base.scss`・kiso と**同値の宣言を重複させない**。Cursor ルール `.cursor/rules/sass-kiso-no-duplicate.mdc`（`src/assets/sass/**/*.scss` 編集時）。汎用正本はナレッジ `wiki/coding-sass.md`「kiso を読んだうえでの追記とレビュー」
 - **JSモジュール**: 機能単位で `_xxx.js` としてファイルを分割し、`main.js` で `import` する
 
 ### デモページ・コンポーネント追加時のカラー指定
