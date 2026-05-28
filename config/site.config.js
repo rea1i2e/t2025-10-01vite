@@ -363,6 +363,10 @@ export const siteConfig = {
   siteName: "静的サイト用ejsテンプレート",
   baseUrl: "https://t2025-10-01vite.rea1i2e.net/",
   titleSeparator: " | ",
+  sitemapExcludePages: ["thanks"],
+  sitemapExcludePathPrefixes: ["demo/"],
+  robotsDisallowPages: ["thanks"],
+  // sitemapDefaults / pages.*.sitemap … changefreq・priority は任意。未指定なら sitemap.xml に出力しない
 
   /**
    * 画像の代替フォーマット（ビルド・after-build で使用）
@@ -435,4 +439,16 @@ export const siteConfig = {
 
 if (siteConfig.minify === undefined) {
   siteConfig.minify = true;
+}
+if (!siteConfig.sitemapExcludePages) {
+  siteConfig.sitemapExcludePages = [];
+}
+if (!siteConfig.sitemapExcludePathPrefixes) {
+  siteConfig.sitemapExcludePathPrefixes = [];
+}
+if (!siteConfig.robotsDisallowPages) {
+  siteConfig.robotsDisallowPages = [];
+}
+if (!siteConfig.robotsDisallowPathPrefixes) {
+  siteConfig.robotsDisallowPathPrefixes = [];
 }

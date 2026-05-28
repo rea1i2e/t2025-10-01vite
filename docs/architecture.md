@@ -43,11 +43,12 @@ flowchart LR
   viteBuild --> imgMin["image_optimize(vite-plugin-imagemin)"]
   viteBuild --> distOut["dist_output(assets_hashed)"]
   distOut --> afterBuild["after-build(HTML_postprocess)"]
-  afterBuild --> validate["html-validate(dist)"]
+  afterBuild --> seoFiles["generate-seo-files(sitemap+robots)"]
+  seoFiles --> validate["html-validate(dist)"]
   validate --> deploy["GitHub_Actions_FTP_deploy"]
 ```
 
-- ビルドは `vite build` → `scripts/after-build.mjs`（HTML後処理）の順で実行される（`package.json` の `build` スクリプトで定義）
+- ビルドは `vite build` → `scripts/after-build.mjs`（HTML後処理）→ `scripts/generate-seo-files.mjs`（サイトマップ・robots.txt）の順で実行される（`package.json` の `build` スクリプトで定義）
 - HTML検証は `dist/` を対象に `html-validate` で実行する（`validate:html`）
 
 ---
@@ -161,6 +162,32 @@ flowchart LR
 - `data:` スキーム
 - SVG（非ラスタ画像は `<picture>` 化しない）
 
+### 3.5.1 サイトマップ・robots.txt（generate-seo-files）
+
+#### 関連ファイル
+- `scripts/generate-seo-files.mjs` — `config/site.config.js` の `pages` と `baseUrl`（または `domain`）を読み、`dist/sitemap.xml` / `dist/robots.txt` を出力
+- `config/site.config.js` — 除外設定・任意の `changefreq` / `priority`
+
+#### トリガー
+- `npm run build` の末尾（`after-build.mjs` の後）
+
+#### 設定（site.config.js）
+- `baseUrl` または `domain`: サイトの絶対 URL（末尾スラッシュあり推奨）。canonical と同じ値を使う
+- `sitemapExcludePages`: ページキー配列でサイトマップから除外（例: `thanks`）
+- `sitemapExcludePathPrefixes`: `path` の接頭辞一致で除外（テンプレ既定: `demo/`）
+- `robotsDisallowPages`: `robots.txt` の `Disallow` 対象キー（未指定時は `sitemapExcludePages` を流用）
+- `robotsDisallowPathPrefixes`: `path` 接頭辞で `Disallow`（任意）
+- `sitemapDefaults` / `pages.*.sitemap`: `changefreq`・`priority` は任意。未指定なら XML に出力しない
+- `pages.*.sitemap.exclude` / `pages.*.robots.disallow`: ページ単位の上書き
+
+#### 出力仕様
+- **sitemap.xml**: 各 URL に `<loc>` と `<lastmod>`（ビルド日）。`changefreq` / `priority` は設定時のみ
+- **robots.txt**: `User-agent: *`、`Allow: /`、除外ページの `Disallow`、`Sitemap:` 行
+
+#### 案件着手時（npm run init）
+- デモページ定義削除後は `sitemapExcludePathPrefixes: ["demo/"]` を残しても害はない（該当 path が無ければ無視される）
+- 案件では `baseUrl` を本番 URL に更新し、必要に応じて `sitemapExcludePages` / `robotsDisallowPages` を調整する
+
 ### 3.6 バリデーション
 
 #### 関連ファイル
@@ -169,7 +196,7 @@ flowchart LR
 - `.husky/pre-commit` — `npm run validate:build`（コミット前に本番ビルド + HTML検証）
 
 #### Git hooks の動作
-- **pre-commit**: `npm run validate:build`（`build` = `vite build` + `scripts/after-build.mjs` → `validate:html`）。通らなければコミットは拒否される。プッシュ時は同じ検証を繰り返さない。
+- **pre-commit**: `npm run validate:build`（`build` = `vite build` + `scripts/after-build.mjs` + `scripts/generate-seo-files.mjs` → `validate:html`）。通らなければコミットは拒否される。プッシュ時は同じ検証を繰り返さない。
 
 ### 3.7 ページ情報管理（site.config.js）
 
@@ -183,6 +210,7 @@ flowchart LR
 - `siteExternalLinks` オブジェクト: X / Instagram 等の**絶対 URL**導線。`pages` と同形状（`label` / `root` / `path` / `targetBlank`）で、`path` が `http` で始まるときヘッダー・フッターではそのまま `href` に使う。`ty_getPage` の対象外
 - `shareIntentUrls` オブジェクト: X / Facebook / LINE の共有用ベース URL 一覧（LINE は `line.me/R/msg/text/`）。ビルド時 EJS と実行時 JS の参照先を統一する
 - `headerExcludePages` / `drawerExcludePages`: メニューから除外するページのキー配列
+- `sitemapExcludePages` / `sitemapExcludePathPrefixes` / `robotsDisallowPages`: サイトマップ・robots.txt 生成用（詳細は [3.5.1](#351-サイトマップrobotstxtgenerate-seo-files)）
 - `ejsPath` / `baseUrl` / `titleSeparator`: 共通設定
 
 #### テンプレート側での利用
@@ -581,6 +609,7 @@ config/
   utils.js               ユーティリティ（除外判定、email関数）
 scripts/
   after-build.mjs        HTML後処理スクリプト
+  generate-seo-files.mjs サイトマップ・robots.txt 生成
   setup-secrets.sh       GitHub Secrets 一括登録（gh + .env.deploy）
   init-project.sh        案件着手時デモ一括削除（npm run init）。`src/public` は `MailForm01_utf8/` のみ削除しそれ以外は保持
 env.deploy.example       デプロイ用変数テンプレート
@@ -598,7 +627,7 @@ env.deploy.example       デプロイ用変数テンプレート
 - `dev` — `vite`（開発サーバー起動）
 
 ### ビルド
-- `build` — `vite build && node scripts/after-build.mjs`（本番ビルド + HTML後処理）
+- `build` — `vite build && node scripts/after-build.mjs && node scripts/generate-seo-files.mjs`（本番ビルド + HTML後処理 + SEOファイル）
 - `build:only` — `vite build`（後処理なし）
 
 ### プレビュー
@@ -620,7 +649,7 @@ env.deploy.example       デプロイ用変数テンプレート
 
 ### Git hooks
 - `prepare` — `husky`
-- `.husky/pre-commit` — `npm run validate:build`（`build` に `after-build.mjs` が含まれる）
+- `.husky/pre-commit` — `npm run validate:build`（`build` に `after-build.mjs` と `generate-seo-files.mjs` が含まれる）
 
 ---
 

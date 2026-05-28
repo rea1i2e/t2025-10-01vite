@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/after-build.mjs",
+    "build": "vite build && node scripts/after-build.mjs && node scripts/generate-seo-files.mjs",
     "build:only": "vite build",
     "preview": "vite preview",
     "build:preview": "npm run build && npm run preview",

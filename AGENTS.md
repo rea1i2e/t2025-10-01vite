@@ -55,6 +55,7 @@
 | `config/site.config.js` | サイト名・ドメイン・ページ情報の一元管理・getPage()。画像代替フォーマット（`imageAltFormats`）もここで指定 |
 | `config/utils.js` | ユーティリティ関数（除外判定、email関数、ty_stripTags、ty_appendQuery） |
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、CSS image-set、整形）。config/site.config.js の imageAltFormats を参照 |
+| `scripts/generate-seo-files.mjs` | ビルド後に site.config.js から `dist/sitemap.xml` と `dist/robots.txt` を生成 |
 | `scripts/init-project.sh` | 案件着手時にデモ用コードを一括削除するスクリプト（`npm run init` で実行） |
 | `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
 | `raw/videos/inspect-videos.mjs` | 動画情報サマリー出力（AI依頼時に使用） |
@@ -170,6 +171,7 @@
 npm run build
   1. vite build          … HTML/CSS/JS/画像のビルド + 画像圧縮・WebP/AVIF生成（config/site.config.js の imageAltFormats で制御）
   2. after-build.mjs     … dist/ 内HTMLに width/height 付与、picture化、CSS image-set、整形
+  3. generate-seo-files.mjs … dist/sitemap.xml と dist/robots.txt を site.config.js から生成
 ```
 
 - ビルド成果物は `dist/` に出力される
@@ -178,7 +180,7 @@ npm run build
 
 ## Git hooks に関する注意
 
-- **pre-commit**: `npm run validate:build`（`build` → `validate:html`）。`build` は `vite build` のあと `scripts/after-build.mjs` を含む。FTP 手動アップロードがプッシュより先に走る運用でも、コミット時点で本番相当の `dist/` と HTML 検証が通っていることを前提にする。`pre-push` では同じ検証は行わない（コミット時に担保済みのため）。
+- **pre-commit**: `npm run validate:build`（`build` → `validate:html`）。`build` は `vite build` のあと `scripts/after-build.mjs` と `scripts/generate-seo-files.mjs` を含む。FTP 手動アップロードがプッシュより先に走る運用でも、コミット時点で本番相当の `dist/` と HTML 検証が通っていることを前提にする。`pre-push` では同じ検証は行わない（コミット時に担保済みのため）。
 
 ## ページ追加手順
 

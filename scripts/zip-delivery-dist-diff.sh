@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # BASE_REF（既定 main）でビルドした dist と、現在の作業ツリーでビルドした dist を比較し、
 # 作業側で「追加・変更」されたファイルだけを zip する（納品用）。
-# 両方とも npm run build（vite build + scripts/after-build.mjs）で揃える。
+# 両方とも npm run build（vite build + scripts/after-build.mjs + scripts/generate-seo-files.mjs）で揃える。
 #
 # Git の差分が src/**/*.html と src/public/** だけのとき（ナロー）は、
 # それに対応する dist のみ＋その HTML が参照する assets/** のうち「実際に dist で差分があるもの」に限定する。

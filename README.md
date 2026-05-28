@@ -153,7 +153,7 @@ ESLint 拡張を入れていれば、編集中の JS にリアルタイムで問
 `dist/` は `.gitignore` 対象のため、**Git の差分ではなく「ビルド結果同士」を比較**して zip する。
 
 - **比較の片側:** `BASE_REF`（既定: `main`。未取り込みなら `git fetch` のうえ `BASE_REF=origin/main` など）
-- **比較のもう片側:** いまの作業ツリーで `npm run build` した `dist/`（`vite build` に加え **`scripts/after-build.mjs` まで実行される**のが `npm run build`）
+- **比較のもう片側:** いまの作業ツリーで `npm run build` した `dist/`（`vite build` に加え **`scripts/after-build.mjs` と `scripts/generate-seo-files.mjs` まで実行される**のが `npm run build`）
 - **zip に入るもの（通常）:** `main..HEAD` の Git 差分が **`src/**/*.html` と `src/public/**` だけ**のときは、対応する **dist 上のパス**と、その HTML が参照する **`assets/` 配下のうち dist で実際に差分があるファイル**だけに絞る（`MailForm01_utf8/` は **`src/public/MailForm01_utf8/` が Git 差分に無い限り zip に含めない**。main に `mail.php` が無いときの誤検知防止）。**Sass / JS / 設定など他パスに差分がある**ときは **フルの dist 差分**（従来の挙動）。
 - **作業ツリーはクリーン必須:** `git status` に**何も出ない**こと（未コミット・ステージ済み・未追跡のいずれも不可）。違反時は **警告のうえ exit 1 で中止**（続行したい特殊時のみ `DELIVERY_ALLOW_DIRTY=1`）。
 - **Git にコミット差分が無い**（`main` と同一コミット）かつクリーンなときは **フル dist 差分**モード（ビルド結果が完全一致なら zip は作られないことが多い）。
@@ -181,6 +181,7 @@ BASE_REF=origin/main npm run zip:delivery
   - `imageAltFormats`（`none` / `webp` / `avif` / `both`）
   - `useFileHash`（`true`: ビルド後ファイル名にハッシュを付与 / `false`: ハッシュなし）
   - `minify`（`true`: CSS を minify / `false`: CSS を minify しない（クライアント納品時など直接編集の可能性がある場合）。JS は常に minify）
+  - `sitemapExcludePages` / `robotsDisallowPages`（サイトマップ・robots.txt の除外。詳細は [docs/architecture.md §3.5.1](docs/architecture.md#351-サイトマップrobotstxtgenerate-seo-files)）
 - `vite.config.js`
   - ビルド出力先、画像最適化設定、`assetsInlineLimit` など
 
