@@ -361,7 +361,7 @@ export const siteConfig = {
    * プロジェクト設定（案件固有のもの）
    */
   siteName: "静的サイト用ejsテンプレート",
-  baseUrl: "https://rea1i2e.net/",
+  baseUrl: "https://t2025-10-01vite.rea1i2e.net/",
   titleSeparator: " | ",
 
   /**
