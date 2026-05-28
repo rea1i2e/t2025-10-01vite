@@ -366,7 +366,9 @@ export const siteConfig = {
   sitemapExcludePages: ["thanks"],
   sitemapExcludePathPrefixes: ["demo/"],
   robotsDisallowPages: ["thanks"],
-  // sitemapDefaults / pages.*.sitemap … changefreq・priority は任意。未指定なら sitemap.xml に出力しない
+  sitemapLastmodSource: "git", // lastmod: git（既定）| build | omit
+  // sitemapLastmodIncludeCommon: true … common/_head 等も lastmod 判定に含める
+  // sitemapDefaults / pages.*.sitemap … changefreq・priority・lastmod・sourceFiles は任意
 
   /**
    * 画像の代替フォーマット（ビルド・after-build で使用）

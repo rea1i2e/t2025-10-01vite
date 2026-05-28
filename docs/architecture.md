@@ -177,11 +177,12 @@ flowchart LR
 - `sitemapExcludePathPrefixes`: `path` の接頭辞一致で除外（テンプレ既定: `demo/`）
 - `robotsDisallowPages`: `robots.txt` の `Disallow` 対象キー（未指定時は `sitemapExcludePages` を流用）
 - `robotsDisallowPathPrefixes`: `path` 接頭辞で `Disallow`（任意）
-- `sitemapDefaults` / `pages.*.sitemap`: `changefreq`・`priority` は任意。未指定なら XML に出力しない
+- `sitemapDefaults` / `pages.*.sitemap`: `changefreq`・`priority`・`lastmod`・`sourceFiles` は任意。未指定なら XML に出力しない（`lastmod` は Git 自動取得が既定）
 - `pages.*.sitemap.exclude` / `pages.*.robots.disallow`: ページ単位の上書き
 
 #### 出力仕様
-- **sitemap.xml**: 各 URL に `<loc>` と `<lastmod>`（ビルド日）。`changefreq` / `priority` は設定時のみ
+- **sitemap.xml**: 各 URL に `<loc>` と `<lastmod>`。`changefreq` / `priority` は設定時のみ
+- **lastmod（既定 `sitemapLastmodSource: "git"`）**: ページ HTML・その HTML が include する EJS（`common/` は既定で除外）・対応 SCSS・ページ画像ディレクトリ・ページ JS を Git 履歴から最新コミット日（`YYYY-MM-DD`）を取得。`pages.*.sitemap.lastmod` で手動上書き可。`build` はビルド日、`omit` は `<lastmod>` 自体を出力しない
 - **robots.txt**: `User-agent: *`、`Allow: /`、除外ページの `Disallow`、`Sitemap:` 行
 
 #### 案件着手時（npm run init）

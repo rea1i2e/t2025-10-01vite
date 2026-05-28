@@ -1,13 +1,16 @@
 // scripts/generate-seo-files.mjs
 // site.config.js の pages / baseUrl（または domain）から sitemap.xml と robots.txt を dist/ に出力する。
 
-import { writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { execSync } from "node:child_process";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { basename, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { globSync } from "glob";
 import { siteConfig } from "../config/site.config.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DIST = resolve(__dirname, "../dist");
+const REPO_ROOT = resolve(__dirname, "..");
+const DIST = resolve(REPO_ROOT, "dist");
 
 function getSiteUrl() {
   const url = siteConfig.baseUrl ?? siteConfig.domain;
@@ -68,12 +71,127 @@ function resolveSitemapValue(pageData, key) {
   return value === undefined || value === null || value === "" ? null : value;
 }
 
+function pagePathToHtmlRel(pagePath) {
+  if (!pagePath) return "src/index.html";
+  if (/\.html$/i.test(pagePath)) return `src/${pagePath}`;
+  return `src/${pagePath}index.html`;
+}
+
+function parseEjsIncludes(htmlRelPath) {
+  const abs = resolve(REPO_ROOT, htmlRelPath);
+  if (!existsSync(abs)) return [];
+
+  const content = readFileSync(abs, "utf8");
+  const includes = [];
+  const re = /include\(\s*ejsPath\s*\+\s*['"]([^'"]+)['"]/g;
+  let match = re.exec(content);
+
+  while (match) {
+    includes.push(`src/ejs/${match[1]}`);
+    match = re.exec(content);
+  }
+
+  return includes;
+}
+
+function relatedScssForEjs(ejsRelPath) {
+  const slug = basename(ejsRelPath, ".ejs").replace(/^_/, "");
+  return globSync(`src/assets/sass/**/_*${slug}*.scss`, { cwd: REPO_ROOT });
+}
+
+function relatedJsForPage(pageKey) {
+  const pattern =
+    pageKey === "top"
+      ? "src/assets/js/**/_top*.js"
+      : `src/assets/js/**/_${pageKey}*.js`;
+  return globSync(pattern, { cwd: REPO_ROOT });
+}
+
+function pageImageFiles(pagePath) {
+  const segment = pagePath ? pagePath.split("/")[0] : "top";
+  const imageDir = resolve(REPO_ROOT, "src/assets/images", segment);
+
+  if (!existsSync(imageDir)) return [];
+
+  return globSync(`src/assets/images/${segment}/**/*`, {
+    cwd: REPO_ROOT,
+    nodir: true,
+  });
+}
+
+function collectPageSourceFiles(pageKey, pageData) {
+  const files = new Set();
+  const htmlRel = pagePathToHtmlRel(pageData.path);
+  const includeCommon = siteConfig.sitemapLastmodIncludeCommon === true;
+
+  files.add(htmlRel);
+
+  for (const includePath of parseEjsIncludes(htmlRel)) {
+    if (!includeCommon && includePath.includes("/common/")) continue;
+    files.add(includePath);
+    for (const scssPath of relatedScssForEjs(includePath)) {
+      files.add(scssPath);
+    }
+  }
+
+  for (const jsPath of relatedJsForPage(pageKey)) {
+    files.add(jsPath);
+  }
+
+  for (const imagePath of pageImageFiles(pageData.path)) {
+    files.add(imagePath);
+  }
+
+  for (const extraPath of pageData.sitemap?.sourceFiles ?? []) {
+    files.add(extraPath);
+  }
+
+  return [...files];
+}
+
+function getGitLastmod(relPaths) {
+  const existing = relPaths.filter((relPath) =>
+    existsSync(resolve(REPO_ROOT, relPath)),
+  );
+  if (existing.length === 0) return null;
+
+  try {
+    const args = existing.map((relPath) => `"${relPath.replace(/"/g, "")}"`).join(" ");
+    const result = execSync(`git log -1 --format=%cs -- ${args}`, {
+      cwd: REPO_ROOT,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+
+    return result || null;
+  } catch {
+    return null;
+  }
+}
+
+function resolveLastmod(pageKey, pageData) {
+  const manual = resolveSitemapValue(pageData, "lastmod");
+  if (manual) return manual;
+
+  const source = siteConfig.sitemapLastmodSource ?? "git";
+
+  if (source === "build") {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  if (source === "omit") {
+    return null;
+  }
+
+  return getGitLastmod(collectPageSourceFiles(pageKey, pageData));
+}
+
 function buildUrlEntry(loc, pageData, lastmod) {
-  const lines = [
-    "  <url>",
-    `    <loc>${escapeXml(loc)}</loc>`,
-    `    <lastmod>${lastmod}</lastmod>`,
-  ];
+  const lines = ["  <url>", `    <loc>${escapeXml(loc)}</loc>`];
+
+  if (lastmod) {
+    lines.push(`    <lastmod>${lastmod}</lastmod>`);
+  }
 
   const changefreq = resolveSitemapValue(pageData, "changefreq");
   if (changefreq) {
@@ -91,12 +209,12 @@ function buildUrlEntry(loc, pageData, lastmod) {
 
 function buildSitemapXml() {
   const siteUrl = getSiteUrl();
-  const lastmod = new Date().toISOString().slice(0, 10);
 
   const urlEntries = Object.entries(siteConfig.pages)
     .filter(([pageKey, pageData]) => !isExcludedFromSitemap(pageKey, pageData))
-    .map(([, pageData]) => {
+    .map(([pageKey, pageData]) => {
       const loc = pageUrl(siteUrl, pageData.path);
+      const lastmod = resolveLastmod(pageKey, pageData);
       return buildUrlEntry(loc, pageData, lastmod);
     });
 
