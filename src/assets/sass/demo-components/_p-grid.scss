@@ -3,9 +3,6 @@
 .p-grid {
   display: grid;
   gap: rem(20);
-  list-style: none;
-  margin: 0;
-  padding: 0;
   @include mq() {
     grid-template-columns: repeat(3, 1fr);
   }

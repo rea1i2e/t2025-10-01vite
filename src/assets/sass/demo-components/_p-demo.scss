@@ -101,7 +101,6 @@
 }
 
 .p-demo-sound__credit {
-  margin: 0;
   font-size: maxrem(13);
   line-height: 1.6;
   opacity: 0.85;
@@ -196,13 +195,11 @@
 }
 
 .p-demo__nav-item {
-  margin: 0;
 }
 
 .p-demo__nav-link {
   display: inline-block;
   padding-block: rem(4);
-  padding-inline: 0;
   color: inherit;
   text-decoration: none;
   border-block-end: 2px solid transparent;

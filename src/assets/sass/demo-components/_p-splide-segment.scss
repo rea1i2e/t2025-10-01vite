@@ -58,22 +58,15 @@
 .p-splide-segment__pagination.splide__pagination li {
   flex: 1 1 0;
   min-width: 0;
-  margin: 0;
 }
 
 .p-splide-segment__page.splide__pagination__page {
   position: relative;
   display: block;
-  // overflow: hidden;
   width: 100%;
   height: rem(10);
-  // margin: 0;
-  // padding: 0;
-  // border: none;
   border-radius: rem(2);
   background-color: var(--color-bg-sub);
-  // opacity: 1;
-  // transform: none;
 }
 
 /* 進行塗り（アクティブかつ js-splide-segment-page-animate のみ keyframes。クラス付与は _splide-segment.js） */

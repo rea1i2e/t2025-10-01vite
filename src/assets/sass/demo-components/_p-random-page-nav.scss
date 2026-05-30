@@ -11,7 +11,6 @@
   grid-template-columns: auto 1fr;
   gap: rem(6) rem(12);
   align-items: baseline;
-  margin: 0;
   padding: rem(12) rem(16);
   border: var(--border);
   border-radius: rem(4);
@@ -30,7 +29,6 @@
 }
 
 .p-random-page-nav__meta-code {
-  margin: 0;
   padding: rem(2) rem(6);
   border-radius: rem(2);
   background-color: var(--color-bg-code);
@@ -48,14 +46,12 @@
 }
 
 .p-random-page-nav__storage-label {
-  margin: 0;
   font-size: maxrem(12);
   font-weight: 600;
   opacity: 0.85;
 }
 
 .p-random-page-nav__storage-key {
-  margin: 0;
   font-size: maxrem(12);
   opacity: 0.85;
 }
@@ -68,7 +64,6 @@
 }
 
 .p-random-page-nav__storage-pre {
-  margin: 0;
   max-height: rem(200);
   overflow: auto;
   padding: rem(10) rem(12);
