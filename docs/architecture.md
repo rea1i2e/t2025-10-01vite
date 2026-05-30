@@ -580,6 +580,19 @@ text: email('afmaar128', 'gmail.com', { link: false })
 #### 使用方法
 - JS を編集したあと `npm run lint`。自動修正が効く範囲は `npm run lint:fix`。
 
+### 3.24 お問い合わせフォーム（textarea 文字数）
+
+#### 関連ファイル
+- `src/ejs/components-demo/_p-form.ejs` — フォーム本体
+- `src/assets/js/demo/_text-count.js` — 文字数表示（`#js-text-count` と同一 `dd` 内の `textarea`）
+- `src/assets/sass/demo-components/_p-form.scss` — `.p-form__count`
+- `src/demo/contact/index.html` — デモページ
+
+#### 動作仕様
+- `textarea` に `maxlength` を付与する。
+- 同一 `dd` 内に `<p class="p-form__count" aria-live="polite"><span id="js-text-count">0</span>/1000文字</p>` を置く。
+- `input` イベントで現在文字数を `#js-text-count` に反映する。
+
 ---
 
 ## 4. ディレクトリ構成

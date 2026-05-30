@@ -62,6 +62,7 @@ import './demo/_scroll-hint.js';
 import './demo/_option-color.js';
 import './demo/_checkFormValidity.js';
 import './demo/_flatpickr.js';
+import './demo/_text-count.js';
 
 
 

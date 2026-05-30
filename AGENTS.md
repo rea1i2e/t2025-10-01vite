@@ -41,6 +41,7 @@
 | SNS 共有（ty_appendQuery ／ 表示中 URL） | `src/assets/js/demo/_demo-share.js` | `src/ejs/components-demo/_p-demo-share.ejs` | `src/assets/sass/demo-components/_p-demo.scss`（`.p-demo__list` 等） | `src/demo/demo-share/index.html` |
 | Google マップ embed（Place / My Maps） | なし | `src/ejs/components-demo/_p-demo-map.ejs`（共有で得た `<iframe>` をそのまま貼る） | `src/assets/sass/demo-components/_p-demo.scss`（`.p-demo__map`） | `src/demo/demo-map-embed/index.html`（デモ地点: 東京タワー） |
 | Splide スライダー | `src/assets/js/demo/_splide-fade.js` 等（`_splide-loop`、`_splide-thumbnail`、`_splide-progress`、`_splide-segment`、`_splide-variable-size`、`_splide-posts`） | 同名 `_p-splide-*.ejs` | 同名 `_p-splide-*.scss` | `src/demo/demo-splide/index.html` |
+| お問い合わせフォーム | `src/assets/js/demo/_option-color.js`、`_checkFormValidity.js`、`_flatpickr.js`、`_text-count.js` | `src/ejs/components-demo/_p-form.ejs` | `src/assets/sass/demo-components/_p-form.scss` | `src/demo/contact/index.html` |
 
 デモページ新規作成時に既存の `components-demo`／`demo-components`／シェル構造を再利用するための索引は `src/demo/demo-toolkit/index.html` を参照する。
 

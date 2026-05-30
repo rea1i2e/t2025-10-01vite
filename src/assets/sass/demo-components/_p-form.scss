@@ -308,6 +308,14 @@ input::-webkit-date-and-time-value {
   resize: none;
 }
 
+.p-form__count {
+  margin-block-start: rem(10);
+  color: var(--placeholder-color);
+  font-size: maxrem(14);
+  line-height: 2;
+  text-align: end;
+}
+
 .p-form__note {
   margin-top: rem(4);
   color: rgb(64 62 61);

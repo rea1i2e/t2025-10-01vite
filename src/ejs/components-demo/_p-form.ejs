@@ -57,7 +57,8 @@
     </dd>
     <dt class="p-form__dt"><label class="p-form__label" for="question">ご質問など<span class="p-form__optional">任意</span></label></dt>
     <dd class="p-form__dd">
-      <textarea name="お問い合わせ内容" id="question"></textarea>
+      <textarea name="お問い合わせ内容" id="question" maxlength="1000"></textarea>
+      <p class="p-form__count" aria-live="polite"><span id="js-text-count">0</span>/1000文字</p>
     </dd>
   </dl>
   <div class="p-form__privacy-policy">
