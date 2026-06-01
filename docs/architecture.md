@@ -546,6 +546,23 @@ text: email('afmaar128', 'gmail.com', { link: false })
 #### 使用方法
 - デモ一覧から `demoMapEmbed`（表示ラベル「Google マップ埋め込み」）のリンクを開く。案件化時は `_p-demo-map.ejs` の `<iframe src="…">` を案件用に差し替える。
 
+### 3.25 スポットライト型スライダー（Splide・非対称）
+
+#### 関連ファイル
+- `src/ejs/components-demo/_p-splide-spotlight.ejs` — ダミー配列。各 `splide__slide` に主画像・見出し行・タグ
+- `src/assets/js/demo/_splide-spotlight.js` — main（`type: "fade"`）。`moved` で右プレビュー（次2件）のみ更新
+- `src/assets/sass/demo-components/_p-splide-spotlight.scss` — 外枠グリッド・スライド内2列・黒背景（検証用）
+- `src/demo/demo-splide/index.html` — `section#splide-spotlight`
+
+#### 動作仕様
+- **1スライド:** 画像とテキストは同一 `splide__slide` 内。フェードで同時に切り替わる。
+- **右プレビュー:** Splide 外。常に `(index+1)%n` と `(index+2)%n` の画像ボタン。クリックで `main.go(index)`。
+- **矢印:** main の `.splide__arrows`（`rewind: true`）。
+- リンク・「+」はデモでは未実装。
+
+#### 使用方法
+- `demoSplide` ページの `#splide-spotlight` を開く。案件化時は EJS 先頭の配列を CMS / PHP データに差し替える。
+
 ### 3.23 アクセシビリティ仮基準
 
 #### 関連ファイル

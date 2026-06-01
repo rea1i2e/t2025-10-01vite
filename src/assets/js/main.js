@@ -30,6 +30,7 @@ import './demo/_splide-progress.js';
 import './demo/_splide-segment.js';
 import './demo/_splide-variable-size.js';
 import './demo/_splide-posts.js';
+import './demo/_splide-spotlight.js';
 
 /* アコーディオン・トグル */
 import './demo/_accordion.js';
