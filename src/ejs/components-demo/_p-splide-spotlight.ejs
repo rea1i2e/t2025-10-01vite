@@ -26,50 +26,38 @@ const splideSpotlightItems = [
   },
 ];
 %>
-<div class="p-splide-spotlight">
-  <div class="p-splide-spotlight__layout">
-    <div class="p-splide-spotlight__main splide" id="js-splide-spotlight-main">
-      <div class="p-splide-spotlight__track splide__track">
-        <ul class="p-splide-spotlight__list splide__list">
-          <% splideSpotlightItems.forEach((item) => { %>
-          <li class="p-splide-spotlight__item splide__slide">
-            <div class="p-splide-spotlight__slide">
-              <div class="p-splide-spotlight__media">
-                <img
-                  src="<%- imagePath %><%- item.file %>"
-                  alt="<%= ty_stripTags(item.alt) %>"
-                  width="600"
-                  height="800"
-                  loading="lazy"
-                  decoding="async"
-                >
-              </div>
-              <div class="p-splide-spotlight__content">
-                <% item.headingLines.forEach((line) => { %>
-                <p class="p-splide-spotlight__heading-line"><%= ty_stripTags(line) %></p>
-                <% }); %>
-                <span class="p-splide-spotlight__tag"><%= ty_stripTags(item.tag) %></span>
-              </div>
-            </div>
-          </li>
-          <% }); %>
-        </ul>
-      </div>
-      <div class="p-splide-spotlight__arrows splide__arrows">
-        <button
-          class="p-splide-spotlight__arrow p-splide-spotlight__arrow--prev splide__arrow splide__arrow--prev"
-          type="button"
-          aria-label="前へ"
-        ></button>
-        <button
-          class="p-splide-spotlight__arrow p-splide-spotlight__arrow--next splide__arrow splide__arrow--next"
-          type="button"
-          aria-label="次へ"
-        ></button>
-      </div>
-    </div>
-    <div class="p-splide-spotlight__aside">
-      <div class="p-splide-spotlight__previews" id="js-splide-spotlight-previews"></div>
+<div class="p-splide-spotlight splide" id="js-splide-spotlight">
+  <div class="p-splide-spotlight__track splide__track">
+    <ul class="p-splide-spotlight__list splide__list">
+      <% splideSpotlightItems.forEach((item) => { %>
+      <li class="p-splide-spotlight__item splide__slide">
+        <div class="p-splide-spotlight__slide">
+          <div class="p-splide-spotlight__media">
+            <img src="<%- imagePath %><%- item.file %>" alt="<%= ty_stripTags(item.alt) %>">
+          </div>
+          <div class="p-splide-spotlight__content">
+            <% item.headingLines.forEach((line) => { %>
+            <p class="p-splide-spotlight__heading-line"><%= ty_stripTags(line) %></p>
+            <% }); %>
+            <span class="p-splide-spotlight__tag"><%= ty_stripTags(item.tag) %></span>
+          </div>
+        </div>
+      </li>
+      <% }); %>
+    </ul>
+  </div>
+  <div class="p-splide-spotlight__controls">
+    <div class="p-splide-spotlight__arrows splide__arrows">
+      <button
+        class="p-splide-spotlight__arrow splide__arrow splide__arrow--prev"
+        type="button"
+        aria-label="前へ"
+      ></button>
+      <button
+        class="p-splide-spotlight__arrow splide__arrow splide__arrow--next"
+        type="button"
+        aria-label="次へ"
+      ></button>
     </div>
   </div>
 </div>

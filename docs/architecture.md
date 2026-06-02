@@ -549,19 +549,21 @@ text: email('afmaar128', 'gmail.com', { link: false })
 ### 3.25 スポットライト型スライダー（Splide・非対称）
 
 #### 関連ファイル
-- `src/ejs/components-demo/_p-splide-spotlight.ejs` — ダミー配列。各 `splide__slide` に主画像・見出し行・タグ
-- `src/assets/js/demo/_splide-spotlight.js` — main（`type: "fade"`）。`moved` で右プレビュー（次2件）のみ更新
-- `src/assets/sass/demo-components/_p-splide-spotlight.scss` — 外枠グリッド・スライド内2列・黒背景（検証用）
+- `src/ejs/components-demo/_p-splide-spotlight.ejs` — ダミー配列。各 `splide__slide` に画像・見出し行・タグ（HTML は全件出力）
+- `src/assets/js/demo/_splide-spotlight.js` — 単一 Splide（`type: "slide"`, `autoWidth`, `focus: 0`, `rewind: false`, `pagination: false`）
+- `src/assets/sass/demo-components/_p-splide-spotlight.scss` — `.is-active` のみ幅拡大・テキスト表示。非アクティブは画像のみ。色は `_root.scss` の `--color-bg-sub` / `--color-text` / `--color-theme` 等（AGENTS「デモページ・コンポーネント追加時のカラー指定」）
 - `src/demo/demo-splide/index.html` — `section#splide-spotlight`
 
 #### 動作仕様
-- **1スライド:** 画像とテキストは同一 `splide__slide` 内。フェードで同時に切り替わる。
-- **右プレビュー:** Splide 外。常に `(index+1)%n` と `(index+2)%n` の画像ボタン。クリックで `main.go(index)`。
-- **矢印:** main の `.splide__arrows`（`rewind: true`）。
+- **単一トラック:** main / 右プレビューの二重構造は使わない。全スライドが同一 `splide__list` 上に横並び。
+- **アクティブ（`.is-active`）:** CSS 変数でスライド幅を広げ、`__content` を表示。`__slide` は画像 | テキストの2列（PC）。
+- **非アクティブ:** 狭い幅・`__content` は `display: none`・画像は低 opacity。
+- **プログレスバー / ページネーション / Autoplay:** なし。矢印のみ。`loop` なし・`rewind: false`（最後の次／先頭の前には戻らない。端では矢印が無効化される）。
+- **位置ずれ・詰め:** **li 幅は非アクティブ基準で一定**。アクティブの広さは内側 `.p-splide-spotlight__slide` の幅（`overflow-x: visible`）。**アクティブ直後の非アクティブだけ** `margin-inline-start: calc(アクティブ幅 - 標準幅)` で広い分を確保（全非アクティブに負の margin-end を付けると連鎖的に重なる）。Splide は `refresh` 時に `marginRight` へ gap を上書きするため、`_splide-spotlight.js` で `refresh` 後に margin を再設定する。
 - リンク・「+」はデモでは未実装。
 
 #### 使用方法
-- `demoSplide` ページの `#splide-spotlight` を開く。案件化時は EJS 先頭の配列を CMS / PHP データに差し替える。
+- `demoSplide` ページの `#splide-spotlight` を開く。案件化時は EJS 先頭の配列を CMS / PHP データに差し替える。幅は `--splide-spotlight-*`、色は共通の `--color-*`（案件で上書きする場合はコンポーネント SCSS または `_root.scss`）。
 
 ### 3.23 アクセシビリティ仮基準
 

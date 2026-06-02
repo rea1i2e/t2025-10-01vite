@@ -1,67 +1,64 @@
 /**
- * スポットライト型スライダー（1スライド = 主画像 + テキスト、右に次2件プレビュー）
+ * スポットライト型スライダー（単一トラック・is-active のみ拡大＋テキスト表示）
+ * li 幅は一定。アクティブ直後の非アクティブだけ margin-inline-start で広い分を確保。
+ * Splide は refresh 時に marginRight へ gap を上書きするため、refresh 後に再設定する。
  */
 
 import "@splidejs/splide/dist/css/splide-core.min.css";
 import { Splide } from "@splidejs/splide";
 
-const mainElement = document.getElementById("js-splide-spotlight-main");
-const previewsElement = document.getElementById("js-splide-spotlight-previews");
+const splideSpotlightElement = document.getElementById("js-splide-spotlight");
+const SPOTLIGHT_GAP = "calc(24 / 16 * 1rem)";
 
-if (mainElement && previewsElement) {
-  const main = new Splide(mainElement, {
-    type: "fade",
-    rewind: true,
-    pagination: false,
+if (splideSpotlightElement) {
+  const splide = new Splide(splideSpotlightElement, {
+    type: "slide",
+    rewind: false,
+    autoWidth: true,
+    focus: 0,
+    gap: SPOTLIGHT_GAP,
     arrows: true,
+    pagination: false,
     speed: 600,
   });
 
-  const getSlideSources = () => {
-    const slides = mainElement.querySelectorAll(".splide__slide");
-    return Array.from(slides).map((slide) => {
-      const img = slide.querySelector(".p-splide-spotlight__media img");
-      return {
-        src: img?.getAttribute("src") ?? "",
-        alt: img?.getAttribute("alt") ?? "",
-      };
+  const applySpotlightSlideMargins = () => {
+    const styles = getComputedStyle(splideSpotlightElement);
+    const slideWidth = styles
+      .getPropertyValue("--splide-spotlight-slide-width")
+      .trim();
+    const activeWidth = styles
+      .getPropertyValue("--splide-spotlight-active-width")
+      .trim();
+    const pushAfterActive = `calc(${activeWidth} - ${slideWidth})`;
+
+    const slides = [
+      ...splideSpotlightElement.querySelectorAll(
+        ".p-splide-spotlight__item.splide__slide",
+      ),
+    ];
+
+    slides.forEach((slide, index) => {
+      const prev = slides[index - 1];
+      slide.style.marginRight = SPOTLIGHT_GAP;
+      slide.style.marginInlineStart = "";
+      slide.style.marginInlineEnd = "";
+
+      if (prev?.classList.contains("is-active")) {
+        slide.style.marginInlineStart = pushAfterActive;
+      }
     });
   };
 
-  const renderPreviews = (index) => {
-    const sources = getSlideSources();
-    const count = sources.length;
-    if (count === 0) return;
-
-    previewsElement.replaceChildren();
-
-    [1, 2].forEach((offset) => {
-      const targetIndex = (index + offset) % count;
-      const { src, alt } = sources[targetIndex];
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "p-splide-spotlight__preview";
-      button.setAttribute("aria-label", `スライド${targetIndex + 1}を表示`);
-
-      const previewImg = document.createElement("img");
-      previewImg.src = src;
-      previewImg.alt = alt;
-      previewImg.width = 200;
-      previewImg.height = 280;
-      previewImg.loading = "lazy";
-      previewImg.decoding = "async";
-
-      button.append(previewImg);
-      button.addEventListener("click", () => {
-        main.go(targetIndex);
-      });
-      previewsElement.append(button);
-    });
+  const refreshWithMargins = () => {
+    splide.refresh();
+    requestAnimationFrame(applySpotlightSlideMargins);
   };
 
-  main.on("mounted move", () => {
-    renderPreviews(main.index);
+  splide.on("mounted resized", refreshWithMargins);
+  splide.on("moved", () => {
+    requestAnimationFrame(refreshWithMargins);
   });
 
-  main.mount();
+  splide.mount();
 }
