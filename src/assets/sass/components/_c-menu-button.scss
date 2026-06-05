@@ -5,6 +5,7 @@
   --menu-line-height: 2px;
   --menu-line-color: var(--color-text);
   --menu-line-gap: #{rem(8)};
+  --menu-line-open-rotate: 45deg;
   position: relative;
   width: rem(48);
   background-color: var(--color-bg)
@@ -50,9 +51,9 @@
 }
 
 .c-menu-button[aria-expanded="true"] span::before {
-  transform: translateY(0) rotate(45deg);
+  transform: translateY(0) rotate(var(--menu-line-open-rotate));
 }
 
 .c-menu-button[aria-expanded="true"] span::after {
-  transform: translateY(0) rotate(-45deg);
+  transform: translateY(0) rotate(calc(var(--menu-line-open-rotate) * -1));
 }
