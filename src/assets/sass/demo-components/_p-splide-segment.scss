@@ -103,8 +103,8 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .p-splide-segment__page.splide__pagination__page.is-active::after {
+.p-splide-segment__page.splide__pagination__page.is-active::after {
+  @include reduced-motion {
     transform: scaleX(1);
   }
 }

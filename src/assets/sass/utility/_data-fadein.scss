@@ -1,19 +1,15 @@
 @use "../global" as *;
 
-/* 動きを抑えたい人への配慮 */
-@media (prefers-reduced-motion: reduce) {
-  [data-fadein] {
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
-
 /* 初期（見えない＆少し下） */
 [data-fadein] {
   opacity: 0;
   transform: translateY(rem(40));
   transition: opacity 1.4s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1);
+
+  @include reduced-motion {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* 表示状態 */

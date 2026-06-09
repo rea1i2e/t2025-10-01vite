@@ -1,0 +1,21 @@
+/* 使い方
+・transition を持つ要素で、OS の「動きを減らす」設定時に transition を切る
+.p-example {
+  transition: opacity 0.3s ease;
+  @include reduced-motion();
+}
+・追加の打ち消しが必要なとき
+[data-fadein] {
+  @include reduced-motion {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+*/
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    @content;
+  }
+}
