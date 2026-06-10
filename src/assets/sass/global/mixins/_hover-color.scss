@@ -1,0 +1,23 @@
+/* 使い方
+・ホバー・フォーカスで文字色を変える（base/_base.scss の a { hover-opacity } は opacity: 1 で打ち消す）
+.p-example__link {
+  @include hover-color(); // 既定 var(--color-blue)
+  @include hover-color(var(--color-navy)); // 色を変える
+}
+*/
+
+@mixin hover-color($color: var(--color-blue)) {
+  transition: color var(--hover-transition);
+
+  @media (any-hover: hover) {
+    &:hover {
+      color: $color;
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible {
+    color: $color;
+    opacity: 1;
+  }
+}
