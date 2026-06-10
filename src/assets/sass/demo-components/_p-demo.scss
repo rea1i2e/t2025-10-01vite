@@ -40,6 +40,18 @@
   background-color: var(--color-bg-sub);
 }
 
+.p-demo__truncate {
+  @include text-truncate();
+}
+
+.p-demo__line-clamp-2 {
+  @include line-clamp(2);
+}
+
+.p-demo__line-clamp-3 {
+  @include line-clamp(3);
+}
+
 /* UAスタイルシートをそのまま採用 */
 .p-demo :is(h2, h3, h4, h5, h6, p) {
   margin: revert;
@@ -234,11 +246,12 @@
   border-block-start: none;
 }
 
-.p-demo__image-box {
+/* デモ用サンプルの最大幅（メディア・テキスト省略・パララックス等） */
+.p-demo__sample-box {
   max-width: rem(300);
 }
 
-.p-demo__image-box--bg {
+.p-demo__sample-box--bg {
   aspect-ratio: 16 / 9;
   background: url(../images/demo/dummy3.jpg) no-repeat center / cover;
 }

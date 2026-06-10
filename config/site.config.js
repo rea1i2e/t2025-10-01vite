@@ -162,11 +162,11 @@ const pages = {
     description: "ホバーエフェクト（画像切り替え）ページです。",
   },
   demoDocument: {
-    label: "ドキュメント（ul, ol, dl, dt, dd, table）",
+    label: "ドキュメント（ul, ol, dl, table, テキスト省略）",
     root: "../../",
     path: "demo/demo-document/",
     title: "ドキュメント",
-    description: "ul, ol, dl, dt, dd, tableなどドキュメントページです。",
+    description: "ul, ol, dl, dt, dd, table, テキスト省略 mixin などドキュメントページです。",
   },
   demoMedia: {
     label: "メディアいろいろ",

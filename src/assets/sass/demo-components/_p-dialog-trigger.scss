@@ -24,10 +24,7 @@
 }
 
 .p-dialog-trigger__excerpt {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+  @include line-clamp(2);
 }
 
 .p-dialog-trigger__button {

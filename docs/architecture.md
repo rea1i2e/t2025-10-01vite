@@ -92,6 +92,16 @@ flowchart LR
 #### ビルド出力
 - `assets/css/[name]-[hash].css`（`vite.config.js` の `assetFileNames` で定義）
 
+#### Sass mixin — テキスト省略（`text-truncate` / `line-clamp`）
+
+| ファイル | 役割 |
+|----------|------|
+| `src/assets/sass/global/mixins/_text-truncate.scss` | 1行省略（`text-truncate`）・複数行省略（`line-clamp($lines)`） |
+| `src/assets/sass/demo-components/_p-demo.scss` | `.p-demo__truncate` / `.p-demo__line-clamp-*`（デモ用。`p-demo__box` + `p-demo__sample-box` で幅・padding） |
+| `src/demo/demo-document/index.html` | mixin 使用例（1行 / 2行 / 3行） |
+
+コンポーネント SCSS では `@use "../global" as *;` のあと `@include text-truncate()` または `@include line-clamp(2)` を指定する。親要素に幅制約（`max-width` 等）が無いと省略は見えない。**`line-clamp` と `padding` は同一要素に置かず**、枠の padding は親、省略は子に分ける（行数クリップがずれて次行が半分見えることがある）。
+
 ### 3.3 JS バンドル
 
 #### 関連ファイル

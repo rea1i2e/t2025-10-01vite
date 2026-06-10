@@ -105,6 +105,28 @@
         </div>
       </section>
       <section class="p-demo__section">
+        <h2 class="p-demo__subtitle">テキスト省略（Sass mixin）</h2>
+        <div class="p-demo__content">
+          <%
+            const truncateSampleText = posts
+              .map((post) => post.title + ' — ' + post.description)
+              .join(' ');
+          %>
+          <p class="p-demo__label"><code>@include text-truncate()</code> — 1行</p>
+          <div class="p-demo__box p-demo__sample-box">
+            <div class="p-demo__truncate"><%- truncateSampleText %></div>
+          </div>
+          <p class="p-demo__label"><code>@include line-clamp(2)</code></p>
+          <div class="p-demo__box p-demo__sample-box">
+            <div class="p-demo__line-clamp-2"><%- truncateSampleText %></div>
+          </div>
+          <p class="p-demo__label"><code>@include line-clamp(3)</code></p>
+          <div class="p-demo__box p-demo__sample-box">
+            <div class="p-demo__line-clamp-3"><%- truncateSampleText %></div>
+          </div>
+        </div>
+      </section>
+      <section class="p-demo__section">
         <h2 class="p-demo__subtitle">カスタムスクロールバー（.c-scrollbar-custom）</h2>
         <div class="p-demo__content">
           <div class="c-scrollbar-custom" style="max-height: 100px;">

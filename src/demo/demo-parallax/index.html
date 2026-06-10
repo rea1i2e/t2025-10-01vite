@@ -35,7 +35,7 @@
       <section class="p-demo__section">
         <h2 class="p-demo__subtitle"><%- index === 0 ? 'デフォルト (30%)' : index === 1 ? '強め (50%)' : '逆方向 (-30%)' %></h2>
         <div class="p-demo__content">
-            <div class="p-demo__image-box" style="aspect-ratio: <%- item.aspectRatio %>;"<%- item.amount ? ` data-parallax="${item.amount}"` : ' data-parallax' %>>
+            <div class="p-demo__sample-box" style="aspect-ratio: <%- item.aspectRatio %>;"<%- item.amount ? ` data-parallax="${item.amount}"` : ' data-parallax' %>>
               <img src="<%- imagePath + item.image %>" alt="" loading="lazy">
             </div>
         </div>
