@@ -11,8 +11,10 @@
   <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy2.jpg', imageAlt: '' }) %>
 <main class="p-demo">
   <div class="p-demo__inner l-inner">
+    <%- include(ejsPath + 'components-demo/_p-demo-mixin-intro.ejs') %>
     <section class="p-demo__section">
       <h2 class="p-demo__subtitle">下線</h2>
+      <p class="p-demo__label"><code>@include hover-text-underline();</code></p>
       <div class="p-demo__content">
         <p>
           <a href="#" class="d-hover-text-underline">下線が表示されるテキスト</a>
@@ -21,6 +23,7 @@
     </section>
     <section class="p-demo__section">
       <h2 class="p-demo__subtitle">下線：左から右へ（１行・CSSのみ）</h2>
+      <p class="p-demo__label"><code>@include hover-text-underline-span-before();</code> — 直下 <code>span</code> 必須</p>
       <div class="p-demo__content">
         <p>
           <a href="#" class="d-hover-text-underline-slide"><span>下線が表示されるテキスト</span></a>
@@ -29,6 +32,7 @@
     </section>
     <section class="p-demo__section">
       <h2 class="p-demo__subtitle">下線：左から右へ（複数行・CSS＋JS）</h2>
+      <p class="p-demo__label">mixin なし — <code>[data-hover-underline]</code>（<code>utility/_data-hover-underline.scss</code> + JS）</p>
       <div class="p-demo__content">
         <p>
           <a href="#" class="">
@@ -48,4 +52,3 @@
 </body>
 
 </html>
-

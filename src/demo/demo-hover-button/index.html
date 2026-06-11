@@ -1,15 +1,48 @@
 <% 
   const key = 'demoHoverButton';
   const page = ty_getPage(key);
+  const cButtonColorVars = [
+    '  --button-bg: var(--color-bg-sub);',
+    '  --button-bg-hover: var(--color-theme);',
+    '  --button-text-color: var(--color-text);',
+    '  --button-text-color-hover: var(--color-bg);',
+    '  background-color: var(--button-bg);',
+    '  color: var(--button-text-color);',
+  ];
+  const cButtonGradientVars = [
+    '  --button-bg: var(--gradation-theme-accent-hover);',
+    '  --button-bg-hover: color-mix(var(--color-bg) 10%, transparent);',
+    '  --button-text-color: var(--color-bg);',
+    '  --button-text-color-hover: var(--color-bg);',
+    '  background-image: var(--button-bg);',
+    '  color: var(--button-text-color);',
+  ];
+  const buildMixinScss = (item) => {
+    const selector = `.${item.scssClass || item.anchorClass}`;
+    const lines = [...(item.baseLines || []), ...item.mixinLines]
+      .map((line) => `  ${line}`)
+      .join('\n');
+    return `${selector} {\n${lines}\n}`;
+  };
   const demoHoverButtonSections = [
-    { subtitle: '背景色の変化', label: '背景色が変わるボタン', anchorClass: 'c-button', dataHover: 'bg' },
-    { subtitle: 'スケール（拡大/縮小）', label: '拡大するボタン', anchorClass: 'c-button', dataHover: 'scale' },
-    { subtitle: 'スライド', label: 'スライドするボタン', anchorClass: 'c-button', dataHover: 'bg-slide' },
-    { subtitle: 'シャドウの変化', label: 'シャドウが変わるボタン', anchorClass: 'c-button', dataHover: 'shadow' },
-    { subtitle: 'リップルエフェクト', label: 'リップルエフェクト', anchorClass: 'c-button', dataHover: 'ripple' },
-    { subtitle: 'アイコンのアニメーション', label: 'アイコンアニメーション', anchorClass: 'c-button', dataIcon: 'arrow_right' },
-    { subtitle: 'グラデーションの変化', label: 'グラデーションが変化するボタン', anchorClass: 'c-button-gradient', dataHover: 'bg-position-slide' },
-    { subtitle: 'グラデーションにオーバーレイ（スライド）', label: 'グラデーションが変化するボタン', anchorClass: 'c-button-gradient', dataHover: 'overlay' },
+    { subtitle: '背景色の変化', label: '背景色が変わるボタン', anchorClass: 'c-button', dataHover: 'bg', baseLines: cButtonColorVars, mixinLines: ['@include hover-bg;'] },
+    { subtitle: 'スケール（拡大/縮小）', label: '拡大するボタン', anchorClass: 'c-button', dataHover: 'scale', mixinLines: ['@include hover-scale;'] },
+    { subtitle: 'スライド', label: 'スライドするボタン', anchorClass: 'c-button', dataHover: 'bg-slide', baseLines: cButtonColorVars, mixinLines: ['@include hover-bg-slide-before;'] },
+    { subtitle: 'シャドウの変化', label: 'シャドウが変わるボタン', anchorClass: 'c-button', dataHover: 'shadow', mixinLines: ['@include hover-shadow;'] },
+    { subtitle: 'リップルエフェクト', label: 'リップルエフェクト', anchorClass: 'c-button', dataHover: 'ripple', baseLines: cButtonColorVars, mixinLines: ['@include hover-ripple-after;'] },
+    {
+      subtitle: 'アイコンのアニメーション',
+      label: 'アイコンアニメーション',
+      anchorClass: 'c-button',
+      dataIcon: 'arrow_right',
+      baseLines: cButtonColorVars,
+      mixinLines: [
+        '@include button-icon-after(url("../images/common/icon_arrow_right.svg"));',
+        '@include button-icon-after-nudge;',
+      ],
+    },
+    { subtitle: 'グラデーションの変化', label: 'グラデーションが変化するボタン', anchorClass: 'c-button-gradient', dataHover: 'bg-position-slide', baseLines: cButtonGradientVars, mixinLines: ['@include hover-bg-position-slide;'] },
+    { subtitle: 'グラデーションにオーバーレイ（スライド）', label: 'グラデーションが変化するボタン', anchorClass: 'c-button-gradient', dataHover: 'overlay', baseLines: cButtonGradientVars, mixinLines: ['@include hover-bg-slide-before;'] },
   ];
 %>
 <!DOCTYPE html>
@@ -21,10 +54,12 @@
   <%- include(ejsPath + 'components-demo/_sub-mv.ejs', { titleJa: pages[key].label, imageSrc: 'demo/dummy1.jpg', imageAlt: '' }) %>
   <main class="p-demo">
     <div class="p-demo__inner l-inner">
+      <%- include(ejsPath + 'components-demo/_p-demo-mixin-intro.ejs') %>
       <div class="p-demo__sections">
         <% demoHoverButtonSections.forEach((item) => { %>
         <section class="p-demo__section">
           <h2><%= item.subtitle %></h2>
+          <pre class="p-demo__code"><code><%= buildMixinScss(item) %></code></pre>
           <div class="p-demo__button">
             <a href="#" class="<%= item.anchorClass %>" <% if (item.dataHover) { %>data-hover="<%= item.dataHover %>" <% } %> <% if (item.dataIcon) { %>data-icon="<%= item.dataIcon %>" <% } %>><span class="c-button__text"><%= item.label %></span></a>
           </div>
