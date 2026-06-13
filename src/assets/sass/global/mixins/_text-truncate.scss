@@ -1,13 +1,14 @@
 /*
  * テキスト省略
- * 使い方:
- * .p-card__title {
- *   @include text-truncate(); // 1行・末尾 …
- * }
- * .p-card__excerpt {
- *   @include line-clamp(2); // 複数行
- * }
- * padding は親要素に置く（同一要素だと行数クリップがずれることがある）
+ *
+ * 使い方（padding は親・省略は子）:
+ * .p-card__box { padding: …; }
+ * .p-card__box .p-card__title { @include text-truncate(); }   // 1行
+ * .p-card__box .p-card__excerpt { @include line-clamp(2); }  // 複数行
+ *
+ * line-clamp / text-truncate を付ける要素に padding を置かない。
+ * 同一要素だと行数クリップがずれ、次行が半分見えることがある。
+ * 索引: demo-document の .p-demo__box > .p-demo__line-clamp-*
  */
 
 @mixin text-truncate {

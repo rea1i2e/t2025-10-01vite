@@ -47,6 +47,21 @@
 
 その他は `src/assets/js/main.js` の `./demo/` import と、`config/site.config.js` の `demo*` ページ定義・`src/demo/` 以下のフォルダを手がかりにする。
 
+## Sass mixin（コンポーネント SCSS）
+
+コンポーネント SCSS を**新規・変更**するときは、プロパティを直書きする前に **`src/assets/sass/global/mixins/`** を確認し、該当があれば `@include` する。Cursor ルール [`.cursor/rules/sass-use-mixins.mdc`](.cursor/rules/sass-use-mixins.mdc)（`src/assets/sass/**/*.scss` 編集時）に従う。
+
+| やりたいこと | mixin | 正本・索引 |
+|-------------|-------|-----------|
+| 1行 / 複数行省略 | `text-truncate()` / `line-clamp($lines)` | `global/mixins/_text-truncate.scss`、`docs/architecture.md` §3.2、`src/demo/demo-document/` |
+| ホバー・フォーカス | `hover-*` | `global/mixins/_hover-*.scss`、デモ各所 |
+| reduced-motion | `reduced-motion` | `global/mixins/_reduced-motion.scss` |
+| ボタン末尾アイコン | `button-icon-after` | `global/mixins/_button-icon-after.scss` |
+
+**`line-clamp` / `text-truncate`:** `@include` を付ける要素に **padding を置かない**。枠の padding は **親**、省略は **子**（例: `.p-demo__box` > `.p-demo__line-clamp-2`）。`-webkit-line-clamp` 等の直書きは避ける。
+
+一覧は `global/mixins/_index.scss`。技術索引は `docs/architecture.md` §3.2 以降。
+
 ## 重要ファイルと役割
 
 | ファイル | 役割 |
@@ -139,6 +154,7 @@
 - **EJS内で使う自作関数の命名**: EJS から呼ぶ自作ヘルパーは `ty_` プレフィックスで統一する（標準 API や外部ライブラリのメソッドと区別しやすくするため）
 - **Sass構成**: `base/` / `components/` / `layouts/` / `utility/` のディレクトリ構成に従う
 - **Sass と kiso / reset**: コンポーネント SCSS では `_reset.scss`・`_base.scss`・kiso と**同値の宣言を重複させない**。Cursor ルール `.cursor/rules/sass-kiso-no-duplicate.mdc`（`src/assets/sass/**/*.scss` 編集時）。汎用正本はナレッジ `wiki/coding-sass.md`「kiso を読んだうえでの追記とレビュー」
+- **Sass mixin**: ホバー・省略・reduced-motion 等は **`global/mixins/` を先に Read** し `@include` する。Cursor ルール `.cursor/rules/sass-use-mixins.mdc`。`line-clamp` は padding なしの子要素に付ける（親子分離）。詳細は上記「Sass mixin」節
 - **JSモジュール**: 機能単位で `_xxx.js` としてファイルを分割し、`main.js` で `import` する
 
 ### デモページ・コンポーネント追加時のカラー指定
