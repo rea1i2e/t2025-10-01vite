@@ -35,3 +35,6 @@ raw/videos/*.avi
 *.njsproj
 *.sln
 *.sw?
+
+# QA 比較用スクショ（ローカル生成のみ）
+qa-screenshots/
