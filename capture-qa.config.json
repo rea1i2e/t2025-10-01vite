@@ -1,0 +1,7 @@
+{
+  "baseUrl": "https://t2025-10-01vite.rea1i2e.net",
+  "widths": [1440, 375],
+  "pages": [
+    { "slug": "top", "path": "" }
+  ]
+}

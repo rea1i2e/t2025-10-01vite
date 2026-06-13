@@ -19,6 +19,7 @@
     "init": "bash scripts/init-project.sh",
     "prepare": "husky",
     "capture:qa": "node scripts/capture-qa-screenshot.mjs",
+    "capture:qa:all": "node scripts/capture-qa-all.mjs",
     "inspect:video": "node raw/videos/inspect-videos.mjs",
     "compress:video": "node raw/videos/compress-video.mjs",
     "test": "open https://t2025-10-01vite.rea1i2e.net/",
