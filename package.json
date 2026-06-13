@@ -23,7 +23,9 @@
     "inspect:video": "node raw/videos/inspect-videos.mjs",
     "compress:video": "node raw/videos/compress-video.mjs",
     "test": "open https://t2025-10-01vite.rea1i2e.net/",
-    "zip:delivery": "bash scripts/zip-delivery-dist-diff.sh"
+    "zip:delivery": "bash scripts/zip-delivery-dist-diff.sh",
+    "check:unused": "node scripts/check-unused.mjs",
+    "check:images": "node scripts/check-images.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
