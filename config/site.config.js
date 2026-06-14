@@ -339,6 +339,29 @@ const siteExternalLinks = {
 };
 
 /**
+ * 会社情報（func-constants.php 相当）
+ *
+ * EJS での出力:
+ *   プレーンテキスト（社名・住所・電話）→ <%= company.name %> でエスケープ出力
+ *   URL（SNS リンクなど）             → href="<%= company.sns.x %>"
+ *   HTML 断片（マップ iframe）         → <%- company.map %> でそのまま出力
+ */
+const company = {
+  name: "",
+  zip: "", // 例: '〒123-4567'
+  address: "",
+  tel: "",
+  map: "", // Google マップ iframe の HTML 断片。空ならテンプレートで出さない
+  sns: {
+    instagram: "",
+    x: "",
+    facebook: "",
+    youtube: "",
+    line: "",
+  },
+};
+
+/**
  * SNS 共有導線の Intent URL（ビルド時 EJS／実行時 JS で共通利用）
  */
 const shareIntentUrls = {
@@ -407,6 +430,9 @@ export const siteConfig = {
 
   // 共有用 URL クエリ付与（URLSearchParams でエンコード）
   ty_appendQuery,
+
+  // 会社情報
+  company,
 
   // ページ設定
   pages,
