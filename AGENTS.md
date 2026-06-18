@@ -247,3 +247,12 @@ npm run init
 - `config/site.config.js` の `siteName` / `baseUrl` を案件情報に更新する
 - ライト/ダーク機能自体が不要な場合は、`_head.ejs` の theme 用インラインスクリプトと `_root.scss` の `html[data-theme]` / `:root:not([data-theme])` まわりを削除する
 
+## Cursor Cloud specific instructions
+
+- **依存関係:** `npm install`（`package-lock.json` 使用）。`prepare` スクリプトで husky が Git hooks をセットアップする。
+- **dev サーバー:** `npm run dev`（Vite、localhost:5173）。`--host 0.0.0.0` で外部からもアクセス可。
+- **lint:** `npm run lint`（ESLint、`.js` / `.mjs` のみ対象。0 errors が正常）。
+- **ビルド:** `npm run build`（`vite build` → `scripts/after-build.mjs` による HTML 後処理）。`dist/` に出力。
+- **HTML 検証:** `npm run validate:html`（ビルド後の `dist/` を検証）。`npm run validate:build` でビルド＋検証を一括実行。
+- **pre-commit hook:** `npm run validate:build` が走る。Cloud VM でコミットする際はビルドが通ることを確認すること。
+
