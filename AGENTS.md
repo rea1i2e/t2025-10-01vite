@@ -6,7 +6,7 @@
 
 **静的サイト制作用テンプレート**（略称 **静的テンプレ**）。Vite + EJS + Sass 構成。  
 呼称の正本はナレッジベースの [wiki/operated-repositories.md](/Users/yoshiaki/working/2026-04-23kn/wiki/operated-repositories.md#表記ルール3-リポジトリと型録)（表記ルール）。  
-詳細な技術仕様は [docs/architecture.md](docs/architecture.md) を参照。
+詳細な技術仕様は [ai-docs/architecture.md](ai-docs/architecture.md) を参照。
 
 ## ローカル絶対パス（個人環境・Cursor 用）
 
@@ -53,14 +53,14 @@
 
 | やりたいこと | mixin | 正本・索引 |
 |-------------|-------|-----------|
-| 1行 / 複数行省略 | `text-truncate()` / `line-clamp($lines)` | `global/mixins/_text-truncate.scss`、`docs/architecture.md` §3.2、`src/demo/demo-document/` |
+| 1行 / 複数行省略 | `text-truncate()` / `line-clamp($lines)` | `global/mixins/_text-truncate.scss`、`ai-docs/architecture.md` §3.2、`src/demo/demo-document/` |
 | ホバー・フォーカス | `hover-*` | `global/mixins/_hover-*.scss`、デモ各所 |
 | reduced-motion | `reduced-motion` | `global/mixins/_reduced-motion.scss` |
 | ボタン末尾アイコン | `button-icon-after` | `global/mixins/_button-icon-after.scss` |
 
 **`line-clamp` / `text-truncate`:** `@include` を付ける要素に **padding を置かない**。枠の padding は **親**、省略は **子**（例: `.p-demo__box` > `.p-demo__line-clamp-2`）。`-webkit-line-clamp` 等の直書きは避ける。
 
-一覧は `global/mixins/_index.scss`。技術索引は `docs/architecture.md` §3.2 以降。
+一覧は `global/mixins/_index.scss`。技術索引は `ai-docs/architecture.md` §3.2 以降。
 
 ## 重要ファイルと役割
 
@@ -116,11 +116,11 @@
 
 機能の追加・変更を行った場合、以下のドキュメントを必ず更新すること。
 
-### docs/architecture.md
+### ai-docs/architecture.md
 - セクション3「機能仕様」に新しいサブセクション（3.x）として追記する
 - 記載すべき内容: 関連ファイル、動作仕様、使用方法
 - 既存機能の変更の場合は、該当セクションを更新する
-- **アクセシビリティ仮基準の本文（Must/Should 等）**を改訂した場合は、**ナレッジ** `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md` のみを更新する。必要に応じて本リポの `docs/architecture.md`（3.22 節）やルート `README.md` の短い導線を同じ改訂に合わせる
+- **アクセシビリティ仮基準の本文（Must/Should 等）**を改訂した場合は、**ナレッジ** `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md` のみを更新する。必要に応じて本リポの `ai-docs/architecture.md`（3.22 節）やルート `README.md` の短い導線を同じ改訂に合わせる
 
 ### AGENTS.md
 - 重要ファイルが増えた場合 →「重要ファイルと役割」テーブルに追加
@@ -130,6 +130,11 @@
 ### README.md
 - npm scripts が増えた場合 →「スクリプト」セクションに追加
 - site.config.js のオプションが増えた場合 →「サイト設定」セクションに追加
+
+### ai-docs/（追記・索引）
+
+- テンプレ共通の正本は **`ai-docs/architecture.md`**。案件・改修固有のルール・調査・Skill 手順も **`ai-docs/`** に置く（詳細は [wiki/template-repository-docs.md](/Users/yoshiaki/working/2026-04-23kn/wiki/template-repository-docs.md)）。
+- 追記したら **`ai-docs/INDEX.md`** の表を更新。汎用化できたらナレッジ `wiki/` へ昇格。
 
 ---
 
@@ -178,7 +183,7 @@
 ### アクセシビリティ仮基準（段階的適用）
 
 - **正本（共通）:** ナレッジベース `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md`（**Must / Should / 運用 / チェックリスト**）。**基準の改訂はこの Wiki で行う**。
-- **本リポの実装上の手がかり:** ルート [README.md](README.md) の「アクセシビリティ仮基準」、[docs/architecture.md](docs/architecture.md) の「3.22 アクセシビリティ仮基準」（stub ファイルは置かない）。
+- **本リポの実装上の手がかり:** ルート [README.md](README.md) の「アクセシビリティ仮基準」、[ai-docs/architecture.md](ai-docs/architecture.md) の「3.22 アクセシビリティ仮基準」（stub ファイルは置かない）。
 - **新規**（ページ・EJS・JS・Sass・デモ）: Wiki 正本の **Must** を当該範囲で満たす。
 - **既存の修正**: 一括改修は求めない。**手を入れた範囲**で Must の違反を直し、無関係なファイルは触らない。
 

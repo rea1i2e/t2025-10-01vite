@@ -4,7 +4,7 @@
 3 リポジトリ間の呼称の正本はナレッジベースの [wiki/operated-repositories.md](/Users/yoshiaki/working/2026-04-23kn/wiki/operated-repositories.md#表記ルール3-リポジトリと型録) を参照。
 
 この README は「入口ドキュメント」です。  
-セットアップ・日常作業・主要導線のみを扱い、詳細仕様は `docs/architecture.md` に集約します。
+セットアップ・日常作業・主要導線のみを扱い、詳細仕様は `ai-docs/architecture.md` に集約します。
 
 ## このREADMEの責務
 
@@ -130,7 +130,7 @@ npm run lint:fix
 - `scripts/`・`raw/` の `.js` / `.mjs`（Node スクリプト）
 - `config/**/*.js`・`vite.config.js`・`eslint.config.js`
 
-設定の正本はルートの **`eslint.config.js`**。処理の詳細は **`docs/architecture.md`** の「3.23 ESLint」。
+設定の正本はルートの **`eslint.config.js`**。処理の詳細は **`ai-docs/architecture.md`** の「3.23 ESLint」。
 
 ### エディタ（VS Code / Cursor）
 
@@ -181,20 +181,20 @@ BASE_REF=origin/main npm run zip:delivery
   - `imageAltFormats`（`none` / `webp` / `avif` / `both`）
   - `useFileHash`（`true`: ビルド後ファイル名にハッシュを付与 / `false`: ハッシュなし）
   - `minify`（`true`: CSS を minify / `false`: CSS を minify しない（クライアント納品時など直接編集の可能性がある場合）。JS は常に minify）
-  - `sitemapExcludePages` / `robotsDisallowPages`（サイトマップ・robots.txt の除外。詳細は [docs/architecture.md §3.5.1](docs/architecture.md#351-サイトマップrobotstxtgenerate-seo-files)）
+  - `sitemapExcludePages` / `robotsDisallowPages`（サイトマップ・robots.txt の除外。詳細は [ai-docs/architecture.md §3.5.1](ai-docs/architecture.md#351-サイトマップrobotstxtgenerate-seo-files)）
 - `vite.config.js`
   - ビルド出力先、画像最適化設定、`assetsInlineLimit` など
 
-詳細仕様は [docs/architecture.md](docs/architecture.md) を参照してください。
+詳細仕様は [ai-docs/architecture.md](ai-docs/architecture.md) を参照してください。
 
 ## ドキュメントの役割分担
 
 - `README.md`（このファイル）  
 入口ガイド。導入・日常運用・参照導線を扱う。
-- `docs/architecture.md`  
+- `ai-docs/INDEX.md`  
+技術ドキュメントの索引。`architecture.md` と案件追記の入口。
+- `ai-docs/architecture.md`  
 テンプレート固有仕様の正本。機能仕様・構成・処理フローを扱う。
-- `docs/README.md`  
-`docs/` 内への短い目次。
 - `AGENTS.md`  
 AI エージェント作業ルール。更新対象ファイルの指針。**「いつ doc を書くか」の汎用基準**はナレッジ [template-repository-docs.md](/Users/yoshiaki/working/2026-04-23kn/wiki/template-repository-docs.md)。
 
@@ -206,7 +206,7 @@ AI エージェント作業ルール。更新対象ファイルの指針。**「
 ## アクセシビリティ仮基準
 
 - **正本（Must / Should・チェックリスト・改訂）**: ナレッジ [`wiki/a11y-baseline.md`](/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md)
-- **本リポでの実装上の手がかり**（`ty_stripTags`・`_root.scss` のトークン・`<dialog>` 型録など）: [docs/architecture.md の 3.22 節](docs/architecture.md#322-アクセシビリティ仮基準)
+- **本リポでの実装上の手がかり**（`ty_stripTags`・`_root.scss` のトークン・`<dialog>` 型録など）: [ai-docs/architecture.md の 3.22 節](ai-docs/architecture.md#322-アクセシビリティ仮基準)
 
 ## 動画圧縮を AI に依頼するとき
 
