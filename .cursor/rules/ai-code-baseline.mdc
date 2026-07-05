@@ -1,0 +1,35 @@
+---
+description: AI コード共通ベースライン（改修前チェック・環境ワナ・JS 落とし穴）。Sass 細則は sass-kiso-no-duplicate / sass-use-mixins を参照。
+globs: src/**/*.scss, src/**/*.js, src/**/*.ejs
+alwaysApply: false
+---
+
+# AI コード — 共通ベースライン
+
+過去案件の FB で確立したルールのうち、案件横断で効くベースライン。
+正本はナレッジベース `skills/ai-code-convention-fix/checklist.md`。
+
+## 改修案件の CSS 着手前（必ず先に確認）
+
+1. `rem()` の除数は既存サイトの `html { font-size }` を実測して合わせる。テンプレ固定値 16 を使わない。
+2. 既存 CSS カスタムプロパティを確認し、自前で再定義しない（既存変数を使うか値を直書き）。
+3. `!important` の有無を把握してから上書き方針を決める。
+4. フォント読み込み方法（self-host / CDN / 既存 @font-face）を確認。
+5. CSS 読み込み順を把握し、競合を避ける。
+
+## 環境・構成のワナ
+
+- WordPress をサブディレクトリ（`_sys_/` 等）へ移すとき、ルート `index.php` に
+  `define('WP_USE_THEMES', true);` を書く。無いとテンプレ未読込で空 HTML になる。
+- `.gitignore` の変更とファイル移動が同時に起きるときは別コミットにせず同一コミットへ。
+
+## JS
+
+- iOS で無条件 `window.resize → ScrollTrigger.refresh()` はスクロール慣性を切る。
+  リサイズ条件を付けるか、幅変化時のみ refresh する。
+
+## Sass / セレクタ（細則は別ルール）
+
+- reset / kiso / base と同値の宣言を書かない。
+- `&`（親参照）禁止・フラット記述。`mq()` の入れ子のみ許可（中はプロパティのみ）。
+- 詳細: `.cursor/rules/sass-kiso-no-duplicate.mdc`、`.cursor/rules/sass-use-mixins.mdc`。
