@@ -95,6 +95,15 @@
 | `src/assets/sass/base/_root.scss` | フォント・CSS変数（`:root`）。ライト/ダーク用の `--color-bg` / `--color-text` 等と `@media (prefers-color-scheme: dark)` による上書き |
 | `src/assets/js/_theme-toggle.js` | **Demo用**。ライト/ダーク切り替えボタンのクリック処理。案件時は本ファイル削除と main.js の import 削除が必要 |
 | `.github/workflows/deploy.yml` | CI/CD（FTPデプロイ + Discord通知） |
+| `memo/session-log.md` | Cursor ↔ Claude Code 作業引き継ぎログ |
+| `ai-docs/session-handoff.md` | 引き継ぎ運用（`/handoff`・フック） |
+| `scripts/handoff-snapshot.sh` | フック共通の session-log 追記 |
+| `.claude/commands/handoff.md` | Claude Code の `/handoff` |
+| `.cursor/rules/session-handoff.mdc` | Cursor の「引き継ぎ」短文ルール |
+
+## Cursor ↔ Claude Code 引き継ぎ
+
+Claude Code と Cursor を併用するときは `memo/session-log.md` に `- 次:` を残す。Claude Code 終了前は `/handoff`、Cursor から続けるときは `@memo/session-log.md`。詳細: [`ai-docs/session-handoff.md`](ai-docs/session-handoff.md)。正本スキル: ナレッジ `skills/cross-tool-session-handoff/SKILL.md`。
 
 ## 動画の Web 向け圧縮（エージェント）
 
