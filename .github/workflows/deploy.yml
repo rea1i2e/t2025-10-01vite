@@ -18,13 +18,13 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
     - name: Detect deploy-relevant changes
       id: changes
-      uses: dorny/paths-filter@v3
+      uses: dorny/paths-filter@v4
       with:
         filters: |
           deploy:
@@ -46,7 +46,7 @@ jobs:
 
     - name: Setup Node.js
       if: steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch'
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         node-version: '20'
         cache: 'npm'
@@ -124,7 +124,7 @@ jobs:
       id: deploy_main
       if: (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && env.FTP_SERVER != ''
       continue-on-error: true
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      uses: SamKirkland/FTP-Deploy-Action@v4.4.0
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
@@ -146,7 +146,7 @@ jobs:
     - name: Deploy to Test Environment (retry)
       id: deploy_retry
       if: steps.deploy_main.outcome == 'failure'
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      uses: SamKirkland/FTP-Deploy-Action@v4.4.0
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
@@ -164,7 +164,7 @@ jobs:
     - name: Deploy to Test Environment (PR)
       id: deploy_pr
       if: (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && github.event_name == 'pull_request' && env.FTP_SERVER != ''
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      uses: SamKirkland/FTP-Deploy-Action@v4.4.0
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
