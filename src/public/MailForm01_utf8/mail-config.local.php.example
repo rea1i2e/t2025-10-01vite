@@ -2,10 +2,19 @@
 /**
  * デモ／案件フォーム送信設定（ローカル上書き）
  *
+ * 【この .example を残す理由】
+ * mail-config.local.php は .gitignore 対象のためリポに載らない。
+ * 本ファイルは Git 上の雛形として残し、clone 後や別マシンで
+ * コピー元がなくならないようにする（削除しない）。
+ *
  * 1. このファイルを mail-config.local.php にコピー
  * 2. 値を設定（mail-config.local.php は Git 追跡外）
  *
- * 複数フォーム（MailForm_contact 等）を使う案件では、各 MailForm_* 配下に同様のファイルを置く。
+ * ローカルには本番値を入れる。テスト環境用は .env.deploy の
+ * FORM_MAIL_TO / FORM_MAIL_FROM / SITE_DOMAIN → Secrets → Actions 生成。
+ *
+ * 複数フォーム（MailForm_contact 等）を使う案件では、各 MailForm_* 配下に同様のファイルを置く
+ * （送信先が共通なら public 直下に1つでも可 — 案件側の構成に合わせる）。
  */
 return [
     // 設置ドメイン（Referer チェック・thanks リダイレクトに使用）
