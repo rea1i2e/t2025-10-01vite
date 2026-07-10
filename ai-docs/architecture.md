@@ -622,6 +622,29 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - 同一 `dd` 内に `<p class="p-form__count" aria-live="polite"><span id="js-text-count">0</span>/1000文字</p>` を置く。
 - `input` イベントで現在文字数を `#js-text-count` に反映する。
 
+### 3.25 フォーム送信（PHP工房 mail.php）
+
+#### 関連ファイル
+- `src/public/MailForm01_utf8/mail.php` — PHP工房メールプログラム（デモ用。`npm run init` で削除される）
+- `src/public/MailForm01_utf8/mail-config.local.php.example` — 送信先設定の雛形
+- `src/public/MailForm01_utf8/mail-config.local.php` — 実設定（Git 非追跡。存在時に `mail.php` が上書き読み込み）
+- `src/ejs/components-demo/_p-form.ejs` — デモフォーム（`action="../MailForm01_utf8/mail.php"`）
+- `src/assets/js/demo/_checkFormValidity.js` — HTML5 バリデーション連携
+
+案件でフォームを残すときは `MailForm01_utf8` を削除しない（`init` 後に `MailForm_*` 等へリネーム・複製してもよい）。複数フォームは **フォームごとに `MailForm_*` ディレクトリ**と `mail-config.local.php` を分ける。
+
+#### 動作仕様
+- フォームは `method="post"` で `mail.php` に POST する。
+- `$confirmDsp = 0` のとき確認画面なしで送信し、`$jumpPage = 1` なら `$thanksPage` へリダイレクトする。
+- チェックボックスの `name` は `[]` 付き配列形式（PHP工房の要件）。`mail.php` の `$require` では `[]` を除いた名前を指定する。
+- メールアドレス欄の `name` は既定で `Email`（`$Email` と一致させる）。
+
+#### 使用方法（案件着手時）
+1. `mail-config.local.php.example` を `mail-config.local.php` にコピーし、`site_domain` / `to` / `from` を設定する。
+2. `mail.php` 内の `$thanksPage`・`$require`・`$subject` 等をフォーム項目に合わせる（メールアドレスは `mail-config.local.php` に寄せる）。
+3. `npm run build` で `dist/MailForm01_utf8/` にコピーされ、FTP デプロイでサーバーへ載る。
+4. テスト環境で送信 → サンクスページ遷移・着信を確認する。Referer エラー時は `site_domain` を見直す。
+
 ---
 
 ## 4. ディレクトリ構成

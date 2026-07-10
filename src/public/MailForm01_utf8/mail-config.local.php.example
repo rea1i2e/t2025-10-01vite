@@ -1,0 +1,19 @@
+<?php
+/**
+ * デモ／案件フォーム送信設定（ローカル上書き）
+ *
+ * 1. このファイルを mail-config.local.php にコピー
+ * 2. 値を設定（mail-config.local.php は Git 追跡外）
+ *
+ * 複数フォーム（MailForm_contact 等）を使う案件では、各 MailForm_* 配下に同様のファイルを置く。
+ */
+return [
+    // 設置ドメイン（Referer チェック・thanks リダイレクトに使用）
+    'site_domain' => 'YOUR-CASE-ID.rea1i2e.net',
+
+    // 管理者宛て（受信）
+    'to' => 'your-address@example.com',
+
+    // 送信元（差出人）。設置先ドメインの実在アドレス推奨
+    'from' => 'your-address@example.com',
+];

@@ -80,6 +80,8 @@
 | `raw/fonts/font-compress-subset.sh` | フォントを指定文字のみサブセット化して WOFF2 に圧縮 |
 | `raw/fonts/README-font-compress.md` | フォント圧縮ツールの前提条件・使い方 |
 | `env.deploy.example` | デプロイ用環境変数テンプレート（`.env.deploy` の雛形） |
+| `src/public/MailForm01_utf8/mail.php` | デモ用 PHP工房メール送信（`mail-config.local.php` で宛先上書き可） |
+| `src/public/MailForm01_utf8/mail-config.local.php.example` | フォーム送信設定の雛形（コピー先は Git 非追跡の `mail-config.local.php`） |
 | `src/ejs/components/` | 毎回使う部品テンプレート |
 | `src/ejs/demo-components/` | よく使うの部品テンプレート |
 | `src/demo/demo-toolkit/index.html` | デモ製作用。既存 EJS・Sass・シェルを組み合わせるための索引ページ |
@@ -166,6 +168,7 @@ Claude Code と Cursor を併用するときは `memo/session-log.md` に `- 次
 
 - **EJS の属性値出力**: `alt`・`title`・`aria-label` など HTML 属性にデータを出すときは、`config/utils.js` の `ty_stripTags` 関数を使ってタグを除去しつつエスケープする。`<%= ty_stripTags(value) %>` を使い、`<%- value %>` は使わない。表示用の要素（例: 見出しの `<h2>` 内で改行タグを活かす）では `<%- %>` のまま可。
 - **EJS内で使う自作関数の命名**: EJS から呼ぶ自作ヘルパーは `ty_` プレフィックスで統一する（標準 API や外部ライブラリのメソッドと区別しやすくするため）
+- **フォーム送信（PHP工房）**: 宛先メールは `mail.php` 直書きではなく `mail-config.local.php`（example からコピー、Git 非追跡）に置く。詳細は `ai-docs/architecture.md` §3.25
 - **Sass構成**: `base/` / `components/` / `layouts/` / `utility/` のディレクトリ構成に従う
 - **Sass と kiso / reset**: コンポーネント SCSS では `_reset.scss`・`_base.scss`・kiso と**同値の宣言を重複させない**。Cursor ルール `.cursor/rules/sass-kiso-no-duplicate.mdc`（`src/assets/sass/**/*.scss` 編集時）。汎用正本はナレッジ `wiki/coding-sass.md`「kiso を読んだうえでの追記とレビュー」
 - **Sass mixin**: ホバー・省略・reduced-motion 等は **`global/mixins/` を先に Read** し `@include` する。Cursor ルール `.cursor/rules/sass-use-mixins.mdc`。`line-clamp` は padding なしの子要素に付ける（親子分離）。詳細は上記「Sass mixin」節

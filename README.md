@@ -148,6 +148,17 @@ ESLint 拡張を入れていれば、編集中の JS にリアルタイムで問
 2. `src/` 配下に `xxx/index.html` を作成
 3. HTML 内で `ty_getPage('xxx')` を使い、「1.」で設定した情報を取得し,head.ejsなどに渡す
 
+### フォーム送信（PHP工房 mail.php）
+
+デモの `src/demo/contact/` は `MailForm01_utf8/mail.php` に POST する。案件でフォームを使うとき:
+
+1. `cp src/public/MailForm01_utf8/mail-config.local.php.example src/public/MailForm01_utf8/mail-config.local.php`
+2. `site_domain` / `to` / `from` を設定（`mail-config.local.php` は Git 非追跡）
+3. `mail.php` の `$thanksPage`・`$require`・件名などをフォームに合わせる
+4. `npm run build` → デプロイ → テスト環境で送信確認
+
+複数フォームは `MailForm_contact/` 等に分け、各配下に `mail.php` と `mail-config.local.php` を置く（仕様: [ai-docs/architecture.md §3.25](ai-docs/architecture.md#325-フォーム送信php工房-mailphp)）。
+
 ### 納品用 zip（dist の差分）
 
 `dist/` は `.gitignore` 対象のため、**Git の差分ではなく「ビルド結果同士」を比較**して zip する。

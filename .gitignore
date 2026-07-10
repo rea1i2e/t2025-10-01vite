@@ -13,6 +13,10 @@ dist-ssr
 *.local
 .env.deploy
 
+# フォーム送信設定（サーバー側・Git 非追跡）
+src/public/MailForm01_utf8/mail-config.local.php
+src/public/MailForm*/mail-config.local.php
+
 # src/videos の動画バイナリ（再現手順は src/videos/README.md。方針: asset-compression/compression-video.md）
 src/videos/*.mp4
 src/videos/*.webm

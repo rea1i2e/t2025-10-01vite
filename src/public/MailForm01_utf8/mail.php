@@ -30,8 +30,8 @@ if (version_compare(PHP_VERSION, '5.1.0', '>=')) { //PHP5.1.0以上の場合の�
 //---------------------------　必須設定　必ず設定してください　-----------------------
 
 //サイトのトップページのURL　※デフォルトでは送信完了後に「トップページへ戻る」ボタンが表示され、そのリンク先です。
-$site_domain = "t2025-10-10vite.rea1i2e.net";
-$site_admin_email = "numajiri@rea1i2e.net";
+$site_domain = "YOUR-CASE-ID.rea1i2e.net";
+$site_admin_email = "CHANGE_ME@example.com";
 $site_top = "https://" . $site_domain . "/";
 
 //管理者のメールアドレス（送信先） ※メールを受け取るメールアドレス(複数指定する場合は「,」で区切ってください 例 $to = "aa@aa.aa,bb@bb.bb";)
@@ -41,6 +41,23 @@ $to = $site_admin_email;
 //必ず実在するメールアドレスでかつ出来る限り設置先サイトのドメインと同じドメインのメールアドレスとしてください（でないと「なりすまし」扱いされます）
 //管理者宛てメールの返信先（reply）はユーザーが入力したメールアドレスになりますので返信時はユーザーのメールアドレスが送信先に設定されます）
 $from = $site_admin_email;
+
+$mailConfigFile = __DIR__ . '/mail-config.local.php';
+if (is_readable($mailConfigFile)) {
+	$mailConfig = include $mailConfigFile;
+	if (is_array($mailConfig)) {
+		if (!empty($mailConfig['site_domain'])) {
+			$site_domain = $mailConfig['site_domain'];
+			$site_top = "https://" . $site_domain . "/";
+		}
+		if (!empty($mailConfig['to'])) {
+			$to = $mailConfig['to'];
+		}
+		if (!empty($mailConfig['from'])) {
+			$from = $mailConfig['from'];
+		}
+	}
+}
 
 //管理者宛メールの送信元（差出人）にユーザーが入力したメールアドレスを表示する(する=1, しない=0)
 //ユーザーのメールアドレスを含めることでメーラー上で管理しやすくなる機能です。
