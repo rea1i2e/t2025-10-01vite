@@ -122,7 +122,7 @@ jobs:
     # continue-on-error で1回だけ自動リトライする。2回目も失敗したら本当の失敗として赤くする（失敗通知もそのとき出る）。
     - name: Deploy to Test Environment
       id: deploy_main
-      if: (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && env.FTP_SERVER != ''
+      if: (steps.changes.outputs.deploy == 'true' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') || github.event_name == 'workflow_dispatch') && env.FTP_SERVER != ''
       continue-on-error: true
       uses: SamKirkland/FTP-Deploy-Action@v4.4.0
       with:
@@ -180,7 +180,7 @@ jobs:
           **/Thumbs.db
 
     - name: Send Discord Notification - Test Deploy
-      if: success() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && env.FTP_SERVER != ''
+      if: success() && (steps.changes.outputs.deploy == 'true' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') || github.event_name == 'workflow_dispatch') && env.FTP_SERVER != ''
       uses: Ilshidur/action-discord@master
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
