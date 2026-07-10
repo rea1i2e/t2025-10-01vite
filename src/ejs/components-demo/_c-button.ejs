@@ -3,4 +3,5 @@
   class="c-button"
   <% if (typeof locals['data-size'] !== 'undefined' && locals['data-size']) { %>data-size="<%= locals['data-size'] %>"<% } %>
   <% if (typeof locals['data-color'] !== 'undefined' && locals['data-color']) { %>data-color="<%= locals['data-color'] %>"<% } %>
+  <% if (typeof locals['data-hover'] !== 'undefined' && locals['data-hover']) { %>data-hover="<%= locals['data-hover'] %>"<% } %>
 ><span class="c-button__text"><%- text %></span></a>

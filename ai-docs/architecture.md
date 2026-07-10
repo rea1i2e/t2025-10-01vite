@@ -629,6 +629,8 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - `src/public/MailForm01_utf8/mail-config.local.php.example` — 送信先設定の雛形
 - `src/public/MailForm01_utf8/mail-config.local.php` — 実設定（Git 非追跡。存在時に `mail.php` が上書き読み込み）
 - `src/ejs/components-demo/_p-form.ejs` — デモフォーム（`action="../MailForm01_utf8/mail.php"`）
+- `src/ejs/components-demo/_p-thanks.ejs` — 送信完了（サンクス）ページ本文
+- `src/demo/contact/thanks.html` — サンクスページ（`$thanksPage` の遷移先）
 - `src/assets/js/demo/_checkFormValidity.js` — HTML5 バリデーション連携
 - `.github/workflows/deploy.yml` — テスト環境用 `mail-config.local.php` の生成ステップ（Secrets `FORM_MAIL_TO` 等から）
 - `scripts/setup-secrets.sh` — `.env.deploy` の `FORM_MAIL_TO` / `FORM_MAIL_FROM` / `SITE_DOMAIN` を Secrets に登録

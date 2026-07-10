@@ -1,0 +1,50 @@
+@use "../global" as *;
+
+.p-thanks {
+  padding-block: rem(48) rem(80);
+  @include mq() {
+    padding-block: rem(80) rem(120);
+  }
+}
+
+.p-thanks__title {
+  font-size: maxrem(24);
+  font-weight: 700;
+  line-height: 1.4;
+  @include mq() {
+    font-size: maxrem(32);
+  }
+}
+
+.p-thanks__lead {
+  margin-block-start: rem(24);
+  font-size: maxrem(16);
+  font-weight: 700;
+  line-height: 1.7;
+  @include mq() {
+    margin-block-start: rem(32);
+    font-size: maxrem(18);
+  }
+}
+
+.p-thanks__text {
+  margin-block-start: rem(12);
+  color: color-mix(in srgb, var(--color-text) 75%, transparent);
+  font-size: maxrem(14);
+  line-height: 1.8;
+  @include mq() {
+    margin-block-start: rem(16);
+    font-size: maxrem(16);
+  }
+}
+
+.p-thanks__actions {
+  margin-block-start: rem(40);
+  @include mq() {
+    margin-block-start: rem(56);
+  }
+}
+
+.p-thanks .c-button {
+  color: var(--button-text-color);
+}

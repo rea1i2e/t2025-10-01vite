@@ -2,23 +2,31 @@
 
 .p-form {
   --dt-width: #{rem(300)};
-  --border-color: #ccc;
+  --border-color: color-mix(in srgb, var(--color-text) 40%, transparent);
   --border-width: 1px;
   --border-rdius: #{rem(3)};
   --text-padding-block: #{rem(9)};
   --text-padding-inline: #{rem(4)};
-  // --input-bg: var(--color-white);
+  --input-bg: var(--color-bg-sub);
+  --input-color: var(--color-text);
   --select-icon-right: #{rem(8)};
   --select-icon-width: #{rem(16)};
   --select-icon-color: currentColor;
   --select-padding-inline: #{rem(4) calc( rem(4) + var(--select-icon-right) + var(--select-icon-width))};
   --radio-size: #{rem(20)};
-  --radio-bg: var(--color-white);
+  --radio-bg: var(--color-bg-sub);
   --radio-check-color: currentColor;
   --checkbox-size: #{rem(20)};
-  --checkbox-bg: transparent;
+  --checkbox-bg: var(--color-bg-sub);
   --checkbox-check-color: currentColor;
-  --placeholder-color: #ccc; // selectの初期値文字色は、src/assets/js/_option-color.jsで制御
+  // selectの初期値文字色は、src/assets/js/demo/_option-color.jsで制御
+  --placeholder-color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  --note-color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  --optional-bg: var(--color-bg-sub);
+  --optional-color: var(--color-text);
+  --disabled-bg: var(--color-bg-sub);
+  --disabled-color: color-mix(in srgb, var(--color-text) 45%, transparent);
+  --invalid-bg: color-mix(in srgb, rgb(204 75 45) 20%, var(--color-bg));
   @include mq() {
     --select-padding-inline: #{rem(8) calc( rem(8) + var(--select-icon-right) + var(--select-icon-width))};
     --text-padding-inline: #{rem(16)};
@@ -45,7 +53,6 @@
 }
 
 .p-form__dd {
-  background-color: var(--color-white);
   // padding-block: var(--dd-padding-block);
 }
 
@@ -95,8 +102,8 @@
 }
 
 .p-form__optional {
-  background-color: rgb(220 220 220);
-  color: rgb(64 62 61);
+  background-color: var(--optional-bg);
+  color: var(--optional-color);
 }
 
 
@@ -147,6 +154,8 @@
   border: var(--border-width) solid var(--border-color);
   border-radius: var(--border-rdius);
   width: 100%;
+  background-color: var(--input-bg);
+  color: var(--input-color);
 }
 
 /* input(radio, checkbox以外のスタイル */
@@ -157,6 +166,8 @@
   padding-inline: var(--text-padding-inline);
   border: var(--border-width) solid var(--border-color);
   border-radius: var(--border-rdius);
+  background-color: var(--input-bg);
+  color: var(--input-color);
 }
 
 .p-form input:is(#tel, #lesson-date, #tennis-experience) {
@@ -318,7 +329,7 @@ input::-webkit-date-and-time-value {
 
 .p-form__note {
   margin-top: rem(4);
-  color: rgb(64 62 61);
+  color: var(--note-color);
   font-size: maxrem(11);
   @include mq() {
     margin-top: rem(8);
@@ -347,11 +358,12 @@ input::-webkit-date-and-time-value {
 }
 
 .p-form__submit:disabled {
-  background-color: #e5e7eb;
+  background-color: var(--disabled-bg);
+  color: var(--disabled-color);
   cursor: not-allowed;
 }
 
 /* エラー */
 [aria-invalid="true"]:is(.p-form__input, .p-form__textarea) {
-  background-color: #fee2e2;
+  background-color: var(--invalid-bg);
 }

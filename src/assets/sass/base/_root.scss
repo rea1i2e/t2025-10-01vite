@@ -35,6 +35,7 @@ $theme-dark: (
 }
 
 :root {
+  color-scheme: light;
   --base-font-family: "Noto Sans JP VF", sans-serif;
   --color-black: #000;
   --color-white: #fff;
@@ -74,15 +75,18 @@ $theme-dark: (
 /* ダークモード用（システム設定。data-theme 未指定時のみ） */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
+    color-scheme: dark;
     @include apply-theme($theme-dark);
   }
 }
 
 /* 手動切り替え（ボタン選択時はこちらを優先） */
 html[data-theme="light"] {
+  color-scheme: light;
   @include apply-theme($theme-light);
 }
 
 html[data-theme="dark"] {
+  color-scheme: dark;
   @include apply-theme($theme-dark);
 }

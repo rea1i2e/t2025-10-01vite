@@ -294,7 +294,7 @@ const pages = {
     path: "demo/contact/thanks.html",
     title: "お問い合わせ完了",
     description:
-      "お問い合わせフォームページです。お問い合わせを送信することができます。",
+      "お問い合わせの送信が完了したことをお知らせするページです。",
     keywords: "",
   },
   privacy: {
