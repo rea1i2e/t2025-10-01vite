@@ -9,6 +9,7 @@
 }
 
 .p-demo__inner[data-size="large"] {
+  /* コンテンツ幅の上書き例（PC 標準 --inner より広い） */
   max-width: rem(1200);
 }
 
