@@ -14,6 +14,7 @@ jobs:
     # FTP_SERVER の有無でデプロイ／通知ステップを出し分けるための写し。
     env:
       FTP_SERVER: ${{ secrets.FTP_SERVER }}
+      FORM_MAIL_TO: ${{ secrets.FORM_MAIL_TO }}
 
     steps:
     - name: Checkout code
@@ -58,6 +59,33 @@ jobs:
       id: build_project
       if: steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch'
       run: npm run build
+
+    # mail-config.local.php は Git 非追跡のため Actions 環境には存在しない。
+    # Secrets（FORM_MAIL_TO 等）が登録されていれば、テスト環境用の設定を dist/ 内の各 MailForm* に生成してから FTP する。
+    - name: Generate mail-config.local.php for test env
+      if: (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && env.FORM_MAIL_TO != ''
+      env:
+        FORM_MAIL_FROM: ${{ secrets.FORM_MAIL_FROM }}
+        SITE_DOMAIN: ${{ secrets.SITE_DOMAIN }}
+      run: |
+        found=0
+        for dir in dist/MailForm*/; do
+          [ -f "${dir}mail.php" ] || continue
+          found=1
+          cat > "${dir}mail-config.local.php" <<EOF
+        <?php
+        // GitHub Actions が Secrets から生成（テスト環境用）
+        return [
+            'site_domain' => '${SITE_DOMAIN}',
+            'to' => '${FORM_MAIL_TO}',
+            'from' => '${FORM_MAIL_FROM:-$FORM_MAIL_TO}',
+        ];
+        EOF
+          echo "generated: ${dir}mail-config.local.php"
+        done
+        if [ "$found" = "0" ]; then
+          echo "no MailForm*/mail.php in dist/ — skipped"
+        fi
 
     - name: Generate deployment summary
       if: always() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch')

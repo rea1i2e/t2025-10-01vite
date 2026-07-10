@@ -630,6 +630,8 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - `src/public/MailForm01_utf8/mail-config.local.php` — 実設定（Git 非追跡。存在時に `mail.php` が上書き読み込み）
 - `src/ejs/components-demo/_p-form.ejs` — デモフォーム（`action="../MailForm01_utf8/mail.php"`）
 - `src/assets/js/demo/_checkFormValidity.js` — HTML5 バリデーション連携
+- `.github/workflows/deploy.yml` — テスト環境用 `mail-config.local.php` の生成ステップ（Secrets `FORM_MAIL_TO` 等から）
+- `scripts/setup-secrets.sh` — `.env.deploy` の `FORM_MAIL_TO` / `FORM_MAIL_FROM` / `SITE_DOMAIN` を Secrets に登録
 
 案件でフォームを残すときは `MailForm01_utf8` を削除しない（`init` 後に `MailForm_*` 等へリネーム・複製してもよい）。複数フォームは **フォームごとに `MailForm_*` ディレクトリ**と `mail-config.local.php` を分ける。
 
@@ -639,11 +641,25 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - チェックボックスの `name` は `[]` 付き配列形式（PHP工房の要件）。`mail.php` の `$require` では `[]` を除いた名前を指定する。
 - メールアドレス欄の `name` は既定で `Email`（`$Email` と一致させる）。
 
+#### 設定値の管理（テスト環境と本番の使い分け）
+
+`mail-config.local.php` は Git 非追跡のため、環境ごとに供給経路が異なる。
+
+| 環境 | 供給経路 | 設定値 |
+|------|---------|--------|
+| テスト環境（GitHub Actions） | Secrets（`FORM_MAIL_TO` / `FORM_MAIL_FROM` / `SITE_DOMAIN`）から `deploy.yml` がビルド後に `dist/` 内の各 `MailForm*/` に生成 | テスト用（自分宛てアドレス・検証ドメイン） |
+| 本番（先方サーバーへ手動 FTP） | ローカルの `mail-config.local.php`（`npm run build` で `dist/` にコピーされる） | 本番用（先方宛てアドレス・本番ドメイン） |
+
+- **ローカルの `mail-config.local.php` には本番値を入れる**運用とする。ローカルビルドの `dist/` は常に本番向けになり、納品・先方 FTP 時に差し替え不要。
+- テスト値は `.env.deploy` に書き、`./scripts/setup-secrets.sh` で Secrets へ登録する。`FORM_MAIL_TO` が未登録なら生成ステップはスキップされる（従来どおり手動アップロードでもよい）。
+- Actions の生成ステップは `dist/MailForm*/mail.php` があるディレクトリすべてに生成するため、`init` 後に `MailForm_contact` 等へリネーム・複製した案件でもそのまま動く。
+
 #### 使用方法（案件着手時）
-1. `mail-config.local.php.example` を `mail-config.local.php` にコピーし、`site_domain` / `to` / `from` を設定する。
-2. `mail.php` 内の `$thanksPage`・`$require`・`$subject` 等をフォーム項目に合わせる（メールアドレスは `mail-config.local.php` に寄せる）。
-3. `npm run build` で `dist/MailForm01_utf8/` にコピーされ、FTP デプロイでサーバーへ載る。
-4. テスト環境で送信 → サンクスページ遷移・着信を確認する。Referer エラー時は `site_domain` を見直す。
+1. `mail-config.local.php.example` を `mail-config.local.php` にコピーし、`site_domain` / `to` / `from` を**本番値**で設定する。
+2. テスト環境で送信確認する場合は `.env.deploy` に `FORM_MAIL_TO`（必須）・`FORM_MAIL_FROM`・`SITE_DOMAIN` を記入し、`./scripts/setup-secrets.sh` を実行する。
+3. `mail.php` 内の `$thanksPage`・`$require`・`$subject` 等をフォーム項目に合わせる（メールアドレスは `mail-config.local.php` に寄せる）。
+4. push すると Actions がビルド後にテスト用 `mail-config.local.php` を生成して FTP する。テスト環境で送信 → サンクスページ遷移・着信を確認する。Referer エラー時は `SITE_DOMAIN` を見直す。
+5. 本番へはローカルで `npm run build` した `dist/` を手動 FTP する（本番値入りの `mail-config.local.php` が含まれる）。
 
 ---
 

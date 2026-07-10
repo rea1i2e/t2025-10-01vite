@@ -53,7 +53,7 @@ npm run dev
 1. **`gh repo create` でリモートを作成**（下記コマンド）。テンプレート反映を待つ **`sleep 5`** のあと **`gh repo clone`** でローカルに取る。
 2. **クローンしたディレクトリに移動**する（以降、このリポジトリルートで作業）。
 3. **`npm install`**（開発・ビルド・hooks 用。FTP の Secrets だけ先に載せたい場合でも、後からでもよい）。
-4. **`env.deploy.example` を `.env.deploy` にコピー**し、`FTP_SERVER`・`FTP_USERNAME`・`FTP_PASSWORD` などを記入する（`.env.deploy` は git 管理外）。任意で `DISCORD_WEBHOOK`・`TEST_URL`。
+4. **`env.deploy.example` を `.env.deploy` にコピー**し、`FTP_SERVER`・`FTP_USERNAME`・`FTP_PASSWORD` などを記入する（`.env.deploy` は git 管理外）。任意で `DISCORD_WEBHOOK`・`TEST_URL`。フォームをテスト環境で送信確認する場合は `FORM_MAIL_TO`・`FORM_MAIL_FROM`・`SITE_DOMAIN` も記入する（Actions がビルド後に `mail-config.local.php` を生成 — 詳細は [ai-docs/architecture.md](ai-docs/architecture.md) §3.25）。
 5. **`gh auth login` 済み**を確認し、**`./scripts/setup-secrets.sh`** を実行して GitHub Actions の secrets に反映する。
 6. ビルド成果物を載せたうえで **`git push`** し、GitHub Actions のデプロイが想定どおり動くか確認する（ワークフローは [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)）。
 

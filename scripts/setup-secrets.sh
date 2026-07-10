@@ -67,5 +67,17 @@ if [[ -n "${TEST_URL:-}" ]]; then
   gh secret set TEST_URL --body "${TEST_URL}"
 fi
 
+# Optional: form mail settings for test env
+# (Actions generates dist/MailForm01_utf8/mail-config.local.php from these)
+if [[ -n "${FORM_MAIL_TO:-}" ]]; then
+  gh secret set FORM_MAIL_TO --body "${FORM_MAIL_TO}"
+fi
+if [[ -n "${FORM_MAIL_FROM:-}" ]]; then
+  gh secret set FORM_MAIL_FROM --body "${FORM_MAIL_FROM}"
+fi
+if [[ -n "${SITE_DOMAIN:-}" ]]; then
+  gh secret set SITE_DOMAIN --body "${SITE_DOMAIN}"
+fi
+
 echo "Done."
 echo "You can verify names (values are hidden) with: gh secret list"
