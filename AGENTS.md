@@ -8,6 +8,13 @@
 呼称の正本はナレッジベースの [wiki/operated-repositories.md](/Users/yoshiaki/working/2026-04-23kn/wiki/operated-repositories.md#表記ルール3-リポジトリと型録)（表記ルール）。  
 詳細な技術仕様は [ai-docs/architecture.md](ai-docs/architecture.md) を参照。
 
+## Figma デザインからの実装
+
+- Figma を参照するページ・セクション実装では、作業前にナレッジベースの `skills/figma-design-implementation/SKILL.md` を読む。
+- 案件の正本は `ai-docs/figma-design-mapping.md`。未登録なら `ai-docs/figma-design-kickoff-prompt.md` で URL / node-id を先に記録する。
+- `ai-docs/figma-design-section-prompt.md` に従い、Figma MCP で PC/SP を確認して **1セクションずつ**実装する。取得できないデザインを推測しない。
+- 正本差し替えは `figma-design-refresh-pixexport`、初稿前比較は `figma-qa-compare` を使う。
+
 ## ローカル絶対パス（個人環境・Cursor 用）
 
 複製テンプレ運用で、エージェントが `@` 参照やファイル読み込みに使う。共有マシン・リモートではパスが一致しない。
