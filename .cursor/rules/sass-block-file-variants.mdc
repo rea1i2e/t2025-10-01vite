@@ -1,0 +1,44 @@
+---
+description: コンポーネント SCSS は 1 ブロック 1 ファイル（ファイル名＝ブロック名）／バリアントは data-*（BEM modifier を使わない）
+globs: src/assets/sass/**/*.scss
+alwaysApply: false
+---
+
+# Sass — ブロック分割とバリアント設計
+
+## 1 ブロック 1 ファイル（ファイル名＝ブロック名）
+
+- **1 BEM ルートブロック = 1 partial**。ファイル名（`_` 以降）はルートブロック名と一致させる。
+  - OK: `_c-button.scss` ↔ `.c-button` / `_p-cal-legend.scss` ↔ `.p-cal-legend`
+  - NG: `_p-calendar.scss` に `.p-cal-legend` `.p-cal-nav` `.p-cal-day` … を同居
+  - NG: `.c-btn` を `_c-button.scss` に書く（ファイル名とブロック名が不一致）
+- 目的: grep でクラスとファイルが 1:1 対応する（クラス名被り・所在不明を防ぐ）。
+- 例外: `.p-content`（WordPress `the_content()` 出力）だけはクラス付与不可のため要素セレクタ・ネスト可。
+
+## バリアントは data-*（BEM modifier は使わない）
+
+- 新規コンポーネントのバリアントは **`--modifier` ではなく `data-*` を原則**。
+- **軸（役割）ごとに属性を分ける**: `data-color="fill"` / `data-size="small"`。値は用途名（`hero` / `fill`）、番号だけ（`data-size="2"`）は避ける。
+- **base に custom property でデフォルトを持たせ、`data-*` は変数を差し替えるだけ**にする（プロパティを再宣言しない → specificity 事故を防ぐ）。
+- 同一概念を1ファイル内で `data-*` と `--modifier` に割るのは厳禁（機構を統一）。
+- SCSS 冒頭コメントにバリアント一覧を残す。
+
+```scss
+/* バリアント一覧
+   data-color="outline" : アウトライン
+   data-size="small"    : 小型 */
+.c-button {
+  --button-bg: var(--color-theme);
+  background-color: var(--button-bg);   /* デフォルトを base で適用 */
+}
+.c-button[data-color="outline"] { --button-bg: transparent; }  /* 変数を差し替えるだけ */
+```
+
+## 受け渡し前チェック
+
+```
+npm run check:conventions   # BEM modifier / 1ファイル複数ブロック / ファイル名不一致を検出
+```
+
+正本: ナレッジベース `skills/ai-code-convention-fix/checklist.md`、`wiki/coding-sass.md`。
+出典 FB: `raw/2026-07-14-scss-block-filename-variant-data-attr-ai-code-feedback.md`（2026-07-04sm）

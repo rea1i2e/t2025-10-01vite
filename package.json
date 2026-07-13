@@ -24,7 +24,8 @@
     "compress:video": "node raw/videos/compress-video.mjs",
     "zip:delivery": "bash scripts/zip-delivery-dist-diff.sh",
     "check:unused": "node scripts/check-unused.mjs",
-    "check:images": "node scripts/check-images.mjs"
+    "check:images": "node scripts/check-images.mjs",
+    "check:conventions": "node scripts/check-conventions.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

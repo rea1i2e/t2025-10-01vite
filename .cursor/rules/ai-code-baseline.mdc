@@ -32,4 +32,6 @@ alwaysApply: false
 
 - reset / kiso / base と同値の宣言を書かない。
 - `&`（親参照）禁止・フラット記述。`mq()` の入れ子のみ許可（中はプロパティのみ）。
-- 詳細: `.cursor/rules/sass-kiso-no-duplicate.mdc`、`.cursor/rules/sass-use-mixins.mdc`。
+- 1 ブロック 1 ファイル（ファイル名＝ブロック名）／バリアントは data-*（BEM modifier 不使用）。
+- 詳細: `.cursor/rules/sass-kiso-no-duplicate.mdc`、`.cursor/rules/sass-use-mixins.mdc`、`.cursor/rules/sass-block-file-variants.mdc`。
+- 受け渡し前: `npm run check:conventions`（構造違反を静的検出）。
