@@ -159,6 +159,19 @@ ESLint 拡張を入れていれば、編集中の JS にリアルタイムで問
 
 複数フォームは `MailForm_contact/` 等に分け、各配下に `mail.php` と `mail-config.local.php` を置く（仕様: [ai-docs/architecture.md §3.25](ai-docs/architecture.md#325-フォーム送信php工房-mailphp)）。
 
+### 構造化データ（LocalBusiness JSON-LD）— オプトイン
+
+全ページの `<head>` に店舗・拠点情報の JSON-LD（`LocalBusiness`）を出力できる。**デフォルトでは何も出力されない**。`config/site.config.js` の `company.locations` を1件以上埋めたときだけ有効になる。
+
+1. `company.locations` に拠点を追加（`name` / `postalCode` / `addressRegion` / `addressLocality` / `streetAddress`）。電話番号は `company.tel`、営業時間は `company.openingHours`（`{ opens, closes }`・全曜日共通）を埋めると自動で含まれる。
+2. 各ページの `_head.ejs` include に `jsonLd` を渡す（トップは `src/index.html` に記入例あり）:
+   ```ejs
+   <%- include(ejsPath + 'common/_head.ejs', { page, jsonLd: config.ty_getLocalBusinessJsonLd('top') }) %>
+   ```
+3. `<pageKey>` は `pages` のキー（`url` に反映）。404 等は `'top'` を流用でよい。
+
+`company.locations` が空なら `ty_getLocalBusinessJsonLd()` は `null` を返し、`_head.ejs` のガードで `<script>` 自体を出さない。呼び出しを各ページに書いても未設定案件では無害。
+
 ### 納品用 zip（dist の差分）
 
 `dist/` は `.gitignore` 対象のため、**Git の差分ではなく「ビルド結果同士」を比較**して zip する。

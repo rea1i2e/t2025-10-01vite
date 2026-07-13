@@ -359,6 +359,16 @@ const company = {
     youtube: "",
     line: "",
   },
+
+  /**
+   * 構造化データ（LocalBusiness JSON-LD）用の拠点情報【オプトイン】
+   * 案件で使う場合のみ埋める。空なら JSON-LD は出力されない（ty_getLocalBusinessJsonLd が null を返す）。
+   */
+  locations: [
+    // { name: "本店", postalCode: "530-0041", addressRegion: "大阪府", addressLocality: "大阪市北区", streetAddress: "天神橋1-1-2" },
+  ],
+  // 営業時間（全曜日共通で出す場合のみ設定）。例: { opens: "09:00", closes: "18:00" }
+  openingHours: undefined,
 };
 
 /**
@@ -462,6 +472,62 @@ export const siteConfig = {
       path: pageData.path,
       root: pageData.root,
     };
+  },
+
+  /**
+   * LocalBusiness 構造化データ（JSON-LD）を生成する【オプトイン】
+   * company.locations が空なら null を返す（＝出力しない）。
+   * 値は案件着手時に company.locations / company.openingHours を埋めて有効化する。
+   * @param {string} pageKey - ページのキー（例: 'top'）。url に反映される。
+   * @returns {string|null} JSON 文字列。未設定案件では null。
+   */
+  ty_getLocalBusinessJsonLd(pageKey) {
+    if (!this.company.locations || this.company.locations.length === 0) {
+      return null; // 未設定の案件では出力しない
+    }
+    const pageData = this.pages[pageKey];
+    const path = pageData ? pageData.path : "";
+
+    // 電話番号を国際形式へ（例 "090-9544-3760" → "+819095443760"）。未設定なら省略。
+    const telDigits = (this.company.tel || "").replace(/[^0-9]/g, "");
+    const telIntl = telDigits ? "+81" + telDigits.replace(/^0/, "") : undefined;
+
+    const openingHoursSpecification = this.company.openingHours
+      ? {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
+          ],
+          opens: this.company.openingHours.opens,
+          closes: this.company.openingHours.closes,
+        }
+      : undefined;
+
+    const department = this.company.locations.map((loc) => ({
+      "@type": "LocalBusiness",
+      name: `${this.company.name}（${loc.name}）`,
+      address: {
+        "@type": "PostalAddress",
+        postalCode: loc.postalCode,
+        addressRegion: loc.addressRegion,
+        addressLocality: loc.addressLocality,
+        streetAddress: loc.streetAddress,
+        addressCountry: "JP",
+      },
+      ...(telIntl ? { telephone: telIntl } : {}),
+      ...(openingHoursSpecification ? { openingHoursSpecification } : {}),
+    }));
+
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      name: this.company.name,
+      url: this.baseUrl + path,
+      ...(telIntl ? { telephone: telIntl } : {}),
+      ...(openingHoursSpecification ? { openingHoursSpecification } : {}),
+      department,
+    };
+    return JSON.stringify(jsonLd);
   },
 };
 

@@ -27,6 +27,10 @@
   <meta name="twitter:description" content="<%- page.description %>">
   <meta name="twitter:image:src" content="<%- baseUrl %>ogp.png">
   <link rel="canonical" href="<%- baseUrl + page.path %>">
+  <%# LocalBusiness 構造化データ（オプトイン）。呼び出し例: include(..., { page, jsonLd: config.ty_getLocalBusinessJsonLd('top') })。company.locations が空なら jsonLd は null で下記は出力されない %>
+  <% if (typeof jsonLd !== 'undefined' && jsonLd) { %>
+  <script type="application/ld+json"><%- jsonLd %></script>
+  <% } %>
   <link rel="shortcut icon" href="<%- page.root %>favicon.ico" type="image/vnd.microsoft.icon">
   <link rel="apple-touch-icon" href="<%- page.root %>apple-touch-icon.png">
   <link rel="preload" href="/assets/fonts/NotoSansJP-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>

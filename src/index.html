@@ -1,7 +1,8 @@
 <% const page = ty_getPage('top'); %>
 <!DOCTYPE html>
 <html lang="ja">
-<%- include(ejsPath + 'common/_head.ejs', { page }) %>
+<%# LocalBusiness 構造化データを出す場合は jsonLd を渡す（company.locations が空なら自動で非出力）%>
+<%- include(ejsPath + 'common/_head.ejs', { page, jsonLd: config.ty_getLocalBusinessJsonLd('top') }) %>
 
 <body>
   <%- include(ejsPath + 'common/_header.ejs', { page }) %>
