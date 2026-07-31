@@ -333,20 +333,26 @@ text: email('afmaar128', 'gmail.com', { link: false })
 
 ### 3.11 フォント圧縮ツール
 
+**セクション実装より前に、カンプどおりのフォントを設置する**（テンプレ仮フォントのまま進めない）。トークン正本は [`xd-file/DESIGN-TOKENS.md`](xd-file/DESIGN-TOKENS.md)、XD 手順は [`xd-file/PROMPT.md`](xd-file/PROMPT.md) ステップ 0。Skill: `font-setup-web`。
+
 #### 関連ファイル
+- `ai-docs/xd-file/DESIGN-TOKENS.md` — 案件の fontFamily / ウェイト / CSS 変数の正本（キックオフで埋める）
 - `raw/fonts/font-compress.sh` — 全グリフを維持したまま TTF 等を WOFF2 に変換
 - `raw/fonts/font-compress-subset.sh` — 指定文字列のみをサブセット化して WOFF2 に変換
 - `raw/fonts/README-font-compress.md` — 前提条件・使い方
+- `src/assets/sass/base/_root.scss` — `@font-face` と `--base-font-family`（必要なら `--font-family-en`）
+- `src/ejs/common/_head.ejs` — FV 用 preload（**1 ファイルのみ**）
 
 #### 動作仕様
 - **前提**: Python 3.x と `fonttools[woff]`（`pip install fonttools[woff]`）が必要。内部で `pyftsubset` を使用
 - **全グリフ圧縮**: `raw/fonts/font-compress.sh` で全グリフを WOFF2 に変換
 - **サブセット化**: `raw/fonts/font-compress-subset.sh` で指定文字のみの WOFF2 を生成し、ファイルサイズを削減
-- 可変フォント（Variable Font）にも対応
+- 可変フォント（Variable Font）にも対応（あれば静的ウェイトより優先）
+- 方針の正本: ナレッジ `wiki/web-fonts-guidelines.md`（自己ホスト・`font-display: swap`）
 
 #### 使用方法
 - 詳細は `raw/fonts/README-font-compress.md` を参照
-- 圧縮したフォントは `src/assets/fonts/` に配置する想定
+- 圧縮したフォントは `src/assets/fonts/` に配置し、DESIGN-TOKENS と `_root.scss` / preload を揃える
 
 ### 3.12 パララックス機能
 
