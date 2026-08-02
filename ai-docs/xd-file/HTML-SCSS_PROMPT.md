@@ -16,11 +16,11 @@ XD JSON / PNG から EJS / HTML+SCSS（静的テンプレ）を書くときの�
 | 画像ファイルサイズ 1MB（Skill） | `/Users/yoshiaki/working/2026-04-23kn/skills/image-size-check/SKILL.md` |
 | a11y | `/Users/yoshiaki/working/2026-04-23kn/wiki/a11y-baseline.md` |
 | Sass mixin 利用 | [`.cursor/rules/sass-use-mixins.mdc`](../../.cursor/rules/sass-use-mixins.mdc)（無ければナレッジ / 既存 mixin を Read） |
-| デザイントークン（フォント等） | [`DESIGN-TOKENS.md`](./DESIGN-TOKENS.md) |
+| デザイントークン（フォント・レイアウト幅等） | [`DESIGN-TOKENS.md`](./DESIGN-TOKENS.md) |
 | Web フォント設置（Skill） | `/Users/yoshiaki/working/2026-04-23kn/.cursor/skills/font-setup-web/SKILL.md` |
 | Web フォント方針 | `/Users/yoshiaki/working/2026-04-23kn/wiki/web-fonts-guidelines.md` |
 
-作業手順（アートボード順・検証）は [`PROMPT.md`](./PROMPT.md)。**ステップ 0（フォント）を飛ばさない。**
+作業手順（アートボード順・検証）は [`PROMPT.md`](./PROMPT.md)。**ステップ 0（フォント・レイアウト幅）を飛ばさない。**
 
 ## フォント・デザイントークン（重要）
 
@@ -28,6 +28,7 @@ XD JSON / PNG から EJS / HTML+SCSS（静的テンプレ）を書くときの�
 - テンプレ仮フォント（Noto 等）のまま進めない。カンプの `fontFamily` を自己ホストで `_root.scss` に載せる。
 - 本文: `var(--base-font-family)`。欧文・数字・電話: `var(--font-family-en)`（定義がある場合）。
 - preload は FV 用 1 ファイルのみ（`src/ejs/common/_head.ejs`）。`font-display: swap` 必須。
+- **`$width-pc` / `$inner-pc`**（`_setting.scss`）もステップ 0 で確定する。後から変えると `l-inner`・リキッド・`vw()` がずれる。
 
 ## Sass / マークアップの手がかり
 
