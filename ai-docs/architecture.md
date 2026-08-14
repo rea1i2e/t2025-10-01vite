@@ -648,6 +648,9 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - `$confirmDsp = 0` のとき確認画面なしで送信し、`$jumpPage = 1` なら `$thanksPage` へリダイレクトする。
 - チェックボックスの `name` は `[]` 付き配列形式（PHP工房の要件）。`mail.php` の `$require` では `[]` を除いた名前を指定する。
 - メールアドレス欄の `name` は既定で `Email`（`$Email` と一致させる）。
+- 管理者宛て通知は **`to`（受信先）と `from`（差出人）を分ける**。`from` は `form@設置先ドメイン` など、原則として実在する固定アドレスを使う。入力者のアドレスは `Reply-To` に設定されるため、`from` には使わない。
+- `to` と `from` が同一でも送信できる場合はあるが、Web サーバーから受信者本人を名乗る形になり、SPF / DKIM との組み合わせによっては、なりすまし判定や迷惑メール振り分けの原因になり得る。
+- SMTP を使う場合は、原則として SMTP 認証アカウントと `from` を一致させる。
 
 #### 設定値の管理（テスト環境と本番の使い分け）
 
@@ -663,10 +666,10 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - Actions の生成ステップは `dist/MailForm*/mail.php` があるディレクトリすべてに生成するため、`init` 後に `MailForm_contact` 等へリネーム・複製した案件でもそのまま動く。
 
 #### 使用方法（案件着手時）
-1. `mail-config.local.php.example` を `mail-config.local.php` にコピーし、`site_domain` / `to` / `from` を**本番値**で設定する。
+1. `mail-config.local.php.example` を `mail-config.local.php` にコピーし、`site_domain` / `to` / `from` を**本番値**で設定する。`to` は通知の受信先、`from` は `to` と分けた設置先ドメインの実在アドレスとする。
 2. テスト環境で送信確認する場合は `.env.deploy` に `FORM_MAIL_TO`（必須）・`FORM_MAIL_FROM`・`SITE_DOMAIN` を記入し、`./scripts/setup-secrets.sh` を実行する。
 3. `mail.php` 内の `$thanksPage`・`$require`・`$subject` 等をフォーム項目に合わせる（メールアドレスは `mail-config.local.php` に寄せる）。
-4. push すると Actions がビルド後にテスト用 `mail-config.local.php` を生成して FTP する。テスト環境で送信 → サンクスページ遷移・着信を確認する。Referer エラー時は `SITE_DOMAIN` を見直す。
+4. push すると Actions がビルド後にテスト用 `mail-config.local.php` を生成して FTP する。テスト環境で送信 → サンクスページ遷移・着信・返信先を確認する。あわせて可能な範囲で SPF / DKIM / DMARC と迷惑メール振り分けを確認する。Referer エラー時は `SITE_DOMAIN` を見直す。
 5. 本番へはローカルで `npm run build` した `dist/` を手動 FTP する（本番値入りの `mail-config.local.php` が含まれる）。
 
 ---
