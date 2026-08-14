@@ -23,6 +23,7 @@ return [
     // 管理者宛て（受信）
     'to' => 'your-address@example.com',
 
-    // 送信元（差出人）。設置先ドメインの実在アドレス推奨
-    'from' => 'your-address@example.com',
+    // 送信元（差出人）。To と分け、設置先ドメインの実在アドレスを原則とする
+    // 例: form@example.com（管理者宛ての返信先は入力者のアドレスになる）
+    'from' => 'form@example.com',
 ];
