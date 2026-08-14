@@ -153,9 +153,9 @@ ESLint 拡張を入れていれば、編集中の JS にリアルタイムで問
 デモの `src/demo/contact/` は `MailForm01_utf8/mail.php` に POST する。案件でフォームを使うとき:
 
 1. `cp src/public/MailForm01_utf8/mail-config.local.php.example src/public/MailForm01_utf8/mail-config.local.php`
-2. `site_domain` / `to` / `from` を設定（`mail-config.local.php` は Git 非追跡）
+2. `site_domain` / `to` / `from` を設定（`mail-config.local.php` は Git 非追跡）。`to` は通知先、`from` は `to` と分けた設置先ドメインの実在アドレス（例: `form@example.com`）にする
 3. `mail.php` の `$thanksPage`・`$require`・件名などをフォームに合わせる
-4. `npm run build` → デプロイ → テスト環境で送信確認
+4. `npm run build` → デプロイ → テスト環境で着信・Reply-To・迷惑メール振り分けを確認
 
 複数フォームは `MailForm_contact/` 等に分け、各配下に `mail.php` と `mail-config.local.php` を置く（仕様: [ai-docs/architecture.md §3.25](ai-docs/architecture.md#325-フォーム送信php工房-mailphp)）。
 
