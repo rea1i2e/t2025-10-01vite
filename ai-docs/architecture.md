@@ -650,6 +650,7 @@ text: email('afmaar128', 'gmail.com', { link: false })
 - メールアドレス欄の `name` は既定で `Email`（`$Email` と一致させる）。
 - 管理者宛て通知は **`to`（受信先）と `from`（差出人）を分ける**。`from` は `form@設置先ドメイン` など、原則として実在する固定アドレスを使う。入力者のアドレスは `Reply-To` に設定されるため、`from` には使わない。
 - `to` と `from` が同一でも送信できる場合はあるが、Web サーバーから受信者本人を名乗る形になり、SPF / DKIM との組み合わせによっては、なりすまし判定や迷惑メール振り分けの原因になり得る。
+- `$use_envelope` の既定は **0**。見た目の From と配送上の差出人（Return-Path）は別。M365 / Google で未着のときは、From ドメインの SPF に Web 送信ホストを足してから `1` を試す。詳細: ナレッジ `wiki/gmail-sender-guidelines-wordpress.md`
 - SMTP を使う場合は、原則として SMTP 認証アカウントと `from` を一致させる。
 
 #### 設定値の管理（テスト環境と本番の使い分け）
