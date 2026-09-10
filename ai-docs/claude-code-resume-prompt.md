@@ -5,7 +5,7 @@ Cursor で作業を区切り、Claude Code で続けるときにコピペする�
 ## 起動
 
 ```bash
-cd ~/working/t2025-10-01vite && claude
+cd リポジトリ/<slug> && claude
 ```
 
 ---
@@ -17,7 +17,7 @@ Cursor から引き継ぎ。前提を読んでから返答して。
 
 ## 必読
 
-1. ai-docs/session-log.md（末尾の - 次: を最優先）
+1. `./scripts/session-log-live.sh` の出力（生きている引き継ぎ。session-log の全文は読まない）
 2. git status / git diff（未コミットの途中成果）
 3. CLAUDE.md
 
@@ -25,7 +25,8 @@ Cursor から引き継ぎ。前提を読んでから返答して。
 
 ## 今回の依頼
 
-session-log の「次:」を実行して。
+session-log-live.sh に出た「次」を実行して。
+続きの本文が continue md のパスなら、それを読んでから進めて。
 （必要ならここに補足）
 ```
 
@@ -34,7 +35,7 @@ session-log の「次:」を実行して。
 ## 区切り前（Cursor 側）
 
 ```
-引き継ぎ: session-log を更新して。次は Claude Code で続ける。
+引き継ぎ: 次を1行残して。続きは Claude Code でやる。
 ```
 
 ---

@@ -1,36 +1,23 @@
 #!/usr/bin/env bash
-# 人間用: session-log に1行追記（AI が使えないときのフォールバック）
-# env: HANDOFF_SESSION_LOG — 未設定時は PROJECT_ROOT/ai-docs/session-log.md
+# 人間用の入り口（AI が使えないときのフォールバック）。
+# 中身は session-log-append.sh と同じ。追記専用。
+#
+# usage: handoff-note.sh <slug> "続きの内容"
+#        handoff-note.sh --done <slug>
 set -euo pipefail
 
-usage() {
-  echo "usage: handoff-note.sh \"次: ...\"" >&2
-  exit 1
-}
+src="${BASH_SOURCE[0]}"
+while [[ -L "$src" ]]; do
+  dir="$(cd -P "$(dirname "$src")" && pwd)"
+  src="$(readlink "$src")"
+  [[ "$src" != /* ]] && src="$dir/$src"
+done
+script_dir="$(cd -P "$(dirname "$src")" && pwd)"
 
-[[ $# -ge 1 ]] || usage
-
-root="$(cd "$(dirname "$0")/.." && pwd)"
-log="${HANDOFF_SESSION_LOG:-$root/ai-docs/session-log.md}"
-date="$(date +%Y-%m-%d)"
-note="$*"
-
-mkdir -p "$(dirname "$log")"
-
-if [[ ! -f "$log" ]]; then
-  cat >"$log" <<'EOF'
-# セッションログ
-
-Claude Code / Cursor 作業の短い記録。整理できた内容は `plan/` `research/` `reports/` へ移す。
-
----
-
-EOF
+if [[ "${1:-}" == "--done" ]]; then
+  exec "$script_dir/session-log-append.sh" 済 "${2:?usage: handoff-note.sh --done <slug>}"
 fi
 
-if ! grep -q "## $date" "$log"; then
-  printf '\n## %s\n' "$date" >>"$log"
-fi
-
-printf -- '- %s\n' "$note" >>"$log"
-echo "appended to $log"
+slug="${1:?usage: handoff-note.sh <slug> \"続きの内容\"}"
+shift
+exec "$script_dir/session-log-append.sh" 次 "$slug" "$*"

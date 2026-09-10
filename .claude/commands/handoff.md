@@ -1,17 +1,30 @@
 ---
-description: Cursor 引き継ぎ用に ai-docs/session-log.md を更新する
+description: 中断するとき、ai-docs/session-log.md に「次」を1行残す
 ---
 
-`ai-docs/session-log.md` を更新して。
+このチャットを中断し、続きを別チャット／別ツールへ渡す。
 
 ## やること
 
-1. 今日の日付見出し（`## YYYY-MM-DD`）がなければ追加
-2. 直前の `- 次:` 行があれば `- 完了:` に書き換え
-3. 次を追記（合計1〜3行）:
-   - `- 完了: （このセッションで終わったこと）`
-   - `- 次: （Cursor に続けさせたいこと1つ）`
-   - 触ったファイルがあれば `- ファイル: path1, path2`
-4. 外部正本（読取専用パス）があれば触らない: （読取専用の外部正本があれば触らない）
+1. まず `./scripts/session-log-live.sh` で、いま生きている引き継ぎを確認する
+2. **このチャットに続きがあるか**を判断する
+   - 一段落した（続きなし）→ 自分が過去に出した `次` があれば打ち消して終わり:
+     `./scripts/session-log-append.sh 済 <slug>`
+   - 続きがある → 3へ
+3. 文脈が太い（制約・必読ファイル・完了条件が要る）なら先に
+   `ai-docs/YYYY-MM-DD-continue-<slug>.md` を書く（型はナレッジ `skills/chat-end-wrap-up/references/continue-template.md`）
+4. 1行残す。`<slug>` はこのチャットの課題名。他チャットの slug を使わない:
+
+   ```bash
+   ./scripts/session-log-append.sh 次 <slug> "続きの内容（continue md があればそのパス）"
+   ```
+
+5. 外部正本（読取専用パス）があれば触らない: （読取専用の外部正本があれば触らない）
+
+## やらないこと
+
+- **`ai-docs/session-log.md` を Edit / Write で開かない。** 他チャットの行を消す
+- 他チャットが出した `次` を `済` にしない。打ち消せるのは自分が出した slug だけ
+- 完了の記録をここに書かない（Notion タスクログ・日報・git log が正本）
 
 追加の説明が `$ARGUMENTS` にあれば反映する。

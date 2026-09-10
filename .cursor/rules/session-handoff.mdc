@@ -3,22 +3,30 @@ alwaysApply: true
 ---
 # セッション引き継ぎ（Cursor ↔ Claude Code）
 
-共通の正本: `ai-docs/session-log.md`。詳細: `ai-docs/session-handoff.md`
+`ai-docs/session-log.md` が持つのは **この案件の、いま生きている引き継ぎだけ**。
+チャット履歴は他チャットと共有されないので、**続きがあるときだけ**1行残す。詳細: `ai-docs/session-handoff.md`
 
-## いつ更新する
+## 絶対に守る
 
-- 意味のある区切りごと
-- ユーザーが「引き継ぎ」「handoff」「Claude Code に渡す」と言ったとき
-- セッション終了前（可能なら）
+**このファイルを Edit / Write で開かない。** 複数チャットが同時に書くため、全文を読んで書き戻すと他チャットの行が消える。読み書きは必ずスクリプト経由。
 
-## 更新ルール
+```bash
+./scripts/session-log-live.sh                                  # 生きている引き継ぎだけ読む
+./scripts/session-log-append.sh 次 <slug> "続きの内容"           # 続きを残す
+./scripts/session-log-append.sh 済 <slug>                       # 自分の 次 を打ち消す
+```
 
-1. 当日見出し `## YYYY-MM-DD` がなければ追加
-2. 古い `- 次:` は `- 完了:` に書き換え
-3. 追記（1〜3行）:
-   - `- 完了: …`
-   - `- 次: …`（Cursor または Claude Code に続けさせたいこと1つ）
-   - 触ったファイルがあれば `- ファイル: …`
+## いつ書く
+
+| 状況 | 操作 |
+|---|---|
+| 中断（別チャット・別ツール・翌日に続く） | `次` を1行 |
+| 終了（一段落。続きなし） | 自分の `次` があれば `済`。無ければ何も書かない |
+| 完了の記録を残したい | ここではない。Notion タスクログ・日報・git log |
+
+`<slug>` はこのチャットの課題名（例 `email-explain`）。**他チャットの slug を使わない／打ち消さない。**
+
+文脈が太い続きは `ai-docs/YYYY-MM-DD-continue-<slug>.md` に書き、`次` の本文はそのパスだけにする。
 
 ## Claude Code に渡すとき
 
