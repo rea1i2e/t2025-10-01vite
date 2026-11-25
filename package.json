@@ -51,7 +51,7 @@
     "postcss": "^8.4.47",
     "postcss-sort-media-queries": "^5.2.0",
     "sass": "^1.93.0",
-    "sharp": "^0.34.4",
+    "sharp": "^0.35.5",
     "vite": "^6.3.6",
     "vite-plugin-ejs": "^1.7.0",
     "vite-plugin-live-reload": "^3.0.5",
