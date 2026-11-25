@@ -14,6 +14,7 @@
 | ファイル | 内容 |
 |---|---|
 | [`architecture.md`](architecture.md) | 設計・ディレクトリ・機能仕様・npm scripts の正本（A11y のテンプレ固有事項は 3.22 節） |
+| [`git-branch-and-deploy.md`](git-branch-and-deploy.md) | develop／main 分離・本番 Environment／直書きガード |
 
 リポ固有の意思決定（ADR）が増えたら **`ai-docs/decisions/`** に置いてよい。**ADR の書き方・命名**はナレッジ [adr-workflow.md](/Users/yoshiaki/working/2026-04-23kn/wiki/adr-workflow.md)。汎用の考え方の例: [decision-minify-css-client-handoff.md](/Users/yoshiaki/working/2026-04-23kn/wiki/decision-minify-css-client-handoff.md)。
 
@@ -46,6 +47,7 @@
 | ファイル | 要約 | 最終更新 |
 |---|---|---|
 | [`architecture.md`](architecture.md) | テンプレ技術正本 | — |
+| [`git-branch-and-deploy.md`](git-branch-and-deploy.md) | ブランチとデプロイ・本番直書きガード | 2026-11-25 |
 | [`session-handoff.md`](session-handoff.md) | Cursor ↔ Claude Code 引き継ぎ | 2026-07-06 |
 | [`claude-code-resume-prompt.md`](claude-code-resume-prompt.md) | Cursor → Claude Code 再開用コピペ | 2026-07-06 |
 | [`figma-design-mapping.md`](figma-design-mapping.md) | Figma URL 正本（雛形） | 2026-07-07 |

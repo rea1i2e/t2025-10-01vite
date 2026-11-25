@@ -53,9 +53,20 @@ npm run dev
 1. **`gh repo create` でリモートを作成**（下記コマンド）。テンプレート反映を待つ **`sleep 5`** のあと **`gh repo clone`** でローカルに取る。
 2. **クローンしたディレクトリに移動**する（以降、このリポジトリルートで作業）。
 3. **`npm install`**（開発・ビルド・hooks 用。FTP の Secrets だけ先に載せたい場合でも、後からでもよい）。
-4. **`env.deploy.example` を `.env.deploy` にコピー**し、`FTP_SERVER`・`FTP_USERNAME`・`FTP_PASSWORD` などを記入する（`.env.deploy` は git 管理外）。任意で `DISCORD_WEBHOOK`・`TEST_URL`。フォームをテスト環境で送信確認する場合は `FORM_MAIL_TO`・`FORM_MAIL_FROM`・`SITE_DOMAIN` も記入する（Actions がビルド後に `mail-config.local.php` を生成 — 詳細は [ai-docs/architecture.md](ai-docs/architecture.md) §3.25）。
-5. **`gh auth login` 済み**を確認し、**`./scripts/setup-secrets.sh`** を実行して GitHub Actions の secrets に反映する。
-6. ビルド成果物を載せたうえで **`git push`** し、GitHub Actions のデプロイが想定どおり動くか確認する（ワークフローは [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)）。
+4. **`env.deploy.example` を `.env.deploy` にコピー**し、`FTP_SERVER`・`FTP_USERNAME`・`FTP_PASSWORD` などを記入する（`.env.deploy` は git 管理外）。任意で `DISCORD_WEBHOOK`・`TEST_URL`。フォームをテスト環境で送信確認する場合は `FORM_MAIL_TO`・`FORM_MAIL_FROM`・`SITE_DOMAIN` も記入する（Actions がビルド後に `mail-config.local.php` を生成 — 詳細は [ai-docs/architecture.md](ai-docs/architecture.md) §3.25）。本番を使う案件は `PROD_FTP_*` も記入する（テスト `FTP_*` と同一アカウントは拒否）。
+5. **`gh auth login` 済み**を確認し、**`./scripts/setup-secrets.sh`** を実行して GitHub Actions の secrets に反映する（テストはリポジトリ Secrets、本番は Environment `production`）。
+6. **`develop` ブランチへ push** してテスト FTP（[`deploy.yml`](.github/workflows/deploy.yml)）を確認する。本番は `main` → [`deploy-production.yml`](.github/workflows/deploy-production.yml)。詳細は [ai-docs/git-branch-and-deploy.md](ai-docs/git-branch-and-deploy.md)。
+
+### ブランチとデプロイ
+
+| ブランチ | workflow | 行き先 |
+|----------|----------|--------|
+| `develop` | `deploy.yml` | テスト FTP（リポジトリ Secrets `FTP_*`） |
+| `main` | `deploy-production.yml` | 本番 FTP（Environment `production` の `PROD_FTP_*`） |
+
+本番はテスト用 `FTP_*` にフォールバックしません。`PROD_FTP_SERVER` / `PROD_FTP_USERNAME` / `PROD_FTP_PASSWORD` / `PROD_FTP_SERVER_DIR` が Environment `production` に揃っていること（Deployment branches は `main` のみ）。値は案件側で登録し、リポ・チャットに書かない。`env.deploy.example` と `scripts/setup-secrets.sh` が項目の正本。
+
+本番直書きガード: 転送前に `scripts/check-prod-deploy-drift.mjs` が前回成功時の `.prod-deploy-baseline.json` と本番実体を照合。初回は `workflow_dispatch` の `bootstrap_baseline`（サイトは上げず基準だけ置く）。ローカル検証は `npm run test:prod-deploy-drift`。
 
 #### GitHub CLI で新規作成する場合
 
@@ -111,6 +122,12 @@ npm run reinstall
 ```bash
 npm run lint
 npm run lint:fix
+```
+
+- 本番直書きガードのユニットテスト
+
+```bash
+npm run test:prod-deploy-drift
 ```
 
 ## ESLint（静的解析）
