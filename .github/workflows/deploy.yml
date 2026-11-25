@@ -1,263 +1,236 @@
 name: Deploy to FTP
 
+# 静的サイトのテスト環境デプロイ（develop → テスト FTP）。
+# 本番は deploy-production.yml（main のみ）。develop／main 分離。
+
+env:
+  FTP_EXCLUDE: |
+    **/.git*
+    **/.git*/**
+    **/node_modules/**
+    **/.DS_Store
+    **/Thumbs.db
+    **/.prod-deploy-baseline.json
+    **/.ftp-deploy-sync-state.json
+
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches: [develop]
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # Secrets 未登録（リポ作成直後・setup-secrets.sh 前）でも赤くならないよう、
-    # FTP_SERVER の有無でデプロイ／通知ステップを出し分けるための写し。
+
+    # FTP_SERVER を job レベルに引き上げ、Secrets 未登録（初回コミット等）のとき
+    # デプロイ・成功通知を条件で skip して run を緑に保つ（赤い初回 run を出さない）。
     env:
       FTP_SERVER: ${{ secrets.FTP_SERVER }}
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       FORM_MAIL_TO: ${{ secrets.FORM_MAIL_TO }}
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v6
-      with:
-        fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    - name: Detect deploy-relevant changes
-      id: changes
-      uses: dorny/paths-filter@v4
-      with:
-        filters: |
-          deploy:
-            - 'src/**'
-            - 'scripts/**'
-            - 'config/**'
-            - 'vite.config.*'
-            - 'postcss.config.*'
-            - 'package.json'
-            - 'package-lock.json'
-            - '.htmlvalidate.json'
+      - name: Detect deploy-relevant changes
+        id: changes
+        uses: dorny/paths-filter@v4
+        with:
+          filters: |
+            deploy:
+              - 'src/**'
+              - 'scripts/**'
+              - 'config/**'
+              - 'vite.config.*'
+              - 'postcss.config.*'
+              - 'package.json'
+              - 'package-lock.json'
+              - '.htmlvalidate.json'
 
-    - name: Note skipped deployment
-      if: steps.changes.outputs.deploy != 'true' && github.event_name != 'workflow_dispatch'
-      run: |
-        echo "## ⏭️ デプロイスキップ" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "ビルド／デプロイ対象外のファイルのみの変更のため、ビルド・FTP・Discord 通知は行いません。" >> $GITHUB_STEP_SUMMARY
+      - name: Note skipped deployment
+        if: steps.changes.outputs.deploy != 'true' && github.event_name != 'workflow_dispatch'
+        run: |
+          echo "## ⏭️ デプロイスキップ" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "ビルド／デプロイ対象外のファイルのみの変更のため、ビルド・FTP・Discord 通知は行いません。" >> $GITHUB_STEP_SUMMARY
 
-    - name: Setup Node.js
-      if: steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch'
-      uses: actions/setup-node@v6
-      with:
-        node-version: '24'
-        cache: 'npm'
+      - name: Setup Node.js
+        if: steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
 
-    - name: Install dependencies
-      if: steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch'
-      run: npm ci
+      - name: Install dependencies
+        if: steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch'
+        run: npm ci
 
-    - name: Build project
-      id: build_project
-      if: steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch'
-      run: npm run build
+      - name: Build
+        id: build_project
+        if: steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch'
+        run: npm run build
 
-    # mail-config.local.php は Git 非追跡のため Actions 環境には存在しない。
-    # Secrets（FORM_MAIL_TO 等）が登録されていれば、テスト環境用の設定を dist/ 内の各 MailForm* に生成してから FTP する。
-    - name: Generate mail-config.local.php for test env
-      if: (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && env.FORM_MAIL_TO != ''
-      env:
-        FORM_MAIL_FROM: ${{ secrets.FORM_MAIL_FROM }}
-        SITE_DOMAIN: ${{ secrets.SITE_DOMAIN }}
-      run: |
-        found=0
-        for dir in dist/MailForm*/; do
-          [ -f "${dir}mail.php" ] || continue
-          found=1
-          cat > "${dir}mail-config.local.php" <<EOF
-        <?php
-        // GitHub Actions が Secrets から生成（テスト環境用）
-        return [
-            'site_domain' => '${SITE_DOMAIN}',
-            'to' => '${FORM_MAIL_TO}',
-            'from' => '${FORM_MAIL_FROM:-$FORM_MAIL_TO}',
-        ];
-        EOF
-          echo "generated: ${dir}mail-config.local.php"
-        done
-        if [ "$found" = "0" ]; then
-          echo "no MailForm*/mail.php in dist/ — skipped"
-        fi
+      # mail-config.local.php は Git 非追跡のため Actions 環境には存在しない。
+      # Secrets（FORM_MAIL_TO 等）が登録されていれば、テスト環境用の設定を dist/ 内の各 MailForm* に生成してから FTP する。
+      - name: Generate mail-config.local.php for test env
+        if: (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && env.FORM_MAIL_TO != ''
+        env:
+          FORM_MAIL_FROM: ${{ secrets.FORM_MAIL_FROM }}
+          SITE_DOMAIN: ${{ secrets.SITE_DOMAIN }}
+        run: |
+          found=0
+          for dir in dist/MailForm*/; do
+            [ -f "${dir}mail.php" ] || continue
+            found=1
+            cat > "${dir}mail-config.local.php" <<EOF
+          <?php
+          // GitHub Actions が Secrets から生成（テスト環境用）
+          return [
+              'site_domain' => '${SITE_DOMAIN}',
+              'to' => '${FORM_MAIL_TO}',
+              'from' => '${FORM_MAIL_FROM:-$FORM_MAIL_TO}',
+          ];
+          EOF
+            echo "generated: ${dir}mail-config.local.php"
+          done
+          if [ "$found" = "0" ]; then
+            echo "no MailForm*/mail.php in dist/ — skipped"
+          fi
 
-    - name: Generate deployment summary
-      if: always() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch')
-      run: |
-        echo "## 📋 デプロイサマリー" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**ブランチ:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-        echo "**コミット:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
-        echo "**コミッター:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
-        echo "**イベント:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
+      # 初回コミット（Secrets 登録前）では FTP_SERVER が空 → このステップは skip。
+      # 一時的な FTP タイムアウトを吸収するため continue-on-error にし、失敗時は下の retry で再試行する。
+      - name: Deploy to Test Environment
+        id: deploy_main
+        if: (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && env.FTP_SERVER != ''
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ./
+          timeout: 120000
+          exclude: ${{ env.FTP_EXCLUDE }}
 
-        if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.ref }}" = "refs/heads/master" ]; then
-          echo "**🌐 テスト環境:** ${{ secrets.TEST_URL }}" >> $GITHUB_STEP_SUMMARY
-        elif [ "${{ github.event_name }}" = "pull_request" ]; then
-          echo "**🌐 PRテスト環境:** ${{ secrets.TEST_URL }}" >> $GITHUB_STEP_SUMMARY
-        fi
+      - name: Wait before FTP retry
+        if: steps.deploy_main.outcome == 'failure'
+        run: sleep 30
 
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### 📁 デプロイされたファイル" >> $GITHUB_STEP_SUMMARY
-        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-        find dist -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \) 2>/dev/null | head -20 >> $GITHUB_STEP_SUMMARY || true
-        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+      # primary が接続タイムアウト等で失敗したときだけ1回だけ再試行（ここは continue-on-error にしない＝
+      # retry も失敗したら job を失敗させて失敗通知を出す）。
+      - name: Deploy to Test Environment (retry)
+        id: deploy_retry
+        if: env.FTP_SERVER != '' && steps.deploy_main.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ./
+          timeout: 120000
+          exclude: ${{ env.FTP_EXCLUDE }}
 
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### 🔗 確認リンク" >> $GITHUB_STEP_SUMMARY
-        echo "- [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
-        echo "- [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})" >> $GITHUB_STEP_SUMMARY
-        if [ "${{ github.event_name }}" = "pull_request" ]; then
-          echo "- [プルリクエスト](https://github.com/${{ github.repository }}/pull/${{ github.event.number }})" >> $GITHUB_STEP_SUMMARY
-        fi
+      - name: Summary
+        if: always() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch')
+        run: |
+          echo "## デプロイサマリー" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 項目 | 値 |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-----|" >> $GITHUB_STEP_SUMMARY
+          echo "| ブランチ | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| コミット | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| 実行者 | ${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| テストURL | ${{ secrets.TEST_URL }} |" >> $GITHUB_STEP_SUMMARY
 
-    # 本番(main)デプロイは一時的な FTP 接続タイムアウト（Timeout (control socket)）を吸収するため、
-    # continue-on-error で1回だけ自動リトライする。2回目も失敗したら本当の失敗として赤くする（失敗通知もそのとき出る）。
-    - name: Deploy to Test Environment
-      id: deploy_main
-      if: (steps.changes.outputs.deploy == 'true' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') || github.event_name == 'workflow_dispatch') && env.FTP_SERVER != ''
-      continue-on-error: true
-      uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/
-        server-dir: ./
-        timeout: 120000
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/.DS_Store
-          **/Thumbs.db
+      - name: Discord 通知（成功）
+        if: success() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && env.FTP_SERVER != '' && env.DISCORD_WEBHOOK != ''
+        env:
+          TEST_URL: ${{ secrets.TEST_URL }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          payload="$(jq -n \
+            --arg repo "${{ github.repository }}" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg commit_url "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" \
+            --arg test_url "$TEST_URL" \
+            '{
+              embeds: [{
+                title: "✅ デプロイ完了",
+                color: 3066993,
+                fields: [
+                  { name: "リポジトリ", value: $repo, inline: true },
+                  { name: "ブランチ", value: ("`" + $branch + "`"), inline: true },
+                  { name: "実行者", value: $actor, inline: true },
+                  { name: "コミット", value: ("[" + $sha + "](" + $commit_url + ")\n" + (env.COMMIT_MESSAGE // "")), inline: false },
+                  { name: "テストURL", value: $test_url, inline: false }
+                ]
+              }]
+            }')"
+          curl -sfS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$payload"
 
-    - name: Wait before FTP retry
-      if: steps.deploy_main.outcome == 'failure'
-      run: sleep 30
+      - name: Discord 通知（ビルド失敗）
+        if: failure() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && steps.build_project.outcome == 'failure' && env.DISCORD_WEBHOOK != ''
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          payload="$(jq -n \
+            --arg repo "${{ github.repository }}" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg commit_url "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" \
+            --arg log_url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            '{
+              embeds: [{
+                title: "❌ ビルド失敗",
+                color: 15158332,
+                fields: [
+                  { name: "リポジトリ", value: $repo, inline: true },
+                  { name: "ブランチ", value: ("`" + $branch + "`"), inline: true },
+                  { name: "実行者", value: $actor, inline: true },
+                  { name: "コミット", value: ("[" + $sha + "](" + $commit_url + ")\n" + (env.COMMIT_MESSAGE // "")), inline: false },
+                  { name: "ログ", value: $log_url, inline: false }
+                ]
+              }]
+            }')"
+          curl -sfS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$payload"
 
-    - name: Deploy to Test Environment (retry)
-      id: deploy_retry
-      if: steps.deploy_main.outcome == 'failure'
-      uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/
-        server-dir: ./
-        timeout: 120000
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/.DS_Store
-          **/Thumbs.db
-
-    - name: Deploy to Test Environment (PR)
-      id: deploy_pr
-      if: (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && github.event_name == 'pull_request' && env.FTP_SERVER != ''
-      uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/
-        server-dir: ./
-        timeout: 120000
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          **/.DS_Store
-          **/Thumbs.db
-
-    - name: Send Discord Notification - Test Deploy
-      if: success() && (steps.changes.outputs.deploy == 'true' && github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') || github.event_name == 'workflow_dispatch') && env.FTP_SERVER != ''
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          🧪 **テスト環境デプロイ完了**
-
-          **ブランチ:** ${{ github.ref_name }}
-          **コミット:** ${{ github.sha }}
-          **コミッター:** ${{ github.actor }}
-          **メッセージ:** ${{ github.event.head_commit.message }}
-
-          **テストURL:** ${{ secrets.TEST_URL }}
-
-          **🔍 変更確認:**
-          • [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          • [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-
-    - name: Send Discord Notification - PR Test Deploy
-      if: success() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && github.event_name == 'pull_request' && env.FTP_SERVER != ''
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          🔍 **PRテスト環境デプロイ完了**
-
-          **PR:** #${{ github.event.number }}
-          **ブランチ:** ${{ github.head_ref }}
-          **コミット:** ${{ github.sha }}
-          **作成者:** ${{ github.actor }}
-
-          **PRテストURL:** ${{ secrets.TEST_URL }}
-
-          **🔍 変更確認:**
-          • [PRテスト環境を開く](${{ secrets.TEST_URL }})
-          • [プルリクエスト](https://github.com/${{ github.repository }}/pull/${{ github.event.number }})
-          • [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          • [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-
-    - name: Send Discord Notification - Build Failure
-      if: failure() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && steps.build_project.outcome == 'failure'
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          ❌ **ビルド失敗**
-
-          **ブランチ:** ${{ github.ref_name }}
-          **コミット:** ${{ github.sha }}
-          **コミッター:** ${{ github.actor }}
-          **イベント:** ${{ github.event_name }}
-
-          **🔍 詳細確認:**
-          • [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          • [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-
-    - name: Send Discord Notification - Deploy Failure
-      if: failure() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && env.FTP_SERVER != '' && steps.build_project.outcome != 'failure' && (steps.deploy_main.outcome == 'failure' || steps.deploy_retry.outcome == 'failure' || steps.deploy_pr.outcome == 'failure')
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          ❌ **デプロイ失敗**
-
-          **ブランチ:** ${{ github.ref_name }}
-          **コミット:** ${{ github.sha }}
-          **コミッター:** ${{ github.actor }}
-          **イベント:** ${{ github.event_name }}
-
-          **🔍 詳細確認:**
-          • [GitHub Actions ログ](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          • [コミット詳細](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-          ${{ github.event_name == 'pull_request' && format('• [プルリクエスト](https://github.com/{0}/pull/{1})', github.repository, github.event.number) || '' }}
-
-          **🌐 環境URL:**
-          ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && format('• テスト環境: {0}', secrets.TEST_URL) || '' }}
-          ${{ github.event_name == 'pull_request' && format('• PRテスト環境: {0}', secrets.TEST_URL) || '' }}
+      - name: Discord 通知（デプロイ失敗）
+        if: failure() && (steps.changes.outputs.deploy == 'true' || github.event_name == 'workflow_dispatch') && env.FTP_SERVER != '' && steps.build_project.outcome != 'failure' && (steps.deploy_main.outcome == 'failure' || steps.deploy_retry.outcome == 'failure') && env.DISCORD_WEBHOOK != ''
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          payload="$(jq -n \
+            --arg repo "${{ github.repository }}" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg commit_url "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" \
+            --arg log_url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            '{
+              embeds: [{
+                title: "❌ デプロイ失敗",
+                color: 15158332,
+                fields: [
+                  { name: "リポジトリ", value: $repo, inline: true },
+                  { name: "ブランチ", value: ("`" + $branch + "`"), inline: true },
+                  { name: "実行者", value: $actor, inline: true },
+                  { name: "コミット", value: ("[" + $sha + "](" + $commit_url + ")\n" + (env.COMMIT_MESSAGE // "")), inline: false },
+                  { name: "ログ", value: $log_url, inline: false }
+                ]
+              }]
+            }')"
+          curl -sfS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$payload"

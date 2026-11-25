@@ -81,7 +81,8 @@
 | `scripts/after-build.mjs` | ビルド後HTML処理（picture化、width/height付与、CSS image-set、整形）。config/site.config.js の imageAltFormats を参照 |
 | `scripts/generate-seo-files.mjs` | ビルド後に site.config.js から `dist/sitemap.xml` と `dist/robots.txt` を生成 |
 | `scripts/init-project.sh` | 案件着手時にデモ用コードを一括削除するスクリプト（`npm run init` で実行） |
-| `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録 |
+| `scripts/setup-secrets.sh` | GitHub Actions 用シークレットを `.env.deploy` から `gh` で一括登録（テスト `FTP_*` ＋任意で Environment `production` の `PROD_FTP_*`） |
+| `scripts/check-prod-deploy-drift.mjs` | 本番直書きガード（転送前 check／bootstrap／write-baseline） |
 | `raw/videos/inspect-videos.mjs` | 動画情報サマリー出力（AI依頼時に使用） |
 | `raw/videos/compress-video.mjs` | 動画まとめ圧縮＋レポート生成 |
 | `raw/fonts/font-compress.sh` | フォントを全グリフのまま WOFF2 に圧縮（pyftsubset） |
@@ -104,7 +105,9 @@
 | `src/assets/sass/style.scss` | Sassエントリファイル |
 | `src/assets/sass/base/_root.scss` | フォント・CSS変数（`:root`）。ライト/ダーク用の `--color-bg` / `--color-text` 等と `@media (prefers-color-scheme: dark)` による上書き |
 | `src/assets/js/_theme-toggle.js` | **Demo用**。ライト/ダーク切り替えボタンのクリック処理。案件時は本ファイル削除と main.js の import 削除が必要 |
-| `.github/workflows/deploy.yml` | CI/CD（FTPデプロイ + Discord通知） |
+| `.github/workflows/deploy.yml` | テスト FTP（`develop`）+ Discord 通知 |
+| `.github/workflows/deploy-production.yml` | 本番 FTP（`main`／Environment `production`）+ 直書きガード |
+| `ai-docs/git-branch-and-deploy.md` | develop／main 分離と本番ゲートの説明 |
 | `ai-docs/session-log.md` | Cursor ↔ Claude Code 作業引き継ぎログ |
 | `ai-docs/session-handoff.md` | 引き継ぎ運用（`/handoff`・フック） |
 | `scripts/handoff-snapshot.sh` | フック共通の session-log 追記 |

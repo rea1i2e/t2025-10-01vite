@@ -230,39 +230,37 @@ flowchart LR
 
 ### 3.8 CI/CD（GitHub Actions）
 
+詳細なブランチ運用は [git-branch-and-deploy.md](git-branch-and-deploy.md)。
+
 #### 関連ファイル
-- `.github/workflows/deploy.yml`
+- `.github/workflows/deploy.yml` — テスト（`develop` → リポジトリ Secrets `FTP_*`）
+- `.github/workflows/deploy-production.yml` — 本番（`main` → Environment `production` の `PROD_FTP_*`）
+- `scripts/check-prod-deploy-drift.mjs` — 本番直書きガード（転送前 check／bootstrap／write-baseline）
+- `scripts/check-prod-deploy-drift.test.mjs` — ユニットテスト（`npm run test:prod-deploy-drift`）
 
 #### トリガー
-- `push`（`main` / `master`）
-- `pull_request`（`main` / `master`）
-- `workflow_dispatch`（手動実行）: `deploy_to_production` 入力あり
+- テスト: `push`（`develop`）／`workflow_dispatch`
+- 本番: `push`（`main`）／`workflow_dispatch`（`dry_run` 既定 true、`bootstrap_baseline`）
 
-#### 処理フロー
-1. `actions/checkout@v4`
-2. `actions/setup-node@v4`（Node 20、npmキャッシュ）
-3. `npm ci`
-4. `npm run build`
-5. FTPデプロイ（`SamKirkland/FTP-Deploy-Action@v4.3.4`）
-   - push → テスト環境
-   - PR → PRテスト環境
-   - 手動（`deploy_to_production: true`）→ 本番
-6. Discord通知（`Ilshidur/action-discord@master`）: 成功/失敗で分岐
+#### 処理フロー（概要）
+1. paths-filter でビルド対象の変更があるときだけ続行（手動は常に続行）
+2. `npm ci` → `npm run build`（`dist/`）
+3. 本番のみ: 転送前に `check:prod-deploy-drift`（bootstrap 時は基準だけ置く）
+4. FTP（`SamKirkland/FTP-Deploy-Action@v4.4.0`）。本番は成功後（dry-run 以外）に基準更新
+5. Discord 通知（Webhook があるとき）
 
-#### 必要な GitHub Secrets
-- **必須**: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`
-- **任意**: `TEST_URL`（サマリー・Discord に表示するURL）, `DISCORD_WEBHOOK`（Discord 通知用）
+#### 必要な Secrets
+- **テスト（リポジトリ）**: `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`（必須）。任意で `TEST_URL`, `DISCORD_WEBHOOK`, `FORM_MAIL_*`, `SITE_DOMAIN`
+- **本番（Environment `production`）**: `PROD_FTP_SERVER`, `PROD_FTP_USERNAME`, `PROD_FTP_PASSWORD`, `PROD_FTP_SERVER_DIR`。任意で `PROD_URL`。テスト `FTP_*` へはフォールバックしない
 
 #### GitHub Secrets の一括設定
-- `scripts/setup-secrets.sh` — `.env.deploy` の値を GitHub CLI（`gh`）でリポジトリの Secrets に登録する
-- `env.deploy.example` — 必要な変数名のテンプレート。コピーして `.env.deploy` を作成し、値を記入する
-- `.env.deploy` は `.gitignore` に含まれるためコミットされない
+- `scripts/setup-secrets.sh` — `.env.deploy` からテスト用リポジトリ Secrets と、記入があれば Environment `production` の `PROD_FTP_*` を登録する
+- `env.deploy.example` — 項目の正本。`.env.deploy` は gitignore
 
 **手順**
 1. `cp env.deploy.example .env.deploy` で `.env.deploy` を作成
-2. `.env.deploy` に FTP のサーバー・ユーザー・パスワード（と任意で Discord Webhook・テストURL）を記入
-3. `gh` をインストールし `gh auth login` で認証
-4. プロジェクトルートで `./scripts/setup-secrets.sh` を実行
+2. テスト用 `FTP_*`（と任意項目）を記入。本番を使うなら `PROD_FTP_*` も4つすべて
+3. `gh auth login` のあと `./scripts/setup-secrets.sh`
 
 ### 3.9 デモページシステム
 

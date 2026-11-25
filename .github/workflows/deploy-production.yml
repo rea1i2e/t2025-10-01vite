@@ -1,0 +1,393 @@
+name: Deploy to production FTP
+
+# 静的サイトの本番デプロイ（main → 本番 FTP）。dist/ を docroot へ送る。
+# テスト線は deploy.yml（develop → テスト FTP）。develop／main 分離。
+# Environment production の PROD_FTP_* だけを使う（リポジトリ FTP_* へはフォールバックしない）。
+# 参照: team-fuku/2026-09-23stp / t2026-05-22ejs の deploy-production.yml（本番直書きガード）
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "FTP へ接続して差分だけ出し、アップロードしない"
+        type: boolean
+        default: true
+      bootstrap_baseline:
+        description: "サイトを上げず、本番＝ローカル(dist)を確認して基準ファイルだけ置く"
+        type: boolean
+        default: false
+
+# GitHub Free の private では Required reviewers を付けられない。
+# 安全弁は Environment production の deployment branch（main のみ）と、この guard。
+concurrency:
+  group: production-ftp
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  deployments: write
+
+# local-dir は ./dist/ なので、除外は dist 直下の相対パス向け
+env:
+  FTP_EXCLUDE: |
+    **/.git*
+    **/.git*/**
+    **/node_modules/**
+    **/.DS_Store
+    **/Thumbs.db
+    **/.prod-deploy-baseline.json
+    **/.ftp-deploy-sync-state.json
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.gate.outputs.should_deploy }}
+    steps:
+      - name: Refuse non-main refs
+        if: github.ref != 'refs/heads/main'
+        run: |
+          echo "本番デプロイは main だけです（今: ${{ github.ref }}）"
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Detect deploy-relevant changes
+        id: changes
+        uses: dorny/paths-filter@v4
+        with:
+          filters: |
+            deploy:
+              - 'src/**'
+              - 'scripts/**'
+              - 'config/**'
+              - 'vite.config.*'
+              - 'postcss.config.*'
+              - 'package.json'
+              - 'package-lock.json'
+              - '.htmlvalidate.json'
+
+      - name: Decide whether to deploy
+        id: gate
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          elif [ "${{ steps.changes.outputs.deploy }}" = "true" ]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+            echo "## 本番デプロイをスキップ" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "ビルド／デプロイ対象外のファイルのみの変更のため、ビルドと本番 FTP は行いません。" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  deploy:
+    needs: plan
+    if: needs.plan.outputs.should_deploy == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: production
+    env:
+      PROD_FTP_SERVER: ${{ secrets.PROD_FTP_SERVER }}
+      PROD_FTP_USERNAME: ${{ secrets.PROD_FTP_USERNAME }}
+      PROD_FTP_PASSWORD: ${{ secrets.PROD_FTP_PASSWORD }}
+      PROD_FTP_SERVER_DIR: ${{ secrets.PROD_FTP_SERVER_DIR }}
+      PROD_URL: ${{ secrets.PROD_URL }}
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      FORM_MAIL_TO: ${{ secrets.FORM_MAIL_TO }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Require production FTP secrets
+        run: |
+          if [ -z "$PROD_FTP_SERVER" ] || [ -z "$PROD_FTP_USERNAME" ] || [ -z "$PROD_FTP_PASSWORD" ] || [ -z "$PROD_FTP_SERVER_DIR" ]; then
+            echo "Environment production の PROD_FTP_SERVER / PROD_FTP_USERNAME / PROD_FTP_PASSWORD / PROD_FTP_SERVER_DIR が揃っていません。テスト用 FTP_* にはフォールバックしません。"
+            exit 1
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        id: build_project
+        run: npm run build
+
+      # 本番でも FORM_MAIL_* が Environment / リポに無い場合は生成しない。
+      # 本番宛は mail-config.local.php（Git 非追跡）を案件側で用意する想定。
+      - name: Generate mail-config.local.php when FORM_MAIL_TO is set
+        if: env.FORM_MAIL_TO != ''
+        env:
+          FORM_MAIL_FROM: ${{ secrets.FORM_MAIL_FROM }}
+          SITE_DOMAIN: ${{ secrets.SITE_DOMAIN }}
+        run: |
+          found=0
+          for dir in dist/MailForm*/; do
+            [ -f "${dir}mail.php" ] || continue
+            found=1
+            cat > "${dir}mail-config.local.php" <<EOF
+          <?php
+          // GitHub Actions が Secrets から生成
+          return [
+              'site_domain' => '${SITE_DOMAIN}',
+              'to' => '${FORM_MAIL_TO}',
+              'from' => '${FORM_MAIL_FROM:-$FORM_MAIL_TO}',
+          ];
+          EOF
+            echo "generated: ${dir}mail-config.local.php"
+          done
+          if [ "$found" = "0" ]; then
+            echo "no MailForm*/mail.php in dist/ — skipped"
+          fi
+
+      - name: Bootstrap production deploy baseline
+        id: bootstrap
+        if: github.event_name == 'workflow_dispatch' && inputs.bootstrap_baseline
+        env:
+          FTP_EXCLUDE: ${{ env.FTP_EXCLUDE }}
+        run: |
+          npm run check:prod-deploy-drift -- bootstrap \
+            --local-dir ./dist \
+            --ftp-server "$PROD_FTP_SERVER" \
+            --ftp-username "$PROD_FTP_USERNAME" \
+            --ftp-password "$PROD_FTP_PASSWORD" \
+            --ftp-server-dir "$PROD_FTP_SERVER_DIR"
+
+      - name: Check production has not drifted from last deploy
+        id: drift_check
+        if: success() && !(github.event_name == 'workflow_dispatch' && inputs.bootstrap_baseline)
+        env:
+          FTP_EXCLUDE: ${{ env.FTP_EXCLUDE }}
+        run: |
+          npm run check:prod-deploy-drift -- check \
+            --local-dir ./dist \
+            --ftp-server "$PROD_FTP_SERVER" \
+            --ftp-username "$PROD_FTP_USERNAME" \
+            --ftp-password "$PROD_FTP_PASSWORD" \
+            --ftp-server-dir "$PROD_FTP_SERVER_DIR"
+
+      - name: Deploy site via FTP
+        id: deploy_main
+        if: success() && !(github.event_name == 'workflow_dispatch' && inputs.bootstrap_baseline)
+        continue-on-error: true
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.PROD_FTP_SERVER }}
+          username: ${{ secrets.PROD_FTP_USERNAME }}
+          password: ${{ secrets.PROD_FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.PROD_FTP_SERVER_DIR }}
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+          timeout: 120000
+          exclude: ${{ env.FTP_EXCLUDE }}
+
+      - name: Wait before FTP retry
+        if: steps.deploy_main.outcome == 'failure'
+        run: sleep 30
+
+      - name: Deploy site via FTP (retry)
+        id: deploy_retry
+        if: steps.deploy_main.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.PROD_FTP_SERVER }}
+          username: ${{ secrets.PROD_FTP_USERNAME }}
+          password: ${{ secrets.PROD_FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.PROD_FTP_SERVER_DIR }}
+          dry-run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+          timeout: 120000
+          exclude: ${{ env.FTP_EXCLUDE }}
+
+      - name: Fail if deploy did not succeed
+        if: always() && steps.build_project.outcome == 'success' && steps.drift_check.outcome == 'success' && !(github.event_name == 'workflow_dispatch' && inputs.bootstrap_baseline)
+        run: |
+          if [ "${{ steps.deploy_main.outcome }}" = "success" ]; then
+            exit 0
+          fi
+          if [ "${{ steps.deploy_retry.outcome }}" = "success" ]; then
+            exit 0
+          fi
+          echo "本番 FTP が失敗しました"
+          exit 1
+
+      - name: Update production deploy baseline
+        if: >-
+          success()
+          && !(github.event_name == 'workflow_dispatch' && inputs.dry_run)
+          && !(github.event_name == 'workflow_dispatch' && inputs.bootstrap_baseline)
+        env:
+          FTP_EXCLUDE: ${{ env.FTP_EXCLUDE }}
+        run: |
+          npm run check:prod-deploy-drift -- write-baseline \
+            --local-dir ./dist \
+            --ftp-server "$PROD_FTP_SERVER" \
+            --ftp-username "$PROD_FTP_USERNAME" \
+            --ftp-password "$PROD_FTP_PASSWORD" \
+            --ftp-server-dir "$PROD_FTP_SERVER_DIR"
+
+      - name: Summary
+        if: always()
+        run: |
+          mode="upload"
+          site_upload="実施"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.bootstrap_baseline }}" = "true" ]; then
+            mode="bootstrap"
+            site_upload="未実施（基準ファイルのみ）"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            mode="dry-run"
+            site_upload="未実施（dry-run）"
+          fi
+          {
+            echo "## 本番デプロイサマリー"
+            echo ""
+            echo "| 項目 | 値 |"
+            echo "|------|-----|"
+            echo "| ブランチ | \`${{ github.ref_name }}\` |"
+            echo "| コミット | \`${{ github.sha }}\` |"
+            echo "| 実行者 | ${{ github.actor }} |"
+            echo "| モード | ${mode} |"
+            echo "| サイトアップロード | ${site_upload} |"
+            if [ -n "$PROD_URL" ]; then
+              echo "| 本番URL | ${PROD_URL} |"
+            fi
+            echo "| 送信 | \`dist/\` → \`PROD_FTP_SERVER_DIR\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Discord 通知（成功）
+        if: success() && env.DISCORD_WEBHOOK != ''
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+          BOOTSTRAP: ${{ github.event_name == 'workflow_dispatch' && inputs.bootstrap_baseline }}
+        run: |
+          if [ "$BOOTSTRAP" = "true" ]; then
+            title="本番デプロイ基準の初期登録完了"
+          elif [ "$DRY_RUN" = "true" ]; then
+            title="本番 FTP dry-run 完了"
+          else
+            title="本番デプロイ完了"
+          fi
+          payload="$(jq -n \
+            --arg title "$title" \
+            --arg repo "${{ github.repository }}" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg commit_url "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" \
+            --arg prod_url "${PROD_URL}" \
+            '{
+              embeds: [{
+                title: $title,
+                color: 3066993,
+                fields: ([
+                  { name: "リポジトリ", value: $repo, inline: true },
+                  { name: "ブランチ", value: ("`" + $branch + "`"), inline: true },
+                  { name: "実行者", value: $actor, inline: true },
+                  { name: "コミット", value: ("[" + $sha + "](" + $commit_url + ")\n" + (env.COMMIT_MESSAGE // "")), inline: false },
+                  { name: "サイトアップロード", value: (if env.BOOTSTRAP == "true" then "未実施（基準のみ）" elif env.DRY_RUN == "true" then "未実施（dry-run）" else "実施" end), inline: false }
+                ] + (if $prod_url != "" then [{ name: "本番URL", value: $prod_url, inline: false }] else [] end))
+              }]
+            }')"
+          curl -sfS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$payload"
+
+      - name: Discord 通知（直書き検知で中断）
+        if: failure() && steps.build_project.outcome == 'success' && steps.drift_check.outcome == 'failure' && env.DISCORD_WEBHOOK != ''
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          payload="$(jq -n \
+            --arg repo "${{ github.repository }}" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg commit_url "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" \
+            --arg log_url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            '{
+              embeds: [{
+                title: "本番デプロイ中断（直書き検知）",
+                color: 15105570,
+                fields: [
+                  { name: "リポジトリ", value: $repo, inline: true },
+                  { name: "ブランチ", value: ("`" + $branch + "`"), inline: true },
+                  { name: "実行者", value: $actor, inline: true },
+                  { name: "コミット", value: ("[" + $sha + "](" + $commit_url + ")\n" + (env.COMMIT_MESSAGE // "")), inline: false },
+                  { name: "ログ", value: $log_url, inline: false }
+                ]
+              }]
+            }')"
+          curl -sfS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$payload"
+
+      - name: Discord 通知（ビルド失敗）
+        if: failure() && steps.build_project.outcome == 'failure' && env.DISCORD_WEBHOOK != ''
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          payload="$(jq -n \
+            --arg repo "${{ github.repository }}" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg commit_url "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" \
+            --arg log_url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            '{
+              embeds: [{
+                title: "本番ビルド失敗",
+                color: 15158332,
+                fields: [
+                  { name: "リポジトリ", value: $repo, inline: true },
+                  { name: "ブランチ", value: ("`" + $branch + "`"), inline: true },
+                  { name: "実行者", value: $actor, inline: true },
+                  { name: "コミット", value: ("[" + $sha + "](" + $commit_url + ")\n" + (env.COMMIT_MESSAGE // "")), inline: false },
+                  { name: "ログ", value: $log_url, inline: false }
+                ]
+              }]
+            }')"
+          curl -sfS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$payload"
+
+      - name: Discord 通知（デプロイ失敗）
+        if: failure() && steps.build_project.outcome == 'success' && steps.drift_check.outcome == 'success' && (steps.deploy_main.outcome == 'failure' || steps.deploy_retry.outcome == 'failure') && env.DISCORD_WEBHOOK != ''
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          payload="$(jq -n \
+            --arg repo "${{ github.repository }}" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg commit_url "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}" \
+            --arg log_url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            '{
+              embeds: [{
+                title: "本番デプロイ失敗",
+                color: 15158332,
+                fields: [
+                  { name: "リポジトリ", value: $repo, inline: true },
+                  { name: "ブランチ", value: ("`" + $branch + "`"), inline: true },
+                  { name: "実行者", value: $actor, inline: true },
+                  { name: "コミット", value: ("[" + $sha + "](" + $commit_url + ")\n" + (env.COMMIT_MESSAGE // "")), inline: false },
+                  { name: "ログ", value: $log_url, inline: false }
+                ]
+              }]
+            }')"
+          curl -sfS -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "$payload"
