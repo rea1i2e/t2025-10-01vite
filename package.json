@@ -52,7 +52,7 @@
     "postcss-sort-media-queries": "^5.2.0",
     "sass": "^1.93.0",
     "sharp": "^0.35.5",
-    "vite": "^6.3.6",
+    "vite": "^6.4.6",
     "vite-plugin-ejs": "^1.7.0",
     "vite-plugin-live-reload": "^3.0.5",
     "vite-plugin-sass-glob-import": "^5.0.0"
